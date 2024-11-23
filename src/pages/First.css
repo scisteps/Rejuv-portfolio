@@ -1,62 +1,125 @@
-/* First.css */
 .first-container {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    color: #333;
-  }
-  
-  /* Banner Section */
-  .banner {
-    width: 100%;
-    height: auto;
-  }
-  
-  .banner-image {
-    width: 100%;
-    max-height: 200px;
-    object-fit: cover;
-  }
-  
-  /* Content Section */
-  .content-section {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-    gap: 20px;
-  }
-  
-  /* Image on the Left */
-  .image-container {
-    flex: 1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  
-  .profile-image {
-    max-width: 100%;
-    height: auto;
-    border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  }
-  
-  /* Text on the Right */
-  .text-container {
-    flex: 2;
-    padding: 10px;
-  }
-  
-  .text-container h2 {
-    margin: 0;
-    font-size: 24px;
-    color: #2c3e50;
-  }
-  
-  .text-container p {
-    margin-top: 10px;
-    line-height: 1.6;
-    font-size: 16px;
-  }
-  
+  font-family: Arial, sans-serif;
+  color: #333;
+}
+
+.banner-section {
+  background-color: #000; /* Black background for the banner */
+  padding: 20px 0;
+}
+
+.banner {
+  text-align: center;
+}
+
+.banner-image {
+  width: 100%;
+  max-width: 1200px;
+  height: auto;
+}
+
+.content-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  margin: 20px 0;
+  padding: 20px;
+}
+
+.image-container {
+  flex: 1;
+}
+
+.profile-image {
+  width: 100%;
+  max-width: 300px;
+  border-radius: 10px;
+}
+
+.text-container {
+  flex: 2;
+}
+
+.animated-stories-section {
+  background-color: #000;
+  color: #fff;
+  text-align: center;
+  padding: 40px 20px;
+  margin-top: 30px;
+}
+
+.animated-stories-section h1 {
+  font-size: 2.5rem;
+  margin-bottom: 20px;
+}
+
+.animated-stories-section h2 {
+  font-size: 1.8rem;
+  margin-bottom: 20px;
+}
+
+.description-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.migudp-image {
+  width: 80%;
+  max-width: 400px;
+  margin-bottom: 20px;
+  border-radius: 10px;
+}
+
+.story-description {
+  font-size: 1rem;
+  max-width: 600px;
+  line-height: 1.5;
+  margin: 0 auto 20px;
+  padding: 0 10px;
+}
+
+.video-container {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.migu-video {
+  width: 100%;
+  border-radius: 10px;
+}
+
+.video-caption {
+  margin-top: 10px;
+  font-size: 1rem;
+  color: #ccc;
+}
+.motivational-shorts-section {
+  padding: 40px 20px;
+  color: #fff;
+  text-align: center;
+  transition: background-color 0.5s ease; /* Smooth background transition */
+}
+
+.motivational-shorts-section h1 {
+  font-size: 2.5rem;
+  margin-bottom: 20px;
+}
+
+.video-container {
+  margin: 20px auto;
+  max-width: 800px;
+}
+
+.motivational-video {
+  width: 100%;
+  border-radius: 10px;
+}
+
+.video-caption {
+  margin-top: 10px;
+  font-size: 1rem;
+  color: #ccc;
+}
