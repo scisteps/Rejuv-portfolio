@@ -6,7 +6,7 @@ import migu1 from '../anims/migu1.mp4';
 import migudp from '../images/migudp.png';
 import redascension from '../anims/redascension.mp4';
 import newyears from '../anims/newyear.mp4';
-import supernormal from '../anims/supernormall.mp4';
+import supernormal from '../anims/Web Optimized Abnomal Samuel.mp4';
 import migu2 from '../anims/migu2.mp4';
 import migu3 from '../anims/migu3.mp4';
 import me from '../images/Rejuv dp.jpg';
@@ -24,7 +24,7 @@ const First = () => {
 
     }
   };
-
+//
   return (
     <div className="first-container">
       {/* Banner */}
