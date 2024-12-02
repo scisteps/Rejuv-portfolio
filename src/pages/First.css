@@ -1,23 +1,63 @@
+/* First.css */
 .first-container {
-  font-family: Arial, sans-serif;
-  color: #333;
+  text-align: center;
+  margin: 20px;
 }
 
+/* Container for the slideshow */
+.image-container {
+  position: relative;
+  overflow: hidden;
+}
+
+/* Profile image styling for slideshow */
+.profile-image {
+  transition: transform 1s ease-in-out; /* Adds smooth sliding */
+}
+
+/* Slideshow Section */
 .banner-section {
   background-color: #000; /* Black background for the banner */
   padding: 20px 0;
+  width: 100%;
 }
 
-.banner {
+/* Styling for the carousel images */
+.slick-slide {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Slideshow control buttons */
+.slick-prev, .slick-next {
+  display: none; /* Hide the arrows if you prefer to use swipe or dots */
+}
+
+/* Dots for carousel navigation */
+.slick-dots {
+  bottom: 10px; /* Position dots at the bottom of the carousel */
   text-align: center;
 }
 
-.banner-image {
-  width: 100%;
-  max-width: 1200px;
-  height: auto;
+.slick-dots li button:before {
+  color: #fff; /* Color of inactive dots */
 }
 
+.slick-dots li.slick-active button:before {
+  color: #FADDAD; /* Active dot color */
+}
+
+/* Styling for image in carousel */
+.profile-image {
+  width: 100%;
+  height: auto;
+  max-width: 100%; /* Ensure it adapts to any screen size */
+  border-radius: 10px;
+  object-fit: cover; /* To ensure the images are cropped correctly */
+}
+
+/* Container for the content section */
 .content-section {
   display: flex;
   justify-content: center;
@@ -31,16 +71,11 @@
   flex: 1;
 }
 
-.profile-image {
-  width: 100%;
-  max-width: 300px;
-  border-radius: 10px;
-}
-
 .text-container {
   flex: 2;
 }
 
+/* For text and animated stories */
 .animated-stories-section {
   background-color: #000;
   color: #fff;
@@ -81,6 +116,7 @@
   padding: 0 10px;
 }
 
+/* Video Section */
 .video-container {
   max-width: 800px;
   margin: 0 auto;
@@ -96,6 +132,8 @@
   font-size: 1rem;
   color: #ccc;
 }
+
+/* Motivational Shorts Section */
 .motivational-shorts-section {
   padding: 40px 20px;
   color: #fff;
@@ -106,11 +144,6 @@
 .motivational-shorts-section h1 {
   font-size: 2.5rem;
   margin-bottom: 20px;
-}
-
-.video-container {
-  margin: 20px auto;
-  max-width: 800px;
 }
 
 .motivational-video {

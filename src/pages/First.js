@@ -1,40 +1,57 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./First.css"; // CSS file for styling
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/swiper-bundle.css"; // Import Swiper styles
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css"; 
+import "slick-carousel/slick/slick-theme.css"
 import rejuvbanner from '../images/rejuv banner.png';
 import rejuveprofile from '../images/rejuve main logo.png';
 import migu1 from '../anims/migu1.mp4';
 import migudp from '../images/migudp.png';
-import redascension from '../anims/redascension.mp4';
-import newyears from '../anims/newyear.mp4';
+import redascension from '../anims/optimizedShadowAnimation.mp4';
+import newyears from '../anims/optimizedNewYear.mp4';
 import supernormal from '../anims/Web Optimized Abnomal Samuel.mp4';
 import migu2 from '../anims/migu2.mp4';
 import migu3 from '../anims/migu3.mp4';
+import miguim2 from '../images/m&f.png';
+import miguim3 from '../images/title.png';
+import scistepsquare from '../images/scistepsquare.png';
 import me from '../images/Rejuv dp.jpg';
+
 const First = () => {
   const [motivationalBackground, setMotivationalBackground] = useState("maroon");
+  const images = [me, rejuveprofile, scistepsquare]; // Add more images or videos as needed
+  const images2 = [migudp, miguim2, miguim3]; // Add more images or videos as needed
 
   const handleVideoClick = (video) => {
     if (video === "supernormal") {
       setMotivationalBackground("#FADDAD");
     } else if (video === "newyears"){
       setMotivationalBackground("#3B102A");
-    }
-    else {
+    } else {
       setMotivationalBackground("#B4A88F");
-
     }
   };
-//
+  const settings = {
+    dots: true, // Show dots for navigation
+    infinite: true, // Infinite loop of images
+    speed: 500, // Speed of transition
+    slidesToShow: 1, // Show one image at a time
+    slidesToScroll: 1, // Scroll one image at a time
+    autoplay: true, // Enable autoplay
+    autoplaySpeed: 3000, // Speed of autoplay (3 seconds)
+    arrows: false, // Disable previous/next arrows
+    pauseOnHover: true, // Pause autoplay on hover (optional)
+  };
+  
+
   return (
     <div className="first-container">
       {/* Banner */}
       <div className="banner-section">
         <div className="banner">
-          <img
-            src={rejuvbanner}
-            alt="Rejuv Banner"
-            className="banner-image"
-          />
+          <img src={rejuvbanner} alt="Rejuv Banner" className="banner-image" />
         </div>
       </div>
 
@@ -42,11 +59,21 @@ const First = () => {
       <div className="content-section">
         {/* Left Image */}
         <div className="image-container">
-          <img
-            src={me}
-            alt="Rejuv"
-            className="profile-image"
-          />
+        <Slider
+    autoplay={true}
+    autoplaySpeed={3000}
+    infinite={true}
+    slidesToShow={1}
+    slidesToScroll={1}
+    dots={true}
+    className="slick-carousel-container"
+  >
+    {images.map((image, index) => (
+      <div key={index}>
+        <img src={image} alt={`Slideshow ${index}`} className="profile-image" />
+      </div>
+    ))}
+  </Slider>
         </div>
 
         {/* Right Text */}
@@ -86,7 +113,7 @@ const First = () => {
             <source src={supernormal} type="video/mp4" />
             Your browser does not support the video tag.
           </video>
-          <p className="video-caption">Red Ascension</p>
+          <p className="video-caption">Supernormal</p>
         </div>
         <div className="video-container">
           <video
@@ -106,16 +133,30 @@ const First = () => {
       <div className="animated-stories-section">
         <h1>Animated Stories</h1>
         <h2>Migu and Feathers</h2>
-        <div className="description-container">
-          <img
-            src={migudp}
-            alt="Migu and Feathers"
-            className="migudp-image"
-          />
+        <div className="content-section">
+        <div className="image-container">
+        <Slider
+    autoplay={true}
+    autoplaySpeed={3000}
+    infinite={true}
+    slidesToShow={1}
+    slidesToScroll={1}
+    dots={true}
+    className="slick-carousel-container"
+  >
+    {images2.map((image, index) => (
+      <div key={index}>
+        <img src={image} alt={`Slideshow ${index}`} className="profile-image" />
+      </div>
+    ))}
+  </Slider>
           <p className="story-description">
             *Migu and Feathers* is a short animated series set in prehistoric times, exploring the rivalry and eventual bond between a determined man and a mighty prehistoric bird, reminiscent of an ostrich.
           </p>
         </div>
+</div>
+       
+
         <div className="video-container">
           <video controls width="100%" className="migu-video">
             <source src={migu1} type="video/mp4" />
