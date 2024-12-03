@@ -58,32 +58,18 @@ const videoRefs = {
      
   
   // Play the selected video and update the state
-  setPlayingVideo(video);
-  videoRefs[video].current.play();
     if (video === 2) {
       setMotivationalBackground("#FADDAD");
-      if (playingVideo !== null) {
-        videoRefs[playingVideo].current.pause();
-      }
+    
     
     } else if (video === 1){
       setMotivationalBackground("#3B102A");
-      if (playingVideo !== null) {
-        videoRefs[playingVideo].current.pause();
-      }
     } else if (video === 3){
       setMotivationalBackground("#B4A88F");
-      if (playingVideo !== null) {
-        videoRefs[playingVideo].current.pause();
-      }
     }
     else if (video === 4){
       setMotivationalBackground("#54A9E5");
-      if (playingVideo !== null) {
-        videoRefs[playingVideo].current.pause();
-      }
     }
-    
     
   };
 
