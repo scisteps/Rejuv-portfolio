@@ -167,3 +167,10 @@
   font-size: 1rem;
   color: #ccc;
 }
+/* First.css */
+body {
+  background-color: #000; /* Black background for the entire page */
+  color: #fff; /* Optional: White text for contrast */
+  margin: 0; /* Remove default margin */
+  padding: 0; /* Remove default padding */
+}
