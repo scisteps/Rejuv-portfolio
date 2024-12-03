@@ -128,6 +128,8 @@ const videoRefs = {
         <h1>Animated Shorts</h1>
         <div ref={redref}  onClick={() => handleVideoClick(1)}
  className="video-container">
+            <p className="video-caption">Red Ascension</p>
+
           <video
             controls
             width="100%"
@@ -137,9 +139,10 @@ const videoRefs = {
             <source src={redascension} type="video/mp4" />
             Your browser does not support the video tag.
           </video>
-          <p className="video-caption">Red Ascension</p>
         </div>
         <div ref={newyearsref} onClick={() => handleVideoClick(4)} className="video-container">
+        <p className="video-caption">Basketball dunk</p>
+
           <video
             controls
             width="100%"
@@ -149,9 +152,10 @@ const videoRefs = {
             <source src={bball} type="video/mp4" />
             Your browser does not support the video tag.
           </video>
-          <p className="video-caption">Basketball dunk</p>
         </div>
         <div ref={snormalref} onClick={() => handleVideoClick(2)} className="video-container">
+        <p className="video-caption">Supernormal</p>
+
           <video
             controls
             width="100%"
@@ -161,9 +165,10 @@ const videoRefs = {
             <source src={supernormal} type="video/mp4" />
             Your browser does not support the video tag.
           </video>
-          <p className="video-caption">Supernormal</p>
         </div>
         <div ref={newyearsref} onClick={() => handleVideoClick(3)} className="video-container">
+        <p className="video-caption">New Years</p>
+
           <video
             controls
             width="100%"
@@ -173,7 +178,6 @@ const videoRefs = {
             <source src={newyears} type="video/mp4" />
             Your browser does not support the video tag.
           </video>
-          <p className="video-caption">New Years</p>
         </div>
        
         
