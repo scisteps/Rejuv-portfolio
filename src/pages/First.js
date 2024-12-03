@@ -12,12 +12,13 @@ import migudp from '../images/migudp.png';
 import redascension from '../anims/optimizedShadowAnimation.mp4';
 import newyears from '../anims/optimizedNewYear.mp4';
 import supernormal from '../anims/Web Optimized Abnomal Samuel.mp4';
-import migu2 from '../anims/migu2.mp4';
+import migu2 from '../anims/Migu & Feathers_optimized2.mp4';
 import migu3 from '../anims/migu3.mp4';
 import miguim2 from '../images/m&f.png';
-import miguim3 from '../images/title.png';
+import miguim3 from '../images/ep3.png';
 import scistepsquare from '../images/scistepsquare.png';
 import me from '../images/Rejuv dp.jpg';
+import Header from "./Header";
 
 const First = () => {
   const [motivationalBackground, setMotivationalBackground] = useState("maroon");
@@ -48,6 +49,9 @@ const First = () => {
 
   return (
     <div className="first-container">
+      <div>
+        <Header/>
+      </div>
       {/* Banner */}
       <div className="banner-section">
         <div className="banner">

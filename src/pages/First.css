@@ -28,6 +28,10 @@
   justify-content: center;
   align-items: center;
 }
+.slick-carousel-container {
+  max-width: 500px; /* Set the maximum width for the carousel */
+  margin: 0 auto; /* Center the carousel */
+}
 
 /* Slideshow control buttons */
 .slick-prev, .slick-next {
