@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useRef } from "react";
 import "./First.css"; // CSS file for styling
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/swiper-bundle.css"; // Import Swiper styles
@@ -26,23 +26,22 @@ const First = () => {
   const [motivationalBackground, setMotivationalBackground] = useState("maroon");
   const images = [me, rejuveprofile, scistepsquare]; // Add more images or videos as needed
   const images2 = [migudp, miguim2, miguim3]; // Add more images or videos as needed
-const newyearsref = useState(null);
-const redref = useState(null);
-const snormalref = useState(null);
+  const newyearsref = useRef(null);
+  const redref = useRef(null);
+  const snormalref = useRef(null);
+  
+  
 
-  const handleVideoClick = (video) => {
-    if (video === 2) {
-      setMotivationalBackground("#FADDAD");
-    } else if (video === 1){
-      setMotivationalBackground("#3B102A");
-    } else if (video === 3){
-      setMotivationalBackground("#B4A88F");
-    }
-    else if (video === 4){
-      setMotivationalBackground("#54A9E5");
-    }
-    
-  };
+const [playingVideo, setPlayingVideo] = useState(null); // Track the currently playing video
+const videoRefs = {
+  1: useRef(null),
+  2: useRef(null),
+  3: useRef(null),
+  4: useRef(null),
+};
+
+
+
   const settings = {
     dots: true, // Show dots for navigation
     infinite: true, // Infinite loop of images
@@ -54,7 +53,39 @@ const snormalref = useState(null);
     arrows: false, // Disable previous/next arrows
     pauseOnHover: true, // Pause autoplay on hover (optional)
   };
+
+  const handleVideoClick = (video) => {
+     
   
+  // Play the selected video and update the state
+  setPlayingVideo(video);
+  videoRefs[video].current.play();
+    if (video === 2) {
+      setMotivationalBackground("#FADDAD");
+      if (playingVideo !== null) {
+        videoRefs[playingVideo].current.pause();
+      }
+    
+    } else if (video === 1){
+      setMotivationalBackground("#3B102A");
+      if (playingVideo !== null) {
+        videoRefs[playingVideo].current.pause();
+      }
+    } else if (video === 3){
+      setMotivationalBackground("#B4A88F");
+      if (playingVideo !== null) {
+        videoRefs[playingVideo].current.pause();
+      }
+    }
+    else if (video === 4){
+      setMotivationalBackground("#54A9E5");
+      if (playingVideo !== null) {
+        videoRefs[playingVideo].current.pause();
+      }
+    }
+    
+    
+  };
 
   return (
     <div className="first-container">
@@ -113,7 +144,7 @@ const snormalref = useState(null);
         className="motivational-shorts-section"
         style={{ backgroundColor: motivationalBackground }}
       >
-        <h1>Motivational Shorts</h1>
+        <h1>Animated Shorts</h1>
         <div ref={redref}  onClick={() => handleVideoClick(1)}
  className="video-container">
           <video
@@ -125,6 +156,18 @@ const snormalref = useState(null);
             Your browser does not support the video tag.
           </video>
           <p className="video-caption">Red Ascension</p>
+        </div>
+        <div ref={newyearsref} onClick={() => handleVideoClick(4)} className="video-container">
+          <video
+            controls
+            width="100%"
+            className="motivational-video"
+            onClick={() => handleVideoClick(4)}
+          >
+            <source src={bball} type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+          <p className="video-caption">Basketball dunk</p>
         </div>
         <div ref={snormalref} onClick={() => handleVideoClick(2)} className="video-container">
           <video
@@ -150,18 +193,7 @@ const snormalref = useState(null);
           </video>
           <p className="video-caption">New Years</p>
         </div>
-        <div ref={newyearsref} onClick={() => handleVideoClick(4)} className="video-container">
-          <video
-            controls
-            width="100%"
-            className="motivational-video"
-            onClick={() => handleVideoClick(4)}
-          >
-            <source src={bball} type="video/mp4" />
-            Your browser does not support the video tag.
-          </video>
-          <p className="video-caption">Basketball dunk</p>
-        </div>
+       
         
       </div>
 
