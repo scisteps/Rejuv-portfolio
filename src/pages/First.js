@@ -27,7 +27,7 @@ import bball from '../anims/kobe6_optimized.mp4';
 
 const First = () => {
   const [motivationalBackground, setMotivationalBackground] = useState("maroon");
-  const images = [me,rejuveblack,me2, rejuveprofile,me3 ]; // Add more images or videos as needed
+  const images = [me,rejuveblack,me2, rejuveprofile ]; // Add more images or videos as needed
   const images2 = [migudp, miguim2]; // Add more images or videos as needed
   const newyearsref = useRef(null);
   const redref = useRef(null);
@@ -146,7 +146,8 @@ const videoRefs = {
     </Slider>
   </div>
 ) : (
-  <div >
+  <div 
+  className="image-container">
     <Slider
       autoplay={true}
       autoplaySpeed={3000}
