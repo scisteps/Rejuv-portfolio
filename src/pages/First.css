@@ -207,3 +207,11 @@ body {
 .read-more-btn:hover {
   background-color: #d48820; /* Hover effect */
 }
+.mobile-profile {
+  width: 200px;
+  transition: width 0.2s ease; /* Smooth transition for width */
+}
+
+.mobile-profile.shrink {
+  width: 100px; /* Target width after animation */
+}

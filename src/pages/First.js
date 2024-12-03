@@ -20,10 +20,10 @@ import scistepsquare from '../images/scistepsquare.png';
 import me from '../images/Rejuv dp.jpg';
 import Header from "./Header";
 import rejuveblack from '../images/black.png';
-import me2 from '../images/samtrees.png';
+import me2 from '../images/samred2.png';
 import me3 from '../images/Samred.jpg';
-
-import bball from '../anims/d19_optimized.mp4';
+import silent from '../anims/optimized_silent.mp4';
+import bball from '../anims/kobe6_optimized.mp4';
 
 const First = () => {
   const [motivationalBackground, setMotivationalBackground] = useState("maroon");
@@ -31,12 +31,28 @@ const First = () => {
   const images2 = [migudp, miguim2]; // Add more images or videos as needed
   const newyearsref = useRef(null);
   const redref = useRef(null);
+  const silentref = useRef(null);
   const snormalref = useRef(null);
   const [showMore, setShowMore] = useState(false);
-
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+  const [fontColor, setFontColor] = useState("white"); // Default font color
+  const [highlightColor, setHighlightColor] = useState("yellow"); // Default highlight color
+  
   const handleToggle = () => {
     setShowMore((prevShowMore) => !prevShowMore);
   };
+
+  useEffect(() => {
+    window.addEventListener('resize', handleResize);
+    return () => {
+        window.removeEventListener('resize', handleResize);
+    };
+}, []);
+  const handleResize = () => {
+    setIsMobile(window.innerWidth <= 768);
+};
+
+
 
 const [playingVideo, setPlayingVideo] = useState(null); // Track the currently playing video
 const videoRefs = {
@@ -65,16 +81,33 @@ const videoRefs = {
   
   // Play the selected video and update the state
     if (video === 2) {
+
       setMotivationalBackground("#FADDAD");
-    
+      setFontColor("black");
+      setHighlightColor("maroon");
     
     } else if (video === 1){
+
       setMotivationalBackground("#3B102A");
+      setFontColor("white");
+      setHighlightColor("#F3930A");
+
     } else if (video === 3){
+
       setMotivationalBackground("#B4A88F");
+      setFontColor("black");
+      setHighlightColor("maroon");
+
     }
     else if (video === 4){
       setMotivationalBackground("#54A9E5");
+      setFontColor("#42006F");
+      setHighlightColor("black");
+    }
+    else if (video === 5){
+      setMotivationalBackground("#C05E49");
+      setFontColor("black");
+      setHighlightColor("white");
     }
     
   };
@@ -90,37 +123,65 @@ const videoRefs = {
       {/* Content Section */}
       <div className="content-section">
         {/* Left Image */}
-        <div className="image-container">
-        <Slider
-    autoplay={true}
-    autoplaySpeed={3000}
-    infinite={true}
-    slidesToShow={1}
-    slidesToScroll={1}
-    dots={true}
-    className="slick-carousel-container"
+        <>
+        
+        {isMobile ? (
+  <div
+    className={`mobile-profile ${showMore ? 'shrink' : ''}`}
   >
-    {images.map((image, index) => (
-      <div key={index}>
-        <img src={image} alt={`Slideshow ${index}`} className="profile-image" />
-      </div>
-    ))}
-  </Slider>
+    <Slider
+      autoplay={true}
+      autoplaySpeed={3000}
+      infinite={true}
+      slidesToShow={1}
+      slidesToScroll={1}
+      dots={true}
+      className="slick-carousel-container"
+    >
+      {images.map((image, index) => (
+        <div key={index}>
+          <img src={image} alt={`Slideshow ${index}`} className="profile-image" />
         </div>
+      ))}
+    </Slider>
+  </div>
+) : (
+  <div >
+    <Slider
+      autoplay={true}
+      autoplaySpeed={3000}
+      infinite={true}
+      slidesToShow={1}
+      slidesToScroll={1}
+      dots={true}
+      className="slick-carousel-container"
+    >
+      {images.map((image, index) => (
+        <div key={index}>
+          <img src={image} alt={`Slideshow ${index}`} className="profile-image" />
+        </div>
+      ))}
+    </Slider>
+  </div>
+)}
+
+</>
+       
 
         {/* Right Text */}
-        <div className="text-container">
+        <div className="text-container"> 
       <p className="left-aligned">
-        Hi, I'm <span className="highlight">Sam Nkurunungi</span>, working under the brand{" "}
-        <span className="highlight bold">Rejuv</span>. My passion for animation drives me to create{" "}
-        <span className="highlight">diverse</span> and captivating pieces that bring ideas to life.
+        Hi, I'm <span className="highlight">Sam Nkurunungi</span> creator and lead animator of 
+        <span className="highlight bold"> Rejuv ,</span> a creative collective where I
+        <span className="highlight">showcase animations </span>I have created in collaboration with other creatives
+        and my students.
       </p>
 
       {showMore && (
         <>
           <p className="left-aligned">
-            I specialize in <span className="highlight bold">professional animated explainers</span> and intricate{" "}
-            <span className="highlight">Lottie animations</span>, offering services to help businesses and individuals convey their messages effectively.
+            We create  <span className="highlight bold">professional animated explainers</span> and {" "}
+            <span className="highlight">Lottie animations for apps and websites</span>, offering services to help businesses and individuals convey their messages effectively, and.
           </p>
           <p className="left-aligned">
             In my free time, I channel my creativity into crafting <span className="highlight bold">short, animated stories</span> that explore unique themes and characters, showcasing the limitless possibilities of animation.
@@ -143,7 +204,7 @@ const videoRefs = {
         className="motivational-shorts-section"
         style={{ backgroundColor: motivationalBackground }}
       >
-        <h1>Animated Shorts</h1>
+        <h1 style={{ color: fontColor }}>Animated Shorts</h1>
         <div ref={redref}  onClick={() => handleVideoClick(1)}
   className="video-container bordered">
 
@@ -157,10 +218,10 @@ const videoRefs = {
             <source src={redascension} type="video/mp4" />
             Your browser does not support the video tag.
           </video>
-          <h5> <span className="highlight"> Created by Nkurunungi Samuel, May 11 2022</span></h5>
+          <h5> <span style={{ color: highlightColor }}> Created by Nkurunungi Samuel, May 11 2022</span></h5>
 
-          <p >
-      This animation is   Intended to show the <span className="highlight bold"> purpose of
+          <p style={{ color: fontColor }} >
+      This animation is   Intended to show the <span style={{ color: highlightColor }}> purpose of
             Rejuv, </span>  which is to always take the next step.
           </p>
         </div>
@@ -168,7 +229,7 @@ const videoRefs = {
         <br/>
 
         <div ref={newyearsref} onClick={() => handleVideoClick(4)} className="video-container bordered">
-        <h2 > Kobe Bryant Tribute </h2>
+        <h2 style={{ color: fontColor }} > Kobe Bryant Tribute </h2>
 
           <video
             controls
@@ -179,10 +240,10 @@ const videoRefs = {
             <source src={bball} type="video/mp4" />
             Your browser does not support the video tag.
           </video>
-          <h5> <span className="highlight"> Created by Nkurunungi Samuel , Shane Katabazi & Maxwell Aligawesa, Dec 03 2024</span></h5>
+          <h5> <span style={{ color: highlightColor }}> Created by Nkurunungi Samuel , Shane Katabazi & Maxwell Aligawesa, Dec 03 2024</span></h5>
 
-          <p >
-        This animation is   Intended to pay <span className="highlight bold"> tribute to the late Kobe bryant </span> who died on Jan 26 2021
+          <p style={{ color: fontColor }} >
+        This animation is   Intended to pay <span style={{ color: highlightColor }}> tribute to the late Kobe bryant </span> who died on Jan 26 2021
           </p>
         </div>
         <br/>
@@ -199,33 +260,50 @@ const videoRefs = {
             <source src={supernormal} type="video/mp4" />
             Your browser does not support the video tag.
           </video>
-          <h5> <span className="highlight"> Created by Nkurunungi Samuel </span></h5>
+          <h5> <span style={{ color: highlightColor }}> Created by Nkurunungi Samuel </span></h5>
 
-<p >
-This animation is   Intended to  <span className="highlight bold"> Motivate my animation students </span> To embrace their gifts and what makes them unique
+<p style={{ color: fontColor }}>
+This animation is   Intended to  <span style={{ color: highlightColor }}> Motivate my animation students </span> To embrace their gifts and what makes them unique
 </p>
         </div>
         <br/>
         <br/>
         <div ref={newyearsref} onClick={() => handleVideoClick(3)} className="video-container bordered">
+        <p style={{ color: fontColor }} className="video-caption">New Years</p>
+
+          <video
+            controls
+            width="100%"
+            className="motivational-video"
+            onPlay={() => handleVideoClick(3)}
+          >
+            <source src={newyears} type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+          <h5> <span style={{ color: highlightColor }}> Created by Nkurunungi Samuel </span></h5>
+
+<p style={{ color: fontColor }}>
+This animation is   Intended to  <span style={{ color: highlightColor }}> Tell the story of a new year </span> And give hope to the world.
+</p>
+        </div>
+        <div ref={silentref} onClick={() => handleVideoClick(5)} className="video-container bordered">
         <p className="video-caption">New Years</p>
 
           <video
             controls
             width="100%"
             className="motivational-video"
-            onClick={() => handleVideoClick(3)}
+            onPlay={() => handleVideoClick(5)}
           >
-            <source src={newyears} type="video/mp4" />
+            <source src={silent} type="video/mp4" />
             Your browser does not support the video tag.
           </video>
-          <h5> <span className="highlight"> Created by Nkurunungi Samuel </span></h5>
+          <h5> <span style={{ color: highlightColor }}> Created by Nkurunungi Samuel </span></h5>
 
-<p >
-This animation is   Intended to  <span className="highlight bold"> Tell the story of a new year </span> And give hope to the world.
+<p style={{ color: fontColor }} >
+This <span style={{ color: highlightColor }}> Lip sync   </span> was practice for talking characters.
 </p>
         </div>
-       
         
       </div>
 
@@ -297,6 +375,7 @@ This animation is   Intended to  <span className="highlight bold"> Tell the stor
          
         </div>
         <div style={{justifyContent:'center',alignContent:'center'}} >
+          Reach out on +256 782240185
         <img src={rejuveblack} alt={rejuveblack} style={{width:'300px',height:'300px'}}  />
       </div>
       </div>
