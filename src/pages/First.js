@@ -119,9 +119,12 @@ const videoRefs = {
       </div>
      <br/>
      <br/>
+     <br/>
+     <br/>
 
       {/* Content Section */}
-      <div className="content-section">
+      
+<div className={isMobile ? "content-section2" : "content-section"}>
         {/* Left Image */}
         <>
         
