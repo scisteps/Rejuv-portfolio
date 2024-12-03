@@ -26,7 +26,7 @@ import bball from '../anims/d19_optimized.mp4';
 const First = () => {
   const [motivationalBackground, setMotivationalBackground] = useState("maroon");
   const images = [me, rejuveprofile, rejuveblack]; // Add more images or videos as needed
-  const images2 = [migudp, miguim2, miguim3]; // Add more images or videos as needed
+  const images2 = [migudp, miguim2]; // Add more images or videos as needed
   const newyearsref = useRef(null);
   const redref = useRef(null);
   const snormalref = useRef(null);
@@ -143,46 +143,69 @@ const videoRefs = {
       >
         <h1>Animated Shorts</h1>
         <div ref={redref}  onClick={() => handleVideoClick(1)}
- className="video-container">
-            <p className="video-caption">Red Ascension</p>
+  className="video-container bordered">
 
           <video
             controls
-            width="100%"
+            width="90%"
             className="motivational-video"
-            onClick={() => handleVideoClick(1)}
-          >
+            onPlay={() => handleVideoClick(1)}
+          >  
+
             <source src={redascension} type="video/mp4" />
             Your browser does not support the video tag.
           </video>
+          <h5> <span className="highlight"> Created by Nkurunungi Samuel, May 11 2022</span></h5>
+
+          <p >
+      This animation is   Intended to show the <span className="highlight bold"> purpose of
+            Rejuv, </span>  which is to always take the next step.
+          </p>
         </div>
-        <div ref={newyearsref} onClick={() => handleVideoClick(4)} className="video-container">
-        <p className="video-caption">Basketball dunk</p>
+        <br/>
+        <br/>
+
+        <div ref={newyearsref} onClick={() => handleVideoClick(4)} className="video-container bordered">
+        <h2 > Kobe Bryant Tribute </h2>
 
           <video
             controls
             width="100%"
             className="motivational-video"
-            onClick={() => handleVideoClick(4)}
+            onPlay={() => handleVideoClick(4)}
           >
             <source src={bball} type="video/mp4" />
             Your browser does not support the video tag.
           </video>
+          <h5> <span className="highlight"> Created by Nkurunungi Samuel , Shane Katabazi & Maxwell Aligawesa, Dec 03 2024</span></h5>
+
+          <p >
+        This animation is   Intended to pay <span className="highlight bold"> tribute to the late Kobe bryant </span> who died on Jan 26 2021
+          </p>
         </div>
-        <div ref={snormalref} onClick={() => handleVideoClick(2)} className="video-container">
+        <br/>
+        <br/>
+        <div ref={snormalref} onClick={() => handleVideoClick(2)} className="video-container bordered">
         <p className="video-caption">Supernormal</p>
 
           <video
             controls
             width="100%"
             className="motivational-video"
-            onClick={() => handleVideoClick(2)}
+            onPlay={() => handleVideoClick(3)}
           >
             <source src={supernormal} type="video/mp4" />
             Your browser does not support the video tag.
           </video>
+          <h5> <span className="highlight"> Created by Nkurunungi Samuel </span></h5>
+
+<p >
+This animation is   Intended to  <span className="highlight bold"> Motivate my animation students </span> To embrace their gifts and what makes them unique
+</p>
         </div>
-        <div ref={newyearsref} onClick={() => handleVideoClick(3)} className="video-container">
+        <br/>
+        <br/>
+        <div ref={newyearsref} onClick={() => handleVideoClick(3)} className="video-container bordered">
         <p className="video-caption">New Years</p>
 
           <video
@@ -194,6 +217,11 @@ const videoRefs = {
             <source src={newyears} type="video/mp4" />
             Your browser does not support the video tag.
           </video>
+          <h5> <span className="highlight"> Created by Nkurunungi Samuel </span></h5>
+
+<p >
+This animation is   Intended to  <span className="highlight bold"> Tell the story of a new year </span> And give hope to the world.
+</p>
         </div>
        
         
@@ -220,36 +248,51 @@ const videoRefs = {
       </div>
     ))}
   </Slider>
+  <h5> <span className="highlight"> Created by Nkurunungi Samuel & Sydney Wakisati </span></h5>
+
           <p className="story-description">
-            *Migu and Feathers* is a short animated series set in prehistoric times, exploring the rivalry and eventual bond between a determined man and a mighty prehistoric bird, reminiscent of an ostrich.
+          <span className="highlight"> Migu and Feathers  is a short animated series </span> set in prehistoric times, exploring the rivalry between a boy and a young ostrich.
           </p>
         </div>
 </div>
        
 
-        <div className="video-container">
-        <p className="video-caption">Episode 1: Pilot episode</p>
-
+        <div className="video-container bordered">
+        <p className="story-description">
+          <span className="highlight"> Episode 1: Pilot Episode </span> Introduces the characters of the show and the birth of their rivalry.
+          </p>
           <video controls width="100%" className="migu-video">
             <source src={migu1} type="video/mp4" />
             Your browser does not support the video tag.
+            
           </video>
+         
         </div>
-        <div className="video-container">
-        <p className="video-caption">Episode 2: Fruit Fight</p>
+        <br/>
+        <br/>
 
+        <div className="video-container bordered">
+        <p className="story-description">
+          <span className="highlight"> Episode 2: Fruit Fight </span> Migu looks for revenge against feathers following the events of episode 1.
+          </p>
           <video controls width="100%" className="migu-video">
             <source src={migu2} type="video/mp4" />
             Your browser does not support the video tag.
           </video>
+        
+          
         </div>
-        <div className="video-container">
-        <p className="video-caption">Episode 3: Honey Hunt</p>
-
+        <br/>
+          <br/>
+        <div className="video-container bordered">
+        <p className="story-description">
+          <span className="highlight"> Episode 3:  Honey Hunt </span> Migu & Feathers fight over honey and face the consequences.
+          </p>
           <video controls width="100%" className="migu-video">
             <source src={migu3} type="video/mp4" />
             Your browser does not support the video tag.
           </video>
+         
         </div>
       </div>
     </div>

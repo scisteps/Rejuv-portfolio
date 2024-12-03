@@ -129,8 +129,9 @@
 
 /* Video Section */
 .video-container {
-  max-width: 800px;
+  max-width: 500px;
   margin: 0 auto;
+  border: none;
 }
 
 .migu-video {
@@ -182,6 +183,12 @@ body {
 
 .highlight.bold {
   font-weight: bold; /* Fully bold text for emphasis */
+}
+.bordered {
+  border-bottom: 2px solid #fdf8f8; /* Gray line to separate videos */
+  margin-bottom: 20px; /* Space below the border */
+  padding-bottom: 10px;
+  /* Space inside the container before the border */
 }
 
 /* Other styles */
