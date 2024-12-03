@@ -78,12 +78,7 @@ const videoRefs = {
       <div>
         <Header/>
       </div>
-      {/* Banner */}
-      <div className="banner-section">
-        <div className="banner">
-          <img src={rejuvbanner} alt="Rejuv Banner" className="banner-image" />
-        </div>
-      </div>
+     
 
       {/* Content Section */}
       <div className="content-section">
@@ -137,6 +132,7 @@ const videoRefs = {
             controls
             width="100%"
             className="motivational-video"
+            onClick={() => handleVideoClick(1)}
           >
             <source src={redascension} type="video/mp4" />
             Your browser does not support the video tag.
