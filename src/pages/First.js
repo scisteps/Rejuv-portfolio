@@ -189,6 +189,8 @@ const videoRefs = {
           <p className="left-aligned">
             Additionally, I share my expertise by <span className="highlight">teaching animation</span>, inspiring others to discover and develop their own creative potential. Whether you're seeking engaging explainers or looking to learn the art of animation, I'm here to help.
           </p>
+          <br/>
+          <p> <span className="highlight bold"> Contact me on +256 782240185</span> </p>
         </>
       )}
 
