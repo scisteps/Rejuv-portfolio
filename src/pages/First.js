@@ -13,9 +13,9 @@ import redascension from '../anims/optimizedShadowAnimation.mp4';
 import newyears from '../anims/optimizedNewYear.mp4';
 import supernormal from '../anims/Web Optimized Abnomal Samuel.mp4';
 import migu2 from '../anims/Migu & Feathers_optimized2.mp4';
-import migu3 from '../anims/migu3.mp4';
+import migu3 from '../anims/Migu & Feathers3_optimized2.mp4';
 import miguim2 from '../images/m&f.png';
-import miguim3 from '../images/ep3.png';
+import miguim3 from '../images/migu3.png';
 import scistepsquare from '../images/scistepsquare.png';
 import me from '../images/Rejuv dp.jpg';
 import Header from "./Header";
@@ -24,13 +24,16 @@ const First = () => {
   const [motivationalBackground, setMotivationalBackground] = useState("maroon");
   const images = [me, rejuveprofile, scistepsquare]; // Add more images or videos as needed
   const images2 = [migudp, miguim2, miguim3]; // Add more images or videos as needed
+const newyearsref = useState(null);
+const redref = useState(null);
+const snormalref = useState(null);
 
   const handleVideoClick = (video) => {
-    if (video === "supernormal") {
+    if (video === 2) {
       setMotivationalBackground("#FADDAD");
-    } else if (video === "newyears"){
+    } else if (video === 1){
       setMotivationalBackground("#3B102A");
-    } else {
+    } else if (video === 3){
       setMotivationalBackground("#B4A88F");
     }
   };
@@ -82,11 +85,21 @@ const First = () => {
 
         {/* Right Text */}
         <div className="text-container">
-          <h2>Rejuv: Animator for Hire</h2>
-          <p>
-            Hi, I'm Sam Nkurunungi, a passionate Motion Designer with 5 years of experience in After Effects under the brand Rejuv. I specialize in animated explainers & Lotties. In my free time, I create short, animated stories.
-          </p>
-        </div>
+  <h2>Rejuv: Animator for Hire</h2>
+  <p className="left-aligned">
+    Hi, I'm Sam Nkurunungi, a dedicated Motion Designer with over five years of experience in After Effects, working under the brand Rejuv. My passion for animation drives me to create diverse and captivating pieces that bring ideas to life.
+  </p>
+  <p className="left-aligned">
+    I specialize in professional animated explainers and intricate Lottie animations, offering services to help businesses and individuals convey their messages effectively.
+  </p>
+  <p className="left-aligned">
+    In my free time, I channel my creativity into crafting short, animated stories that explore unique themes and characters, showcasing the limitless possibilities of animation.
+  </p>
+  <p className="left-aligned">
+    Additionally, I share my expertise by teaching animation, inspiring others to discover and develop their own creative potential. Whether you're seeking engaging explainers or looking to learn the art of animation, I'm here to help.
+  </p>
+</div>
+
       </div>
 
       {/* Motivational Shorts Section */}
@@ -95,36 +108,36 @@ const First = () => {
         style={{ backgroundColor: motivationalBackground }}
       >
         <h1>Motivational Shorts</h1>
-        <div className="video-container">
+        <div ref={redref}  onClick={() => handleVideoClick(1)}
+ className="video-container">
           <video
             controls
             width="100%"
             className="motivational-video"
-            onClick={() => handleVideoClick("redascension")}
           >
             <source src={redascension} type="video/mp4" />
             Your browser does not support the video tag.
           </video>
           <p className="video-caption">Red Ascension</p>
         </div>
-        <div className="video-container">
+        <div ref={snormalref} onClick={() => handleVideoClick(2)} className="video-container">
           <video
             controls
             width="100%"
             className="motivational-video"
-            onClick={() => handleVideoClick("supernormal")}
+            onClick={() => handleVideoClick(2)}
           >
             <source src={supernormal} type="video/mp4" />
             Your browser does not support the video tag.
           </video>
           <p className="video-caption">Supernormal</p>
         </div>
-        <div className="video-container">
+        <div ref={newyearsref} onClick={() => handleVideoClick(3)} className="video-container">
           <video
             controls
             width="100%"
             className="motivational-video"
-            onClick={() => handleVideoClick("newyears")}
+            onClick={() => handleVideoClick(3)}
           >
             <source src={newyears} type="video/mp4" />
             Your browser does not support the video tag.

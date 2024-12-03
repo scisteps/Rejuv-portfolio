@@ -14,6 +14,9 @@
 .profile-image {
   transition: transform 1s ease-in-out; /* Adds smooth sliding */
 }
+.left-aligned {
+  text-align: left;
+}
 
 /* Slideshow Section */
 .banner-section {
@@ -78,6 +81,10 @@
 .text-container {
   flex: 2;
 }
+.text-container p {
+  text-align: left;
+}
+
 
 /* For text and animated stories */
 .animated-stories-section {
