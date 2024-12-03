@@ -20,12 +20,14 @@ import scistepsquare from '../images/scistepsquare.png';
 import me from '../images/Rejuv dp.jpg';
 import Header from "./Header";
 import rejuveblack from '../images/black.png';
+import me2 from '../images/samtrees.png';
+import me3 from '../images/Samred.jpg';
 
 import bball from '../anims/d19_optimized.mp4';
 
 const First = () => {
   const [motivationalBackground, setMotivationalBackground] = useState("maroon");
-  const images = [me, rejuveprofile, rejuveblack]; // Add more images or videos as needed
+  const images = [me,rejuveblack,me2, rejuveprofile,me3 ]; // Add more images or videos as needed
   const images2 = [migudp, miguim2]; // Add more images or videos as needed
   const newyearsref = useRef(null);
   const redref = useRef(null);
@@ -192,7 +194,7 @@ const videoRefs = {
             controls
             width="100%"
             className="motivational-video"
-            onPlay={() => handleVideoClick(3)}
+            onPlay={() => handleVideoClick(2)}
           >
             <source src={supernormal} type="video/mp4" />
             Your browser does not support the video tag.
@@ -294,6 +296,9 @@ This animation is   Intended to  <span className="highlight bold"> Tell the stor
           </video>
          
         </div>
+        <div style={{justifyContent:'center',alignContent:'center'}} >
+        <img src={rejuveblack} alt={rejuveblack} style={{width:'300px',height:'300px'}}  />
+      </div>
       </div>
     </div>
   );
