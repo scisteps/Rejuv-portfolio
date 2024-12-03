@@ -20,6 +20,8 @@ import scistepsquare from '../images/scistepsquare.png';
 import me from '../images/Rejuv dp.jpg';
 import Header from "./Header";
 
+import bball from '../anims/d19_optimized.mp4';
+
 const First = () => {
   const [motivationalBackground, setMotivationalBackground] = useState("maroon");
   const images = [me, rejuveprofile, scistepsquare]; // Add more images or videos as needed
@@ -36,6 +38,10 @@ const snormalref = useState(null);
     } else if (video === 3){
       setMotivationalBackground("#B4A88F");
     }
+    else if (video === 4){
+      setMotivationalBackground("#54A9E5");
+    }
+    
   };
   const settings = {
     dots: true, // Show dots for navigation
@@ -144,6 +150,19 @@ const snormalref = useState(null);
           </video>
           <p className="video-caption">New Years</p>
         </div>
+        <div ref={newyearsref} onClick={() => handleVideoClick(4)} className="video-container">
+          <video
+            controls
+            width="100%"
+            className="motivational-video"
+            onClick={() => handleVideoClick(4)}
+          >
+            <source src={bball} type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+          <p className="video-caption">Basketball dunk</p>
+        </div>
+        
       </div>
 
       {/* Animated Stories Section */}
