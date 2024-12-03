@@ -212,25 +212,28 @@ const videoRefs = {
        
 
         <div className="video-container">
+        <p className="video-caption">Episode 1: Pilot episode</p>
+
           <video controls width="100%" className="migu-video">
             <source src={migu1} type="video/mp4" />
             Your browser does not support the video tag.
           </video>
-          <p className="video-caption">Episode 1</p>
         </div>
         <div className="video-container">
+        <p className="video-caption">Episode 2: Fruit Fight</p>
+
           <video controls width="100%" className="migu-video">
             <source src={migu2} type="video/mp4" />
             Your browser does not support the video tag.
           </video>
-          <p className="video-caption">Episode 2</p>
         </div>
         <div className="video-container">
+        <p className="video-caption">Episode 3: Honey Hunt</p>
+
           <video controls width="100%" className="migu-video">
             <source src={migu3} type="video/mp4" />
             Your browser does not support the video tag.
           </video>
-          <p className="video-caption">Episode 3</p>
         </div>
       </div>
     </div>
