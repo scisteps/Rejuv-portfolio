@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Link } from 'react-scroll'; // Importing react-scroll for smooth scrolling
 import './Header.css'; // Import the CSS for the header
+import rejuvl from '../images/gray.png';
+import rejuv2 from '../images/black.png';
 
 const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -11,6 +13,9 @@ const Header = () => {
 
   return (
     <header className="header">
+       <div class="header-logo-container">
+    <img src={rejuv2} alt="Rejuvl" class="header-logo" />
+  </div>
       <div className="nav-container">
       
         <nav className={`nav ${menuOpen ? 'open' : ''}`}>
