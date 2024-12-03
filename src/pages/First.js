@@ -377,8 +377,10 @@ This <span style={{ color: highlightColor }}> Lip sync   </span> was practice fo
          
         </div>
         <div style={{justifyContent:'center',alignContent:'center'}} >
-          Reach out on +256 782240185
         <img src={rejuveblack} alt={rejuveblack} style={{width:'300px',height:'300px'}}  />
+        Whatsapp - +256 782240185
+        email - rejuveanimation@gmail.com
+
       </div>
       </div>
     </div>
