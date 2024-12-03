@@ -4,33 +4,30 @@
   top: 0;
   left: 0;
   width: 100%;
-  height: 80px; /* Adjust the height to make the header taller */
-  background-color: #000; /* Set the background color to black */
+  height: 80px; /* Adjust header height */
+  background-color: #000; /* Black background */
   padding: 10px 20px;
   z-index: 1000;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  display: flex; /* Use flexbox for alignment */
-  align-items: center; /* Vertically align items */
-  cursor: default;
+  display: flex;
+  align-items: center; /* Center items vertically */
 }
 
 /* Logo container */
 .header-logo-container {
-  margin-right: 20px; /* Add spacing between the logo and navigation */
+  flex-shrink: 0; /* Prevent logo from shrinking */
+  margin-right: 20px; /* Space between logo and navigation */
 }
 
-/* Style for the logo */
+/* Logo styling */
 .header-logo {
-  height: 60px; /* Adjust to make the logo taller within the new header height */
+  height: 60px; /* Adjust logo height */
   object-fit: contain;
 }
 
 /* Navigation container */
 .nav {
-  flex-grow: 1; /* Push navigation to take available space */
-  display: flex;
-  justify-content: flex-start; /* Align navigation to the right */
-  align-items: center;
+  flex-grow: 1; /* Take up remaining space */
 }
 
 /* Navigation list */
@@ -39,6 +36,8 @@
   display: flex;
   margin: 0;
   padding: 0;
+  align-items: center;
+  justify-content: flex-start; /* Align links to the left of the navigation */
 }
 
 /* Navigation list items */
@@ -56,5 +55,6 @@
 }
 
 .nav-link:hover {
-  color: #f5a623;
+  color: #f5a623; /* Highlight color on hover */
 }
+

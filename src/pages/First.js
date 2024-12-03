@@ -19,18 +19,22 @@ import miguim3 from '../images/migu3.png';
 import scistepsquare from '../images/scistepsquare.png';
 import me from '../images/Rejuv dp.jpg';
 import Header from "./Header";
+import rejuveblack from '../images/black.png';
 
 import bball from '../anims/d19_optimized.mp4';
 
 const First = () => {
   const [motivationalBackground, setMotivationalBackground] = useState("maroon");
-  const images = [me, rejuveprofile, scistepsquare]; // Add more images or videos as needed
+  const images = [me, rejuveprofile, rejuveblack]; // Add more images or videos as needed
   const images2 = [migudp, miguim2, miguim3]; // Add more images or videos as needed
   const newyearsref = useRef(null);
   const redref = useRef(null);
   const snormalref = useRef(null);
-  
-  
+  const [showMore, setShowMore] = useState(false);
+
+  const handleToggle = () => {
+    setShowMore((prevShowMore) => !prevShowMore);
+  };
 
 const [playingVideo, setPlayingVideo] = useState(null); // Track the currently playing video
 const videoRefs = {
@@ -78,7 +82,8 @@ const videoRefs = {
       <div>
         <Header/>
       </div>
-     
+     <br/>
+     <br/>
 
       {/* Content Section */}
       <div className="content-section">
@@ -103,20 +108,31 @@ const videoRefs = {
 
         {/* Right Text */}
         <div className="text-container">
-  <h2>Rejuv: Animator for Hire</h2>
-  <p className="left-aligned">
-    Hi, I'm Sam Nkurunungi, a dedicated Motion Designer with over five years of experience in After Effects, working under the brand Rejuv. My passion for animation drives me to create diverse and captivating pieces that bring ideas to life.
-  </p>
-  <p className="left-aligned">
-    I specialize in professional animated explainers and intricate Lottie animations, offering services to help businesses and individuals convey their messages effectively.
-  </p>
-  <p className="left-aligned">
-    In my free time, I channel my creativity into crafting short, animated stories that explore unique themes and characters, showcasing the limitless possibilities of animation.
-  </p>
-  <p className="left-aligned">
-    Additionally, I share my expertise by teaching animation, inspiring others to discover and develop their own creative potential. Whether you're seeking engaging explainers or looking to learn the art of animation, I'm here to help.
-  </p>
-</div>
+      <p className="left-aligned">
+        Hi, I'm <span className="highlight">Sam Nkurunungi</span>, working under the brand{" "}
+        <span className="highlight bold">Rejuv</span>. My passion for animation drives me to create{" "}
+        <span className="highlight">diverse</span> and captivating pieces that bring ideas to life.
+      </p>
+
+      {showMore && (
+        <>
+          <p className="left-aligned">
+            I specialize in <span className="highlight bold">professional animated explainers</span> and intricate{" "}
+            <span className="highlight">Lottie animations</span>, offering services to help businesses and individuals convey their messages effectively.
+          </p>
+          <p className="left-aligned">
+            In my free time, I channel my creativity into crafting <span className="highlight bold">short, animated stories</span> that explore unique themes and characters, showcasing the limitless possibilities of animation.
+          </p>
+          <p className="left-aligned">
+            Additionally, I share my expertise by <span className="highlight">teaching animation</span>, inspiring others to discover and develop their own creative potential. Whether you're seeking engaging explainers or looking to learn the art of animation, I'm here to help.
+          </p>
+        </>
+      )}
+
+      <button onClick={handleToggle} className="read-more-btn">
+        {showMore ? "Read Less" : "Read More"}
+      </button>
+    </div>
 
       </div>
 

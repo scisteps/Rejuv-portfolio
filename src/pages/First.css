@@ -174,3 +174,29 @@ body {
   margin: 0; /* Remove default margin */
   padding: 0; /* Remove default padding */
 }
+/* Styling for highlighted text */
+.highlight {
+  color: #f5a623; /* Bright color for emphasis */
+  font-weight: 600; /* Semi-bold text */
+}
+
+.highlight.bold {
+  font-weight: bold; /* Fully bold text for emphasis */
+}
+
+/* Other styles */
+.read-more-btn {
+  background-color: #f5a623; /* Button color */
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 5px;
+  margin-top: 10px;
+}
+
+.read-more-btn:hover {
+  background-color: #d48820; /* Hover effect */
+}
