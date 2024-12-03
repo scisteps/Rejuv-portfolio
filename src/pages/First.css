@@ -215,3 +215,10 @@ body {
 .mobile-profile.shrink {
   width: 100px; /* Target width after animation */
 }
+.footer-content {
+  font-size: 14px;
+  line-height: 1.5;
+  text-align: center;
+  bottom: 0;
+  width: 100%;
+}

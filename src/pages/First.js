@@ -223,8 +223,8 @@ const videoRefs = {
           <h5> <span style={{ color: highlightColor }}> Created by Nkurunungi Samuel, May 11 2022</span></h5>
 
           <p style={{ color: fontColor }} >
-      This animation is   Intended to show the <span style={{ color: highlightColor }}> purpose of
-            Rejuv, </span>  which is to always take the next step.
+          This animation symbolizes  essence of
+          <span style={{ color: highlightColor }}> Rejuv</span> ,   which is the <span style={{ color: highlightColor }}>relentless drive to rise and take the next step. </span>
           </p>
         </div>
         <br/>
@@ -265,7 +265,8 @@ const videoRefs = {
           <h5> <span style={{ color: highlightColor }}> Created by Nkurunungi Samuel </span></h5>
 
 <p style={{ color: fontColor }}>
-This animation is   Intended to  <span style={{ color: highlightColor }}> Motivate my animation students </span> To embrace their gifts and what makes them unique
+
+This animation is designed to  <span style={{ color: highlightColor }}>inspire my animation students </span> to embrace their unique gifts and individuality.
 </p>
         </div>
         <br/>
@@ -376,11 +377,20 @@ This <span style={{ color: highlightColor }}> Lip sync   </span> was practice fo
           </video>
          
         </div>
-        <div style={{justifyContent:'center',alignContent:'center'}} >
+        <div  style={{
+    position: 'relative',
+    bottom: '0',
+    left: '50%',
+    transform: `translateX(${isMobile ? '-50%' : '-50%'})`,
+    width: '100%',
+  }} >
         <img src={rejuveblack} alt={rejuveblack} style={{width:'300px',height:'300px'}}  />
-        Whatsapp - +256 782240185
-        email - rejuveanimation@gmail.com
+       
 
+      </div>
+      <div className="story-description">
+        <p>WhatsApp - +256 782240185</p>
+        <p>Email - rejuveanimation@gmail.com</p>
       </div>
       </div>
     </div>
