@@ -14,7 +14,7 @@ const EmojiPanel = ({ backgroundColor, strokecolor, textcolor }) => {
   const emojiRefs = useRef([]);
   const playerRefs = useRef([]);
   const activeEmojis = useRef([]);
-  const [counts, setCounts] = useState([0, 0, 0, 0]);
+  const [counts, setCounts] = useState([0, 0, 0, 0,0]);
 
   const handleEmojiClick = (index) => {
     const currentEmoji = emojiRefs.current[index];
@@ -45,7 +45,7 @@ const EmojiPanel = ({ backgroundColor, strokecolor, textcolor }) => {
     }
   };
 
-  const emojis = [cool,love,clown,laugh  ];
+  const emojis = [cool,love,clown,laugh,dono ];
 
   return (
     <div
