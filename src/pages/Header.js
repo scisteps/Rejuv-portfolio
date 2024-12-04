@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { Link } from 'react-scroll'; // Importing react-scroll for smooth scrolling
 import './Header.css'; // Import the CSS for the header
 import rejuvl from '../images/gray.png';
@@ -6,7 +6,16 @@ import rejuv2 from '../images/black.png';
 
 const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
-
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+  useEffect(() => {
+    window.addEventListener('resize', handleResize);
+    return () => {
+        window.removeEventListener('resize', handleResize);
+    };
+}, []);
+  const handleResize = () => {
+    setIsMobile(window.innerWidth <= 768);
+};
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
   };
@@ -21,9 +30,21 @@ const Header = () => {
         <nav className={`nav ${menuOpen ? 'open' : ''}`}>
           <ul>
             <li>
-              <Link to="content-section" smooth={true} duration={500} className="nav-link" onClick={toggleMenu}>
+              <>
+              
+              
+              {isMobile? (
+  <Link to="content-section2" smooth={true} duration={500} className="nav-link" onClick={toggleMenu}>
+  About
+</Link>
+              ):(
+                <Link to="content-section" smooth={true} duration={500} className="nav-link" onClick={toggleMenu}>
                 About
               </Link>
+              )}
+              </>
+            
+
             </li>
             <li>
               <Link to="motivational-shorts-section" smooth={true} duration={500} className="nav-link" onClick={toggleMenu}>

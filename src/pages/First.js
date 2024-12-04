@@ -177,7 +177,7 @@ const videoRefs = {
       <p className="left-aligned">
         Hi, I'm <span className="highlight">Sam Nkurunungi</span> creator and lead animator of 
         <span className="highlight bold"> Rejuv ,</span> a creative collective where I
-        <span className="highlight">showcase animations </span>I have created in collaboration with other creatives
+       showcase animations I've have created in collaboration with other creatives
         and my students.
       </p>
 
