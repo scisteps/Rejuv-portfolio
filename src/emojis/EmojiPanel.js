@@ -83,7 +83,7 @@ const EmojiPanel = ({ backgroundColor, strokecolor, textcolor }) => {
             loop={false}
             keepLastFrame={true}
             src={emoji}
-            style={{ height: '60px', width: '60px' }}
+            style={{ height: '50px', width: '50px' }}
           />
           <span
             style={{
@@ -91,7 +91,7 @@ const EmojiPanel = ({ backgroundColor, strokecolor, textcolor }) => {
               marginTop: '-5px',
               marginBottom: '7px',
 
-              fontSize: '12px',
+              fontSize: '10px',
               fontWeight: 'bold',
             }}
           >
