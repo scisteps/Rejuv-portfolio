@@ -58,7 +58,7 @@ const EmojiPanel = ({ backgroundColor, strokecolor, textcolor }) => {
         height: '80px', // Increased height to accommodate counts
         width: '90%',
         margin: '0 auto',
-        border: `2px solid ${strokecolor || 'black'}`,
+        border: `0px solid ${strokecolor || 'black'}`,
         color: textcolor || 'white',
       }}
     >
