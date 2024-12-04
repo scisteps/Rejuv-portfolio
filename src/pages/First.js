@@ -24,6 +24,8 @@ import me2 from '../images/samred2.png';
 import me3 from '../images/Samred.jpg';
 import silent from '../anims/optimized_silent.mp4';
 import bball from '../anims/output_kobe7.mp4';
+import youtube from '../jsons/youtube.json';
+import { Player } from '@lottiefiles/react-lottie-player';
 
 const First = () => {
   const [motivationalBackground, setMotivationalBackground] = useState("maroon");
@@ -37,7 +39,8 @@ const First = () => {
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
   const [fontColor, setFontColor] = useState("white"); // Default font color
   const [highlightColor, setHighlightColor] = useState("yellow"); // Default highlight color
-  
+  const animref = useRef(null);
+
   const handleToggle = () => {
     setShowMore((prevShowMore) => !prevShowMore);
   };
@@ -212,7 +215,27 @@ const videoRefs = {
         className="motivational-shorts-section"
         style={{ backgroundColor: motivationalBackground }}
       >
-        <h1 style={{ color: fontColor }}>Animated Shorts</h1>
+        <div style={{display:'flex',flexDirection:'column',justifyContent:'center'}}>
+        <div style={{display:'flex',alignContent:'center',justifyContent:'center'}}>
+        <div style={{position:'relative',width:'150px', height:'150px'}}>
+        <Player ref={animref} loop={true} autoplay={true} src={youtube} />
+        </div>
+        <div   style={{
+    marginTop: isMobile ? '10px' : '40px', // Set marginTop only when isMobile is true
+  }}>
+        <h2 style={{ color: fontColor }}>Animated Shorts</h2>
+     
+        </div>
+      
+        </div>
+        <div>
+        <p style={{ color: fontColor }} >
+        There are limitless possibilities in the world of animation <span style={{ color: highlightColor }}>Limited by only your imagination </span> Here are some of mine
+          </p>
+        </div>
+        </div>
+       
+     
         <div ref={redref}  onClick={() => handleVideoClick(1)}
   className="video-container bordered">
 

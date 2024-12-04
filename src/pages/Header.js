@@ -6,6 +6,8 @@ import rejuv2 from '../images/black.png';
 import book from '../icons/story3.png'; // Importing the book icon
 import video from '../icons/video.png'; // Importing the book icon
 import information from '../icons/information.png'; // Importing the book icon
+import youtube from '../jsons/youtube.json';
+import { Player } from '@lottiefiles/react-lottie-player';
 
 const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -79,7 +81,7 @@ const Header = () => {
   alt="video Icon"
   style={{ width: '20px', marginRight: '8px', verticalAlign: 'middle' }}
 />
-                Anime Shorts
+                 Reels
               </Link>
             </li>
             <li>
