@@ -26,6 +26,7 @@ import silent from '../anims/optimized_silent.mp4';
 import bball from '../anims/output_kobe7.mp4';
 import youtube from '../jsons/youtube.json';
 import { Player } from '@lottiefiles/react-lottie-player';
+import EmojiPanel from "../emojis/EmojiPanel";
 
 const First = () => {
   const [motivationalBackground, setMotivationalBackground] = useState("maroon");
@@ -40,6 +41,10 @@ const First = () => {
   const [fontColor, setFontColor] = useState("white"); // Default font color
   const [highlightColor, setHighlightColor] = useState("yellow"); // Default highlight color
   const animref = useRef(null);
+  const [emojistroke, setemojistroke] = useState("white"); // Default highlight color
+  const [emojitxt, setemojitxt] = useState("white"); // Default highlight color
+
+  const [emojibg, setemojibg] = useState('black');
 
   const handleToggle = () => {
     setShowMore((prevShowMore) => !prevShowMore);
@@ -88,29 +93,47 @@ const videoRefs = {
       setMotivationalBackground("#FADDAD");
       setFontColor("black");
       setHighlightColor("maroon");
+      setemojibg('#FADDAD');
+      setemojistroke('white');
+      setemojitxt('black');
     
     } else if (video === 1){
 
       setMotivationalBackground("#3B102A");
       setFontColor("white");
       setHighlightColor("#F3930A");
+      setemojibg('#3B102A');
+      setemojistroke('white');
+      setemojitxt('white');
+
 
     } else if (video === 3){
 
       setMotivationalBackground("#B4A88F");
       setFontColor("black");
       setHighlightColor("maroon");
+      setemojibg('#B4A88F');
+      setemojistroke('white');
+      setemojitxt('maroon');
 
     }
     else if (video === 4){
       setMotivationalBackground("#54A9E5");
       setFontColor("#42006F");
       setHighlightColor("black");
+      setemojibg('#54A9E5');
+      setemojistroke('white');
+      setemojitxt('black');
+
     }
     else if (video === 5){
       setMotivationalBackground("#C05E49");
       setFontColor("black");
       setHighlightColor("white");
+      setemojibg('#C05E49');
+      setemojistroke('white');
+      setemojitxt('black');
+
     }
     
   };
@@ -238,7 +261,10 @@ const videoRefs = {
      
         <div ref={redref}  onClick={() => handleVideoClick(1)}
   className="video-container bordered">
-
+    <p style={{ color: fontColor }} >
+          This animation symbolizes  essence of
+          <span style={{ color: highlightColor }}> Rejuv</span> ,   which is the <span style={{ color: highlightColor }}>relentless drive to rise and take the next step. </span>
+          </p>
           <video
             controls
             width="90%"
@@ -249,12 +275,11 @@ const videoRefs = {
             <source src={redascension} type="video/mp4" />
             Your browser does not support the video tag.
           </video>
+          <EmojiPanel backgroundColor={emojibg} strokecolor={emojistroke} textcolor={emojitxt}/>
+
           <h5> <span style={{ color: highlightColor }}> Created by Nkurunungi Samuel, May 11 2022</span></h5>
 
-          <p style={{ color: fontColor }} >
-          This animation symbolizes  essence of
-          <span style={{ color: highlightColor }}> Rejuv</span> ,   which is the <span style={{ color: highlightColor }}>relentless drive to rise and take the next step. </span>
-          </p>
+      
         </div>
         <br/>
         <br/>
@@ -262,6 +287,9 @@ const videoRefs = {
         <div ref={newyearsref} onClick={() => handleVideoClick(4)} className="video-container bordered">
         <h2 style={{ color: fontColor }} > Kobe Bryant Tribute </h2>
 
+        <p style={{ color: fontColor }} >
+        This animation is   Intended to pay <span style={{ color: highlightColor }}> tribute to the late Kobe bryant </span> who died on Jan 26 2021
+          </p>
           <video
             controls
             width="100%"
@@ -271,16 +299,18 @@ const videoRefs = {
             <source src={bball} type="video/mp4" />
             Your browser does not support the video tag.
           </video>
+          <EmojiPanel backgroundColor={emojibg} strokecolor={emojistroke} textcolor={emojitxt}/>
+
           <h5> <span style={{ color: highlightColor }}> Created by Nkurunungi Samuel , Shane Katabazi & Maxwell Aligawesa, Dec 03 2024</span></h5>
 
-          <p style={{ color: fontColor }} >
-        This animation is   Intended to pay <span style={{ color: highlightColor }}> tribute to the late Kobe bryant </span> who died on Jan 26 2021
-          </p>
         </div>
         <br/>
         <br/>
         <div ref={snormalref} onClick={() => handleVideoClick(2)} className="video-container bordered">
+        <p style={{ color: fontColor }}>
 
+This animation is designed to  <span style={{ color: highlightColor }}>inspire my animation students </span> to embrace their unique gifts and individuality.
+</p>
           <video
             controls
             width="100%"
@@ -290,18 +320,19 @@ const videoRefs = {
             <source src={supernormal} type="video/mp4" />
             Your browser does not support the video tag.
           </video>
+          <EmojiPanel backgroundColor={emojibg} strokecolor={emojistroke} textcolor={emojitxt}/>
+
           <h5> <span style={{ color: highlightColor }}> Created by Nkurunungi Samuel </span></h5>
 
-<p style={{ color: fontColor }}>
 
-This animation is designed to  <span style={{ color: highlightColor }}>inspire my animation students </span> to embrace their unique gifts and individuality.
-</p>
         </div>
         <br/>
         <br/>
         <div ref={newyearsref} onClick={() => handleVideoClick(3)} className="video-container bordered">
         <p style={{ color: fontColor }} className="video-caption">New Years</p>
-
+        <p style={{ color: fontColor }}>
+This animation is   Intended to  <span style={{ color: highlightColor }}> Tell the story of a new year </span> And give hope to the world.
+</p>
           <video
             controls
             width="100%"
@@ -311,15 +342,17 @@ This animation is designed to  <span style={{ color: highlightColor }}>inspire m
             <source src={newyears} type="video/mp4" />
             Your browser does not support the video tag.
           </video>
+          <EmojiPanel backgroundColor={emojibg} strokecolor={emojistroke} textcolor={emojitxt}/>
+
           <h5> <span style={{ color: highlightColor }}> Created by Nkurunungi Samuel </span></h5>
 
-<p style={{ color: fontColor }}>
-This animation is   Intended to  <span style={{ color: highlightColor }}> Tell the story of a new year </span> And give hope to the world.
-</p>
+
         </div>
         <div ref={silentref} onClick={() => handleVideoClick(5)} className="video-container bordered">
-        <p className="video-caption">Lip sync  / Talking animation</p>
-
+        <p style={{ color: fontColor }}>Lip sync  / Talking animation</p>
+        <p style={{ color: fontColor }} >
+This <span style={{ color: highlightColor }}> Lip sync    </span> was a trial for animating a talking character.
+</p>
           <video
             controls
             width="100%"
@@ -329,11 +362,11 @@ This animation is   Intended to  <span style={{ color: highlightColor }}> Tell t
             <source src={silent} type="video/mp4" />
             Your browser does not support the video tag.
           </video>
+          <EmojiPanel backgroundColor={emojibg} strokecolor={emojistroke} textcolor={emojitxt}/>
+
           <h5> <span style={{ color: highlightColor }}> Created by Nkurunungi Samuel </span></h5>
 
-<p style={{ color: fontColor }} >
-This <span style={{ color: highlightColor }}> Lip sync    </span> was a trial for animating a talking character.
-</p>
+
         </div>
         
       </div>
@@ -390,7 +423,8 @@ This <span style={{ color: highlightColor }}> Lip sync    </span> was a trial fo
             <source src={migu2} type="video/mp4" />
             Your browser does not support the video tag.
           </video>
-        
+          <EmojiPanel backgroundColor={'black'} strokecolor={'white'} />
+
           
         </div>
         <br/>
@@ -403,7 +437,8 @@ This <span style={{ color: highlightColor }}> Lip sync    </span> was a trial fo
             <source src={migu3} type="video/mp4" />
             Your browser does not support the video tag.
           </video>
-         
+          <EmojiPanel backgroundColor={'black'} strokecolor={'white'} />
+
         </div>
         <div  style={{
     position: 'relative',
