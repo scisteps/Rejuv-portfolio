@@ -255,7 +255,6 @@ const videoRefs = {
         <br/>
         <br/>
         <div ref={snormalref} onClick={() => handleVideoClick(2)} className="video-container bordered">
-        <p className="video-caption">Supernormal</p>
 
           <video
             controls
@@ -318,7 +317,7 @@ This <span style={{ color: highlightColor }}> Lip sync   </span> was practice fo
       <div className="animated-stories-section">
         <h1>Animated Stories</h1>
         <h2>Migu and Feathers</h2>
-        <div className="content-section">
+        <div >
         <div className="image-container">
         <Slider
     autoplay={true}
