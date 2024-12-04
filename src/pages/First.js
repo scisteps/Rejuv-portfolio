@@ -318,7 +318,7 @@ This animation is   Intended to  <span style={{ color: highlightColor }}> Tell t
 </p>
         </div>
         <div ref={silentref} onClick={() => handleVideoClick(5)} className="video-container bordered">
-        <p className="video-caption">New Years</p>
+        <p className="video-caption">Lip sync  / Talking animation</p>
 
           <video
             controls
@@ -332,7 +332,7 @@ This animation is   Intended to  <span style={{ color: highlightColor }}> Tell t
           <h5> <span style={{ color: highlightColor }}> Created by Nkurunungi Samuel </span></h5>
 
 <p style={{ color: fontColor }} >
-This <span style={{ color: highlightColor }}> Lip sync   </span> was practice for talking characters.
+This <span style={{ color: highlightColor }}> Lip sync    </span> was a trial for animating a talking character.
 </p>
         </div>
         
