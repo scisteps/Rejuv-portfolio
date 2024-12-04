@@ -28,7 +28,7 @@ const EmojiPanel = ({ backgroundColor, strokecolor, textcolor }) => {
       }
     } else {
       // Scale up the clicked emoji and add it to active emojis
-      gsap.to(currentEmoji, { scale: 1.2, duration: 0.3 });
+      gsap.to(currentEmoji, { scale: 1.5, duration: 0.3 });
       activeEmojis.current.push(index);
 
       // Play the selected emoji animation
