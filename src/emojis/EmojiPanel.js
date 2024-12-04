@@ -4,10 +4,11 @@ import { gsap } from 'gsap';
 import wink from '../jsons/winker.json';
 import party from '../jsons/party.json';
 import freeze from '../jsons/freeze.json';
-import laugh from '../jsons/loveemoji.json';
+import love from '../jsons/loveemoji.json';
 import cool from '../jsons/cool.json';
 import clown from '../jsons/clown.json';
 import dono from '../jsons/dono.json';
+import laugh from '../jsons/laugh.json';
 
 const EmojiPanel = ({ backgroundColor, strokecolor, textcolor }) => {
   const emojiRefs = useRef([]);
@@ -44,7 +45,7 @@ const EmojiPanel = ({ backgroundColor, strokecolor, textcolor }) => {
     }
   };
 
-  const emojis = [cool,laugh,dono,clown  ];
+  const emojis = [cool,love,clown,laugh  ];
 
   return (
     <div
