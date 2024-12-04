@@ -189,6 +189,8 @@ body {
   color: #fff; /* Optional: White text for contrast */
   margin: 0; /* Remove default margin */
   padding: 0; /* Remove default padding */
+  font-family: 'Poppins'; /* Replace with your chosen font */
+
 }
 /* Styling for highlighted text */
 .highlight {

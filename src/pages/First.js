@@ -195,6 +195,8 @@ const videoRefs = {
           </p>
           <br/>
           <p> <span className="highlight bold"> Contact me on +256 782240185</span> </p>
+          <p> <span > email - rejuveanimation@gmail.com</span> </p>
+
         </>
       )}
 
@@ -393,7 +395,7 @@ This <span style={{ color: highlightColor }}> Lip sync   </span> was practice fo
       </div>
       <div className="story-description">
         <p>WhatsApp - +256 782240185</p>
-        <p>Email - rejuveanimation@gmail.com</p>
+        <p>email - rejuveanimation@gmail.com</p>
       </div>
       </div>
     </div>
