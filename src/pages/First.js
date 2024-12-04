@@ -13,7 +13,7 @@ import redascension from '../anims/optimizedShadowAnimation.mp4';
 import newyears from '../anims/optimizedNewYear.mp4';
 import supernormal from '../anims/Web Optimized Abnomal Samuel.mp4';
 import migu2 from '../anims/Migu & Feathers_optimized2.mp4';
-import migu3 from '../anims/Migu & Feathers3_optimized2.mp4';
+import migu3 from '../anims/output_migu3.mp4';
 import miguim2 from '../images/m&f.png';
 import miguim3 from '../images/migu3.png';
 import scistepsquare from '../images/scistepsquare.png';
@@ -23,7 +23,7 @@ import rejuveblack from '../images/black.png';
 import me2 from '../images/samred2.png';
 import me3 from '../images/Samred.jpg';
 import silent from '../anims/optimized_silent.mp4';
-import bball from '../anims/kobe6_optimized.mp4';
+import bball from '../anims/output_kobe7.mp4';
 
 const First = () => {
   const [motivationalBackground, setMotivationalBackground] = useState("maroon");
