@@ -230,11 +230,11 @@ const videoRefs = {
         </div>
         <div>
         <p style={{ color: fontColor }} >
-        There are limitless possibilities in the world of animation <span style={{ color: highlightColor }}>Limited by only your imagination </span> Here are some of mine
+        There are limitless possibilities in the world of animation <span style={{ color: highlightColor }}>Limited only by your imagination. </span> Here are some of mine.
           </p>
         </div>
         </div>
-       
+       <br/>
      
         <div ref={redref}  onClick={() => handleVideoClick(1)}
   className="video-container bordered">
