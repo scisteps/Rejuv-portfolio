@@ -44,7 +44,7 @@ const First = () => {
   const [emojistroke, setemojistroke] = useState("white"); // Default highlight color
   const [emojitxt, setemojitxt] = useState("white"); // Default highlight color
 
-  const [emojibg, setemojibg] = useState('black');
+  const [emojibg, setemojibg] = useState('maroon');
 
   const handleToggle = () => {
     setShowMore((prevShowMore) => !prevShowMore);
