@@ -203,7 +203,7 @@ const videoRefs = {
       <p className="left-aligned">
         Hi, I'm <span className="highlight">Sam Nkurunungi</span> creator and lead animator of 
         <span className="highlight bold"> Rejuv ,</span> a creative collective where I
-       showcase animations I've have created in collaboration with other creatives
+       showcase animations I have created in collaboration with other creatives
         and my students.
       </p>
 
@@ -253,7 +253,7 @@ const videoRefs = {
         </div>
         <div>
         <p style={{ color: fontColor }} >
-        There are limitless possibilities in the world of animation <span style={{ color: highlightColor }}>Limited only by your imagination. </span> Here are some of mine.
+        There are limitless possibilities in the world of animation <span style={{ color: highlightColor }}> </span> Here are some of mine.
           </p>
         </div>
         </div>
@@ -301,7 +301,7 @@ const videoRefs = {
           </video>
           <EmojiPanel backgroundColor={emojibg} strokecolor={emojistroke} textcolor={emojitxt}/>
 
-          <h5> <span style={{ color: highlightColor }}> Created by Nkurunungi Samuel , Shane Katabazi & Maxwell Aligawesa, Dec 03 2024</span></h5>
+          <h5> <span style={{ color: highlightColor }}> Created by Nkurunungi Samuel , Shanewise Rukundo & Maxwell Aligawesa, Dec 03 2024</span></h5>
 
         </div>
         <br/>
