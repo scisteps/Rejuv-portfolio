@@ -6,7 +6,7 @@ import cool from "../jsons/cool.json";
 import love from "../jsons/loveemoji.json";
 import clown from "../jsons/clown.json";
 import laugh from "../jsons/laugh.json";
-import smile from "../jsons/dono.json";
+import smile from "../jsons/bored.json";
 
 const EmojiPanel = ({ backgroundColor, strokecolor, textcolor, vidid }) => {
   const db = getFirestore(); // Initialize Firestore
