@@ -23,7 +23,7 @@ import rejuveblack from '../images/black.png';
 import me2 from '../images/samred2.png';
 import me3 from '../images/Samred.jpg';
 import silent from '../anims/optimized_silent.mp4';
-import bball from '../anims/output_kobe7.mp4';
+import bball from '../anims/kobe.webm';
 import youtube from '../jsons/youtube.json';
 import crown from '../jsons/crown.json';
 
