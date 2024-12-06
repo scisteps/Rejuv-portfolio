@@ -298,7 +298,7 @@ const videoRefs = {
             <source src={bball} type="video/mp4" />
             Your browser does not support the video tag.
           </video>
-          <EmojiPanel backgroundColor={emojibg} strokecolor={emojistroke} textcolor={emojitxt} vidid={4}/>
+          <EmojiPanel backgroundColor={emojibg} strokecolor={emojistroke} textcolor={emojitxt} vidid={5}/>
 
           <h5> <span style={{ color: highlightColor }}> Created by Nkurunungi Samuel , Shanewise Rukundo & Maxwell Aligawesa, Dec 03 2024</span></h5>
 
@@ -319,7 +319,7 @@ This animation is designed to  <span style={{ color: highlightColor }}>inspire m
             <source src={supernormal} type="video/mp4" />
             Your browser does not support the video tag.
           </video>
-          <EmojiPanel backgroundColor={emojibg} strokecolor={emojistroke} textcolor={emojitxt} vidid={4}/>
+          <EmojiPanel backgroundColor={emojibg} strokecolor={emojistroke} textcolor={emojitxt} vidid={6}/>
 
           <h5> <span style={{ color: highlightColor }}> Created by Nkurunungi Samuel </span></h5>
 
@@ -341,7 +341,7 @@ This animation is   Intended to  <span style={{ color: highlightColor }}> Tell t
             <source src={newyears} type="video/mp4" />
             Your browser does not support the video tag.
           </video>
-          <EmojiPanel backgroundColor={emojibg} strokecolor={emojistroke} textcolor={emojitxt} vidid={4}/>
+          <EmojiPanel backgroundColor={emojibg} strokecolor={emojistroke} textcolor={emojitxt} vidid={7}/>
 
           <h5> <span style={{ color: highlightColor }}> Created by Nkurunungi Samuel </span></h5>
 
@@ -361,7 +361,7 @@ This <span style={{ color: highlightColor }}> Lip sync    </span> was a trial fo
             <source src={silent} type="video/mp4" />
             Your browser does not support the video tag.
           </video>
-          <EmojiPanel backgroundColor={emojibg} strokecolor={emojistroke} textcolor={emojitxt} vidid={4}/>
+          <EmojiPanel backgroundColor={emojibg} strokecolor={emojistroke} textcolor={emojitxt} vidid={8}/>
 
           <h5> <span style={{ color: highlightColor }}> Created by Nkurunungi Samuel </span></h5>
 
@@ -409,7 +409,8 @@ This <span style={{ color: highlightColor }}> Lip sync    </span> was a trial fo
             Your browser does not support the video tag.
             
           </video>
-         
+          <EmojiPanel backgroundColor={'black'} strokecolor={emojistroke} textcolor={'white'} vidid={9}/>
+
         </div>
         <br/>
         <br/>
@@ -422,7 +423,7 @@ This <span style={{ color: highlightColor }}> Lip sync    </span> was a trial fo
             <source src={migu2} type="video/mp4" />
             Your browser does not support the video tag.
           </video>
-          <EmojiPanel backgroundColor={emojibg} strokecolor={emojistroke} textcolor={emojitxt} vidid={4}/>
+          <EmojiPanel backgroundColor={'black'} strokecolor={emojistroke} textcolor={'white'} vidid={10}/>
 
           
         </div>
@@ -436,7 +437,7 @@ This <span style={{ color: highlightColor }}> Lip sync    </span> was a trial fo
             <source src={migu3} type="video/mp4" />
             Your browser does not support the video tag.
           </video>
-          <EmojiPanel backgroundColor={emojibg} strokecolor={emojistroke} textcolor={emojitxt} vidid={4}/>
+          <EmojiPanel backgroundColor={'black'} strokecolor={emojistroke} textcolor={'white'} vidid={11}/>
 
         </div>
         <div  style={{
