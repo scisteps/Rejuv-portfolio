@@ -15,7 +15,7 @@ const EmojiPanel = ({ backgroundColor, strokecolor, textcolor, vidid }) => {
   const activeEmojis = useRef([]);
   const [counts, setCounts] = useState([0, 0, 0, 0, 0]);
 
-  const emojis = [cool, love, clown, laugh, smile];
+  const emojis = [cool, love, laugh, smile,clown];
 
   useEffect(() => {
     const fetchCounts = async () => {
@@ -37,9 +37,10 @@ const EmojiPanel = ({ backgroundColor, strokecolor, textcolor, vidid }) => {
         setCounts([
           videoData.cool || 0,
           videoData.love || 0,
-          videoData.clown || 0,
           videoData.laugh || 0,
           videoData.smile || 0,
+          videoData.clown || 0,
+
         ]);
       } catch (error) {
         console.error("Error fetching emoji counts: ", error);
@@ -68,7 +69,7 @@ const EmojiPanel = ({ backgroundColor, strokecolor, textcolor, vidid }) => {
       setCounts(newCounts);
   
       // Update Firestore: Decrease the count
-      const emojiFields = ["cool", "love", "clown", "laugh", "smile"];
+      const emojiFields = ["cool", "love",  "laugh", "smile","clown",];
       const fieldName = emojiFields[index];
       try {
         const videoQuerySnapshot = await getDocs(
@@ -107,7 +108,7 @@ const EmojiPanel = ({ backgroundColor, strokecolor, textcolor, vidid }) => {
       setCounts(newCounts);
   
       // Update Firestore: Increment the count
-      const emojiFields = ["cool", "love", "clown", "laugh", "smile"];
+      const emojiFields = ["cool", "love",  "laugh", "smile","clown",];
       const fieldName = emojiFields[index];
   
       try {
@@ -141,7 +142,7 @@ const EmojiPanel = ({ backgroundColor, strokecolor, textcolor, vidid }) => {
 
   const addValues = async (index, count) => {
     try {
-      const emojiNames = ["cool", "love", "clown", "laugh", "smile"];
+      const emojiNames = ["cool", "love", "laugh", "smile", "clown"];
       const emojiKey = emojiNames[index]; // Map index to emoji field
 
       // Convert videoid to string to ensure proper document reference

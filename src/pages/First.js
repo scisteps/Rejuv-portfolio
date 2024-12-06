@@ -25,6 +25,8 @@ import me3 from '../images/Samred.jpg';
 import silent from '../anims/optimized_silent.mp4';
 import bball from '../anims/output_kobe7.mp4';
 import youtube from '../jsons/youtube.json';
+import crown from '../jsons/crown.json';
+
 import { Player } from '@lottiefiles/react-lottie-player';
 import EmojiPanel from "../emojis/EmojiPanel";
 
@@ -372,7 +374,13 @@ This <span style={{ color: highlightColor }}> Lip sync    </span> was a trial fo
 
       {/* Animated Stories Section */}
       <div className="animated-stories-section">
-        <h1>Animated Stories</h1>
+        <div style={{display:'flex',alignContent:'center',justifyContent:'center'}}>
+        <div style={{position:'relative',width:'350px', height:'200px',marginTop:'10px'}}>
+        <Player ref={animref} loop={true} autoplay={true} src={crown} />
+        </div>
+        </div>
+    
+        <h1 style={{color:'yellow'}}>Animated Stories</h1>
         <h2>Migu and Feathers</h2>
         <div >
         <div className="image-container">
