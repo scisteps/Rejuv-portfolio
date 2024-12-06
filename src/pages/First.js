@@ -43,7 +43,6 @@ const First = () => {
   const animref = useRef(null);
   const [emojistroke, setemojistroke] = useState("white"); // Default highlight color
   const [emojitxt, setemojitxt] = useState("white"); // Default highlight color
-
   const [emojibg, setemojibg] = useState('maroon');
 
   const handleToggle = () => {
@@ -275,7 +274,7 @@ const videoRefs = {
             <source src={redascension} type="video/mp4" />
             Your browser does not support the video tag.
           </video>
-          <EmojiPanel backgroundColor={emojibg} strokecolor={emojistroke} textcolor={emojitxt}/>
+          <EmojiPanel backgroundColor={emojibg} strokecolor={emojistroke} textcolor={emojitxt} vidid={4}/>
 
           <h5> <span style={{ color: highlightColor }}> Created by Nkurunungi Samuel, May 11 2022</span></h5>
 
@@ -299,7 +298,7 @@ const videoRefs = {
             <source src={bball} type="video/mp4" />
             Your browser does not support the video tag.
           </video>
-          <EmojiPanel backgroundColor={emojibg} strokecolor={emojistroke} textcolor={emojitxt}/>
+          <EmojiPanel backgroundColor={emojibg} strokecolor={emojistroke} textcolor={emojitxt} vidid={4}/>
 
           <h5> <span style={{ color: highlightColor }}> Created by Nkurunungi Samuel , Shanewise Rukundo & Maxwell Aligawesa, Dec 03 2024</span></h5>
 
@@ -320,7 +319,7 @@ This animation is designed to  <span style={{ color: highlightColor }}>inspire m
             <source src={supernormal} type="video/mp4" />
             Your browser does not support the video tag.
           </video>
-          <EmojiPanel backgroundColor={emojibg} strokecolor={emojistroke} textcolor={emojitxt}/>
+          <EmojiPanel backgroundColor={emojibg} strokecolor={emojistroke} textcolor={emojitxt} vidid={4}/>
 
           <h5> <span style={{ color: highlightColor }}> Created by Nkurunungi Samuel </span></h5>
 
@@ -342,7 +341,7 @@ This animation is   Intended to  <span style={{ color: highlightColor }}> Tell t
             <source src={newyears} type="video/mp4" />
             Your browser does not support the video tag.
           </video>
-          <EmojiPanel backgroundColor={emojibg} strokecolor={emojistroke} textcolor={emojitxt}/>
+          <EmojiPanel backgroundColor={emojibg} strokecolor={emojistroke} textcolor={emojitxt} vidid={4}/>
 
           <h5> <span style={{ color: highlightColor }}> Created by Nkurunungi Samuel </span></h5>
 
@@ -362,7 +361,7 @@ This <span style={{ color: highlightColor }}> Lip sync    </span> was a trial fo
             <source src={silent} type="video/mp4" />
             Your browser does not support the video tag.
           </video>
-          <EmojiPanel backgroundColor={emojibg} strokecolor={emojistroke} textcolor={emojitxt}/>
+          <EmojiPanel backgroundColor={emojibg} strokecolor={emojistroke} textcolor={emojitxt} vidid={4}/>
 
           <h5> <span style={{ color: highlightColor }}> Created by Nkurunungi Samuel </span></h5>
 
@@ -423,7 +422,7 @@ This <span style={{ color: highlightColor }}> Lip sync    </span> was a trial fo
             <source src={migu2} type="video/mp4" />
             Your browser does not support the video tag.
           </video>
-          <EmojiPanel backgroundColor={'black'} strokecolor={'white'} />
+          <EmojiPanel backgroundColor={emojibg} strokecolor={emojistroke} textcolor={emojitxt} vidid={4}/>
 
           
         </div>
@@ -437,7 +436,7 @@ This <span style={{ color: highlightColor }}> Lip sync    </span> was a trial fo
             <source src={migu3} type="video/mp4" />
             Your browser does not support the video tag.
           </video>
-          <EmojiPanel backgroundColor={'black'} strokecolor={'white'} />
+          <EmojiPanel backgroundColor={emojibg} strokecolor={emojistroke} textcolor={emojitxt} vidid={4}/>
 
         </div>
         <div  style={{
