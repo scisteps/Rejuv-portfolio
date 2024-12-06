@@ -51,16 +51,52 @@ const EmojiPanel = ({ backgroundColor, strokecolor, textcolor, vidid }) => {
   
   const handleEmojiClick = async (index) => {
     const currentEmoji = emojiRefs.current[index];
-  
+    
     if (activeEmojis.current.includes(index)) {
+      // Emoji is already active, so scale it back to 1 and decrease the count
       gsap.to(currentEmoji, { scale: 1, duration: 0.3 });
       activeEmojis.current = activeEmojis.current.filter((i) => i !== index);
+  
+      // Stop animation
       if (playerRefs.current[index]) {
         playerRefs.current[index].stop();
       }
+  
+      // Decrease the count
+      const newCounts = [...counts];
+      newCounts[index] = Math.max(newCounts[index] - 1, 0);  // Ensure count doesn't go below 0
+      setCounts(newCounts);
+  
+      // Update Firestore: Decrease the count
+      const emojiFields = ["cool", "love", "clown", "laugh", "smile"];
+      const fieldName = emojiFields[index];
+      try {
+        const videoQuerySnapshot = await getDocs(
+          query(collection(db, "Videos"), where("videoid", "==", vidid))
+        );
+  
+        if (!videoQuerySnapshot.empty) {
+          const videoDocRef = videoQuerySnapshot.docs[0].ref;
+          const videoData = videoQuerySnapshot.docs[0].data();
+  
+          const updatedData = {
+            [fieldName]: Math.max(videoData[fieldName] - 1, 0),  // Decrease the field value by 1
+          };
+  
+          await updateDoc(videoDocRef, updatedData);
+          console.log(`Emoji count for ${fieldName} decreased successfully in Firestore`);
+        } else {
+          console.error(`No video found with videoid: ${vidid}`);
+        }
+      } catch (error) {
+        console.error("Error updating emoji count: ", error);
+      }
     } else {
+      // Emoji is not active, so scale it up and increase the count
       gsap.to(currentEmoji, { scale: 1.5, duration: 0.3 });
       activeEmojis.current.push(index);
+  
+      // Start animation
       if (playerRefs.current[index]) {
         playerRefs.current[index].play();
       }
@@ -70,31 +106,24 @@ const EmojiPanel = ({ backgroundColor, strokecolor, textcolor, vidid }) => {
       newCounts[index] += 1;  // Only increment the count for the clicked emoji
       setCounts(newCounts);
   
-      // Fields corresponding to emoji counts
+      // Update Firestore: Increment the count
       const emojiFields = ["cool", "love", "clown", "laugh", "smile"];
+      const fieldName = emojiFields[index];
   
-      // Query to get the current video document by videoid
       try {
         const videoQuerySnapshot = await getDocs(
           query(collection(db, "Videos"), where("videoid", "==", vidid))
         );
   
         if (!videoQuerySnapshot.empty) {
-          // Assuming there's only one document with the same videoid
           const videoDocRef = videoQuerySnapshot.docs[0].ref;
           const videoData = videoQuerySnapshot.docs[0].data();
   
-          // Get the field name based on the clicked emoji (using index)
-          const fieldName = emojiFields[index];
-  
-          // Directly increment the selected field
           const updatedData = {
             [fieldName]: videoData[fieldName] + 1,  // Increment the field value by 1
           };
   
-          // Update the Firestore document with the new field value
           await updateDoc(videoDocRef, updatedData);
-  
           console.log(`Emoji count for ${fieldName} updated successfully in Firestore`);
         } else {
           console.error(`No video found with videoid: ${vidid}`);
@@ -104,6 +133,7 @@ const EmojiPanel = ({ backgroundColor, strokecolor, textcolor, vidid }) => {
       }
     }
   };
+  
   
   
   
