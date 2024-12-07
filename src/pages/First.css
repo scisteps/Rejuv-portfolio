@@ -240,3 +240,14 @@ body {
   bottom: 0;
   width: 100%;
 }
+.video-js {
+  width: 100%;
+  height: auto;
+  max-height: 500px;
+  margin: 0 auto;
+}
+.video-title {
+  text-align: center;
+  color: white;
+  margin-bottom: 10px;
+}

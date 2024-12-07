@@ -26,7 +26,8 @@ import silent from '../anims/optimized_silent.mp4';
 import bball from '../anims/kobe.webm';
 import youtube from '../jsons/youtube.json';
 import crown from '../jsons/crown.json';
-
+import videojs from "video.js";
+import "video.js/dist/video-js.css"; // Import Video.js default styles
 import { Player } from '@lottiefiles/react-lottie-player';
 import EmojiPanel from "../emojis/EmojiPanel";
 
@@ -46,6 +47,8 @@ const First = () => {
   const [emojistroke, setemojistroke] = useState("white"); // Default highlight color
   const [emojitxt, setemojitxt] = useState("white"); // Default highlight color
   const [emojibg, setemojibg] = useState('maroon');
+  const videoRef = useRef(null);
+  const playerRef = useRef(null);
 
   const handleToggle = () => {
     setShowMore((prevShowMore) => !prevShowMore);
@@ -61,7 +64,30 @@ const First = () => {
     setIsMobile(window.innerWidth <= 768);
 };
 
+useEffect(() => {
+  if (videoRef.current) {
+    // Initialize the Video.js player
+    playerRef.current = videojs(videoRef.current, {
+      autoplay: false, // Optional: Set autoplay
+      controls: true,  // Display controls
+      responsive: true,
+      fluid: true,     // Make video responsive
+      sources: [
+        {
+          src: bball,   // Your WebM video file
+          type: "video/webm", // Video type
+        },
+      ],
+    });
 
+    // Cleanup player instance when unmounted
+    return () => {
+      if (playerRef.current) {
+        playerRef.current.dispose();
+      }
+    };
+  }
+}, []);
 
 const [playingVideo, setPlayingVideo] = useState(null); // Track the currently playing video
 const videoRefs = {
@@ -268,15 +294,14 @@ const videoRefs = {
           </p>
           <video
             controls
-            width="90%"
+            width="100%"
             className="motivational-video"
             onPlay={() => handleVideoClick(1)}
-          >  
-
+          >
             <source src={redascension} type="video/mp4" />
             Your browser does not support the video tag.
           </video>
-          <EmojiPanel backgroundColor={emojibg} strokecolor={emojistroke} textcolor={emojitxt} vidid={4}/>
+          <EmojiPanel backgroundColor={emojibg} strokecolor={emojistroke} textcolor={emojitxt} vidid={1}/>
 
           <h5> <span style={{ color: highlightColor }}> Created by Nkurunungi Samuel, May 11 2022</span></h5>
 
@@ -291,15 +316,12 @@ const videoRefs = {
         <p style={{ color: fontColor }} >
         This animation is   Intended to pay <span style={{ color: highlightColor }}> tribute to the late Kobe bryant </span> who died on Jan 26 2021
           </p>
-          <video
-            controls
-            width="100%"
-            className="motivational-video"
-            onPlay={() => handleVideoClick(4)}
-          >
-            <source src={bball} type="video/mp4" />
-            Your browser does not support the video tag.
-          </video>
+          <div data-vjs-player>
+        <video
+          ref={videoRef}
+          className="video-js vjs-theme-fantasy" // Add a custom theme class if needed
+        ></video>
+      </div>
           <EmojiPanel backgroundColor={emojibg} strokecolor={emojistroke} textcolor={emojitxt} vidid={5}/>
 
           <h5> <span style={{ color: highlightColor }}> Created by Nkurunungi Samuel , Shanewise Rukundo & Maxwell Aligawesa, Dec 03 2024</span></h5>
