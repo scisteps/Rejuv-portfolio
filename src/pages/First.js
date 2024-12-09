@@ -12,7 +12,7 @@ import migudp from '../images/migudp.png';
 import redascension from '../anims/Shadow.webm';
 import newyears from '../anims/optimizedNewYear.mp4';
 import supernormal from '../anims/ab_optimized.webm';
-import migu2 from '../anims/Migu & Feathers_optimized2.mp4';
+import migu2 from '../anims/migu2.webm';
 import migu3 from '../anims/migu3.webm';
 import miguim2 from '../images/m&f.png';
 import miguim3 from '../images/migu3.png';
@@ -451,7 +451,7 @@ This <span style={{ color: highlightColor }}> Lip sync    </span> was a trial fo
           <span className="highlight"> Episode 2: Fruit Fight </span> Migu looks for revenge against feathers following the events of episode 1.
           </p>
           <video controls width="100%" className="migu-video">
-            <source src={migu2} type="video/mp4" />
+            <source src={migu2} type="video/webm" />
             Your browser does not support the video tag.
           </video>
           <EmojiPanel backgroundColor={'black'} strokecolor={emojistroke} textcolor={'white'} vidid={10}/>
