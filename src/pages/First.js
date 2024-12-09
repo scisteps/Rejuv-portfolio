@@ -30,6 +30,7 @@ import videojs from "video.js";
 import "video.js/dist/video-js.css"; // Import Video.js default styles
 import { Player } from '@lottiefiles/react-lottie-player';
 import EmojiPanel from "../emojis/EmojiPanel";
+import VideoPlayer from './VideoPlayer'; // Import the VideoPlayer component
 
 const First = () => {
   const [motivationalBackground, setMotivationalBackground] = useState("maroon");
@@ -286,27 +287,24 @@ const videoRefs = {
         </div>
        <br/>
      
-        <div ref={redref}  onClick={() => handleVideoClick(1)}
-  className="video-container bordered">
-    <p style={{ color: fontColor }} >
-          This animation symbolizes  essence of
-          <span style={{ color: highlightColor }}> Rejuv</span> ,   which is the <span style={{ color: highlightColor }}>relentless drive to rise and take the next step. </span>
-          </p>
-          <video
-            controls
-            width="100%"
-            className="motivational-video"
-            onPlay={() => handleVideoClick(1)}
-          >
-            <source src={redascension} type="video/mp4" />
-            Your browser does not support the video tag.
-          </video>
-          <EmojiPanel backgroundColor={emojibg} strokecolor={emojistroke} textcolor={emojitxt} vidid={1}/>
+       <div ref={redref} onClick={() => handleVideoClick(1)} className="video-container bordered">
+  <p style={{ color: fontColor }}>
+    This animation symbolizes the essence of
+    <span style={{ color: highlightColor }}> Rejuv</span>, which is the <span style={{ color: highlightColor }}>relentless drive to rise and take the next step.</span>
+  </p>
 
-          <h5> <span style={{ color: highlightColor }}> Created by Nkurunungi Samuel, May 11 2022</span></h5>
+  <VideoPlayer
+  videoSource="/shadow2/shadow_animation.mpd"
+  onPlay={() => handleVideoClick(1)}  // Trigger onPlay event
+  onClick={() => handleVideoClick(1)}  // Trigger onClick event (if you want to click anywhere in the container)
+/>
 
-      
-        </div>
+
+  <EmojiPanel backgroundColor={emojibg} strokecolor={emojistroke} textcolor={emojitxt} vidid={1} />
+
+  <h5><span style={{ color: highlightColor }}>Created by Nkurunungi Samuel, May 11 2022</span></h5>
+</div>
+
         <br/>
         <br/>
 

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { getFirestore, collection, addDoc, doc, getDoc, updateDoc,setDoc } from "firebase/firestore";
+import { getFirestore, collection, addDoc, doc, getDoc, updateDoc, setDoc } from "firebase/firestore";
 import { initializeApp } from "firebase/app";
 
 const firebaseConfig = {
@@ -9,7 +9,7 @@ const firebaseConfig = {
   storageBucket: "rejuv-1d74f.firebasestorage.app",
   messagingSenderId: "963584606168",
   appId: "1:963584606168:web:58ae46f67fb0294219fcad",
-  measurementId: "G-EBNXBFTFYG"
+  measurementId: "G-EBNXBFTFYG",
 };
 
 const app = initializeApp(firebaseConfig);
@@ -33,7 +33,7 @@ const AddVideo = () => {
       // Get current video id from the counter document
       const counterDocRef = doc(db, "counters", "video_counter");
       const counterDoc = await getDoc(counterDocRef);
-      
+
       if (!counterDoc.exists()) {
         // If counter document doesn't exist, create it with initial value
         await setDoc(counterDocRef, { currentVideoId: 1 });
@@ -66,6 +66,25 @@ const AddVideo = () => {
     }
   };
 
+  const getValues = async (vidid) => {
+    try {
+      const videoDocRef = doc(db, "Videos", vidid);
+      const videoDoc = await getDoc(videoDocRef);
+
+      if (!videoDoc.exists()) {
+        console.error("No video found with the provided ID.");
+        return null;
+      }
+
+      const { clown, laugh, cool, smile, dislike, bored } = videoDoc.data();
+      console.log({ clown, laugh, cool, smile, dislike, bored });
+      return { clown, laugh, cool, smile, dislike, bored };
+    } catch (error) {
+      console.error("Error retrieving video data: ", error);
+      return null;
+    }
+  };
+
   return (
     <div style={{ padding: "20px", maxWidth: "400px", margin: "0 auto" }}>
       <h2>Add a Video</h2>
@@ -92,7 +111,7 @@ const AddVideo = () => {
             padding: "10px 20px",
             border: "none",
             cursor: loading ? "not-allowed" : "pointer",
-            fontSize: "16px"
+            fontSize: "16px",
           }}
         >
           {loading ? "Adding..." : "Submit"}

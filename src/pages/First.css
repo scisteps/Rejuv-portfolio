@@ -245,6 +245,7 @@ body {
   height: auto;
   max-height: 500px;
   margin: 0 auto;
+  border-radius: 10px;
 }
 .video-title {
   text-align: center;
