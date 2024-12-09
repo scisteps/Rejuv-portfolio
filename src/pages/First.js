@@ -317,7 +317,7 @@ const videoRefs = {
           <div data-vjs-player>
         <video
           ref={videoRef}
-          className="video-js vjs-theme-fantasy" // Add a custom theme class if needed
+          className="video-js vjs-theme-forest" // Add a custom theme class if needed
         ></video>
       </div>
           <EmojiPanel backgroundColor={emojibg} strokecolor={emojistroke} textcolor={emojitxt} vidid={5}/>
