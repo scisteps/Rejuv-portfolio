@@ -297,17 +297,20 @@ const videoRefs = {
         </div>
         <div>
         <p style={{ color: fontColor }} >
-        Check out some of our  <span style={{ color: highlightColor }}> animations below : </span> 
+        Check out our  <span style={{ color: highlightColor }}> animations below. </span> And leave some reactions
+        
           </p>
         </div>
         </div>
-       <br/>
      
        <div ref={redref} onClick={() => handleVideoClick(1)} className="video-container bordered">
-  <p style={{ color: fontColor }}>
-    This animation symbolizes the essence of
-    <span style={{ color: highlightColor }}> Rejuv</span>, which is the <span style={{ color: highlightColor }}>relentless drive to rise and take the next step.</span>
-  </p>
+       <h2 style={{ color: fontColor }} >1.  Way of Rejuv</h2>
+
+       <p style={{ color: fontColor }}>
+   It reflects one of our core purposes:  
+  the <span style={{ color: highlightColor }}>relentless drive to grow, rise, and move forward,</span> because there are no limits to our creativity and how far Rejuv can go.
+</p>
+
   <video
   preload="auto"
             controls
@@ -329,7 +332,7 @@ const videoRefs = {
         <br/>
 
         <div ref={newyearsref} onClick={() => handleVideoClick(4)} className="video-container bordered">
-        <h2 style={{ color: fontColor }} > Kobe Bryant Tribute </h2>
+        <h2 style={{ color: fontColor }} >2.  Kobe Bryant Tribute </h2>
 
         <p style={{ color: fontColor }} >
         This animation is   Intended to pay <span style={{ color: highlightColor }}> tribute to the late Kobe bryant </span> who died on Jan 26 2021
@@ -348,11 +351,14 @@ const videoRefs = {
         <br/>
         <br/>
         <div ref={snormalref} onClick={() => handleVideoClick(2)} className="video-container bordered">
+        <h2 style={{ color: fontColor }} >3.  The journey of a Creative </h2>
+
         <p style={{ color: fontColor }}>
 
 This animation is designed to  <span style={{ color: highlightColor }}>inspire my animation students </span> to embrace their unique gifts and individuality.
 </p>
           <video
+          preload="auto"
             controls
             width="100%"
             className="motivational-video"
@@ -395,6 +401,7 @@ This animation is   Intended to  <span style={{ color: highlightColor }}> Tell t
 This <span style={{ color: highlightColor }}> Lip sync    </span> was a trial for animating a talking character.
 </p>
           <video
+          preload="auto"
             controls
             width="100%"
             className="motivational-video"
@@ -482,7 +489,7 @@ This <span style={{ color: highlightColor }}> Lip sync    </span> was a trial fo
         <p className="story-description">
           <span className="highlight"> Episode 3:  Honey Hunt </span> Migu & Feathers fight over honey and face the consequences.
           </p>
-          <video controls width="100%" className="migu-video">
+          <video preload="auto" controls width="100%" className="migu-video">
             <source src={migu3} type="video/webm" />
             Your browser does not support the video tag.
           </video>
