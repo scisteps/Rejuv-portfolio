@@ -11,9 +11,9 @@ import migu1 from '../anims/migu1.mp4';
 import migudp from '../images/migudp.png';
 import redascension from '../anims/Shadow.webm';
 import newyears from '../anims/optimizedNewYear.mp4';
-import supernormal from '../anims/Web Optimized Abnomal Samuel.mp4';
+import supernormal from '../anims/ab_optimized.webm';
 import migu2 from '../anims/Migu & Feathers_optimized2.mp4';
-import migu3 from '../anims/output_migu3.mp4';
+import migu3 from '../anims/migu3.webm';
 import miguim2 from '../images/m&f.png';
 import miguim3 from '../images/migu3.png';
 import scistepsquare from '../images/scistepsquare.png';
@@ -23,7 +23,7 @@ import rejuveblack from '../images/black.png';
 import me2 from '../images/samred2.png';
 import me3 from '../images/Samred.jpg';
 import silent from '../anims/optimized_silent.mp4';
-import bball from '../anims/kobe.webm';
+import bball from '../anims/kobe2.webm';
 import youtube from '../jsons/youtube.json';
 import crown from '../jsons/crown.json';
 import videojs from "video.js";
@@ -341,7 +341,7 @@ This animation is designed to  <span style={{ color: highlightColor }}>inspire m
             className="motivational-video"
             onPlay={() => handleVideoClick(2)}
           >
-            <source src={supernormal} type="video/mp4" />
+            <source src={supernormal} type="video/webm" />
             Your browser does not support the video tag.
           </video>
           <EmojiPanel backgroundColor={emojibg} strokecolor={emojistroke} textcolor={emojitxt} vidid={6}/>
@@ -465,7 +465,7 @@ This <span style={{ color: highlightColor }}> Lip sync    </span> was a trial fo
           <span className="highlight"> Episode 3:  Honey Hunt </span> Migu & Feathers fight over honey and face the consequences.
           </p>
           <video controls width="100%" className="migu-video">
-            <source src={migu3} type="video/mp4" />
+            <source src={migu3} type="video/webm" />
             Your browser does not support the video tag.
           </video>
           <EmojiPanel backgroundColor={'black'} strokecolor={emojistroke} textcolor={'white'} vidid={11}/>
