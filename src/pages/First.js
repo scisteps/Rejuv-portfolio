@@ -12,7 +12,7 @@ import migudp from '../images/migudp.png';
 import redascension from '../anims/Shadow.webm';
 import newyears from '../anims/optimizedNewYear.mp4';
 import supernormal from '../anims/ab_optimized.webm';
-import migu2 from '../anims/migu2.webm';
+import migu2 from '../anims/Migu & Feathers_optimized2.mp4';
 import migu3 from '../anims/migu3.webm';
 import miguim2 from '../images/m&f.png';
 import miguim3 from '../images/migu3.png';
@@ -31,6 +31,7 @@ import "video.js/dist/video-js.css"; // Import Video.js default styles
 import { Player } from '@lottiefiles/react-lottie-player';
 import EmojiPanel from "../emojis/EmojiPanel";
 import VideoPlayer from './VideoPlayer'; // Import the VideoPlayer component
+import Mainloading from "../Loaders/Mainloading";
 
 const First = () => {
   const [motivationalBackground, setMotivationalBackground] = useState("maroon");
@@ -50,6 +51,7 @@ const First = () => {
   const [emojibg, setemojibg] = useState('maroon');
   const videoRef = useRef(null);
   const playerRef = useRef(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   const handleToggle = () => {
     setShowMore((prevShowMore) => !prevShowMore);
@@ -64,6 +66,14 @@ const First = () => {
   const handleResize = () => {
     setIsMobile(window.innerWidth <= 768);
 };
+
+useEffect(() => {
+  const timer = setTimeout(() => {
+    setIsLoading(false);
+  }, 5000);
+
+  return () => clearTimeout(timer);
+}, []);
 
 useEffect(() => {
   if (videoRef.current) {
@@ -167,6 +177,12 @@ const videoRefs = {
   };
 
   return (
+    <>
+    {isLoading? (
+      <Mainloading/>
+    ):(
+
+  
     <div className="first-container">
       <div>
         <Header/>
@@ -293,6 +309,7 @@ const videoRefs = {
     <span style={{ color: highlightColor }}> Rejuv</span>, which is the <span style={{ color: highlightColor }}>relentless drive to rise and take the next step.</span>
   </p>
   <video
+  preload="auto"
             controls
             width="100%"
             className="motivational-video"
@@ -450,7 +467,7 @@ This <span style={{ color: highlightColor }}> Lip sync    </span> was a trial fo
         <p className="story-description">
           <span className="highlight"> Episode 2: Fruit Fight </span> Migu looks for revenge against feathers following the events of episode 1.
           </p>
-          <video controls width="100%" className="migu-video">
+          <video preload="auto" controls width="100%" className="migu-video">
             <source src={migu2} type="video/webm" />
             Your browser does not support the video tag.
           </video>
@@ -488,6 +505,8 @@ This <span style={{ color: highlightColor }}> Lip sync    </span> was a trial fo
       </div>
       </div>
     </div>
+     )}
+     </>
   );
 };
 
