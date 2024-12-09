@@ -244,17 +244,17 @@ const videoRefs = {
 
         {/* Right Text */}
         <div className="text-container"> 
-      <p className="left-aligned">
-        Hi, I'm <span className="highlight">Sam Nkurunungi</span> creator and lead animator of 
-        <span className="highlight bold"> Rejuv ,</span> a creative collective where I
-       showcase animations I have created in collaboration with other creatives
-        and my students.
-      </p>
+        <p className="left-aligned">
+  Welcome to <span className="highlight">Rejuv</span> —  a hub for creatives where imagination and creativity come to life through animation.  
+  Founded by me,<span className="highlight bold"> Sam Nkurunungi.</span> "Rejuv provides a collaborative platform for sharing, learning, and creating together."
+  
+</p>
+
 
       {showMore && (
         <>
           <p className="left-aligned">
-            We create  <span className="highlight bold">professional animated explainers</span> and {" "}
+            We also create  <span className="highlight bold">professional animated explainers</span> and {" "}
             <span className="highlight">Lottie animations for apps and websites</span>, offering services to help businesses and individuals convey their messages effectively, and.
           </p>
           <p className="left-aligned">
@@ -297,7 +297,7 @@ const videoRefs = {
         </div>
         <div>
         <p style={{ color: fontColor }} >
-        There are limitless possibilities in the world of animation <span style={{ color: highlightColor }}> </span> Here are some of mine.
+        Check out some of our  <span style={{ color: highlightColor }}> animations below : </span> 
           </p>
         </div>
         </div>
@@ -419,9 +419,10 @@ This <span style={{ color: highlightColor }}> Lip sync    </span> was a trial fo
         <Player ref={animref} loop={true} autoplay={true} src={crown} />
         </div>
         </div>
-    
-        <h1 style={{color:'yellow'}}>Animated Stories</h1>
-        <h2>Migu and Feathers</h2>
+        <br/>
+
+        <h2 style={{color:'yellow'}}>Animated Stories</h2>
+        <h3>Migu and Feathers</h3>
         <div >
         <div className="image-container">
         <Slider
