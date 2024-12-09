@@ -4,7 +4,7 @@
   top: 0;
   left: 0;
   width: 100%;
-  height: 80px; /* Adjust header height */
+  height: 35px; /* Adjust header height */
   background-color: #000; /* Black background */
   padding: 10px 20px;
   z-index: 1000;
