@@ -9,7 +9,7 @@ import rejuvbanner from '../images/rejuv banner.png';
 import rejuveprofile from '../images/rejuve main logo.png';
 import migu1 from '../anims/migu1.mp4';
 import migudp from '../images/migudp.png';
-import redascension from '../anims/optimizedShadowAnimation.mp4';
+import redascension from '../anims/Shadow.webm';
 import newyears from '../anims/optimizedNewYear.mp4';
 import supernormal from '../anims/Web Optimized Abnomal Samuel.mp4';
 import migu2 from '../anims/Migu & Feathers_optimized2.mp4';
@@ -292,12 +292,15 @@ const videoRefs = {
     This animation symbolizes the essence of
     <span style={{ color: highlightColor }}> Rejuv</span>, which is the <span style={{ color: highlightColor }}>relentless drive to rise and take the next step.</span>
   </p>
-
-  <VideoPlayer
-  videoSource="/shadow2/shadow_animation.mpd"
-  onPlay={() => handleVideoClick(1)}  // Trigger onPlay event
-  onClick={() => handleVideoClick(1)}  // Trigger onClick event (if you want to click anywhere in the container)
-/>
+  <video
+            controls
+            width="100%"
+            className="motivational-video"
+            onPlay={() => handleVideoClick(1)}
+          >
+            <source src={redascension} type="video/webm" />
+            Your browser does not support the video tag.
+          </video>
 
 
   <EmojiPanel backgroundColor={emojibg} strokecolor={emojistroke} textcolor={emojitxt} vidid={1} />
@@ -317,7 +320,7 @@ const videoRefs = {
           <div data-vjs-player>
         <video
           ref={videoRef}
-          className="video-js vjs-theme-forest" // Add a custom theme class if needed
+          className="video-js " // Add a custom theme class if needed
         ></video>
       </div>
           <EmojiPanel backgroundColor={emojibg} strokecolor={emojistroke} textcolor={emojitxt} vidid={5}/>
