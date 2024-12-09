@@ -194,7 +194,7 @@ body {
 }
 /* Styling for highlighted text */
 .highlight {
-  color: #f5a623; /* Bright color for emphasis */
+  color: #ff9e02; /* Bright color for emphasis */
   font-weight: 600; /* Semi-bold text */
 }
 
@@ -251,4 +251,29 @@ body {
   text-align: center;
   color: white;
   margin-bottom: 10px;
+}
+.close-btn {
+  position: fixed;
+  top: 30px; /* Bring it down from the top */
+  right: 50px; /* Move it away from the right edge */
+  font-size: 50px; /* Increase the size */
+  color: rgb(188, 186, 255); /* Set the color */
+  cursor: pointer;
+  z-index: 1100; /* Ensure it is on top of other content */
+}
+
+.close-btn:hover {
+  color: #ff9e02; /* Change color on hover */
+}
+.close-text:hover {
+  color: #ff9e02;  /* Change color on hover */
+}
+.close-text {
+  font-size: 30px;  /* Same font size as the icon */
+  position: fixed;
+  top: 30px; /* Bring it down from the top */
+  right: 100px; /* Move it away from the right edge */
+  color: rgb(188, 186, 255); /* Set the color */
+  cursor: pointer;
+  z-index: 1100; /* Ensure it is on top of other content */
 }

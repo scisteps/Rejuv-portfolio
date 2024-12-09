@@ -32,6 +32,8 @@ import { Player } from '@lottiefiles/react-lottie-player';
 import EmojiPanel from "../emojis/EmojiPanel";
 import VideoPlayer from './VideoPlayer'; // Import the VideoPlayer component
 import Mainloading from "../Loaders/Mainloading";
+import Theteam from "./Theteam";
+import { FaTimes } from 'react-icons/fa';
 
 const First = () => {
   const [motivationalBackground, setMotivationalBackground] = useState("maroon");
@@ -52,6 +54,18 @@ const First = () => {
   const videoRef = useRef(null);
   const playerRef = useRef(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [showTeamPopup, setShowTeamPopup] = useState(false);
+  const [isContentBlurred, setIsContentBlurred] = useState(false); // To blur the background content
+
+  const handleShowPopup = () => {
+    setShowTeamPopup(true);
+    setIsContentBlurred(true); // Blurs the rest of the content
+  };
+
+  const handleClosePopup = () => {
+    setShowTeamPopup(false);
+    setIsContentBlurred(false); // Removes blur from the background content
+  }; 
 
   const handleToggle = () => {
     setShowMore((prevShowMore) => !prevShowMore);
@@ -182,9 +196,35 @@ const videoRefs = {
       <Mainloading/>
     ):(
 
-  
-    <div className="first-container">
-      <div>
+  <div>
+   {showTeamPopup && (
+        <div className="popup-overlay"   style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          display: 'flex',
+          alignItems: 'center', // Vertical center
+          justifyContent: 'center', // Horizontal center
+          zIndex: 9999, // To ensure it's on top of other content
+        }}>
+        <div className="popup-content">
+  <FaTimes className="close-btn" onClick={handleClosePopup} />
+  <span className="close-text" onClick={handleClosePopup}>Close</span> {/* Add the text here */}
+  <Theteam />
+</div>
+
+
+        </div>
+      )}
+<div
+  className="first-container"
+  style={{
+    filter: showTeamPopup ? 'blur(20px) brightness(50%)' : 'none', // Apply blur and reduce brightness
+    transition: 'filter 0.3s ease', // Smooth transition for the blur effect
+  }}
+>      <div>
         <Header/>
       </div>
      <br/>
@@ -193,7 +233,8 @@ const videoRefs = {
      <br/>
 
       {/* Content Section */}
-      
+   
+
 <div className={isMobile ? "content-section2" : "content-section"}>
         {/* Left Image */}
         <>
@@ -303,8 +344,8 @@ const videoRefs = {
         </div>
         </div>
      
-       <div ref={redref} onClick={() => handleVideoClick(1)} className="video-container bordered">
-       <h2 style={{ color: fontColor }} >1.  Way of Rejuv</h2>
+       <div ref={redref}  className="video-container bordered">
+       <h2 style={{ color: fontColor }} >1.  The Rejuvenation</h2>
 
        <p style={{ color: fontColor }}>
    It reflects one of our core purposes:  
@@ -325,7 +366,9 @@ const videoRefs = {
 
   <EmojiPanel backgroundColor={emojibg} strokecolor={emojistroke} textcolor={emojitxt} vidid={1} />
 
-  <h5><span style={{ color: highlightColor }}>Created by Nkurunungi Samuel, May 11 2022</span></h5>
+  <h5  onClick={() => { handleShowPopup(); handleVideoClick(1); }}
+ 
+        style={{ cursor:'cell', color: 'blue' }}><span style={{ color: highlightColor }}>Created by Nkurunungi Samuel, May 11 2022</span></h5>
 </div>
 
         <br/>
@@ -345,7 +388,24 @@ const videoRefs = {
       </div>
           <EmojiPanel backgroundColor={emojibg} strokecolor={emojistroke} textcolor={emojitxt} vidid={5}/>
 
-          <h5> <span style={{ color: highlightColor }}> Created by Nkurunungi Samuel , Shanewise Rukundo & Maxwell Aligawesa, Dec 03 2024</span></h5>
+          <span style={{ color: highlightColor, cursor: 'cell' }}>
+  <h5 
+    onClick={() => { handleShowPopup(); handleVideoClick(4); }} 
+    style={{ display: 'inline-block', margin: '0', paddingRight: '5px' }}>
+    Created by Nkurunungi Samuel,
+  </h5>
+  <h5 
+    onClick={() => { handleShowPopup(); handleVideoClick(4); }} 
+    style={{ display: 'inline-block', margin: '0', paddingRight: '5px' }}>
+    Shanewise Rukundo &
+  </h5>
+  <h5 
+    onClick={() => { handleShowPopup(); handleVideoClick(4); }} 
+    style={{ display: 'inline-block', margin: '0', paddingRight: '5px' }}>
+    Maxwell Aligawesa, 
+  </h5>
+</span>  Dec 03 2024
+
 
         </div>
         <br/>
@@ -369,7 +429,7 @@ This animation is designed to  <span style={{ color: highlightColor }}>inspire m
           </video>
           <EmojiPanel backgroundColor={emojibg} strokecolor={emojistroke} textcolor={emojitxt} vidid={6}/>
 
-          <h5> <span style={{ color: highlightColor }}> Created by Nkurunungi Samuel </span></h5>
+          <h5 onClick={() => { handleShowPopup(); handleVideoClick(2); }} > <span style={{ color: highlightColor }}> Created by Nkurunungi Samuel </span></h5>
 
 
         </div>
@@ -391,7 +451,7 @@ This animation is   Intended to  <span style={{ color: highlightColor }}> Tell t
           </video>
           <EmojiPanel backgroundColor={emojibg} strokecolor={emojistroke} textcolor={emojitxt} vidid={7}/>
 
-          <h5> <span style={{ color: highlightColor }}> Created by Nkurunungi Samuel </span></h5>
+          <h5  onClick={() => { handleShowPopup(); handleVideoClick(3); }}> <span style={{ color: highlightColor }}> Created by Nkurunungi Samuel </span></h5>
 
 
         </div>
@@ -412,7 +472,7 @@ This <span style={{ color: highlightColor }}> Lip sync    </span> was a trial fo
           </video>
           <EmojiPanel backgroundColor={emojibg} strokecolor={emojistroke} textcolor={emojitxt} vidid={8}/>
 
-          <h5> <span style={{ color: highlightColor }}> Created by Nkurunungi Samuel </span></h5>
+          <h5  onClick={() => { handleShowPopup(); handleVideoClick(5); }}> <span style={{ color: highlightColor }}> Created by Nkurunungi Samuel </span></h5>
 
 
         </div>
@@ -430,7 +490,7 @@ This <span style={{ color: highlightColor }}> Lip sync    </span> was a trial fo
 
         <h2 style={{color:'yellow'}}>Animated Stories</h2>
         <h3>Migu and Feathers</h3>
-        <div >
+<div className="second-container">
         <div className="image-container">
         <Slider
     autoplay={true}
@@ -447,10 +507,24 @@ This <span style={{ color: highlightColor }}> Lip sync    </span> was a trial fo
       </div>
     ))}
   </Slider>
-  <h5> <span className="highlight"> Created by Nkurunungi Samuel & Sydney Wakisati </span></h5>
+  <br/>
+  <span className="highlight">
+  <h5 
+    onClick={() => { handleShowPopup(); handleVideoClick(5); }} 
+    style={{ display: 'inline', margin: '0', paddingRight: '5px' }}>
+        Created by Nkurunungi Samuel
+  </h5>
+  <h5 
+    onClick={() => { handleShowPopup(); handleVideoClick(5); }} 
+    style={{ display: 'inline', margin: '0', paddingRight: '5px' }}>
+      & Sydney Wakisati
+  </h5>
+</span>
+<br/>
+<br/>
 
           <p className="story-description">
-          <span className="highlight"> Migu and Feathers  is a short animated series </span> set in prehistoric times, exploring the rivalry between a boy and a young ostrich.
+          <span className="highlight"> Migu and Feathers  </span> is a short animated series set in prehistoric times, exploring the rivalry between a boy and a young ostrich.
           </p>
         </div>
 </div>
@@ -513,6 +587,8 @@ This <span style={{ color: highlightColor }}> Lip sync    </span> was a trial fo
       </div>
       </div>
     </div>
+  </div>
+    
      )}
      </>
   );
