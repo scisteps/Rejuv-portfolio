@@ -1,105 +1,71 @@
-/* Container for the team section */
 .team-container {
-    padding: 20px;
-  }
-  
-  /* Common styles for both image sections */
-  .slick-carousel-container {
-    width: 100%;
-    max-height: 500px; /* Adjust the height for the carousel */
-    margin: 0 auto;
-  }
-  
-  .profile-image {
-    width: 100%;
-    height: auto;
-    object-fit: cover;
-  }
-  
-  /* Styles for the left image section (Mobile and Desktop) */
-  .image-container, .mobile-profile {
-    width: 100%;
-    margin-bottom: 20px;
-  }
-  
-  .image-container {
-    max-width: 500px; /* Adjust width for desktop */
-    margin-right: 20px;
-  }
-  
-  .mobile-profile {
-    max-width: 100%;
-    margin-bottom: 20px;
-  }
-  
-  /* Styles for the right text section */
-  .text-container {
-    width: 100%;
-    max-width: 600px; /* Adjust for text section */
-    margin: 0 auto;
-  }
-  
-  .left-aligned {
-    text-align: left;
-    font-size: 18px;
-    line-height: 1.5;
-    margin-bottom: 10px;
-  }
-  
-  .highlight {
-    font-weight: bold;
-    color: #ffc115; /* Highlight color */
-  }
-  
-  .read-more-btn {
-    background-color: #d69e03;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    cursor: pointer;
-    font-size: 16px;
-    border-radius: 5px;
-    margin-top: 20px;
-  }
-  
-  .read-more-btn:hover {
-    background-color: #e55347;
-  }
-  
-  /* Flexbox layout */
-  .team-content-section {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-  }
-  
-  .team-content-section2 {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-  }
-  
-  /* Responsive styles for mobile */
-  @media (max-width: 768px) {
-    .team-content-section2 {
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-    }
-  
-    .text-container {
-      text-align: center;
-      margin-top: 20px;
-    }
-  
-    .image-container {
-      width: 100%;
-      margin-bottom: 20px;
-    }
-  
-    .mobile-profile {
-      width: 100%;
-    }
-  }
-  
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.team-content-section {
+  display: flex;
+  justify-content: space-between;
+  width: 80%;
+  padding: 20px;
+}
+
+.team-content-section2 {
+  display: block; /* For mobile, stack the content */
+  text-align: center;
+}
+
+.image-container {
+  flex: 1;
+  padding: 20px;
+  max-width: 400px; /* Restrict max width for desktop view */
+}
+
+.mobile-profile {
+  margin-bottom: 20px;
+}
+
+.profile-image {
+  max-width: 100%;
+  height: auto; /* Ensures the image maintains aspect ratio */
+  display: block;
+  margin: 0 auto;
+}
+
+.text-container {
+  flex: 2;
+  padding: 20px;
+  max-width: 600px; /* Optional: limit the max width of text container */
+}
+
+.left-aligned {
+  text-align: left;
+}
+
+.highlight {
+  font-weight: bold;
+}
+
+.read-more-btn {
+  background-color: #007bff;
+  color: white;
+  padding: 8px 16px;
+  border: none;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.read-more-btn:hover {
+  background-color: #0056b3;
+}
+
+.animations-list {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.animation-item {
+  padding: 5px 0;
+}

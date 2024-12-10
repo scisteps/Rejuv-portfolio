@@ -1,18 +1,51 @@
 import React, { useState, useEffect } from "react";
-import "./team.css"; // Updated import for the new CSS file
-import Slider from "react-slick";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
-import teamImage1 from '../images/samred2.png';
-import teamImage2 from '../images/samtrees.png';
-import teamImage3 from '../images/migu3.png';
-import teamImage4 from '../images/migudp.png';
-import Header from "./Header"; // Assuming Header is a reusable component
+import Slider from "react-slick"; // Import react-slick
+import "slick-carousel/slick/slick.css"; // Slick carousel styles
+import "slick-carousel/slick/slick-theme.css"; // Slick carousel theme styles
+import { getFirestore, collection, query, where, getDocs } from "firebase/firestore";
+import { initializeApp } from "firebase/app";
 
-const Theteam = () => {
+// Firebase configuration
+const firebaseConfig = {
+  apiKey: "AIzaSyAuUZ0mJvFy177CFvTsmutS2bO0FsTJ_9M",
+  authDomain: "rejuv-1d74f.firebaseapp.com",
+  projectId: "rejuv-1d74f",
+  storageBucket: "rejuv-1d74f.firebasestorage.app",
+  messagingSenderId: "963584606168",
+  appId: "1:963584606168:web:58ae46f67fb0294219fcad",
+  measurementId: "G-EBNXBFTFYG",
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+const Theteam = ({ alias, imagesa }) => { // Accept images as props
+  const [contributor, setContributor] = useState(null);
   const [showMore, setShowMore] = useState(false);
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
-  const images = [teamImage1, teamImage2, teamImage3, teamImage4];
+
+  useEffect(() => {
+    const fetchContributor = async () => {
+      try {
+        const contributorsRef = collection(db, "Contributors");
+        const q = query(contributorsRef, where("alias", "==", alias));
+        const querySnapshot = await getDocs(q);
+
+        if (!querySnapshot.empty) {
+          const contributorData = querySnapshot.docs[0].data();
+          console.log("Fetched contributor data:", contributorData);
+          setContributor(contributorData);
+        } else {
+          console.warn("No contributor found with the provided alias.");
+        }
+      } catch (error) {
+        console.error("Error fetching contributor data: ", error);
+      }
+    };
+
+    fetchContributor();
+  }, [alias]);
 
   const handleToggle = () => {
     setShowMore((prevShowMore) => !prevShowMore);
@@ -22,9 +55,20 @@ const Theteam = () => {
     const handleResize = () => {
       setIsMobile(window.innerWidth <= 768);
     };
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
+
+  // Slider settings
+  const sliderSettings = {
+    autoplay: true,
+    autoplaySpeed: 3000,
+    infinite: true,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    dots: true,
+    className: "slick-carousel-container",
+  };
 
   return (
     <div className="team-container">
@@ -32,49 +76,65 @@ const Theteam = () => {
       <br />
       <br />
 
-      <div className={isMobile ? "team-content-section2" : "team-content-section"}>
-        {/* Left Image Section */}
-        <div className={isMobile ? "mobile-profile" : "image-container"}>
-          <Slider
-            autoplay={true}
-            autoplaySpeed={3000}
-            infinite={true}
-            slidesToShow={1}
-            slidesToScroll={1}
-            dots={true}
-            className="slick-carousel-container"
-          >
-            {images.map((image, index) => (
-              <div key={index}>
-                <img src={image} alt={`Team ${index}`} className="profile-image" />
-              </div>
-            ))}
-          </Slider>
+      {contributor ? (
+        <div style={{display:'flex',padding:'10px'}} className={isMobile ? "team-content-section2" : "team-content-section"}>
+          {/* Left Image Section */}
+          <div style={{marginRight:'10px'}} className={isMobile ? "mobile-profile" : "image-container"}>
+            <Slider {...sliderSettings}>
+              {imagesa.map((image, index) => (
+                <div key={index}>
+                  <img
+                    src={image}
+                    alt={`Team ${index}`}
+                    className="profile-image"
+                    style={{ width: "100%", height: "auto" }} // Easy customization for image size
+                  />
+                </div>
+              ))}
+            </Slider>
+          </div>
+<br/>
+<br/>
+          {/* Right Text Section */}
+          <div  style={{marginLeft:'10px'}}className="text-container">
+            <p className="left-aligned">
+              Name: <span className="highlight">{contributor.name}</span>
+            </p>
+            <p className="left-aligned">
+              Role: <span className="highlight">{contributor.role}</span>
+            </p>
+
+            {showMore && (
+              <>
+                <p className="left-aligned">
+                  More about me:{" "}
+                  <span>{contributor.info || "No additional information available."}</span>
+                </p>
+                <div className="left-aligned">
+                  <strong>Animations Worked On:</strong>
+                  <ul className="animations-list">
+                    {contributor.animations && contributor.animations.length > 0 ? (
+                      contributor.animations.map((animation, index) => (
+                        <li key={index} className="animation-item">
+                          {animation}
+                        </li>
+                      ))
+                    ) : (
+                      <li>No animations listed.</li>
+                    )}
+                  </ul>
+                </div>
+              </>
+            )}
+
+            <button onClick={handleToggle} className="read-more-btn">
+              {showMore ? "Read Less" : "Read More"}
+            </button>
+          </div>
         </div>
-
-        {/* Right Text Section */}
-        <div className="text-container">
-          <p className="left-aligned">
-            Name: <span className="highlight">Nkurunungi Sam</span>
-          </p>
-          <p className="left-aligned">
-            Role: <span className="highlight">Lead Animator</span>
-          </p>
-
-          {showMore && (
-            <>
-              <p className="left-aligned">
-                More about me: I have been passionate about animation for years, working on various projects to bring ideas to life through storytelling. 
-                I love experimenting with different animation techniques to create visually stunning and emotionally impactful content.
-              </p>
-            </>
-          )}
-
-          <button onClick={handleToggle} className="read-more-btn">
-            {showMore ? "Read Less" : "Read More"}
-          </button>
-        </div>
-      </div>
+      ) : (
+        <p>Loading contributor data...</p>
+      )}
     </div>
   );
 };
