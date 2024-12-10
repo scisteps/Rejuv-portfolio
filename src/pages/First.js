@@ -536,7 +536,7 @@ This <span style={{ color: highlightColor }}> Lip sync    </span> was a trial fo
 
         <h2 style={{color:'yellow'}}>Animated Stories</h2>
         <h3>Migu and Feathers</h3>
-<div className="second-container">
+<div >
         <div className="image-container">
         <Slider
     autoplay={true}

@@ -168,7 +168,7 @@ const EmojiPanel = ({ backgroundColor, strokecolor, textcolor, vidid }) => {
         width: "80%",
         margin: "0 auto",
         border: `0px solid ${strokecolor || "black"}`,
-        fontSize:'10px',
+        fontSize:'12px',
         color: textcolor || "white",
       }}
     >
