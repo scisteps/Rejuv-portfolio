@@ -397,6 +397,7 @@ const videoRefs = {
             width="100%"
             className="motivational-video"
             onPlay={() => handleVideoClick(1)}
+
           >
             <source src={redascension} type="video/webm" />
             Your browser does not support the video tag.
@@ -423,11 +424,12 @@ const videoRefs = {
           <video
                       ref={videoRefs[4]}
                       controlsList="nodownload"
-
+preload="metadata"
             controls
             width="100%"
             className="motivational-video"
             onPlay={() => handleVideoClick(4)}
+
           >
             <source src={bball} type="video/webm" />
             Your browser does not support the video tag.
@@ -466,7 +468,7 @@ This animation is designed to  <span style={{ color: highlightColor }}>inspire m
 </p>
           <video
              ref={videoRefs[2]}
-
+preload="metadata"
             controls
             width="100%"
             className="motivational-video"
@@ -490,7 +492,7 @@ This animation is   Intended to  <span style={{ color: highlightColor }}> Tell t
 </p>
           <video
            ref={videoRefs[3]}
-
+preload="metadata"
             controls
             width="100%"
             className="motivational-video"
@@ -512,7 +514,7 @@ This animation is   Intended to  <span style={{ color: highlightColor }}> Tell t
 </p>
           <video
              ref={videoRefs[6]}
-
+preload="metadata"
             controls
             width="100%"
             className="motivational-video"
@@ -534,7 +536,7 @@ This <span style={{ color: highlightColor }}> Lip sync    </span> was a trial fo
 </p>
           <video
               ref={videoRefs[5]}
-
+preload="metadata"
             controls
             width="100%"
             className="motivational-video"
@@ -636,7 +638,7 @@ This <span style={{ color: highlightColor }}> Lip sync    </span> was a trial fo
         <p className="story-description">
           <span className="highlight"> Episode 3:  Honey Hunt </span> Migu & Feathers fight over honey and face the consequences.
           </p>
-          <video  ref={videoRefs[9]} controls width="100%" className="migu-video">
+          <video preload="metadata" ref={videoRefs[9]} controls width="100%" className="migu-video">
             <source src={migu3} type="video/webm" />
             Your browser does not support the video tag.
           </video>
