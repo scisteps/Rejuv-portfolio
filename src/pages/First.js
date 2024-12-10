@@ -219,7 +219,7 @@ const videoRefs = {
       <Mainloading/>
     ):(
 
-  <div>
+  <div style={{userSelect:'none'}}>
    {showTeamPopup && (
         <div className="popup-overlay"   style={{
           position: 'fixed',
