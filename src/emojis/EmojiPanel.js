@@ -7,7 +7,7 @@ import love from "../jsons/loveemoji.json";
 import clown from "../jsons/clown.json";
 import laugh from "../jsons/laugh.json";
 import smile from "../jsons/bored.json";
-
+import dislike from '../jsons/dislike.json';
 const EmojiPanel = ({ backgroundColor, strokecolor, textcolor, vidid }) => {
   const db = getFirestore(); // Initialize Firestore
   const emojiRefs = useRef([]);
@@ -15,7 +15,7 @@ const EmojiPanel = ({ backgroundColor, strokecolor, textcolor, vidid }) => {
   const activeEmojis = useRef([]);
   const [counts, setCounts] = useState([0, 0, 0, 0, 0]);
 
-  const emojis = [cool, love, laugh, smile,clown];
+  const emojis = [cool, love, laugh, smile,dislike,clown];
 
   useEffect(() => {
     const fetchCounts = async () => {
@@ -39,6 +39,7 @@ const EmojiPanel = ({ backgroundColor, strokecolor, textcolor, vidid }) => {
           videoData.love || 0,
           videoData.laugh || 0,
           videoData.smile || 0,
+          videoData.dislike || 0,
           videoData.clown || 0,
 
         ]);
@@ -69,7 +70,7 @@ const EmojiPanel = ({ backgroundColor, strokecolor, textcolor, vidid }) => {
       setCounts(newCounts);
   
       // Update Firestore: Decrease the count
-      const emojiFields = ["cool", "love",  "laugh", "smile","clown",];
+      const emojiFields = ["cool", "love",  "laugh", "smile","dislike","clown"];
       const fieldName = emojiFields[index];
       try {
         const videoQuerySnapshot = await getDocs(
@@ -108,7 +109,7 @@ const EmojiPanel = ({ backgroundColor, strokecolor, textcolor, vidid }) => {
       setCounts(newCounts);
   
       // Update Firestore: Increment the count
-      const emojiFields = ["cool", "love",  "laugh", "smile","clown",];
+      const emojiFields = ["cool", "love",  "laugh", "smile","dislike","clown",];
       const fieldName = emojiFields[index];
   
       try {
@@ -142,7 +143,7 @@ const EmojiPanel = ({ backgroundColor, strokecolor, textcolor, vidid }) => {
 
   const addValues = async (index, count) => {
     try {
-      const emojiNames = ["cool", "love", "laugh", "smile", "clown"];
+      const emojiNames = ["cool", "love", "laugh", "smile","dislike", "clown"];
       const emojiKey = emojiNames[index]; // Map index to emoji field
 
       // Convert videoid to string to ensure proper document reference
