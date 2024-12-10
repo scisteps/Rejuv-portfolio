@@ -405,7 +405,7 @@ const videoRefs = {
     Created by Nkurunungi Samuel,
   </h5>
   <h5 
-    onClick={() => { handleShowPopup('Rejuv',imagesb); handleVideoClick(4); }} 
+    onClick={() => { handleShowPopup('Wisey',imagesb); handleVideoClick(4); }} 
     style={{ display: 'inline-block', margin: '0', paddingRight: '5px' }}>
     Shanewise Rukundo &
   </h5>
