@@ -225,7 +225,7 @@ body {
   background-color: #d48820; /* Hover effect */
 }
 .mobile-profile {
-  width: 360px;
+  width: 300px;
   transition: width 0.2s ease; /* Smooth transition for width */
 }
 
@@ -255,12 +255,14 @@ body {
 .close-btn {
   position: fixed;
   top: 30px; /* Bring it down from the top */
-  right: 50px; /* Move it away from the right edge */
+  left: 50%; /* Center it horizontally */
+  transform: translateX(-50%); /* Adjust the position to be exactly centered */
   font-size: 50px; /* Increase the size */
   color: rgb(188, 186, 255); /* Set the color */
   cursor: pointer;
   z-index: 1100; /* Ensure it is on top of other content */
 }
+
 
 .close-btn:hover {
   color: #ff9e02; /* Change color on hover */
@@ -269,10 +271,11 @@ body {
   color: #ff9e02;  /* Change color on hover */
 }
 .close-text {
-  font-size: 30px;  /* Same font size as the icon */
+  font-size: 30px; /* Same font size as the icon */
   position: fixed;
-  top: 30px; /* Bring it down from the top */
-  right: 100px; /* Move it away from the right edge */
+  top: 30px; /* Align it with the button */
+  left: calc(50% + 60px); /* Position it next to the button */
+  transform: translateX(0); /* Remove the previous translateX */
   color: rgb(188, 186, 255); /* Set the color */
   cursor: pointer;
   z-index: 1100; /* Ensure it is on top of other content */

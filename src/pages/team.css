@@ -28,7 +28,7 @@
 }
 
 .profile-image {
-  max-width: 100%;
+  max-width: 90%;
   height: auto; /* Ensures the image maintains aspect ratio */
   display: block;
   margin: 0 auto;

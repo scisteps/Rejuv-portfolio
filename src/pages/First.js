@@ -13,7 +13,7 @@ import redascension from '../anims/Shadow.webm';
 import newyears from '../anims/optimizedNewYear.mp4';
 import supernormal from '../anims/ab_optimized.webm';
 import migu2 from '../anims/Migu & Feathers_optimized2.mp4';
-import migu3 from '../anims/migu3.webm';
+import migu3 from '../anims/migu3.2.webm';
 import miguim2 from '../images/m&f.png';
 import miguim3 from '../images/migu3.png';
 import scistepsquare from '../images/scistepsquare.png';
@@ -34,12 +34,17 @@ import VideoPlayer from './VideoPlayer'; // Import the VideoPlayer component
 import Mainloading from "../Loaders/Mainloading";
 import Theteam from "./Theteam";
 import { FaTimes } from 'react-icons/fa';
+import xmas from '../anims/xmas.webm';
+
 
 const First = () => {
   const [motivationalBackground, setMotivationalBackground] = useState("maroon");
   const images = [me,rejuveblack,me2, rejuveprofile,me3 ]; // Add more images or videos as needed
   const images2 = [migudp, miguim2]; // Add more images or videos as needed
   const imagesb = [migudp, miguim2]; // Add more images or videos as needed
+  const xmasref = useRef(null);
+  
+  const imagess = [me,me2,me3 ]; // Add more images or videos as needed
 
   const newyearsref = useRef(null);
   const redref = useRef(null);
@@ -59,12 +64,13 @@ const First = () => {
   const [showTeamPopup, setShowTeamPopup] = useState(false);
   const [isContentBlurred, setIsContentBlurred] = useState(false); // To blur the background content
   const [aliass, setaliass] = useState(null); // To blur the background content
+  const [imagesf, setimagesf] = useState(null); // To blur the background content
 
   const handleShowPopup = (value,imagesb) => {
     setShowTeamPopup(true);
     setIsContentBlurred(true);
     setaliass(value); // Blurs the rest of the content
-    
+    setimagesf(imagesb)
   };
 
   const handleClosePopup = () => {
@@ -192,6 +198,15 @@ const videoRefs = {
       setemojitxt('black');
 
     }
+    else if (video === 6){
+      setMotivationalBackground("#812505");
+      setFontColor("black");
+      setHighlightColor("white");
+      setemojibg('#C05E49');
+      setemojistroke('white');
+      setemojitxt('black');
+
+    }
     
   };
 
@@ -217,7 +232,7 @@ const videoRefs = {
         <div className="popup-content">
   <FaTimes className="close-btn" onClick={handleClosePopup} />
   <span className="close-text" onClick={handleClosePopup}>Close</span> {/* Add the text here */}
-  <Theteam alias={aliass} imagesa={imagesb}/>
+  <Theteam alias={aliass} imagesa={imagesf}/>
 </div>
 
 
@@ -371,7 +386,7 @@ const videoRefs = {
 
   <EmojiPanel backgroundColor={emojibg} strokecolor={emojistroke} textcolor={emojitxt} vidid={1} />
 
-  <h5  onClick={() => { handleShowPopup('Rejuv'); handleVideoClick(1); }}
+  <h5  onClick={() => { handleShowPopup('Rejuv',imagess); handleVideoClick(1); }}
  
         style={{ cursor:'cell', color: 'blue' }}><span style={{ color: highlightColor }}>Created by Nkurunungi Samuel, May 11 2022</span></h5>
 </div>
@@ -400,7 +415,7 @@ const videoRefs = {
 
           <span style={{ color: highlightColor, cursor: 'cell' }}>
   <h5 
-    onClick={() => { handleShowPopup('Rejuv'); handleVideoClick(4); }} 
+    onClick={() => { handleShowPopup('Rejuv',imagess); handleVideoClick(4); }} 
     style={{ display: 'inline-block', margin: '0', paddingRight: '5px' }}>
     Created by Nkurunungi Samuel,
   </h5>
@@ -410,7 +425,7 @@ const videoRefs = {
     Shanewise Rukundo &
   </h5>
   <h5 
-    onClick={() => { handleShowPopup('Rejuv'); handleVideoClick(4); }} 
+    onClick={() => { handleShowPopup('Rejuv',imagess); handleVideoClick(4); }} 
     style={{ display: 'inline-block', margin: '0', paddingRight: '5px' }}>
     Maxwell Aligawesa, 
   </h5>
@@ -438,7 +453,7 @@ This animation is designed to  <span style={{ color: highlightColor }}>inspire m
           </video>
           <EmojiPanel backgroundColor={emojibg} strokecolor={emojistroke} textcolor={emojitxt} vidid={6}/>
 
-          <h5 onClick={() => { handleShowPopup('rejuv'); handleVideoClick(2); }} > <span style={{ color: highlightColor }}> Created by Nkurunungi Samuel </span></h5>
+          <h5 onClick={() => { handleShowPopup('rejuv',imagess); handleVideoClick(2); }} > <span style={{ color: highlightColor }}> Created by Nkurunungi Samuel </span></h5>
 
 
         </div>
@@ -460,7 +475,27 @@ This animation is   Intended to  <span style={{ color: highlightColor }}> Tell t
           </video>
           <EmojiPanel backgroundColor={emojibg} strokecolor={emojistroke} textcolor={emojitxt} vidid={7}/>
 
-          <h5  onClick={() => { handleShowPopup('Rejuv'); handleVideoClick(3); }}> <span style={{ color: highlightColor }}> Created by Nkurunungi Samuel </span></h5>
+          <h5  onClick={() => { handleShowPopup('Rejuv',imagess); handleVideoClick(3); }}> <span style={{ color: highlightColor }}> Created by Nkurunungi Samuel </span></h5>
+
+
+        </div>
+        <div ref={xmasref} onClick={() => handleVideoClick(6)} className="video-container bordered">
+        <p style={{ color: fontColor }} className="video-caption">New Years</p>
+        <p style={{ color: fontColor }}>
+This animation is   Intended to  <span style={{ color: highlightColor }}> Tell the story of a new year </span> And give hope to the world.
+</p>
+          <video
+            controls
+            width="100%"
+            className="motivational-video"
+            onPlay={() => handleVideoClick(6)}
+          >
+            <source src={xmas} type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+          <EmojiPanel backgroundColor={emojibg} strokecolor={emojistroke} textcolor={emojitxt} vidid={9}/>
+
+          <h5  onClick={() => { handleShowPopup('Rejuv',imagess); handleVideoClick(3); }}> <span style={{ color: highlightColor }}> Created by Nkurunungi Samuel </span></h5>
 
 
         </div>
@@ -480,7 +515,7 @@ This <span style={{ color: highlightColor }}> Lip sync    </span> was a trial fo
           </video>
           <EmojiPanel backgroundColor={emojibg} strokecolor={emojistroke} textcolor={emojitxt} vidid={8}/>
 
-          <h5  onClick={() => { handleShowPopup('Rejuv'); handleVideoClick(5); }}> <span style={{ color: highlightColor }}> Created by Nkurunungi Samuel </span></h5>
+          <h5  onClick={() => { handleShowPopup('Rejuv',imagess); handleVideoClick(5); }}> <span style={{ color: highlightColor }}> Created by Nkurunungi Samuel </span></h5>
 
 
         </div>
@@ -518,12 +553,12 @@ This <span style={{ color: highlightColor }}> Lip sync    </span> was a trial fo
   <br/>
   <span className="highlight">
   <h5 
-    onClick={() => { handleShowPopup('Rejuv'); handleVideoClick(5); }} 
+    onClick={() => { handleShowPopup('Rejuv',imagess); handleVideoClick(5); }} 
     style={{ display: 'inline', margin: '0', paddingRight: '5px' }}>
         Created by Nkurunungi Samuel
   </h5>
   <h5 
-    onClick={() => { handleShowPopup('Rejuv'); handleVideoClick(5); }} 
+    onClick={() => { handleShowPopup('Rejuv',imagess); handleVideoClick(5); }} 
     style={{ display: 'inline', margin: '0', paddingRight: '5px' }}>
       & Sydney Wakisati
   </h5>

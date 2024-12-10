@@ -79,7 +79,7 @@ const Theteam = ({ alias, imagesa }) => { // Accept images as props
       {contributor ? (
         <div style={{display:'flex',padding:'10px'}} className={isMobile ? "team-content-section2" : "team-content-section"}>
           {/* Left Image Section */}
-          <div style={{marginRight:'10px'}} className={isMobile ? "mobile-profile" : "image-container"}>
+          <div style={{marginRight:'10px'}} className={"mobile-profile" }>
             <Slider {...sliderSettings}>
               {imagesa.map((image, index) => (
                 <div key={index}>
@@ -106,10 +106,19 @@ const Theteam = ({ alias, imagesa }) => { // Accept images as props
 
             {showMore && (
               <>
-                <p className="left-aligned">
-                  More about me:{" "}
-                  <span>{contributor.info || "No additional information available."}</span>
-                </p>
+               <p className="left-aligned">
+  More about me:{" "}
+  {contributor.info && contributor.info.length > 200 ? (  // Change 200 to the desired character limit
+    <>
+      <span>{contributor.info.slice(0, 200)}...</span> {/* Display the first part */}
+      <br /> {/* Add a line break */}
+      <span>{contributor.info.slice(200)}</span> {/* Display the second part */}
+    </>
+  ) : (
+    <span>{contributor.info || "No additional information available."}</span>
+  )}
+</p>
+
                 <div className="left-aligned">
                   <strong>Animations Worked On:</strong>
                   <ul className="animations-list">
