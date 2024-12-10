@@ -15,7 +15,7 @@ const EmojiPanel = ({ backgroundColor, strokecolor, textcolor, vidid }) => {
   const activeEmojis = useRef([]);
   const [counts, setCounts] = useState([0, 0, 0, 0, 0]);
 
-  const emojis = [cool, love, laugh, smile,dislike,clown];
+  const emojis = [cool, love, laugh, smile,dislike];
 
   useEffect(() => {
     const fetchCounts = async () => {
@@ -40,7 +40,6 @@ const EmojiPanel = ({ backgroundColor, strokecolor, textcolor, vidid }) => {
           videoData.laugh || 0,
           videoData.smile || 0,
           videoData.dislike || 0,
-          videoData.clown || 0,
 
         ]);
       } catch (error) {
@@ -70,7 +69,7 @@ const EmojiPanel = ({ backgroundColor, strokecolor, textcolor, vidid }) => {
       setCounts(newCounts);
   
       // Update Firestore: Decrease the count
-      const emojiFields = ["cool", "love",  "laugh", "smile","dislike","clown"];
+      const emojiFields = ["cool", "love",  "laugh", "smile","dislike",];
       const fieldName = emojiFields[index];
       try {
         const videoQuerySnapshot = await getDocs(
@@ -109,7 +108,7 @@ const EmojiPanel = ({ backgroundColor, strokecolor, textcolor, vidid }) => {
       setCounts(newCounts);
   
       // Update Firestore: Increment the count
-      const emojiFields = ["cool", "love",  "laugh", "smile","dislike","clown",];
+      const emojiFields = ["cool", "love",  "laugh", "smile","dislike",];
       const fieldName = emojiFields[index];
   
       try {
@@ -143,7 +142,7 @@ const EmojiPanel = ({ backgroundColor, strokecolor, textcolor, vidid }) => {
 
   const addValues = async (index, count) => {
     try {
-      const emojiNames = ["cool", "love", "laugh", "smile","dislike", "clown"];
+      const emojiNames = ["cool", "love", "laugh", "smile","dislike", ];
       const emojiKey = emojiNames[index]; // Map index to emoji field
 
       // Convert videoid to string to ensure proper document reference
@@ -166,9 +165,10 @@ const EmojiPanel = ({ backgroundColor, strokecolor, textcolor, vidid }) => {
         backgroundColor: backgroundColor || "lightblue",
         borderRadius: "10px",
         height: "80px",
-        width: "90%",
+        width: "80%",
         margin: "0 auto",
         border: `0px solid ${strokecolor || "black"}`,
+        fontSize:'10px',
         color: textcolor || "white",
       }}
     >
