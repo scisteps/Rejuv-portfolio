@@ -35,7 +35,9 @@ import Mainloading from "../Loaders/Mainloading";
 import Theteam from "./Theteam";
 import { FaTimes } from 'react-icons/fa';
 import xmas from '../anims/xmas.webm';
-
+import syd1 from '../images/syd1.jpg';
+import syd2 from '../images/syd2.jpg';
+import syd3 from '../images/syd3.jpg';
 
 const First = () => {
   const [motivationalBackground, setMotivationalBackground] = useState("maroon");
@@ -45,6 +47,7 @@ const First = () => {
   const xmasref = useRef(null);
   
   const imagess = [me,me2,me3 ]; // Add more images or videos as needed
+  const imagessyd = [syd1,syd2,syd3 ]; // Add more images or videos as needed
 
   const newyearsref = useRef(null);
   const redref = useRef(null);
@@ -558,7 +561,7 @@ This <span style={{ color: highlightColor }}> Lip sync    </span> was a trial fo
         Created by Nkurunungi Samuel
   </h5>
   <h5 
-    onClick={() => { handleShowPopup('Rejuv',imagess); handleVideoClick(5); }} 
+    onClick={() => { handleShowPopup('Yung',imagessyd); handleVideoClick(5); }} 
     style={{ display: 'inline', margin: '0', paddingRight: '5px' }}>
       & Sydney Wakisati
   </h5>
