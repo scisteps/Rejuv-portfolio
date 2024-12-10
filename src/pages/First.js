@@ -108,7 +108,9 @@ useEffect(() => {
     // Initialize the Video.js player
     playerRef.current = videojs(videoRef.current, {
       autoplay: false, // Optional: Set autoplay
-      controls: true,  // Display controls
+      controls: true,
+      // Display controls
+
       responsive: true,
       fluid: true,     // Make video responsive
       sources: [
@@ -134,6 +136,13 @@ const videoRefs = {
   2: useRef(null),
   3: useRef(null),
   4: useRef(null),
+  6: useRef(null),
+  7: useRef(null),
+  8: useRef(null),
+  9: useRef(null),
+  10: useRef(null),
+
+
 };
 
 
@@ -151,7 +160,12 @@ const videoRefs = {
   };
 
   const handleVideoClick = (video) => {
-     
+
+    Object.keys(videoRefs).forEach((key) => {
+      if (parseInt(key) !== video && videoRefs[key].current) {
+        videoRefs[key].current.pause();
+      }
+    });
   
   // Play the selected video and update the state
     if (video === 2) {
@@ -376,6 +390,8 @@ const videoRefs = {
 </p>
 
   <video
+            ref={videoRefs[1]}
+
   preload="auto"
             controls
             width="100%"
@@ -405,6 +421,9 @@ const videoRefs = {
           </p>
           <div data-vjs-player>
           <video
+                      ref={videoRefs[4]}
+                      controlsList="nodownload"
+
             controls
             width="100%"
             className="motivational-video"
@@ -446,6 +465,8 @@ const videoRefs = {
 This animation is designed to  <span style={{ color: highlightColor }}>inspire my animation students </span> to embrace their unique gifts and individuality.
 </p>
           <video
+             ref={videoRefs[2]}
+
             controls
             width="100%"
             className="motivational-video"
@@ -468,6 +489,8 @@ This animation is designed to  <span style={{ color: highlightColor }}>inspire m
 This animation is   Intended to  <span style={{ color: highlightColor }}> Tell the story of a new year </span> And give hope to the world.
 </p>
           <video
+           ref={videoRefs[3]}
+
             controls
             width="100%"
             className="motivational-video"
@@ -488,6 +511,8 @@ This animation is   Intended to  <span style={{ color: highlightColor }}> Tell t
 This animation is   Intended to  <span style={{ color: highlightColor }}> Tell the story of a new year </span> And give hope to the world.
 </p>
           <video
+             ref={videoRefs[6]}
+
             controls
             width="100%"
             className="motivational-video"
@@ -508,6 +533,8 @@ This animation is   Intended to  <span style={{ color: highlightColor }}> Tell t
 This <span style={{ color: highlightColor }}> Lip sync    </span> was a trial for animating a talking character.
 </p>
           <video
+              ref={videoRefs[5]}
+
             controls
             width="100%"
             className="motivational-video"
@@ -580,7 +607,7 @@ This <span style={{ color: highlightColor }}> Lip sync    </span> was a trial fo
         <p className="story-description">
           <span className="highlight"> Episode 1: Pilot Episode </span> Introduces the characters of the show and the birth of their rivalry.
           </p>
-          <video preload="auto"  controls width="100%" className="migu-video">
+          <video    ref={videoRefs[7]} preload="auto"  controls width="100%" className="migu-video">
             <source src={migu1} type="video/mp4" />
             Your browser does not support the video tag.
             
@@ -595,7 +622,7 @@ This <span style={{ color: highlightColor }}> Lip sync    </span> was a trial fo
         <p className="story-description">
           <span className="highlight"> Episode 2: Fruit Fight </span> Migu looks for revenge against feathers following the events of episode 1.
           </p>
-          <video preload="auto" controls width="100%" className="migu-video">
+          <video  ref={videoRefs[8]} preload="auto" controls width="100%" className="migu-video">
             <source src={migu2} type="video/webm" />
             Your browser does not support the video tag.
           </video>
@@ -609,7 +636,7 @@ This <span style={{ color: highlightColor }}> Lip sync    </span> was a trial fo
         <p className="story-description">
           <span className="highlight"> Episode 3:  Honey Hunt </span> Migu & Feathers fight over honey and face the consequences.
           </p>
-          <video controls width="100%" className="migu-video">
+          <video  ref={videoRefs[9]} controls width="100%" className="migu-video">
             <source src={migu3} type="video/webm" />
             Your browser does not support the video tag.
           </video>
