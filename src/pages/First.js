@@ -38,12 +38,12 @@ import xmas from '../anims/xmas.webm';
 import syd1 from '../images/syd1.jpg';
 import syd2 from '../images/syd2.jpg';
 import syd3 from '../images/syd3.jpg';
-
+import shanetemp from '../images/shanetemp.jpg';
 const First = () => {
   const [motivationalBackground, setMotivationalBackground] = useState("maroon");
   const images = [me,rejuveblack,me2, rejuveprofile,me3 ]; // Add more images or videos as needed
   const images2 = [migudp, miguim2]; // Add more images or videos as needed
-  const imagesb = [migudp, miguim2]; // Add more images or videos as needed
+  const imagesb = [shanetemp, shanetemp,shanetemp]; // Add more images or videos as needed
   const xmasref = useRef(null);
   
   const imagess = [me,me2,me3 ]; // Add more images or videos as needed
@@ -205,7 +205,7 @@ const videoRefs = {
       setMotivationalBackground("#812505");
       setFontColor("black");
       setHighlightColor("white");
-      setemojibg('#C05E49');
+      setemojibg('#812505');
       setemojistroke('white');
       setemojitxt('black');
 
@@ -561,7 +561,7 @@ This <span style={{ color: highlightColor }}> Lip sync    </span> was a trial fo
         Created by Nkurunungi Samuel
   </h5>
   <h5 
-    onClick={() => { handleShowPopup('Yung',imagessyd); handleVideoClick(5); }} 
+    onClick={() => { handleShowPopup('Waki',imagessyd); handleVideoClick(5); }} 
     style={{ display: 'inline', margin: '0', paddingRight: '5px' }}>
       & Sydney Wakisati
   </h5>

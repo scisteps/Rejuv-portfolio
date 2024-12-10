@@ -79,7 +79,7 @@ const Theteam = ({ alias, imagesa }) => { // Accept images as props
       {contributor ? (
         <div style={{  display: isMobile ? 'block' : 'flex',padding:'10px'}} className={isMobile ? "team-content-section2" : "team-content-section"}>
           {/* Left Image Section */}
-          <div style={{marginRight:'10px'}} className={"mobile-profile" }>
+          <div style={{marginRight:'20px'}} className={"mobile-profile" }>
             <Slider {...sliderSettings}>
               {imagesa.map((image, index) => (
                 <div key={index}>
@@ -93,40 +93,43 @@ const Theteam = ({ alias, imagesa }) => { // Accept images as props
               ))}
             </Slider>
           </div>
-<br/>
-<br/>
+
+
           {/* Right Text Section */}
-          <div  style={{marginLeft:'10px'}}className="text-container">
-            <p className="left-aligned">
-              Name: <span className="highlight">{contributor.name}</span>
-            </p>
-            <p className="left-aligned">
-              Role: <span className="highlight">{contributor.role}</span>
-            </p>
+          {/* Right Text Section */}
+<div style={{ marginLeft: "20px" }} className="text-container">
+  <p className="left-aligned">
+    Name: <span className="highlight">{contributor.name}</span>
+  </p>
+  <p className="left-aligned">
+    Alias: <span className="highlight">{contributor.alias}</span>
+  </p>
+  <p className="left-aligned">
+    Role: <span className="highlight">{contributor.role}</span>
+  </p>
 
-            {showMore && (
-              <>
-               <p className="left-aligned">
-  More about me:{" "}
-  {contributor.info && contributor.info.length > 200 ? (  // Change 200 to the desired character limit
+  {showMore && (
     <>
-      <span>{contributor.info.slice(0, 200)}...</span> {/* Display the first part */}
-      <br /> {/* Add a line break */}
-      <span>{contributor.info.slice(200)}</span> {/* Display the second part */}
+      <p className="left-aligned">
+        More about me:{" "}
+        {contributor.info && contributor.info.length > 200 ? (
+          <>
+            <span className="highlight">{contributor.info.slice(0, 200)}...</span>
+            <br />
+            <span className="highlight">{contributor.info.slice(200)}</span>
+          </>
+        ) : (
+          <span>{contributor.info || "No additional information available."}</span>
+        )}
+      </p>
     </>
-  ) : (
-    <span>{contributor.info || "No additional information available."}</span>
   )}
-</p>
 
-                
-              </>
-            )}
+  <button onClick={handleToggle} className="read-more-btn">
+    {showMore ? "Read Less" : "Read More"}
+  </button>
+</div>
 
-            <button onClick={handleToggle} className="read-more-btn">
-              {showMore ? "Read Less" : "Read More"}
-            </button>
-          </div>
         </div>
       ) : (
         <p>Loading contributor data...</p>

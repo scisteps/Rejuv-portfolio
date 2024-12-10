@@ -256,8 +256,8 @@ body {
 }
 .close-btn {
   position: fixed;
-  top: 10px; /* Bring it down from the top */
-  left: 50%; /* Center it horizontally */
+  top: 150px; /* Bring it down from the top */
+  left: 48%; /* Center it horizontally */
   transform: translateX(-50%); /* Adjust the position to be exactly centered */
   font-size: 50px; /* Increase the size */
   color: rgb(188, 186, 255); /* Set the color */
@@ -275,8 +275,8 @@ body {
 .close-text {
   font-size: 30px; /* Same font size as the icon */
   position: fixed;
-  top: 10px; /* Align it with the button */
-  left: calc(50% + 60px); /* Position it next to the button */
+  top: 150px; /* Align it with the button */
+  left: calc(48% + 60px); /* Position it next to the button */
   transform: translateX(0); /* Remove the previous translateX */
   color: rgb(188, 186, 255); /* Set the color */
   cursor: pointer;
