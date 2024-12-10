@@ -77,7 +77,7 @@ const Theteam = ({ alias, imagesa }) => { // Accept images as props
       <br />
 
       {contributor ? (
-        <div style={{display:'flex',padding:'10px'}} className={isMobile ? "team-content-section2" : "team-content-section"}>
+        <div style={{  display: isMobile ? 'block' : 'flex',padding:'10px'}} className={isMobile ? "team-content-section2" : "team-content-section"}>
           {/* Left Image Section */}
           <div style={{marginRight:'10px'}} className={"mobile-profile" }>
             <Slider {...sliderSettings}>
@@ -119,20 +119,7 @@ const Theteam = ({ alias, imagesa }) => { // Accept images as props
   )}
 </p>
 
-                <div className="left-aligned">
-                  <strong>Animations Worked On:</strong>
-                  <ul className="animations-list">
-                    {contributor.animations && contributor.animations.length > 0 ? (
-                      contributor.animations.map((animation, index) => (
-                        <li key={index} className="animation-item">
-                          {animation}
-                        </li>
-                      ))
-                    ) : (
-                      <li>No animations listed.</li>
-                    )}
-                  </ul>
-                </div>
+                
               </>
             )}
 
