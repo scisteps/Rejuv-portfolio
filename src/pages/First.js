@@ -40,7 +40,7 @@ import syd2 from '../images/syd2.jpg';
 import syd3 from '../images/syd3.jpg';
 import shanetemp from '../images/shanetemp.jpg';
 const First = () => {
-  const [motivationalBackground, setMotivationalBackground] = useState("maroon");
+  const [motivationalBackground, setMotivationalBackground] = useState("#440006");
   const images = [me,rejuveblack,me2, rejuveprofile,me3 ]; // Add more images or videos as needed
   const images2 = [migudp, miguim2]; // Add more images or videos as needed
   const imagesb = [shanetemp, shanetemp,shanetemp]; // Add more images or videos as needed
@@ -60,7 +60,7 @@ const First = () => {
   const animref = useRef(null);
   const [emojistroke, setemojistroke] = useState("white"); // Default highlight color
   const [emojitxt, setemojitxt] = useState("white"); // Default highlight color
-  const [emojibg, setemojibg] = useState('maroon');
+  const [emojibg, setemojibg] = useState('#440006');
   const videoRef = useRef(null);
   const playerRef = useRef(null);
   const [isLoading, setIsLoading] = useState(true);
