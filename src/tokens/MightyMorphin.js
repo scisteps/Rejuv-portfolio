@@ -1,61 +1,62 @@
-import mm from '../tokens/morphin.json';
-import React, { useState,useRef } from "react";
+import React, { useRef, useState } from "react";
 import { Player } from "@lottiefiles/react-lottie-player";
+import mm from '../tokens/morphin.json';
 
 const MightyMorphin = () => {
-  const [background, setBackground] = useState("white");
-  const rangerref = useRef([]);
-  const playerref = useRef([]);
+  const lottieRef = useRef(null);
+  const [isReversed, setIsReversed] = useState(false);
 
-  // Toggle background color between green and blue
-  const toggleBackground = () => {
-    setBackground((prev) => (prev === "green" ? "red" : "green"));
+  const handleToggleAnimation = () => {
+    if (lottieRef.current) {
+      // Toggle play direction
+      const newDirection = isReversed ? 1 : -1; // Forward: 1, Reverse: -1
+      lottieRef.current.setPlayerDirection(newDirection);
+      lottieRef.current.play();
+      setIsReversed(!isReversed); // Update state
+    }
   };
-  const playit = () => {
-if(playerref){
-    playerref.current.play();
-}  };
 
   return (
-    <div
-      style={{
-        backgroundColor: background,
-        height: "100vh",
-        width: "100vw",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        transition: "background-color 0.5s ease-in-out", // Smooth transition
-      }}
-    >
-      {/* Centered Lottie Player */}
-      <div ref={rangerref} onClick={playit}>
-      <Player
-      ref={(playerref)}
-        src={mm}
-        autoplay={false}
-        loop={false}
-        keepLastFrame={true}
-        style={{ width: "500px", height: "500px" }}
-      />
-      </div>
-     
-      {/* Toggle Background Button */}
-      <button
-        onClick={toggleBackground}
+    <>
+      {/* Reset Global Styles */}
+      <style>
+        {`
+          body, html {
+            margin: 0;
+            padding: 0;
+            background-color: white;
+            height: 100%;
+          }
+        `}
+      </style>
+
+      {/* Main Container */}
+      <div
         style={{
-          position: "absolute",
-          bottom: "20px",
-          background: "white",
-          padding: "10px 20px",
-          borderRadius: "5px",
-          border: "none",
-          cursor: "pointer",
+          backgroundColor: "white",
+          height: "100vh",
+          width: "100vw",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          flexDirection: "column",
         }}
+        onClick={handleToggleAnimation}
       >
-        Toggle Background
-      </button>
-    </div>
+        {/* Centered Lottie Player */}
+        <Player
+          ref={lottieRef}
+          src={mm}
+          autoplay={false}
+          keepLastFrame={true}
+          loop={false} // Ensure it doesn't loop infinitely
+          style={{ width: "500px", height: "500px" }}
+        />
+
+        {/* Toggle Button */}
+       
+      </div>
+    </>
   );
 };
 
