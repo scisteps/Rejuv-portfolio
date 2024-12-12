@@ -4,6 +4,9 @@ import First from './pages/First';
 import AddVideo from './entries/AddVideo';
 import Theteam from './pages/Theteam';
 import AddContributor from './entries/AddContributor';
+import MightyMorphin from './tokens/MightyMorphin';
+
+
 function App() {
   return (
     <Router>
@@ -13,6 +16,7 @@ function App() {
       <Route path="/addvideo" element={<AddVideo  />} />
       <Route path="/team" element={<Theteam  />} />
       <Route path="/addcontributor" element={<AddContributor  />} />
+      <Route path="/morphintime" element={<MightyMorphin  />} />
 
       </Routes>
       </div>
