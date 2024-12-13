@@ -43,7 +43,7 @@ const MightyMorphin = () => {
         }}
         onClick={handleToggleAnimation}
       >
-        {/* Centered Lottie Player */}
+        {/* Centered Lottie Playersss */}
         <Player
           ref={lottieRef}
           src={aggie}
@@ -52,7 +52,7 @@ const MightyMorphin = () => {
           onClick={handleToggleAnimation}
 
           loop={false} // Ensure it doesn't loop infinitely
-          style={{ width: "500px", height: "500px" }
+          style={{ width: "400px", height: "400px" }
         }
         />
 
