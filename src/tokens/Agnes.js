@@ -1,6 +1,6 @@
 import React, { useRef, useState } from "react";
 import { Player } from "@lottiefiles/react-lottie-player";
-import aggie from '../tokens/agnes2.json';
+import aggie from '../tokens/agnes3.json';
 
 const MightyMorphin = () => {
   const lottieRef = useRef(null);
@@ -52,7 +52,7 @@ const MightyMorphin = () => {
           onClick={handleToggleAnimation}
 
           loop={false} // Ensure it doesn't loop infinitely
-          style={{ width: "350px", height: "350px",borderRadius:'10px',    boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.25)", // Shadow added here
+          style={{ width: "350px", height: "350px",borderRadius:'10px',    boxShadow: "0px 6px 15px rgba(0, 0, 0, 0.25)", // Shadow added here
           }
         }
         />
