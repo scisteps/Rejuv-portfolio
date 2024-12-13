@@ -1,6 +1,6 @@
 import React, { useRef, useState } from "react";
 import { Player } from "@lottiefiles/react-lottie-player";
-import mm from '../tokens/morphin.json';
+import mm from '../tokens/redtoblue.json';
 
 const MightyMorphin = () => {
   const lottieRef = useRef(null);
