@@ -29,7 +29,8 @@ const Mainloading = ({ nextPageRoute }) => {
       height: '100vh',
       display: 'flex',
       justifyContent: 'center',
-      alignItems: 'center'
+      alignItems: 'center',
+      position:'fixed'
     }}>
       <Player
         autoplay={true}
