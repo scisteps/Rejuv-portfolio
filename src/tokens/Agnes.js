@@ -52,7 +52,7 @@ const MightyMorphin = () => {
           onClick={handleToggleAnimation}
 
           loop={false} // Ensure it doesn't loop infinitely
-          style={{ width: "350", height: "350",borderRadius:'10px',    boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.25)", // Shadow added here
+          style={{ width: "350px", height: "350px",borderRadius:'10px',    boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.25)", // Shadow added here
           }
         }
         />
