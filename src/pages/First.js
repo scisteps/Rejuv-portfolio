@@ -499,7 +499,7 @@ preload="metadata"
         <br/>
         <br/>
         <div ref={newyearsref} onClick={() => handleVideoClick(3)} className="video-container bordered">
-        <p style={{ color: fontColor }} className="video-caption">New Years</p>
+        <h2 style={{ color: fontColor }} className="video-caption"> 4. New Years</h2>
         <p style={{ color: fontColor }}>
 This animation is   Intended to  <span style={{ color: highlightColor }}> Tell the story of a new year </span> And give hope to the world.
 </p>
@@ -521,7 +521,7 @@ preload="metadata"
 
         </div>
         <div ref={xmasref} onClick={() => handleVideoClick(6)} className="video-container bordered">
-        <p style={{ color: fontColor }} className="video-caption">New Years</p>
+        <h2 style={{ color: fontColor }} className="video-caption">5. Merry Xmas</h2>
         <p style={{ color: fontColor }}>
 This animation is   Intended to  <span style={{ color: highlightColor }}> Tell the story of a new year </span> And give hope to the world.
 </p>
@@ -543,7 +543,7 @@ preload="metadata"
 
         </div>
         <div ref={silentref} onClick={() => handleVideoClick(7)} className="video-container bordered">
-        <p style={{ color: fontColor }}>A journey through time </p>
+        <h2 style={{ color: fontColor }}>6. A journey through time </h2>
         <p style={{ color: fontColor }} >
 This <span style={{ color: highlightColor }}> trying out   </span> the different generations in time.
 </p>
@@ -581,7 +581,7 @@ preload="metadata"
 
         </div>
         <div ref={silentref} onClick={() => handleVideoClick(5)} className="video-container bordered">
-        <p style={{ color: fontColor }}>lip sync test</p>
+        <h2 style={{ color: fontColor }}>7. lip sync test</h2>
         <p style={{ color: fontColor }} >
         This <span style={{ color: highlightColor }}> Testing </span> Lip sync
         </p>
