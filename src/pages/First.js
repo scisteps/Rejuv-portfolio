@@ -39,6 +39,9 @@ import syd1 from '../images/syd1.jpg';
 import syd2 from '../images/syd2.jpg';
 import syd3 from '../images/syd3.jpg';
 import shanetemp from '../images/shanetemp.jpg';
+import timejourney from '../anims/timejourney3.webm';
+import chill from '../images/avuni.jpg';
+
 const First = () => {
   const [motivationalBackground, setMotivationalBackground] = useState("#440006");
   const images = [me,rejuveblack,me2, rejuveprofile,me3 ]; // Add more images or videos as needed
@@ -48,6 +51,7 @@ const First = () => {
   
   const imagess = [me,me2,me3 ]; // Add more images or videos as needed
   const imagessyd = [syd1,syd2,syd3 ]; // Add more images or videos as needed
+  const imageschill = [chill,chill,chill ]; // Add more images or videos as needed
 
   const newyearsref = useRef(null);
   const redref = useRef(null);
@@ -221,6 +225,15 @@ const videoRefs = {
       setHighlightColor("white");
       setemojibg('#812505');
       setemojistroke('white');
+      setemojitxt('black');
+
+    }
+    else if (video === 7){
+      setMotivationalBackground("#C2AD62");
+      setFontColor("black");
+      setHighlightColor("#531F22");
+      setemojibg('#C2AD62');
+      setemojistroke('#531F22');
       setemojitxt('black');
 
     }
@@ -529,11 +542,49 @@ preload="metadata"
 
 
         </div>
-        <div ref={silentref} onClick={() => handleVideoClick(5)} className="video-container bordered">
-        <p style={{ color: fontColor }}>Lip sync  / Talking animation</p>
+        <div ref={silentref} onClick={() => handleVideoClick(7)} className="video-container bordered">
+        <p style={{ color: fontColor }}>A journey through time </p>
         <p style={{ color: fontColor }} >
-This <span style={{ color: highlightColor }}> Lip sync    </span> was a trial for animating a talking character.
+This <span style={{ color: highlightColor }}> trying out   </span> the different generations in time.
 </p>
+          <video
+              ref={videoRefs[7]}
+preload="metadata"
+            controls
+            width="100%"
+            className="motivational-video"
+            onPlay={() => handleVideoClick(7)}
+          >
+            <source src={timejourney} type="video/webm" />
+            Your browser does not support the video tag.
+          </video>
+          <EmojiPanel backgroundColor={emojibg} strokecolor={emojistroke} textcolor={emojitxt} vidid={8}/>
+
+          <h5 >
+            <span className="highlight" style={{display:'flex',justifyContent:'center',alignContent:'center',alignItems:'center'}}>
+  <p 
+    onClick={() => { handleShowPopup('Rejuv',imagess); handleVideoClick(7); }} 
+    style={{fontSize:'15px', color: highlightColor,marginRight:'10px' }}>
+        Created by Nkurunungi Samuel  
+         
+  </p>
+  <br/>
+  <br/>
+
+  <p 
+    onClick={() => { handleShowPopup('chillguy',imageschill); handleVideoClick(7); }} 
+    style={{fontSize:'15px', color: highlightColor }}>
+       & Avuni Elvis
+  </p>
+</span></h5>
+
+
+        </div>
+        <div ref={silentref} onClick={() => handleVideoClick(5)} className="video-container bordered">
+        <p style={{ color: fontColor }}>lip sync test</p>
+        <p style={{ color: fontColor }} >
+        This <span style={{ color: highlightColor }}> Testing </span> Lip sync
+        </p>
           <video
               ref={videoRefs[5]}
 preload="metadata"
@@ -542,16 +593,15 @@ preload="metadata"
             className="motivational-video"
             onPlay={() => handleVideoClick(5)}
           >
-            <source src={silent} type="video/mp4" />
+            <source src={silent} type="video/webm" />
             Your browser does not support the video tag.
           </video>
           <EmojiPanel backgroundColor={emojibg} strokecolor={emojistroke} textcolor={emojitxt} vidid={8}/>
 
-          <h5  onClick={() => { handleShowPopup('Rejuv',imagess); handleVideoClick(5); }}> <span style={{ color: highlightColor }}> Created by Nkurunungi Samuel </span></h5>
+          <h5  onClick={() => { handleShowPopup('Rejuv',imagess); handleVideoClick(7); }}> <span style={{ color: highlightColor }}> Created by Nkurunungi Samuel </span></h5>
 
 
         </div>
-        
       </div>
 
       {/* Animated Stories Section */}
