@@ -558,7 +558,7 @@ preload="metadata"
             <source src={timejourney} type="video/webm" />
             Your browser does not support the video tag.
           </video>
-          <EmojiPanel backgroundColor={emojibg} strokecolor={emojistroke} textcolor={emojitxt} vidid={8}/>
+          <EmojiPanel backgroundColor={emojibg} strokecolor={emojistroke} textcolor={emojitxt} vidid={12}/>
 
           <h5 >
             <span className="highlight" style={{display:'flex',justifyContent:'center',alignContent:'center',alignItems:'center'}}>
