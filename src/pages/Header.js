@@ -30,7 +30,15 @@ const Header = () => {
   return (
     <header className="header">
       <div className="header-logo-container">
+      <Link
+                  to="current-animation"
+                  smooth={true}
+                  duration={500}
+                  className="nav-link"
+                  onClick={toggleMenu}
+                >
         <img src={rejuv2} alt="Rejuvl" className="header-logo" />
+        </Link>
       </div>
       <div className="nav-container">
         <nav className={`nav ${menuOpen ? 'open' : ''}`}>

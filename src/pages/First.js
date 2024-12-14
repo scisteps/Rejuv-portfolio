@@ -542,7 +542,7 @@ preload="metadata"
 
 
         </div>
-        <div ref={silentref} onClick={() => handleVideoClick(7)} className="video-container bordered">
+        <div ref={silentref} onClick={() => handleVideoClick(7)} className="video-container bordered || current-animation">
         <h2 style={{ color: fontColor }}>6. A journey through time </h2>
         <p style={{ color: fontColor }} >
 This <span style={{ color: highlightColor }}> trying out   </span> the different generations in time.
