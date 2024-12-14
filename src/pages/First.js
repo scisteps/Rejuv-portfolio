@@ -549,6 +549,8 @@ This <span style={{ color: highlightColor }}> trying out   </span> the different
 </p>
           <video
               ref={videoRefs[7]}
+              controlsList="nodownload"
+
 preload="metadata"
             controls
             width="100%"
@@ -588,6 +590,8 @@ preload="metadata"
           <video
               ref={videoRefs[5]}
 preload="metadata"
+controlsList="nodownload"
+
             controls
             width="100%"
             className="motivational-video"
