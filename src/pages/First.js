@@ -40,7 +40,7 @@ import syd2 from '../images/syd2.jpg';
 import syd3 from '../images/syd3.jpg';
 import shanetemp from '../images/shanetemp.jpg';
 import timejourney from '../anims/timejourney3.webm';
-import chill from '../images/avuni.jpg';
+import chill from '../images/avunie.jpg';
 
 const First = () => {
   const [motivationalBackground, setMotivationalBackground] = useState("#440006");
@@ -574,7 +574,7 @@ preload="metadata"
   <br/>
 
   <p 
-    onClick={() => { handleShowPopup('chillguy',imageschill); handleVideoClick(7); }} 
+    onClick={() => { handleShowPopup('Elvis',imageschill); handleVideoClick(7); }} 
     style={{fontSize:'15px', color: highlightColor }}>
        & Avuni Elvis
   </p>
