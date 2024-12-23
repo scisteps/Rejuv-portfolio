@@ -345,9 +345,17 @@ const videoRefs = {
       {showMore && (
         <>
           <p className="left-aligned">
-            We also create  <span className="highlight bold">professional animated explainers</span> and {" "}
-            <span className="highlight">Lottie animations for apps and websites</span>, offering services to help businesses and individuals convey their messages effectively, and.
+            We also create  <span className="highlight bold"> explainers</span> and {" "}
+            <span className="highlight">Brand animations</span>, offering services to help businesses and individuals convey their messages effectively, and.
           </p>
+          <button onClick={handleToggle} className="read-more-btn">
+          Brand Animations     
+          </button>
+          <br/>
+          
+          <button onClick={handleToggle} className="read-more-btn">
+          Explainers
+          </button>
           <p className="left-aligned">
             In my free time, I channel my creativity into crafting <span className="highlight bold">short, animated stories</span> that explore unique themes and characters, showcasing the limitless possibilities of animation.
           </p>
@@ -545,7 +553,7 @@ preload="metadata"
         <div ref={silentref} onClick={() => handleVideoClick(7)} className="video-container bordered || current-animation">
         <h2 style={{ color: fontColor }}>6. A journey through time </h2>
         <p style={{ color: fontColor }} >
-This <span style={{ color: highlightColor }}> trying out   </span> the different generations in time.
+Going through the different <span style={{ color: highlightColor }}> generations  </span> through time.
 </p>
           <video
               ref={videoRefs[7]}

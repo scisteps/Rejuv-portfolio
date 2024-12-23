@@ -6,7 +6,7 @@ import Theteam from './pages/Theteam';
 import AddContributor from './entries/AddContributor';
 import MightyMorphin from './tokens/MightyMorphin';
 import Agnes from './tokens/Agnes';
-
+import Brand from './pages/Brand';
 
 function App() {
   return (
@@ -19,6 +19,7 @@ function App() {
       <Route path="/addcontributor" element={<AddContributor  />} />
       <Route path="/morphintime" element={<MightyMorphin  />} />
       <Route path="/agnes" element={<Agnes  />} />
+      <Route path="/brand" element={<Brand  />} />
 
       </Routes>
       </div>
