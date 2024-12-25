@@ -19,7 +19,7 @@ function App() {
       <Route path="/addcontributor" element={<AddContributor  />} />
       <Route path="/morphintime" element={<MightyMorphin  />} />
       <Route path="/agnes" element={<Agnes  />} />
-      <Route path="/brand" element={<Brand  />} />
+      <Route path="/brands" element={<Brand  />} />
 
       </Routes>
       </div>

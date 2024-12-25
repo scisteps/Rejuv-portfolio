@@ -27,6 +27,7 @@ import bball from '../anims/kobe2.webm';
 import youtube from '../jsons/youtube.json';
 import crown from '../jsons/crown.json';
 import videojs from "video.js";
+import { Link } from "react-router-dom";
 import "video.js/dist/video-js.css"; // Import Video.js default styles
 import { Player } from '@lottiefiles/react-lottie-player';
 import EmojiPanel from "../emojis/EmojiPanel";
@@ -34,7 +35,7 @@ import VideoPlayer from './VideoPlayer'; // Import the VideoPlayer component
 import Mainloading from "../Loaders/Mainloading";
 import Theteam from "./Theteam";
 import { FaTimes } from 'react-icons/fa';
-import xmas from '../anims/xmas.webm';
+import xmas from '../videos/xmas2.webm';
 import syd1 from '../images/syd1.jpg';
 import syd2 from '../images/syd2.jpg';
 import syd3 from '../images/syd3.jpg';
@@ -48,7 +49,7 @@ const First = () => {
   const images2 = [migudp, miguim2]; // Add more images or videos as needed
   const imagesb = [shanetemp, shanetemp,shanetemp]; // Add more images or videos as needed
   const xmasref = useRef(null);
-  
+  const canvasRef = useRef(null);
   const imagess = [me,me2,me3 ]; // Add more images or videos as needed
   const imagessyd = [syd1,syd2,syd3 ]; // Add more images or videos as needed
   const imageschill = [chill,chill,chill ]; // Add more images or videos as needed
@@ -348,14 +349,15 @@ const videoRefs = {
             We also create  <span className="highlight bold"> explainers</span> and {" "}
             <span className="highlight">Brand animations</span>, offering services to help businesses and individuals convey their messages effectively, and.
           </p>
-          <button onClick={handleToggle} className="read-more-btn">
-          Brand Animations     
+          <Link to="/brands">
+
+          <button  className="read-more-btn2">
+          Brand Animations & Explainers    
           </button>
+          </Link>
           <br/>
+
           
-          <button onClick={handleToggle} className="read-more-btn">
-          Explainers
-          </button>
           <p className="left-aligned">
             In my free time, I channel my creativity into crafting <span className="highlight bold">short, animated stories</span> that explore unique themes and characters, showcasing the limitless possibilities of animation.
           </p>
@@ -623,6 +625,7 @@ controlsList="nodownload"
         <Player ref={animref} loop={true} autoplay={true} src={crown} />
         </div>
         </div>
+        <br/>
         <br/>
 
         <h2 style={{color:'yellow'}}>Animated Stories</h2>

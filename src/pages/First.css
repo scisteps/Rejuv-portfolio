@@ -92,7 +92,9 @@
   padding: 20px;
 }
 .image-container {
+  
   flex: 1;
+
 }
 
 .text-container {
@@ -216,6 +218,18 @@ body {
 /* Other styles */
 .read-more-btn {
   background-color: #f5a623; /* Button color */
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 5px;
+  margin-top: 10px;
+}
+
+.read-more-btn2 {
+  background-color: #2438b5; /* Button color */
   color: white;
   border: none;
   padding: 10px 15px;
