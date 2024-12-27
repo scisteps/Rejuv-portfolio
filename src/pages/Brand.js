@@ -6,7 +6,7 @@ import maz from "../images/maz.jpg";
 import wetechv from "../videos/wexmas.webm";
 import mazvid from "../videos/maz.mp4";
 import paulisae from "../jsons/paulisa.json";
-import explainer1 from "../videos/Hcm.mp4"; // Add your explainer videos here
+import explainer1 from "../videos/hcm.webm"; // Add your explainer videos here
 import explainer2 from "../videos/counterfeit.mp4";
 import explainer3 from "../videos/phsplus.webm";
 import { Player } from "@lottiefiles/react-lottie-player";

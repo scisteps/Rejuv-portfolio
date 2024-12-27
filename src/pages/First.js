@@ -367,7 +367,15 @@ const videoRefs = {
           <br/>
           <p> <span className="highlight bold"> Contact me on +256 782240185</span> </p>
           <p> <span > email - rejuveanimation@gmail.com</span> </p>
-
+          <p>
+  <a 
+    href="https://www.instagram.com/_rejuv_/" 
+    target="_blank" 
+    rel="noopener noreferrer"
+    className="highlight">
+    Follow me on Instagram
+  </a>
+</p>
         </>
       )}
 
