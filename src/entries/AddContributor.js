@@ -10,6 +10,7 @@ import {
   getDocs,
 } from "firebase/firestore";
 import { initializeApp } from "firebase/app";
+import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage"; // Import Firebase Storage
 
 const firebaseConfig = {
   apiKey: "AIzaSyAuUZ0mJvFy177CFvTsmutS2bO0FsTJ_9M",
@@ -23,15 +24,17 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
+const storage = getStorage(app);
 
 const AddContributor = () => {
   const [name, setName] = useState("");
   const [alias, setAlias] = useState("");
   const [role, setRole] = useState("");
   const [info, setInfo] = useState("");
-  const [selectedAnimations, setSelectedAnimations] = useState([]); // Array of selected titles
-  const [videoTitles, setVideoTitles] = useState([]); // Options for video titles
+  const [selectedAnimations, setSelectedAnimations] = useState([]);
+  const [videoTitles, setVideoTitles] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [image, setImage] = useState(null); // State to hold the uploaded image
 
   // Fetch video titles on component mount
   useEffect(() => {
@@ -57,13 +60,15 @@ const AddContributor = () => {
   const handleCheckboxClick = (title) => {
     setSelectedAnimations((prevSelected) => {
       if (prevSelected.includes(title)) {
-        // Deselect: Remove the title
         return prevSelected.filter((t) => t !== title);
       } else {
-        // Select: Add the title
         return [...prevSelected, title];
       }
     });
+  };
+
+  const handleImageChange = (e) => {
+    setImage(e.target.files[0]); // Store the selected image file
   };
 
   const handleSubmit = async (e) => {
@@ -91,13 +96,28 @@ const AddContributor = () => {
         currentContributorId: currentContributorId + 1,
       });
 
+      let imageUrl = "";
+      if (image) {
+        // Upload the image to Firebase Storage
+        const storageRef = ref(storage, `contributors/${name}_${alias}`);
+        const uploadTask = uploadBytesResumable(storageRef, image);
+
+        // Wait for the upload to complete
+        await uploadTask;
+
+        // Get the image URL after upload
+        imageUrl = await getDownloadURL(storageRef);
+      }
+
+      // Add the contributor to Firestore
       await addDoc(collection(db, "Contributors"), {
         name: name,
         alias: alias,
         role: role,
         info: info,
-        animationsWorkedOn: selectedAnimations, // Store selected titles
+        animationsWorkedOn: selectedAnimations,
         contributorId: currentContributorId,
+        imageUrl: imageUrl, // Store the image URL
       });
 
       alert("Contributor added successfully!");
@@ -106,6 +126,7 @@ const AddContributor = () => {
       setRole("");
       setInfo("");
       setSelectedAnimations([]);
+      setImage(null); // Reset the image state
     } catch (error) {
       console.error("Error adding contributor: ", error);
       alert("Failed to add contributor. Please try again.");
@@ -163,14 +184,25 @@ const AddContributor = () => {
             onChange={(e) => setInfo(e.target.value)}
             placeholder="Enter information"
             style={{
-                width: "100%", // Full width
-                height: "80px", // Increased height
-                padding: "10px",
-                fontSize: "14px",
-                borderRadius: "5px",
-                border: "1px solid #ccc",
-                resize: "vertical", // Allow vertical resizing
-              }}
+              width: "100%",
+              height: "80px",
+              padding: "10px",
+              fontSize: "14px",
+              borderRadius: "5px",
+              border: "1px solid #ccc",
+              resize: "vertical",
+            }}
+          />
+        </div>
+
+        {/* Image Upload */}
+        <div style={{ marginBottom: "15px" }}>
+          <label htmlFor="image">Profile Image:</label>
+          <input
+            type="file"
+            id="image"
+            accept="image/*"
+            onChange={handleImageChange}
           />
         </div>
 

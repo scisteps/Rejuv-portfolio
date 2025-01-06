@@ -48,6 +48,7 @@ const AddVideo = () => {
       await addDoc(collection(db, "Videos"), {
         title: videoName,
         clown: 0,
+        love:0,
         laugh: 0,
         smile: 0,
         dislike: 0,

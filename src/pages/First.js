@@ -538,28 +538,6 @@ preload="metadata"
 
 
         </div>
-        <div ref={xmasref} onClick={() => handleVideoClick(6)} className="video-container bordered">
-        <h2 style={{ color: fontColor }} className="video-caption">5. Merry Xmas</h2>
-        <p style={{ color: fontColor }}>
-This animation is   Intended to  <span style={{ color: highlightColor }}> Tell the story of a new year </span> And give hope to the world.
-</p>
-          <video
-             ref={videoRefs[6]}
-preload="metadata"
-            controls
-            width="100%"
-            className="motivational-video"
-            onPlay={() => handleVideoClick(6)}
-          >
-            <source src={xmas} type="video/mp4" />
-            Your browser does not support the video tag.
-          </video>
-          <EmojiPanel backgroundColor={emojibg} strokecolor={emojistroke} textcolor={emojitxt} vidid={9}/>
-
-          <h5  onClick={() => { handleShowPopup('Rejuv',imagess); handleVideoClick(3); }}> <span style={{ color: highlightColor }}> Created by Nkurunungi Samuel </span></h5>
-
-
-        </div>
         <div ref={silentref} onClick={() => handleVideoClick(7)} className="video-container bordered || current-animation">
         <h2 style={{ color: fontColor }}>6. A journey through time </h2>
         <p style={{ color: fontColor }} >
@@ -600,6 +578,29 @@ preload="metadata"
 
 
         </div>
+        <div ref={xmasref} onClick={() => handleVideoClick(6)} className="video-container bordered">
+        <h2 style={{ color: fontColor }} className="video-caption">5. Merry Xmas</h2>
+        <p style={{ color: fontColor }}>
+This animation is   Intended to  <span style={{ color: highlightColor }}> Tell the story of a new year </span> And give hope to the world.
+</p>
+          <video
+             ref={videoRefs[6]}
+preload="metadata"
+            controls
+            width="100%"
+            className="motivational-video"
+            onPlay={() => handleVideoClick(6)}
+          >
+            <source src={xmas} type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+          <EmojiPanel backgroundColor={emojibg} strokecolor={emojistroke} textcolor={emojitxt} vidid={9}/>
+
+          <h5  onClick={() => { handleShowPopup('Rejuv',imagess); handleVideoClick(3); }}> <span style={{ color: highlightColor }}> Created by Nkurunungi Samuel </span></h5>
+
+
+        </div>
+       
         <div ref={silentref} onClick={() => handleVideoClick(5)} className="video-container bordered">
         <h2 style={{ color: fontColor }}>7. lip sync test</h2>
         <p style={{ color: fontColor }} >

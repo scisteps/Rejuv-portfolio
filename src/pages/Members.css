@@ -1,0 +1,51 @@
+/* Default image size */
+.profile-image {
+  width: 100px; /* Set default size */
+  height: 100px;
+  object-fit: cover;
+  border-radius: 50%;
+  transition: all 0.3s ease; /* Smooth transition for expansion */
+}
+
+/* Expanded image when showMore is true */
+.profile-image.expanded {
+  width: 200px; /* New size when expanded */
+  height: 200px;
+}
+
+/* Other styles for the card content and button */
+.card-content {
+  display: flex;
+  align-items: center;
+  padding: 15px;
+}
+
+.info-container {
+  margin-left: 15px;
+}
+
+.view-more-btn {
+  background-color: #4CAF50;
+  color: white;
+  padding: 5px 10px;
+  font-size: 14px;
+  border: none;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.view-more-btn:hover {
+  background-color: #45a049;
+}
+/* Member container styling */
+.members-container {
+  display: flex;
+  flex-direction: column; /* Stack the cards vertically */
+  align-items: center; /* Center the cards horizontally */
+  padding: 20px;
+}
+
+.member-card {
+  padding: 15px;
+  margin-bottom: 20px; /* Padding between members */
+}

@@ -69,7 +69,7 @@ const EmojiPanel = ({ backgroundColor, strokecolor, textcolor, vidid }) => {
       setCounts(newCounts);
   
       // Update Firestore: Decrease the count
-      const emojiFields = ["cool", "love",  "laugh", "smile","dislike",];
+      const emojiFields = ["cool", "love", "laugh", "smile","dislike",];
       const fieldName = emojiFields[index];
       try {
         const videoQuerySnapshot = await getDocs(
