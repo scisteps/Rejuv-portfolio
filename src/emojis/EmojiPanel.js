@@ -3,7 +3,7 @@ import { Player } from "@lottiefiles/react-lottie-player";
 import { gsap } from "gsap";
 import { getFirestore, doc, updateDoc, getDoc,query,collection,where,getDocs } from "firebase/firestore";
 import cool from "../jsons/cool.json";
-import love from "../jsons/loveemoji.json";
+import love from "../jsons/heart.json";
 import clown from "../jsons/clown.json";
 import laugh from "../jsons/laugh.json";
 import smile from "../jsons/bored.json";
