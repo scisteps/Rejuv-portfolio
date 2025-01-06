@@ -45,7 +45,7 @@ import chill from '../images/avunie.jpg';
 
 const First = () => {
   const [motivationalBackground, setMotivationalBackground] = useState("#440006");
-  const images = [me,rejuveblack,me2, rejuveprofile,me3 ]; // Add more images or videos as needed
+  const images = [rejuveblack,me,rejuveprofile,me3 ]; // Add more images or videos as needed
   const images2 = [migudp, miguim2]; // Add more images or videos as needed
   const imagesb = [shanetemp, shanetemp,shanetemp]; // Add more images or videos as needed
   const xmasref = useRef(null);

@@ -36,7 +36,7 @@ const MemberCard = ({ member, images }) => {
         <img
           src={images[0]}
           alt={`${member.name}`}
-          className={`profile-image ${showMore ? 'expanded' : ''}`}
+          className={`profile-images ${showMore ? 'expanded' : ''}`}
         />
         <div className="info-container">
           <h3>{member.name}</h3>

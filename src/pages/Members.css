@@ -1,5 +1,5 @@
 /* Default image size */
-.profile-image {
+.profile-images {
   width: 100px; /* Set default size */
   height: 100px;
   object-fit: cover;
@@ -8,7 +8,7 @@
 }
 
 /* Expanded image when showMore is true */
-.profile-image.expanded {
+.profile-images.expanded {
   width: 250px; /* New size when expanded */
   height: 250px;
   border-radius: 30%;

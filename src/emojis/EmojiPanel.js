@@ -7,7 +7,7 @@ import love from "../jsons/heart.json";
 import clown from "../jsons/clown.json";
 import laugh from "../jsons/laugh.json";
 import smile from "../jsons/bored.json";
-import dislike from '../jsons/dislike.json';
+import dislike from '../jsons/thumbsdown.json';
 const EmojiPanel = ({ backgroundColor, strokecolor, textcolor, vidid }) => {
   const db = getFirestore(); // Initialize Firestore
   const emojiRefs = useRef([]);
@@ -69,7 +69,7 @@ const EmojiPanel = ({ backgroundColor, strokecolor, textcolor, vidid }) => {
       setCounts(newCounts);
   
       // Update Firestore: Decrease the count
-      const emojiFields = ["cool", "love", "laugh", "smile","dislike",];
+      const emojiFields = ["cool", "love",  "laugh", "smile","dislike",];
       const fieldName = emojiFields[index];
       try {
         const videoQuerySnapshot = await getDocs(
