@@ -9,8 +9,9 @@
 
 /* Expanded image when showMore is true */
 .profile-image.expanded {
-  width: 200px; /* New size when expanded */
-  height: 200px;
+  width: 250px; /* New size when expanded */
+  height: 250px;
+  border-radius: 30%;
 }
 
 /* Other styles for the card content and button */
