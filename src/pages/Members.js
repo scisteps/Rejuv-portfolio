@@ -8,7 +8,7 @@ import syd1 from '../images/syd1.jpg';
 import syd2 from '../images/syd2.jpg';
 import syd3 from '../images/syd3.jpg';
 import chill from '../images/avunie.jpg';
-import shanetemp from '../images/shanetemp.jpg';
+import shanetemp from '../images/shane.jpg';
 
 // Firebase configuration
 const firebaseConfig = {

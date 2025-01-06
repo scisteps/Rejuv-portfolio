@@ -39,7 +39,7 @@ import xmas from '../videos/xmas2.webm';
 import syd1 from '../images/syd1.jpg';
 import syd2 from '../images/syd2.jpg';
 import syd3 from '../images/syd3.jpg';
-import shanetemp from '../images/shanetemp.jpg';
+import shanetemp from '../images/shane.jpg';
 import timejourney from '../anims/timejourney3.webm';
 import chill from '../images/avunie.jpg';
 
