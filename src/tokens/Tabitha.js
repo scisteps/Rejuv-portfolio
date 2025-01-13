@@ -1,5 +1,5 @@
 import React, { useState,useRef } from 'react';
-import { Card, Container } from 'react-bootstrap';
+import { Card, Container,Row,Col } from 'react-bootstrap';
 import { Player } from '@lottiefiles/react-lottie-player';
 import tab1 from '../jsons/tb1.json';
 import tab2 from '../jsons/tb2.json';
@@ -29,25 +29,19 @@ const Tabitha = () => {
   };
 
   return (
-    <Container
-    className="d-flex justify-content-center align-items-center"
-    style={{
-      height: '100vh',
-      display: 'flex',
-      flexDirection: 'column',
-      justifyContent: 'center',
-    }}
-  >
-    <Card
-      style={{
-        width: '500px',
-        height: '500px',
-        borderRadius: '20px',
-        boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
-      }}
-    >
-      <Card.Body className="d-flex justify-content-center align-items-center">
-        <div onClick={handleClick}>
+   
+  <Container className="d-flex justify-content-center align-items-center">
+  <Row className="justify-content-center flex-wrap">
+          <Col xs={12} md={4} lg={5}>
+              <Card style={{ width: '400px', height: '705px', textAlign: 'center',    position: 'fixed',
+left: '50%',
+top: '50%',
+transform: 'translate(-50%, -50%)', }}>
+        
+
+                  <Card.Body style={{ border: '1px solid #9B9B9B', boxShadow: 'none'  }} >
+                     
+                  <div onClick={handleClick}>
           <Player
             autoplay={true}
             loop={false}
@@ -57,9 +51,16 @@ const Tabitha = () => {
             style={{ width: '100%', height: '100%' }}
           />
         </div>
-      </Card.Body>
-    </Card>
-  </Container>
+
+                  </Card.Body>
+                  <Card.Footer style={{ border: '1px solid #9B9B9B' }} className="d-flex justify-content-between">
+              
+                  </Card.Footer>
+              </Card>
+          </Col>
+    
+  </Row>
+</Container>
   
   );
 };
