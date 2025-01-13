@@ -8,6 +8,7 @@ import MightyMorphin from './tokens/MightyMorphin';
 import Agnes from './tokens/Agnes';
 import Brand from './pages/Brand';
 import Members from './pages/Members';
+import Tabitha from './tokens/Tabitha';
 function App() {
   return (
     <Router>
@@ -21,6 +22,7 @@ function App() {
       <Route path="/agnes" element={<Agnes  />} />
       <Route path="/brands" element={<Brand  />} />
       <Route path="/profiles" element={<Members  />} />
+      <Route path="/tabs" element={<Tabitha  />} />
 
       </Routes>
       </div>
