@@ -1,6 +1,7 @@
 import React, { useRef, useState } from "react";
 import { Player } from "@lottiefiles/react-lottie-player";
 import aggie from '../tokens/agnes3.json';
+import { Card, Container, Row, Col, Button } from 'react-bootstrap';
 
 const MightyMorphin = () => {
   const lottieRef = useRef(null);

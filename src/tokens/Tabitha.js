@@ -1,7 +1,6 @@
 import React, { useState,useRef } from 'react';
 import { Card, Container } from 'react-bootstrap';
 import { Player } from '@lottiefiles/react-lottie-player';
-import 'bootstrap/dist/css/bootstrap.min.css';
 import tab1 from '../jsons/tb1.json';
 import tab2 from '../jsons/tb2.json';
 import tab3 from '../jsons/tb3.json';
@@ -30,11 +29,25 @@ const Tabitha = () => {
   };
 
   return (
-    <Container className="d-flex justify-content-center align-items-center" style={{ height: '100vh' }}>
-      <Card style={{ width: '500px', height: '500px', borderRadius: '20px', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)' }}>
-        <Card.Body className="d-flex justify-content-center align-items-center">
-          <div             onClick={handleClick}
-          >
+    <Container
+    className="d-flex justify-content-center align-items-center"
+    style={{
+      height: '100vh',
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'center',
+    }}
+  >
+    <Card
+      style={{
+        width: '500px',
+        height: '500px',
+        borderRadius: '20px',
+        boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+      }}
+    >
+      <Card.Body className="d-flex justify-content-center align-items-center">
+        <div onClick={handleClick}>
           <Player
             autoplay={true}
             loop={false}
@@ -43,11 +56,11 @@ const Tabitha = () => {
             ref={animref}
             style={{ width: '100%', height: '100%' }}
           />
-          </div>
-        
-        </Card.Body>
-      </Card>
-    </Container>
+        </div>
+      </Card.Body>
+    </Card>
+  </Container>
+  
   );
 };
 
