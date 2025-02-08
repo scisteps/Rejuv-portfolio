@@ -9,10 +9,12 @@ import Agnes from './tokens/Agnes';
 import Brand from './pages/Brand';
 import Members from './pages/Members';
 import Tabitha from './tokens/Tabitha';
+import { Analytics } from "@vercel/analytics/react"
 function App() {
   return (
     <Router>
       <div>
+      <Analytics />
       <Routes>
       <Route path="/" element={<First  />} />
       <Route path="/addvideo" element={<AddVideo  />} />
