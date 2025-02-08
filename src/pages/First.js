@@ -73,7 +73,9 @@ const First = () => {
   const [isContentBlurred, setIsContentBlurred] = useState(false); // To blur the background content
   const [aliass, setaliass] = useState(null); // To blur the background content
   const [imagesf, setimagesf] = useState(null); // To blur the background content
+  const [loadingProgress, setLoadingProgress] = useState(0);
 
+  
   const handleShowPopup = (value,imagesb) => {
     setShowTeamPopup(true);
     setIsContentBlurred(true);
@@ -96,6 +98,37 @@ const First = () => {
         window.removeEventListener('resize', handleResize);
     };
 }, []);
+
+useEffect(() => {
+  const video = videoRef.current;
+
+  if (!video) return;
+
+  const handleProgress = () => {
+    if (video.buffered.length > 0) {
+      const loaded = video.buffered.end(video.buffered.length - 1);
+      const total = video.duration;
+      if (total > 0) {
+        setLoadingProgress(Math.round((loaded / total) * 100));
+      }
+    }
+  };
+
+  const handleCanPlay = () => {
+    setIsLoading(false);
+  };
+
+  video.addEventListener("progress", handleProgress);
+  video.addEventListener("canplaythrough", handleCanPlay);
+  video.addEventListener("playing", handleCanPlay);
+
+  return () => {
+    video.removeEventListener("progress", handleProgress);
+    video.removeEventListener("canplaythrough", handleCanPlay);
+    video.removeEventListener("playing", handleCanPlay);
+  };
+}, []);
+
   const handleResize = () => {
     setIsMobile(window.innerWidth <= 768);
 };
@@ -420,6 +453,24 @@ const videoRefs = {
   the <span style={{ color: highlightColor }}>relentless drive to grow, rise, and move forward,</span> because there are no limits to our creativity and how far Rejuv can go.
 </p>
 
+<div style={{ position: "relative", width: "100%" }}>
+      {isLoading && (
+        <div
+          style={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            background: "rgba(0, 0, 0, 0.7)",
+            color: "white",
+            padding: "10px 20px",
+            borderRadius: "8px",
+            fontSize: "16px",
+          }}
+        >
+          Loading... {loadingProgress}%
+        </div>
+      )}
   <video
             ref={videoRefs[1]}
 
@@ -434,6 +485,7 @@ const videoRefs = {
             Your browser does not support the video tag.
           </video>
 
+</div>
 
   <EmojiPanel backgroundColor={emojibg} strokecolor={emojistroke} textcolor={emojitxt} vidid={1} />
 
