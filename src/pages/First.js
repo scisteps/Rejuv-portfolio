@@ -42,7 +42,7 @@ import syd3 from '../images/syd3.jpg';
 import shanetemp from '../images/shane.jpg';
 import timejourney from '../anims/timejourney3.webm';
 import chill from '../images/avunie.jpg';
-
+import caroline from'../videos/Carolle.mp4'
 const First = () => {
   const [motivationalBackground, setMotivationalBackground] = useState("#440006");
   const images = [rejuveblack,me,rejuveprofile,me3 ]; // Add more images or videos as needed
@@ -58,6 +58,8 @@ const First = () => {
   const redref = useRef(null);
   const silentref = useRef(null);
   const snormalref = useRef(null);
+  const carolref = useRef(null);
+
   const [showMore, setShowMore] = useState(false);
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
   const [fontColor, setFontColor] = useState("white"); // Default font color
@@ -271,6 +273,16 @@ const videoRefs = {
       setemojitxt('black');
 
     }
+  
+  else if (video === 8){
+    setMotivationalBackground("#887893");
+    setFontColor("black");
+    setHighlightColor("#531F22");
+    setemojibg('#887893');
+    setemojistroke('#531F22');
+    setemojitxt('black');
+
+  }
     
   };
 
@@ -453,24 +465,6 @@ const videoRefs = {
   the <span style={{ color: highlightColor }}>relentless drive to grow, rise, and move forward,</span> because there are no limits to our creativity and how far Rejuv can go.
 </p>
 
-<div style={{ position: "relative", width: "100%" }}>
-      {isLoading && (
-        <div
-          style={{
-            position: "absolute",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            background: "rgba(0, 0, 0, 0.7)",
-            color: "white",
-            padding: "10px 20px",
-            borderRadius: "8px",
-            fontSize: "16px",
-          }}
-        >
-          Loading... {loadingProgress}%
-        </div>
-      )}
   <video
             ref={videoRefs[1]}
 
@@ -485,7 +479,6 @@ const videoRefs = {
             Your browser does not support the video tag.
           </video>
 
-</div>
 
   <EmojiPanel backgroundColor={emojibg} strokecolor={emojistroke} textcolor={emojitxt} vidid={1} />
 
@@ -542,8 +535,42 @@ preload="metadata"
         </div>
         <br/>
         <br/>
+        <div ref={carolref} onClick={() => handleVideoClick(2)} className="video-container bordered || current-animation">
+        <h2 style={{ color: fontColor }} >3.  Carolle Skater </h2>
+
+        <p style={{ color: fontColor }}>
+
+This animation is inspired by the talented & professional skater  <span style={{ color: highlightColor }}>Caroline Njeri </span> from Nairobi
+</p>
+          <video
+             ref={videoRefs[8]}
+preload="metadata"
+            controls
+            width="100%"
+            className="motivational-video"
+            onPlay={() => handleVideoClick(8)}
+          >
+            <source src={caroline} type="video/webm" />
+            Your browser does not support the video tag.
+          </video>
+          <EmojiPanel backgroundColor={emojibg} strokecolor={emojistroke} textcolor={emojitxt} vidid={13}/>
+
+          <h5 
+    onClick={() => { handleShowPopup('Rejuv',imagess); handleVideoClick(8); }} 
+    style={{ display: 'inline-block', margin: '0', paddingRight: '5px',color:highlightColor }}>
+    Created by Nkurunungi Samuel,
+  </h5>
+  <h5 
+    onClick={() => { handleShowPopup('Wisey',imagesb); handleVideoClick(8); }} 
+    style={{ display: 'inline-block', margin: '0', paddingRight: '5px',color:highlightColor }}>
+  & Caroline Njeri
+  </h5>
+
+        </div>
+        <br/>
+        <br/>
         <div ref={snormalref} onClick={() => handleVideoClick(2)} className="video-container bordered">
-        <h2 style={{ color: fontColor }} >3.  The journey of a Creative </h2>
+        <h2 style={{ color: fontColor }} >4.  The journey of a Creative </h2>
 
         <p style={{ color: fontColor }}>
 
@@ -569,7 +596,7 @@ preload="metadata"
         <br/>
         <br/>
         <div ref={newyearsref} onClick={() => handleVideoClick(3)} className="video-container bordered">
-        <h2 style={{ color: fontColor }} className="video-caption"> 4. New Years</h2>
+        <h2 style={{ color: fontColor }} className="video-caption"> 5. New Years</h2>
         <p style={{ color: fontColor }}>
 This animation is   Intended to  <span style={{ color: highlightColor }}> Tell the story of a new year </span> And give hope to the world.
 </p>
@@ -590,7 +617,7 @@ preload="metadata"
 
 
         </div>
-        <div ref={silentref} onClick={() => handleVideoClick(7)} className="video-container bordered || current-animation">
+        <div ref={silentref} onClick={() => handleVideoClick(7)} className="video-container bordered ">
         <h2 style={{ color: fontColor }}>6. A journey through time </h2>
         <p style={{ color: fontColor }} >
 Going through the different <span style={{ color: highlightColor }}> generations  </span> through time.
@@ -631,7 +658,7 @@ preload="metadata"
 
         </div>
         <div ref={xmasref} onClick={() => handleVideoClick(6)} className="video-container bordered">
-        <h2 style={{ color: fontColor }} className="video-caption">5. Merry Xmas</h2>
+        <h2 style={{ color: fontColor }} className="video-caption">7. Merry Xmas</h2>
         <p style={{ color: fontColor }}>
 This animation is   Intended to  <span style={{ color: highlightColor }}> Tell the story of a new year </span> And give hope to the world.
 </p>
@@ -654,7 +681,7 @@ preload="metadata"
         </div>
        
         <div ref={silentref} onClick={() => handleVideoClick(5)} className="video-container bordered">
-        <h2 style={{ color: fontColor }}>7. lip sync test</h2>
+        <h2 style={{ color: fontColor }}>8. lip sync test</h2>
         <p style={{ color: fontColor }} >
         This <span style={{ color: highlightColor }}> Testing </span> Lip sync
         </p>
