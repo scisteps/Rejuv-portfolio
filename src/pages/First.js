@@ -75,7 +75,7 @@ const First = () => {
   const [isContentBlurred, setIsContentBlurred] = useState(false); // To blur the background content
   const [aliass, setaliass] = useState(null); // To blur the background content
   const [imagesf, setimagesf] = useState(null); // To blur the background content
-  const [loadingProgress, setLoadingProgress] = useState(0);
+  const [loadingPercentage, setLoadingPercentage] = useState(0);
 
   
   const handleShowPopup = (value,imagesb) => {
@@ -101,35 +101,17 @@ const First = () => {
     };
 }, []);
 
-useEffect(() => {
-  const video = videoRef.current;
-
-  if (!video) return;
-
-  const handleProgress = () => {
-    if (video.buffered.length > 0) {
-      const loaded = video.buffered.end(video.buffered.length - 1);
-      const total = video.duration;
-      if (total > 0) {
-        setLoadingProgress(Math.round((loaded / total) * 100));
-      }
+const handleProgress = () => {
+  if (videoRef.current) {
+    const buffered = videoRef.current.buffered;
+    if (buffered.length > 0) {
+      const loaded = buffered.end(buffered.length - 1);
+      const total = videoRef.current.duration;
+      const percent = (loaded / total) * 100;
+      setLoadingPercentage(percent);
     }
-  };
-
-  const handleCanPlay = () => {
-    setIsLoading(false);
-  };
-
-  video.addEventListener("progress", handleProgress);
-  video.addEventListener("canplaythrough", handleCanPlay);
-  video.addEventListener("playing", handleCanPlay);
-
-  return () => {
-    video.removeEventListener("progress", handleProgress);
-    video.removeEventListener("canplaythrough", handleCanPlay);
-    video.removeEventListener("playing", handleCanPlay);
-  };
-}, []);
+  }
+};
 
   const handleResize = () => {
     setIsMobile(window.innerWidth <= 768);
@@ -535,32 +517,15 @@ preload="metadata"
         </div>
         <br/>
         <br/>
-        <div ref={carolref} onClick={() => handleVideoClick(2)} className="video-container bordered || current-animation">
+        <div ref={carolref} onClick={() => handleVideoClick(8)} className="video-container bordered || current-animation">
         <h2 style={{ color: fontColor }} >3.  Carolle Skater </h2>
 
         <p style={{ color: fontColor }}>
 
-This animation is inspired by the talented & professional skater  <span style={{ color: highlightColor }}>Caroline Njeri </span> from Nairobi
+This animation is inspired by the talented & professional skater  <span style={{ color: highlightColor }}>Caroline Njeri </span> 
 </p>
-<div>
 
-{isLoading && (
-        <div
-          style={{
-            position: "absolute",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            background: "rgba(0, 0, 0, 0.7)",
-            color: "white",
-            padding: "10px 20px",
-            borderRadius: "8px",
-            fontSize: "16px",
-          }}
-        >
-          Loading... {loadingProgress}%
-        </div>
-      )}
+<div>
 
           <video
              ref={videoRefs[8]}
@@ -568,13 +533,15 @@ preload="metadata"
             controls
             width="100%"
             className="motivational-video"
+            onProgress={handleProgress}
+
             onPlay={() => handleVideoClick(8)}
           >
             <source src={caroline} type="video/webm" />
             Your browser does not support the video tag.
           </video>
-          </div>
-
+          <div style={{fontSize:'15px'}}> Loading: {loadingPercentage.toFixed(2)}%</div>
+    </div>
           <EmojiPanel backgroundColor={emojibg} strokecolor={emojistroke} textcolor={emojitxt} vidid={13}/>
 
           <h5 
@@ -583,10 +550,10 @@ preload="metadata"
     Created by Nkurunungi Samuel,
   </h5>
   <h5 
-    onClick={() => { handleShowPopup('Wisey',imagesb); handleVideoClick(8); }} 
+    onClick={() => { handleShowPopup('Rejuv',imagess); handleVideoClick(8); }} 
     style={{ display: 'inline-block', margin: '0', paddingRight: '5px',color:highlightColor }}>
-  & Caroline Njeri
-  </h5>
+  & Njeri Caroline
+   </h5>
 
         </div>
         <br/>
