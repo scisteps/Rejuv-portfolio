@@ -37,7 +37,7 @@ const Header = () => {
                   className="nav-link"
                   onClick={toggleMenu}
                 >
-        <img src={rejuv2} alt="Rejuvl" className="header-logo" />
+        <img src={rejuv2} alt="Logo" className="header-logo" />
         </Link>
       </div>
       <div className="nav-container">
