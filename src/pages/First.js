@@ -542,6 +542,26 @@ preload="metadata"
 
 This animation is inspired by the talented & professional skater  <span style={{ color: highlightColor }}>Caroline Njeri </span> from Nairobi
 </p>
+<div>
+
+{isLoading && (
+        <div
+          style={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            background: "rgba(0, 0, 0, 0.7)",
+            color: "white",
+            padding: "10px 20px",
+            borderRadius: "8px",
+            fontSize: "16px",
+          }}
+        >
+          Loading... {loadingProgress}%
+        </div>
+      )}
+
           <video
              ref={videoRefs[8]}
 preload="metadata"
@@ -553,6 +573,8 @@ preload="metadata"
             <source src={caroline} type="video/webm" />
             Your browser does not support the video tag.
           </video>
+          </div>
+
           <EmojiPanel backgroundColor={emojibg} strokecolor={emojistroke} textcolor={emojitxt} vidid={13}/>
 
           <h5 
