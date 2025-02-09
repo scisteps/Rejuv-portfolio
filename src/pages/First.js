@@ -103,16 +103,16 @@ const First = () => {
 
 const handleProgress = () => {
   if (videoRef.current) {
-    const buffered = videoRef.current.buffered;
-    if (buffered.length > 0) {
-      const loaded = buffered.end(buffered.length - 1);
-      const total = videoRef.current.duration;
-      const percent = (loaded / total) * 100;
+    const buffered = videoRefs.current.buffered;
+    const duration = videoRefs.current.duration;
+
+    if (buffered.length > 0 && duration > 0) {
+      const loaded = buffered.end(buffered.length - 1); // Get the end of the last buffered range
+      const percent = (loaded / duration) * 100;
       setLoadingPercentage(percent);
     }
   }
 };
-
   const handleResize = () => {
     setIsMobile(window.innerWidth <= 768);
 };
@@ -125,32 +125,7 @@ useEffect(() => {
   return () => clearTimeout(timer);
 }, []);
 
-useEffect(() => {
-  if (videoRef.current) {
-    // Initialize the Video.js player
-    playerRef.current = videojs(videoRef.current, {
-      autoplay: false, // Optional: Set autoplay
-      controls: true,
-      // Display controls
 
-      responsive: true,
-      fluid: true,     // Make video responsive
-      sources: [
-        {
-          src: bball,   // Your WebM video file
-          type: "video/webm", // Video type
-        },
-      ],
-    });
-
-    // Cleanup player instance when unmounted
-    return () => {
-      if (playerRef.current) {
-        playerRef.current.dispose();
-      }
-    };
-  }
-}, []);
 
 const [playingVideo, setPlayingVideo] = useState(null); // Track the currently playing video
 const videoRefs = {
@@ -529,8 +504,8 @@ This animation is inspired by the talented & professional skater  <span style={{
 
           <video
              ref={videoRefs[8]}
-preload="metadata"
-            controls
+             preload="auto" // Changed from "metadata" to "auto"
+             controls
             width="100%"
             className="motivational-video"
             onProgress={handleProgress}
@@ -540,7 +515,6 @@ preload="metadata"
             <source src={caroline} type="video/webm" />
             Your browser does not support the video tag.
           </video>
-          <div style={{fontSize:'15px'}}> Loading: {loadingPercentage.toFixed(2)}%</div>
     </div>
           <EmojiPanel backgroundColor={emojibg} strokecolor={emojistroke} textcolor={emojitxt} vidid={13}/>
 
