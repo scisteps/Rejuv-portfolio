@@ -9,6 +9,7 @@
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "@vercel/analytics": "^1.4.1",
+    "@vercel/speed-insights": "^1.1.0",
     "@videojs/http-streaming": "^3.16.2",
     "bootstrap": "^5.3.3",
     "dashjs": "^4.7.4",

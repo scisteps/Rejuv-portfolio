@@ -10,11 +10,15 @@ import Brand from './pages/Brand';
 import Members from './pages/Members';
 import Tabitha from './tokens/Tabitha';
 import { Analytics } from "@vercel/analytics/react"
+import { SpeedInsights } from "@vercel/speed-insights/react"
+
 function App() {
   return (
     <Router>
       <div>
       <Analytics />
+      <SpeedInsights />
+
       <Routes>
       <Route path="/" element={<First  />} />
       <Route path="/addvideo" element={<AddVideo  />} />

@@ -754,7 +754,8 @@ controlsList="nodownload"
         <p className="story-description">
           <span className="highlight"> Episode 3:  Honey Hunt </span> Migu & Feathers fight over honey and face the consequences.
           </p>
-          <video preload="metadata" ref={videoRefs[9]} controls width="100%" className="migu-video">
+          <video preload="metadata" ref={videoRefs[9]} controls width="100%"   controlsList="nodownload" // Prevents download option
+ className="migu-video">
             <source src={migu3} type="video/webm" />
             Your browser does not support the video tag.
           </video>
