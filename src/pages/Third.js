@@ -353,7 +353,7 @@ const videoRefs = {
         {/* Right Text */}
         <div className="text-container"> 
         <p className="left-aligned">
-        I am <span className="highlight">Sam Nkurunungi</span> — a graphics designer with 5 years of experience.
+        I am <span className="highlight">Sam Nkurunungi</span> — a graphics designer with over 5 years of experience.
      "I specialize in creating visually compelling designs that bring ideas to life through creativity and precision."  
 </p>
 
