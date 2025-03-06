@@ -10,14 +10,12 @@ import Brand from './pages/Brand';
 import Members from './pages/Members';
 import Tabitha from './tokens/Tabitha';
 import { Analytics } from "@vercel/analytics/react"
-import { SpeedInsights } from "@vercel/speed-insights/react"
-
+import Third from './pages/Third';
 function App() {
   return (
     <Router>
       <div>
       <Analytics />
-      <SpeedInsights />
 
       <Routes>
       <Route path="/" element={<First  />} />
@@ -29,6 +27,7 @@ function App() {
       <Route path="/brands" element={<Brand  />} />
       <Route path="/profiles" element={<Members  />} />
       <Route path="/tabi" element={<Tabitha  />} />
+      <Route path="/still" element={<Third  />} />
 
       </Routes>
       </div>
