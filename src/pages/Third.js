@@ -53,12 +53,15 @@ import hands from '../still/hands.png';
 import overcome from '../still/overcome.png';
 import faith from '../still/faith front white.jpg';
 import me4 from '../still/me4.png';
+import me5 from '../still/mountains.jpg';
+import celo from '../still/celo.jpg';
+import formal from '../still/formal.jpg';
 
 
 
 const Third = () => {
   const [motivationalBackground, setMotivationalBackground] = useState("#440006");
-  const images = [me,me4,me3 ]; // Add more images or videos as needed
+  const images = [me,formal,me4,me5,celo ]; // Add more images or videos as needed
   const images2 = [migudp, miguim2]; // Add more images or videos as needed
   const imagesb = [shanetemp, shanetemp,shanetemp]; // Add more images or videos as needed
   const xmasref = useRef(null);
