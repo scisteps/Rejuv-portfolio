@@ -125,7 +125,7 @@ useEffect(() => {
       opacity: 1,
       y: 0, // Move to original position
       ease: "power3.inOut",
-      delay: 1.5,
+      delay: 1.7,
     });
   
     gsap.to(shortsref.current, {
@@ -133,7 +133,7 @@ useEffect(() => {
       opacity: 1,
       y: 0, // Move to original position
       ease: "power3.inOut",
-      delay:2,
+      delay:2.6,
     });
     gsap.to(wordref.current, {
       duration: 1.5,
