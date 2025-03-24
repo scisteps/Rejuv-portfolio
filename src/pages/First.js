@@ -42,7 +42,9 @@ import syd3 from '../images/syd3.jpg';
 import shanetemp from '../images/shane.jpg';
 import timejourney from '../anims/timejourney3.webm';
 import chill from '../images/avunie.jpg';
-import caroline from'../videos/Carolle.mp4'
+import caroline from'../videos/Carolle.mp4';
+import { gsap } from "gsap";
+
 const First = () => {
   const [motivationalBackground, setMotivationalBackground] = useState("#440006");
   const images = [rejuveblack,me,rejuveprofile,me3 ]; // Add more images or videos as needed
@@ -59,6 +61,9 @@ const First = () => {
   const silentref = useRef(null);
   const snormalref = useRef(null);
   const carolref = useRef(null);
+  const wordref = useRef(null);
+  const picref = useRef(null);
+  const shortsref = useRef(null);
 
   const [showMore, setShowMore] = useState(false);
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
@@ -100,6 +105,49 @@ const First = () => {
         window.removeEventListener('resize', handleResize);
     };
 }, []);
+useEffect(() => {
+  if(!isLoading){
+    gsap.set( wordref.current, { 
+      opacity: 0, 
+      y: -50 // Start 50px above their current position 
+    });
+    gsap.set( shortsref.current, { 
+      opacity: 0, 
+    });
+    
+    gsap.set( picref.current, { 
+      opacity: 0, 
+      y: -50 // Start 50px above their current position 
+    });
+  
+    gsap.to(picref.current, {
+      duration: 1.7,
+      opacity: 1,
+      y: 0, // Move to original position
+      ease: "power3.inOut",
+      delay: 1.5,
+    });
+  
+    gsap.to(shortsref.current, {
+      duration: 1,
+      opacity: 1,
+      y: 0, // Move to original position
+      ease: "power3.inOut",
+      delay:2,
+    });
+    gsap.to(wordref.current, {
+      duration: 1.5,
+      opacity: 1,
+      y: 0, // Move to original position
+      ease: "power4.inOut",
+      delay: 1,
+    });
+  
+  }
+  
+}, [picref,shortsref,wordref,isLoading]);
+
+
 
 const handleProgress = () => {
   if (videoRef.current) {
@@ -120,7 +168,7 @@ const handleProgress = () => {
 useEffect(() => {
   const timer = setTimeout(() => {
     setIsLoading(false);
-  }, 5000);
+  }, 3600);
 
   return () => clearTimeout(timer);
 }, []);
@@ -314,6 +362,7 @@ const videoRefs = {
   </div>
 ) : (
   <div 
+  ref={picref}
   className="image-container">
     <Slider
       autoplay={true}
@@ -337,7 +386,9 @@ const videoRefs = {
        
 
         {/* Right Text */}
-        <div className="text-container"> 
+        <div   ref={wordref}
+
+         className="text-container"> 
         <p className="left-aligned">
   Welcome to <span className="highlight">Rejuv</span> —  a hub for creatives where imagination and creativity come to life through animation.  
   Founded by me,<span className="highlight bold"> Sam Nkurunungi.</span> "Rejuv provides a collaborative platform for sharing, learning, and creating together."
@@ -389,7 +440,7 @@ const videoRefs = {
       </div>
 
       {/* Motivational Shorts Section */}
-      <div
+      <div ref={shortsref}
         className="motivational-shorts-section"
         style={{ backgroundColor: motivationalBackground }}
       >
