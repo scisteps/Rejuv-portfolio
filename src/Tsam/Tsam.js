@@ -147,7 +147,7 @@ const settings = {
           width: '100%',
           opacity: 0,
           marginTop: isMobile ? '-50px' : '-170px',
-          marginLeft: isMobile ? '70px' : '0px',
+          marginLeft: isMobile ? '-20px' : '0px',
           padding: isMobile ? '0 10px' : '0'
         }}
       >
@@ -158,7 +158,7 @@ const settings = {
   
         <div className="carousel-container" style={{ 
           width: isMobile ? '130%' : '80%',
-          height: isMobile ? '20vh' : '60%'
+          height: isMobile ? '70vh' : '60%'
         }}>
           <Slider {...settings} ref={sliderRef} className="centered-slider">
             {images.map((img, index) => (
@@ -172,7 +172,7 @@ const settings = {
                   src={img}
                   alt={`Tsam shirt ${index + 1}`}
                   style={{
-                    width: isMobile ? '100px' : '300px',
+                    width: isMobile ? '200px' : '300px',
                     height: isMobile ? 'auto' : '300px',
                     maxWidth: '300px',
                     margin: '10px 10px',
