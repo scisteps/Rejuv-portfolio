@@ -1,17 +1,44 @@
 import React, { useEffect, useRef, useState } from 'react';
 import lottie from 'lottie-web';
+import gsap from 'gsap';
+import Slider from 'react-slick';
+
+import './tsam.css';
 import sign from './jsons/sign.json';
 import box from './pics/box.png';
 import canvas from './pics/canvas.png';
 import logoshirt from './pics/logoshirt.png';
 import thinkoutsweat from './pics/thinkoutsweat.png';
-import './tsam.css';
+import tsign from './pics/tsign.png';
+import thinker from './pics/thinker.png';
+import tjump from './pics/tjump.png';
+
+import brown from './pics/brown.png';
 
 const Tsam = () => {
   const lottieRef = useRef(null);
-  const [showSlideshow, setShowSlideshow] = useState(false);
+  const sliderRef = useRef(null);
+  const [imagesLoaded, setImagesLoaded] = useState(false);
+  
+  const contref = useRef(null);
+  const [showSlideshow, setshowSlideshow] = useState(true);
 
+  // Preload images during the animation
   useEffect(() => {
+    const imageUrls = [tsign, tjump, logoshirt, thinker];
+    const loadPromises = imageUrls.map(url => {
+      return new Promise((resolve, reject) => {
+        const img = new Image();
+        img.src = url;
+        img.onload = resolve;
+        img.onerror = reject;
+      });
+    });
+  
+    Promise.all(loadPromises).then(() => {
+      setImagesLoaded(true);
+    });
+  
     const anim = lottie.loadAnimation({
       container: lottieRef.current,
       renderer: 'svg',
@@ -19,49 +46,112 @@ const Tsam = () => {
       autoplay: true,
       animationData: sign,
     });
-
-    const timer = setTimeout(() => {
-      setShowSlideshow(true);
-    }, 3000);
-
+  
     return () => {
-      clearTimeout(timer);
-      anim.destroy();
+      anim.destroy(); // clean up the animation when the component unmounts or effect re-runs
     };
-  }, []);
+  }, [imagesLoaded]);
+  
+  useEffect(() => {
+  setTimeout(() => {
+    setshowSlideshow(false);
+      
 
-  const images = [box, canvas, logoshirt, thinkoutsweat];
+       gsap.to(contref.current, {
+    opacity: 1,
+    duration: 1, // 1 second
+    delay: 0.2,    // Wait for 1 second before starting the animation
+  });
+  }, 2100);  
+
+    
+  }, [contref]);  
+
+    
+
+
+
+  const images = [tsign, thinker ,tjump , logoshirt ];
+
+  const settings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 3,
+    slidesToScroll: 1,
+    centerMode: true,
+    centerPadding: '0',
+    focusOnSelect: true,
+    beforeChange: (current, next) => {
+      gsap.to('.slick-center img', {
+        scale: 1,
+        duration: 0.3,
+        ease: 'power2.out'
+      });
+    },
+    afterChange: (current) => {
+      gsap.to('.slick-center img', {
+        scale: 1.2,
+        duration: 0.3,
+        ease: 'power2.out'
+      });
+    },
+    responsive: [
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 3,
+          slidesToScroll: 1,
+        }
+      },
+      {
+        breakpoint: 768,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+          centerMode: false
+        }
+      }
+    ]
+  };
 
   return (
-    <div className="w-full h-screen flex items-center justify-center bg-black text-white overflow-hidden">
-      {!showSlideshow ? (
-        <div ref={lottieRef} className="w-full h-full flex items-center justify-center" />
-      ) : (
-        <div className="w-full px-4">
-          <div className="fade-in w-full overflow-x-auto scrollbar-hide py-10">
-            <div className="flex gap-6 px-10 min-w-max">
-              {images.map((img, index) => (
-                <div
-                  key={index}
-                  className={`rounded-[15px] transition-all duration-300 flex-shrink-0 ${
-                    index === 1
-                      ? 'w-[220px] h-[220px] md:w-[300px] md:h-[300px] scale-[1.5]'
-                      : 'w-[150px] h-[150px] md:w-[200px] md:h-[200px]'
-                  }`}
-                >
-                  <img
-                    src={img}
-                    alt={`img-${index}`}
-                    className="w-full h-full object-cover rounded-[15px] shadow-lg"
-                  />
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
+    <div className="tsam-container">
+      {showSlideshow && (
+        <div style={{ position: 'absolute', zIndex: 5 }} ref={lottieRef} className="lottie-holder" />
       )}
+  
+      {/* Wrap heading and carousel together */}
+<div
+  ref={contref}
+  style={{
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center', // ensure content is centered
+    width: '100%',        // important for full width
+    opacity: 0,
+    marginTop: '-180px',
+
+  }}
+>
+        <div className="tsam-heading">
+          <h1>Tsam shirts</h1>
+          <div className="tsam-underline"></div>
+        </div>
+  
+        <div className="carousel-container">
+          <Slider {...settings} ref={sliderRef} className="centered-slider">
+            {images.map((img, index) => (
+              <div key={index} className="slide">
+                <img src={img} alt={`img-${index}`} />
+              </div>
+            ))}
+          </Slider>
+        </div>
+      </div>
     </div>
   );
+  
 };
 
 export default Tsam;
