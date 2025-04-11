@@ -80,7 +80,8 @@ const Tsam = () => {
 
   const images = [tsign, thinker, tjump, logoshirt];
 
-  const settings = {
+ // In your Tsam.tsx component
+const settings = {
     dots: true,
     infinite: true,
     speed: 500,
@@ -90,17 +91,19 @@ const Tsam = () => {
     centerPadding: isMobile ? '5%' : '0',
     focusOnSelect: true,
     arrows: !isMobile,
+    vertical: isMobile, // New - makes slides vertical on mobile
+    verticalSwiping: isMobile, // New - enables vertical swiping
     beforeChange: (current, next) => {
       gsap.to('.slick-slide img', {
         scale: isMobile ? 0.8 : 1,
         duration: 0.3,
         ease: 'power1.out'
       });
-      setSelectedImage(null); // Deselect when sliding
+      setSelectedImage(null);
     },
     afterChange: (current) => {
-      gsap.to('.slick-center img', {
-        scale: isMobile ? 1.5 : 1.3,
+      gsap.to(isMobile ? '.slick-slide img' : '.slick-center img', {
+        scale: isMobile ? 1 : 1.3,
         duration: 0.5,
         ease: 'power4.in',
       });
@@ -117,11 +120,13 @@ const Tsam = () => {
       {
         breakpoint: 768,
         settings: {
-          slidesToShow: 3,
+          slidesToShow: 1, // Show one slide at a time on mobile
           slidesToScroll: 1,
-          centerMode: true,
-          centerPadding: '15%',
-          arrows: false
+          vertical: true,
+          verticalSwiping: true,
+          centerMode: false,
+          arrows: false,
+          dots: false // Hide dots for cleaner vertical scroll
         }
       }
     ]
