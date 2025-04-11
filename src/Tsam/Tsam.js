@@ -1,10 +1,17 @@
 import React, { useEffect, useRef, useState } from 'react';
 import lottie from 'lottie-web';
 import gsap from 'gsap';
-import Slider from 'react-slick';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Navigation, Pagination, Mousewheel } from 'swiper/modules';
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
+import { Player } from '@lottiefiles/react-lottie-player'; // Import Lottie player
 
 import './tsam.css';
 import sign from './jsons/sign.json';
+import { ReactComponent as WhatsAppIcon } from './icons/whatsapp.svg';
+
 import tsign from './pics/tsign.png';
 import tjump from './pics/tjump.png';
 import logoshirt from './pics/logoshirt.png';
@@ -12,9 +19,9 @@ import thinker from './pics/thinker.png';
 
 const Tsam = () => {
   const lottieRef = useRef(null);
-  const sliderRef = useRef(null);
   const contref = useRef(null);
-
+  const [lastTapTime, setLastTapTime] = useState(0);
+  const tapTimeout = useRef(null);
   const [imagesLoaded, setImagesLoaded] = useState(false);
   const [showSlideshow, setshowSlideshow] = useState(true);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
@@ -22,11 +29,11 @@ const Tsam = () => {
 
   const whatsappNumber = "256782240185";
   const defaultMessage = "Hi, I'm interested in your Tsam shirts!";
-const lastTap = useRef(0);
-
 
   useEffect(() => {
-    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
@@ -37,7 +44,7 @@ const lastTap = useRef(0);
       return new Promise((resolve, reject) => {
         const img = new Image();
         img.src = url;
-        img.onload = () => resolve();
+        img.onload = resolve;
         img.onerror = reject;
       });
     });
@@ -69,90 +76,24 @@ const lastTap = useRef(0);
     return () => clearTimeout(timeout);
   }, []);
 
-  const handleWhatsAppClick = (e: React.MouseEvent) => {
+  const handleWhatsAppClick = (e) => {
     e.stopPropagation();
     const url = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(defaultMessage)}`;
     window.open(url, '_blank');
     setSelectedImage(null);
   };
 
-
   const handleDoubleClick = (index) => {
-    if (isMobile) {
-      const now = Date.now();
-      const DOUBLE_TAP_DELAY = 300; // ms
-      if (now - lastTap.current < DOUBLE_TAP_DELAY) {
-        // double tap detected
-        setSelectedImage(selectedImage === index ? null : index);
-      }
-      lastTap.current = now;
-    } else {
-      // regular desktop double click
-      setSelectedImage(selectedImage === index ? null : index);
-    }
+    setSelectedImage(selectedImage === index ? null : index);
   };
-  
-
   const images = [tsign, thinker, tjump, logoshirt];
 
- // In your Tsam.tsx component
-const settings = {
-    dots: true,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 3,
-    slidesToScroll: 1,
-    centerMode: true,
-    centerPadding: isMobile ? '5%' : '0',
-    focusOnSelect: true,
-    arrows: true,
-    vertical: isMobile, // New - makes slides vertical on mobile
-    verticalSwiping: true, // New - enables vertical swiping
-    beforeChange: (current, next) => {
-      gsap.to('.slick-slide img', {
-        scale: isMobile ? 0.8 : 1,
-        duration: 0.3,
-        ease: 'power1.out'
-      });
-      setSelectedImage(null);
-    },
-    afterChange: (current) => {
-      gsap.to(isMobile ? '.slick-slide img' : '.slick-center img', {
-        scale: isMobile ? 1 : 1.3,
-        duration: 0.5,
-        ease: 'power4.in',
-      });
-    },
-    responsive: [
-      {
-        breakpoint: 1024,
-        settings: {
-          slidesToShow: 3,
-          slidesToScroll: 1,
-          centerPadding: '10%'
-        }
-      },
-      {
-        breakpoint: 768,
-        settings: {
-          slidesToShow: 1, // Show one slide at a time on mobile
-          slidesToScroll: 1,
-          vertical: true,
-          verticalSwiping: true,
-          centerMode: false,
-          arrows: false,
-          dots: false // Hide dots for cleaner vertical scroll
-        }
-      }
-    ]
-  };
-
   return (
-    <div className="tsam-container" style={{ overflowY: 'auto' }}>
+    <div className="tsam-container" style={{ overflowY: 'auto', userSelect: 'none' }}>
       {showSlideshow && (
         <div style={{ position: 'absolute', zIndex: 5 }} ref={lottieRef} className="lottie-holder" />
       )}
-  
+
       <div
         ref={contref}
         style={{
@@ -170,68 +111,97 @@ const settings = {
           <h1 style={{ fontSize: isMobile ? '2rem' : '2.8rem' }}>Tsam shirts</h1>
           <div className="tsam-underline"></div>
         </div>
-  
-        <div className="carousel-container" style={{ 
-          width: isMobile ? '130%' : '80%',
-          height: isMobile ? '74vh' : '60%'
-        }}>
-          <Slider {...settings} ref={sliderRef} className="centered-slider">
-            {images.map((img, index) => (
-              <div
-                key={index}
-                className="slide"
-                onDoubleClick={() => handleDoubleClick(index)} // ✅
-                style={{ position: 'relative' }}
-              >
-                <img
-                  src={img}
-                  alt={`Tsam shirt ${index + 1}`}
-                  style={{
-                    width: isMobile ? '200px' : '300px',
-                    height: isMobile ? 'auto' : '300px',
-                    maxWidth: '300px',
-                    margin: '10px 10px',
-                    transition: 'transform 0.5s ease',
-                    display: 'block',
-                    marginLeft: 'auto',
-                    marginRight: 'auto',
-                  }}
-                />
-                {selectedImage === index && (
-                  <button
-                    className="whatsapp-button"
-                    onClick={handleWhatsAppClick}
-                    style={{
-                      position: 'absolute',
-                      top: '50%',
-                      left: '50%',
-                      transform: 'translate(-50%, 200%)',
-                      padding: '10px 20px',
-                      backgroundColor: 'green',
-                      color: 'white',
-                      border: 'none',
-                      borderRadius: '5px',
-                      cursor: 'pointer',
-                      zIndex: 10,
-                    }}
-                  >
-                    Contact via WhatsApp
-                  </button>
-                )}
-              </div>
-            ))}
-          </Slider>
+
+        <div
+          className="carousel-container"
+          style={{
+            width: isMobile ? '100%' : '70%',
+            height: isMobile ? '60vh' : 'auto',
+            padding: isMobile ? '20px 0' : '0'
+          }}
+        >
+          <Swiper
+            direction={isMobile ? 'vertical' : 'horizontal'}
+            slidesPerView={isMobile ? 1.5 : 3}
+            spaceBetween={isMobile ? 20 : 30}
+            loop={true}
+            mousewheel={true}
+            navigation={!isMobile}
+            pagination={{ clickable: true }}
+            modules={[Navigation, Pagination, Mousewheel]}
+            style={{
+              height: '100%',
+              padding: isMobile ? '20px 0' : '0'
+            }}
+          >
+     {images.map((img, index) => (
+  <SwiperSlide key={index}>
+    <div
+      className="slide"
+      onDoubleClick={() => handleDoubleClick(index)}
+      onClick={(e) => e.preventDefault()}
+      style={{
+        position: 'relative',
+        textAlign: 'center',
+        height: isMobile ? 'auto' : '100%',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        touchAction: 'manipulation',
+      }}
+    >
+      <img
+        src={img}
+        alt={`Tsam shirt ${index + 1}`}
+        style={{
+          width: isMobile ? '80%' : '500px',
+          height: 'auto',
+          maxHeight: isMobile ? '50vh' : 'none',
+          objectFit: 'contain',
+          transition: 'transform 0.5s ease',
+          display: 'block',
+          margin: '0 auto',
+          userSelect: 'none',
+          WebkitUserSelect: 'none',
+        }}
+      />
+      {/* WhatsApp Button only appears after double-click */}
+      {selectedImage === index && (
+        <button
+          className="whatsapp-button"
+          onClick={handleWhatsAppClick}
+          style={{
+            position: 'absolute',
+            bottom: '10px',
+            left: '50%',
+            transform: 'translateX(-50%)',
+          }}
+        >
+             <WhatsAppIcon
+            style={{
+              width: '30px', // Set the width of the icon
+              height: '30px', // Set the height of the icon
+              marginRight: '8px',
+            }}
+          />
+          Contact on WhatsApp
+        </button>
+      )}
+    </div>
+  </SwiperSlide>
+))}
+
+          </Swiper>
         </div>
       </div>
       <footer className="tsam-footer">
-  <h3>Instructions</h3>
-  <ol>
-    <li>Swipe to view clothes</li>
-    <li>Double tap the t-shirt you're interested in</li>
-    <li>Tap the WhatsApp button</li>
-  </ol>
-</footer>
-
+        <h3>Instructions</h3>
+        <ol>
+          <li>Swipe to view clothes</li>
+          <li>Double tap the t-shirt you're interested in</li>
+          <li>Tap the WhatsApp button</li>
+        </ol>
+      </footer>
     </div>
   );
 };

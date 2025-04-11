@@ -8,7 +8,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 
 .lottie-holder {
@@ -18,7 +18,6 @@
   justify-content: center;
   align-items: center;
   overflow: visible !important;
-
 }
 
 .carousel-container {
@@ -31,23 +30,14 @@
   box-sizing: border-box;
 }
 
-.centered-slider {
-  width: 100%;
-  height: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
 .slide {
-  padding: 0 7.5px; /* Half of desired spacing (15px/2) */
   display: flex !important;
   justify-content: center;
   align-items: center;
   height: 100%;
   transition: transform 0.1s ease;
   outline: none;
-  position: relative; /* This is crucial for absolute positioning of children */
-
+  position: relative;
 }
 
 .slide img {
@@ -61,41 +51,33 @@
   transform: scale(1);
 }
 
-.slick-center {
-  padding: 0 7.5px !important; /* Must match .slide padding */
+/* Mobile-specific styles */
+@media (max-width: 768px) {
+  .carousel-container {
+    width: 100%;
+    height: 60vh;
+    padding: 20px 0;
+  }
+  
+  .slide img {
+    max-width: 80%;
+    max-height: 50vh;
+  }
+  
+  .swiper {
+    height: 100%;
+    padding: 20px 0;
+  }
+  
+  .swiper-slide {
+    height: auto !important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 }
 
-/* Slick overrides */
-.slick-slider {
-  width: 100%;
-  height: 100%;
-}
-
-.slick-list {
-  height: 100%;
-  padding: 40px 0 !important; /* No horizontal padding here */
-  margin: 0 -7.5px; /* Negative margin to compensate for slide padding */
-}
-
-.slick-track {
-  display: flex;
-  align-items: center;
-  height: 100%;
-}
-
-.slick-dots {
-  bottom: -40px;
-}
-
-.slick-dots li button:before {
-  font-size: 15px;
-  color: #454545;
-}
-
-.slick-dots li.slick-active button:before {
-  color: #0031b8;
-}
-
+/* Rest of your existing CSS remains the same */
 .tsam-heading {
   text-align: center;
   margin-top: 40px;
@@ -120,155 +102,26 @@
   border-radius: 2px;
 }
 
-/* Add to your CSS file */
-.image-container {
-  position: relative;
-  cursor: pointer;
-}
-
-.image-container.selected img {
-  filter: brightness(0.7);
-  transition: filter 0.3s ease;
-}
-
-
-
-/* WhatsApp button styles - updated for perfect centering */
 .whatsapp-button {
-  position: absolute;
-  top: 100%;
-  left: 50%;
-  transform: translate(-90%, -80%);
-  background-color: #25D366;
+  background-color: #009035;
   color: white;
   border: none;
-  padding: 12px 20px;
+  padding: 2px 20px;
   border-radius: 25px;
   font-weight: bold;
   cursor: pointer;
   z-index: 10;
   display: flex;
-  gap: 8px;
+  gap: 5px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   white-space: nowrap;
-  align-items: flex-end;
-
+  align-items: center; /* Center vertically */
+  justify-content: center; /* Center horizontally */
 }
+
 
 .whatsapp-button:hover {
   background-color: #128C7E;
-}
-
-.whatsapp-button:before {
-  content: '';
-  display: inline-block;
-  width: 20px;
-  height: 20px;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 448 512'%3E%3Cpath fill='white' d='M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L4 908.1c-3.1 6.3-3.1 13.7 0 20.5 6.3 12.6 26.4 25.2 39.6 25.2 5.1 0 10.2-1.2 14.3-3.7 4.1-2.5 66.7-44.1 117.9-95.3 32.4 17.7 68.9 27 106.1 27 122.4 0 222-99.6 222-222 0-59.3-25.2-115-68.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 763.1l18.3-69.8-4-6.7C71.1 656.2 62.3 623.7 62.3 590.5c0-77.7 63.3-141 141-141s141 63.3 141 141-63.3 141-141 141zm101-141c0 26.5-21.5 48-48 48s-48-21.5-48-48 21.5-48 48-48 48 21.5 48 48z'/%3E%3C/svg%3E");
-  background-size: contain;
-  background-repeat: no-repeat;
-}
-
-/* Update your tsam.css with these mobile-specific changes */
-@media (max-width: 768px) {
-  .carousel-container {
-    width: 100%;
-    height: 90vh; /* More height for vertical scrolling */
-    padding: 0;
-    margin-top: -10px;
-  }
-
-  .slick-slider {
-    height: 100%;
-  }
-
-  .slick-list {
-    height: 100% !important;
-    padding: 0 !important;
-    margin: 0;
-  }
-
-  .slick-track {
-    display: block; /* Change from flex to block for vertical layout */
-    height: 100%;
-  }
-
-  .slide {
-    padding: -5px 0;
-    height: auto;
-    margin: 0 auto;
-  }
-
-  .slide img {
-    max-width: 250px;
-    margin: 0 auto;
-    transition: all 0.3s ease;
-  }
-
-  .slick-slide {
-    transform: scale(0.9);
-    opacity: 0.7;
-    transition: all 0.3s ease;
-  }
-
-  .slick-slide.slick-active {
-    transform: scale(1);
-    opacity: 1;
-  }
-
-  .tsam-heading {
-    position: static;
-    transform: none;
-    margin-top: -40px;
-    margin-bottom: 10px;
-  }
-
-  .whatsapp-button {
-    transform: translate(-50%, -50%); /* Center button properly */
-    font-size: 10px;
-    padding: 10px 15px;
-  }
-  .slick-slider {
-    scroll-snap-type: y mandatory;
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
-  }
-
-  .slide {
-    scroll-snap-align: center;
-  }
-    .slide.selected {
-    transform: scale(1.05);
-    transition: transform 0.3s ease;
-  }
-  
-  .slide.selected img {
-    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
-  }
-  
-.tsam-footer {
-  position: fixed;
-  bottom: 0;
-  left: 50%;
-  width: 100%;
-  background-color: #f7f7f7;
-  padding: 10px 20px;
-  box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.1);
-  font-size: 0.9rem;
-  color: #333;
-  z-index: 100;
-}
-
-.tsam-footer h3 {
-  margin: 0;
-  font-size: 1rem;
-  font-weight: 600;
-}
-
-.tsam-footer ol {
-  margin: 5px 0 0 20px;
-  padding-left: 0;
-}
 }
 
 .tsam-footer {
@@ -286,7 +139,6 @@
 
 .tsam-footer h3 {
   margin: 0;
-  left:50%;
   font-size: 1rem;
   font-weight: 600;
 }
@@ -294,4 +146,14 @@
 .tsam-footer ol {
   margin: 5px 0 0 20px;
   padding-left: 0;
+}
+.slide {
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+}
+
+@media (hover: none) and (pointer: coarse) {
+  .slide {
+    touch-action: manipulation;
+  }
 }
