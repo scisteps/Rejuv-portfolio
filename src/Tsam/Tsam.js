@@ -12,10 +12,10 @@ import './tsam.css';
 import sign from './jsons/sign.json';
 import { ReactComponent as WhatsAppIcon } from './icons/whatsapp.svg';
 
-import tsign from './pics/tsign.png';
-import tjump from './pics/tjump.png';
-import logoshirt from './pics/logoshirt.png';
-import thinker from './pics/thinker.png';
+import signedtshirt from './pics/tsign.png';
+import signedsweatshirt from './pics/tjump.png';
+import tshirtwithlogo from './pics/logoshirt.png';
+import thinkoutofbox from './pics/thinker.png';
 
 const Tsam = () => {
   const lottieRef = useRef(null);
@@ -39,7 +39,7 @@ const Tsam = () => {
   }, []);
 
   useEffect(() => {
-    const imageUrls = [tsign, tjump, logoshirt, thinker];
+    const imageUrls = [signedtshirt, signedsweatshirt, tshirtwithlogo, thinkoutofbox];
     const loadPromises = imageUrls.map(url => {
       return new Promise((resolve, reject) => {
         const img = new Image();
@@ -75,13 +75,15 @@ const Tsam = () => {
     }, 2100);
     return () => clearTimeout(timeout);
   }, []);
-
   const handleWhatsAppClick = (e) => {
     e.stopPropagation();
-    const url = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(defaultMessage)}`;
+    const itemName = itemNames[selectedImage] || "Tsam item";
+    const message = `Hi, I'm interested in the '${itemName}' from Tsam!`;
+    const url = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
     window.open(url, '_blank');
     setSelectedImage(null);
   };
+  
 
   const handleDoubleClick = (index) => {
     setSelectedImage(selectedImage === index ? null : index);
@@ -96,8 +98,14 @@ const Tsam = () => {
     }
     setLastTapTime(currentTime);
   };
-  const images = [tsign, thinker, tjump, logoshirt];
-
+  const images = [signedtshirt, signedsweatshirt, tshirtwithlogo, thinkoutofbox];
+  const itemNames = [
+    "Signed T-shirt",
+    "Think Out of the Box T-shirt",
+    "Signed Sweatshirt",
+    "T-shirt with Logo"
+  ];
+  
   return (
     <div className="tsam-container" style={{ overflowY: 'auto', userSelect: 'none' }}>
       {showSlideshow && (
