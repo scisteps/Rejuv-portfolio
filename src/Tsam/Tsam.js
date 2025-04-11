@@ -16,10 +16,17 @@ import signedtshirt from './pics/tsign.png';
 import signedsweatshirt from './pics/tjump.png';
 import tshirtwithlogo from './pics/logoshirt.png';
 import thinkoutofbox from './pics/thinker.png';
+import fridayfeeling from './pics/fridayfeeling.png';
+import fridaynightlights from './pics/fridaynightlights.png';
+
+import weekend from './pics/weekend.png';
 
 const Tsam = () => {
   const lottieRef = useRef(null);
   const contref = useRef(null);
+  const footeref = useRef(null);
+
+  
   const [lastTapTime, setLastTapTime] = useState(0);
   const tapTimeout = useRef(null);
   const [imagesLoaded, setImagesLoaded] = useState(false);
@@ -39,7 +46,7 @@ const Tsam = () => {
   }, []);
 
   useEffect(() => {
-    const imageUrls = [signedtshirt, signedsweatshirt, tshirtwithlogo, thinkoutofbox];
+    const imageUrls = [signedtshirt, signedsweatshirt, tshirtwithlogo, thinkoutofbox,fridayfeeling,weekend];
     const loadPromises = imageUrls.map(url => {
       return new Promise((resolve, reject) => {
         const img = new Image();
@@ -72,6 +79,11 @@ const Tsam = () => {
         duration: 1,
         delay: 0.2,
       });
+      gsap.to(footeref.current, {
+        opacity: 1,
+        duration: 1,
+        delay: 0.2,
+      });
     }, 2100);
     return () => clearTimeout(timeout);
   }, []);
@@ -98,12 +110,14 @@ const Tsam = () => {
     }
     setLastTapTime(currentTime);
   };
-  const images = [signedtshirt, signedsweatshirt, tshirtwithlogo, thinkoutofbox];
+  const images = [signedtshirt, signedsweatshirt, tshirtwithlogo, thinkoutofbox,fridayfeeling,weekend];
   const itemNames = [
     "Signed T-shirt",
     "Think Out of the Box T-shirt",
     "Signed Sweatshirt",
-    "T-shirt with Logo"
+    "T-shirt with Logo",
+    "friday-feeling",
+    'weekend tshirt'
   ];
   
   return (
@@ -215,12 +229,16 @@ const Tsam = () => {
         </div>
       </div>
       <footer className="tsam-footer">
+        <div ref={footeref} style={{opacity:0}}>
+
         <h3>Instructions</h3>
         <ol>
           <li>Swipe to view clothes</li>
           <li>Double tap the t-shirt you're interested in</li>
           <li>Tap the WhatsApp button</li>
         </ol>
+        </div>
+
       </footer>
     </div>
   );

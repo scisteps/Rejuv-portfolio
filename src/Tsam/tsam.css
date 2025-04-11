@@ -54,7 +54,7 @@
 /* Mobile-specific styles */
 @media (max-width: 768px) {
   .tsam-container {
-    top: -7%;
+    top: -10%;
 
   }
   .carousel-container {
