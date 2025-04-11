@@ -141,7 +141,7 @@ const Tsam = () => {
             modules={[Navigation, Pagination, Mousewheel]}
             style={{
               height: '100%',
-              padding: isMobile ? '20px 0' : '0'
+              padding: isMobile ? '40px 0' : '0'
             }}
           >
      {images.map((img, index) => (

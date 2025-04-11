@@ -54,7 +54,7 @@
 /* Mobile-specific styles */
 @media (max-width: 768px) {
   .tsam-container {
-    top: -10%;
+    top: -7%;
 
   }
   .carousel-container {
@@ -148,6 +148,7 @@
   font-size: 0.9rem;
   color: #333;
   z-index: 100;
+  padding: 20px;
 }
 
 .tsam-footer h3 {
