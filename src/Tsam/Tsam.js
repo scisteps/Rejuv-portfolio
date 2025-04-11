@@ -17,7 +17,6 @@ import signedsweatshirt from './pics/tjump.png';
 import tshirtwithlogo from './pics/logoshirt.png';
 import thinkoutofbox from './pics/thinker.png';
 import fridayfeeling from './pics/fridayfeeling.png';
-import fridaynightlights from './pics/fridaynightlights.png';
 
 import weekend from './pics/weekend.png';
 
