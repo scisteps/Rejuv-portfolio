@@ -180,7 +180,7 @@ const settings = {
               <div
                 key={index}
                 className="slide"
-                onClick={() => handleDoubleClick(index)} // use onClick instead
+                onDoubleClick={() => handleDoubleClick(index)} // ✅
                 style={{ position: 'relative' }}
               >
                 <img
@@ -205,7 +205,7 @@ const settings = {
                       position: 'absolute',
                       top: '50%',
                       left: '50%',
-                      transform: 'translate(-50%, -50%)',
+                      transform: 'translate(-50%, 200%)',
                       padding: '10px 20px',
                       backgroundColor: 'green',
                       color: 'white',
@@ -223,6 +223,15 @@ const settings = {
           </Slider>
         </div>
       </div>
+      <footer className="tsam-footer">
+  <h3>Instructions</h3>
+  <ol>
+    <li>Swipe to view clothes</li>
+    <li>Double tap the t-shirt you're interested in</li>
+    <li>Tap the WhatsApp button</li>
+  </ol>
+</footer>
+
     </div>
   );
 };

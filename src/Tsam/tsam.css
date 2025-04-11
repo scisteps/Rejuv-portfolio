@@ -136,9 +136,9 @@
 /* WhatsApp button styles - updated for perfect centering */
 .whatsapp-button {
   position: absolute;
-  top: 50%;
+  top: 100%;
   left: 50%;
-  transform: translate(-90%, -50%);
+  transform: translate(-90%, -80%);
   background-color: #25D366;
   color: white;
   border: none;
@@ -148,10 +148,11 @@
   cursor: pointer;
   z-index: 10;
   display: flex;
-  align-items: center;
   gap: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   white-space: nowrap;
+  align-items: flex-end;
+
 }
 
 .whatsapp-button:hover {
@@ -224,7 +225,7 @@
 
   .whatsapp-button {
     transform: translate(-50%, -50%); /* Center button properly */
-    font-size: 14px;
+    font-size: 10px;
     padding: 10px 15px;
   }
   .slick-slider {
@@ -244,5 +245,53 @@
   .slide.selected img {
     box-shadow: 0 8px 20px rgba(0,0,0,0.2);
   }
+  
+.tsam-footer {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  width: 100%;
+  background-color: #f7f7f7;
+  padding: 10px 20px;
+  box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.1);
+  font-size: 0.9rem;
+  color: #333;
+  z-index: 100;
 }
 
+.tsam-footer h3 {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.tsam-footer ol {
+  margin: 5px 0 0 20px;
+  padding-left: 0;
+}
+}
+
+.tsam-footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-color: #f7f7f7;
+  padding: 10px 20px;
+  box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.1);
+  font-size: 0.9rem;
+  color: #333;
+  z-index: 100;
+}
+
+.tsam-footer h3 {
+  margin: 0;
+  left:50%;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.tsam-footer ol {
+  margin: 5px 0 0 20px;
+  padding-left: 0;
+}
