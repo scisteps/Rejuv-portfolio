@@ -22,6 +22,8 @@ const Tsam = () => {
 
   const whatsappNumber = "256782240185";
   const defaultMessage = "Hi, I'm interested in your Tsam shirts!";
+const lastTap = useRef(0);
+
 
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth < 768);
@@ -74,9 +76,22 @@ const Tsam = () => {
     setSelectedImage(null);
   };
 
+
   const handleDoubleClick = (index) => {
-    setSelectedImage(selectedImage === index ? null : index);
+    if (isMobile) {
+      const now = Date.now();
+      const DOUBLE_TAP_DELAY = 300; // ms
+      if (now - lastTap.current < DOUBLE_TAP_DELAY) {
+        // double tap detected
+        setSelectedImage(selectedImage === index ? null : index);
+      }
+      lastTap.current = now;
+    } else {
+      // regular desktop double click
+      setSelectedImage(selectedImage === index ? null : index);
+    }
   };
+  
 
   const images = [tsign, thinker, tjump, logoshirt];
 
@@ -90,9 +105,9 @@ const settings = {
     centerMode: true,
     centerPadding: isMobile ? '5%' : '0',
     focusOnSelect: true,
-    arrows: !isMobile,
+    arrows: true,
     vertical: isMobile, // New - makes slides vertical on mobile
-    verticalSwiping: isMobile, // New - enables vertical swiping
+    verticalSwiping: true, // New - enables vertical swiping
     beforeChange: (current, next) => {
       gsap.to('.slick-slide img', {
         scale: isMobile ? 0.8 : 1,
@@ -158,14 +173,14 @@ const settings = {
   
         <div className="carousel-container" style={{ 
           width: isMobile ? '130%' : '80%',
-          height: isMobile ? '70vh' : '60%'
+          height: isMobile ? '74vh' : '60%'
         }}>
           <Slider {...settings} ref={sliderRef} className="centered-slider">
             {images.map((img, index) => (
               <div
                 key={index}
                 className="slide"
-                onDoubleClick={() => handleDoubleClick(index)}
+                onClick={() => handleDoubleClick(index)} // use onClick instead
                 style={{ position: 'relative' }}
               >
                 <img
