@@ -1,6 +1,6 @@
 .tsam-container {
   position: fixed;
-  top: 0;
+  top: 0%;
   left: 0;
   width: 100vw;
   height: 100vh;
@@ -53,6 +53,10 @@
 
 /* Mobile-specific styles */
 @media (max-width: 768px) {
+  .tsam-container {
+    top: -10%;
+
+  }
   .carousel-container {
     width: 100%;
     height: 60vh;
@@ -74,6 +78,22 @@
     display: flex;
     justify-content: center;
     align-items: center;
+  }
+  .whatsapp-button {
+    background-color: #009035;
+    color: white;
+    border: none;
+    padding: 2px 20px;
+    border-radius: 25px;
+    font-weight: bold;
+    cursor: pointer;
+    z-index: 10;
+    display: flex;
+    gap: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    white-space: nowrap;
+    align-items: center; /* Center vertically */
+    justify-content: center; /* Center horizontally */
   }
 }
 

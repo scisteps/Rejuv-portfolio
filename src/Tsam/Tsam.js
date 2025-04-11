@@ -122,7 +122,7 @@ const Tsam = () => {
         >
           <Swiper
             direction={isMobile ? 'vertical' : 'horizontal'}
-            slidesPerView={isMobile ? 1.5 : 3}
+            slidesPerView={isMobile ? 2 : 3}
             spaceBetween={isMobile ? 20 : 30}
             loop={true}
             mousewheel={true}
@@ -143,7 +143,7 @@ const Tsam = () => {
       style={{
         position: 'relative',
         textAlign: 'center',
-        height: isMobile ? 'auto' : '100%',
+        height: isMobile ? '100%' : '100%',
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
@@ -156,7 +156,7 @@ const Tsam = () => {
         style={{
           width: isMobile ? '80%' : '500px',
           height: 'auto',
-          maxHeight: isMobile ? '50vh' : 'none',
+          maxHeight: isMobile ? '80vh' : 'none',
           objectFit: 'contain',
           transition: 'transform 0.5s ease',
           display: 'block',
