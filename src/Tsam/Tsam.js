@@ -86,6 +86,16 @@ const Tsam = () => {
   const handleDoubleClick = (index) => {
     setSelectedImage(selectedImage === index ? null : index);
   };
+  const handleDoubleTap = (index) => {
+    const currentTime = new Date().getTime();
+    const tapLength = currentTime - lastTapTime;
+    
+    if (tapLength < 300 && tapLength > 0) {
+      // Double tap detected
+      setSelectedImage(selectedImage === index ? null : index);
+    }
+    setLastTapTime(currentTime);
+  };
   const images = [tsign, thinker, tjump, logoshirt];
 
   return (
@@ -138,6 +148,8 @@ const Tsam = () => {
   <SwiperSlide key={index}>
     <div
       className="slide"
+        onTouchStart={() => handleDoubleTap(index)}
+
       onDoubleClick={() => handleDoubleClick(index)}
       onClick={(e) => e.preventDefault()}
       style={{
