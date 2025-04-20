@@ -230,11 +230,9 @@ const Tsam = () => {
       <footer className="tsam-footer">
         <div ref={footeref} style={{opacity:0}}>
 
-        <h3>Instructions</h3>
+        <h3>Want to know more?</h3>
         <ol>
-          <li>Swipe to view clothes</li>
-          <li>Double tap the t-shirt you're interested in</li>
-          <li>Tap the WhatsApp button</li>
+          Double tap shirt to contact us 
         </ol>
         </div>
 
