@@ -10,14 +10,16 @@ import { Player } from '@lottiefiles/react-lottie-player';
 
 import './tsam.css';
 import sign from './jsons/sign.json';
+import tsamlogo from './jsons/tsamlogo.json';
+
 import { ReactComponent as WhatsAppIcon } from './icons/whatsapp.svg';
 
 import signedtshirt from './pics/tsign.png';
 import signedsweatshirt from './pics/tjump.png';
 import tshirtwithlogo from './pics/logoshirt.png';
 import thinkoutofbox from './pics/thinker.png';
-import fridayfeeling from './pics/fridayfeeling.png';
-import weekend from './pics/weekend.png';
+import fridayfeeling from './pics/friday.jpg';
+import weekend from './pics/weekendwhite.jpg';
 import tshirtboxblue from './pics/tshirt box blue.jpg';
 import tshirtboxpink from './pics/tshirt box pink.jpg';
 import tshirtcanvaswhite from './pics/tshirt canvas white.jpg';
@@ -44,28 +46,88 @@ import caplogopink from './pics/cap sign pink.jpg';
 import capsignred from './pics/cap sign red.jpg';
 import sweatshirtbox from './pics/sweatshirt box blue.jpg';
 import sweatshirtboxred from './pics/sweatshirt outbox red.jpg';
+import ikigaiblue from './pics/Ikigaiblue.jpg';
+import ikigaibrown from './pics/ikigaibrown.jpg';
+import ikigaiblack from './pics/ikigaiblack.jpg';
+import kaizenblue from './pics/kaizenblue.jpg';
+import kaizenbrown from './pics/kaizenbrown.jpg';
+import kaizenwhite from './pics/kaizenwhite.jpg';
+import jumperboxblue from './pics/jumper box blue.jpg';
+import jumperboxpink from './pics/jumper box pink.jpg';
+import jumperboxred from './pics/jumper box red.jpg';
+import jumpercanvasred from './pics/jumper canvas red.jpg';
+import jumperlogodarkblue from './pics/jumper logo darkblue.jpg';
+import jumperlogopink from './pics/jumper logo pink.jpg';
+import jumperlogored from './pics/jumper logo red.jpg';
+import jumpersignred from './pics/jumper sign red.jpg';
+import jumpersignpink from './pics/jumper sign pink.jpg';
+import jumpersignblue from './pics/jumper sign blue.jpg';
+import noworkwhite from './pics/no work white.jpg';
+import noworkblack from './pics/no work black.jpg';
+import noworkcap from './pics/noworkcap.jpg';
+import noworkcapblack from './pics/noworkcapblack.jpg';
+import ikigaicap from './pics/Ikigai cap.jpg';
+import ikigaicapwhite from './pics/ikigaiw.jpg';
+import chillingcontrollerjumper from './pics/chilling controller.jpg';
+import chillingboysjumper from './pics/chilling with boys jumper.jpg';
+import chillingtshirtboysblack from './pics/chilling tshirt boys black.jpg';
+import chillingtshirtgrey from './pics/chilling tshirt boys grey.jpg';
+import chillingtshirtboysblue from './pics/chilling tshirt boys blue.jpg';
+import chillingboys from './pics/chilling tshirt boys.jpg';
+import chillingcontrollerblue from './pics/chilling tshirt controller blue.jpg';
+import chillingcontrollerred from './pics/chilling tshirt controller red.jpg';
+import chillingcontrollerwhite from './pics/chilling tshirt controller.jpg';
+import chillingcap from './pics/chillingcapboys.jpg';
+import capcontroller from './pics/cap controller.jpg';
 
-// Color variants mapping
+import moe from './pics/moe.jpg';
+import pasasweatshirt from './pics/pasasweatshirt.jpg';
+import pasasweatshirtblue from './pics/pasasweatshirtblue.jpg';
+import pasasweatshirtred from './pics/pasasweatshirtred.jpg';
+import pasatshirtw from './pics/pasatshirtw.jpg';
+import moejumper from './pics/moejumper.jpg';
+import noworkblackt from './pics/no work black.jpg';
+import moecap from './pics/moe cap.jpg';
+import moecapfront from './pics/moecapfront.jpg';
+import moecaptext from './pics/moecaptext.jpg';
+
+// Color variants mapping - Fixed all variants
 const colorVariants = {
   signedtshirt: [signedtshirt, tshirtsignblue, tshirtsignpink, tshirtsignyellow],
-  tshirtwithlogo: [tshirtwithlogo, tshirtlogowhite, tshirtlogoyellow, tshirtlogopink],
-  thinkoutofbox: [thinkoutofbox, tshirtboxblue, tshirtboxpink],
+  tshirtwithlogo: [tshirtwithlogo, tshirtlogowhite, tshirtlogoyellow, tshirtlogopink, tshirtlogobigpink],
+  thinkoutofbox: [thinkoutofbox, tshirtboxblue, tshirtboxpink, tshirtcanvaswhite, tshirtcanvaswhite2],
   fridayfeeling: [fridayfeeling],
   weekend: [weekend],
-  
+  noworkwhite: [noworkwhite, noworkblackt],
+  chillingtshirtgrey: [chillingtshirtgrey, chillingtshirtboysblack, chillingboys, pasatshirtw, chillingtshirtboysblue, chillingcontrollerblue, chillingcontrollerred, chillingcontrollerwhite],
+  moe: [moe],
+  ikigaiblue: [ikigaiblue, ikigaibrown, ikigaiblack],
+  kaizenwhite: [kaizenwhite, kaizenbrown, kaizenblue],
+
   signedsweatshirt: [signedsweatshirt, sweatshirtsignpink, sweatshirtsigndarkblue, sweatshirtsignred],
   logosweatshirt: [logosweatshirt, sweatshirtlogopink, sweatshirtlogoyellow],
   sweatshirtbox: [sweatshirtbox, sweatshirtboxred, sweatshirtboxyellow],
+  jumpersignpink: [jumpersignpink, jumpersignred, jumpersignblue],
+  jumperlogodarkblue: [jumperlogodarkblue, jumperlogopink, jumperlogored],
+  jumperboxblue: [jumperboxblue, jumperboxpink, jumperboxred, jumpercanvasred],
+  chillingcontrollerjumper: [chillingcontrollerjumper, chillingboysjumper],
+  pasasweatshirt: [pasasweatshirt, pasasweatshirtblue, pasasweatshirtred],
+  moejumper: [moejumper],
 
   designercap: [capsign, capsignred, capsigngreen, capsignblue],
   weekendcap: [caplogo, caplogopink],
-  casualcap: [capsign, capsignred]
+  casualcap: [capsign, capsignred],
+  noworkcap: [noworkcap, noworkcapblack],
+  ikigaicap: [ikigaicap, ikigaicapwhite],
+  chillingcap: [chillingcap, capcontroller],
+  moecapfront: [moecapfront, moecap, moecaptext]
 };
 
 const Tsam = () => {
   const lottieRef = useRef(null);
   const contref = useRef(null);
   const footeref = useRef(null);
+  const logoRef = useRef(null);
 
   const [lastTapTime, setLastTapTime] = useState(0);
   const [imagesLoaded, setImagesLoaded] = useState(false);
@@ -83,12 +145,6 @@ const Tsam = () => {
     caps: '#9fedd3'
   };
 
-  // Category colors
-  const categoryColors = {
-    premium: '#cbb4a4',
-    economy: '#7d99c4'
-  };
-
   // Fixed prices by product type
   const prices = {
     tshirts: {
@@ -96,12 +152,12 @@ const Tsam = () => {
       premium: '35,000/='
     },
     jumpers: {
-      economy: '45,000/=',
-      premium: '60,000/='
+      sweatshirt: '45,000/=',
+      jumper: '60,000/='
     },
     caps: {
-      economy: '25,000/=',
-      premium: '40,000/='
+      standard: '15,000/=',
+      premium: '30,000/='
     }
   };
 
@@ -119,17 +175,32 @@ const Tsam = () => {
       { id: 'tshirtwithlogo', image: tshirtwithlogo, name: "T-shirt with Logo" },
       { id: 'thinkoutofbox', image: thinkoutofbox, name: "Think Out of the Box" },
       { id: 'fridayfeeling', image: fridayfeeling, name: "Friday Feeling" },
+      { id: 'ikigaiblue', image: ikigaiblue, name: "Ikigai" },
+      { id: 'noworkwhite', image: noworkwhite, name: "No Work" },
+      { id: 'kaizenwhite', image: kaizenwhite, name: "Kaizen" },
+      { id: 'chillingtshirtgrey', image: chillingtshirtgrey, name: "Chilling with the Boys" },
+      { id: 'moe', image: moe, name: "Minister of Enjoyment" },
       { id: 'weekend', image: weekend, name: "Weekend T-shirt" }
     ],
     jumpers: [
       { id: 'signedsweatshirt', image: signedsweatshirt, name: "Signed Sweatshirt" },
       { id: 'logosweatshirt', image: logosweatshirt, name: "Logo Jumper" },
-      { id: 'sweatshirtbox', image: sweatshirtbox, name: "Custom Design Jumper" }
+      { id: 'sweatshirtbox', image: sweatshirtbox, name: "Custom Design Jumper" },
+      { id: 'jumpersignpink', image: jumpersignpink, name: "Jumper Sign" },
+      { id: 'jumperlogodarkblue', image: jumperlogodarkblue, name: "Jumper Logo" },
+      { id: 'jumperboxblue', image: jumperboxblue, name: "Jumper Box" },
+      { id: 'moejumper', image: moejumper, name: "Minister of Enjoyment" },
+      { id: 'pasasweatshirt', image: pasasweatshirt, name: "Chilling with the Boys" },
+      { id: 'chillingcontrollerjumper', image: chillingcontrollerjumper, name: "Chilling Controller" }
     ],
     caps: [
       { id: 'designercap', image: capsign, name: "Signed Cap" },
-      { id: 'weekendcap', image: caplogo, name: "Logo Cap" },
-      { id: 'casualcap', image: capsign, name: "Casual Cap" }
+      { id: 'weekendcap', image: caplogo, name: "Weekend Cap" },
+      { id: 'casualcap', image: capsign, name: "Casual Cap" },
+      { id: 'noworkcap', image: noworkcap, name: "No Work Cap" },
+      { id: 'chillingcap', image: chillingcap, name: "Chilling Cap" },
+      { id: 'ikigaicap', image: ikigaicap, name: "Ikigai Cap" },
+      { id: 'moecapfront', image: moecapfront, name: "Minister of Enjoyment" }
     ]
   };
 
@@ -174,7 +245,18 @@ const Tsam = () => {
       animationData: sign,
     });
 
-    return () => anim.destroy();
+    const logoAnim = lottie.loadAnimation({
+      container: logoRef.current,
+      renderer: 'svg',
+      loop: true,
+      autoplay: true,
+      animationData: tsamlogo,
+    });
+
+    return () => {
+      anim.destroy();
+      logoAnim.destroy();
+    };
   }, []);
 
   useEffect(() => {
@@ -227,12 +309,14 @@ const Tsam = () => {
   };
 
   return (
-    <div className="tsam-container" style={{ 
-      overflow: 'hidden', // Changed from 'auto' to prevent page scrolling
-      userSelect: 'none',
-      backgroundColor: 'white', // Ensure white background fills the screen,
-      position:'fixed'
-    }}>
+<div className="tsam-container" style={{ 
+  overflow: 'auto', // Changed from 'hidden'
+  userSelect: 'none',
+  backgroundColor: 'white',
+  width: '100%',
+  height: '100vh', // Changed from 'fixed'
+  position: 'relative' // Changed from 'fixed'
+}}>
       {showSlideshow && (
         <div style={{ position: 'absolute', zIndex: 5 }} ref={lottieRef} className="lottie-holder" />
       )}
@@ -246,83 +330,55 @@ const Tsam = () => {
           width: '100%',
           opacity: 0,
           padding: isMobile ? '0 10px' : '0',
-          height: '100%', // Take full height of container
-          position: 'relative' // For absolute positioning of children
+          height: '100%',
+          position: 'relative'
         }}
       >
         {/* Fixed Header Section */}
         <div style={{
-          position: isMobile ? 'sticky' : 'relative',
-          top: 0,
+  position: 'sticky',
+  top: 0,
           zIndex: 10,
           backgroundColor: 'white',
           width: '100%',
           padding: isMobile ? '10px 0' : '0',
-          boxShadow: isMobile ? '0 2px 5px rgba(0,0,0,0.1)' : 'none'
+          boxShadow: isMobile ? '0 2px 5px rgba(0,0,0,0.1)' : 'none',
+          height: isMobile ? 'auto' : 'auto' // Ensure header doesn't get cut off
+
+
         }}>
           <div className="tsam-heading" style={{ 
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
             marginTop: isMobile ? '0' : '20px',
-            padding: isMobile ? '0 10px' : '0'
+            padding: isMobile ? '0 10px' : '0',
+            height: isMobile ? '20px' : 'auto' // Fixed height for mobile
+
           }}>
+            <div 
+              ref={logoRef} 
+              style={{
+                width: isMobile ? '50px' : '100px',
+                height: isMobile ? '50px' : '100px',
+                marginTop: isMobile? '20px' : '10px',
+                marginRight: '10px'
+              }}
+            />
             <h1 style={{ 
-              fontSize: isMobile ? '2.8rem' : '2.8rem',
-              marginBottom: isMobile ? '-25px' : '10px'
+              fontSize: isMobile ? '1.5rem' : '2.8rem',
+              marginBottom: isMobile ? '0px' : '10px'
             }}>Tsam Collection</h1>
           </div>
   
-          {/* Categories Description - Mobile Optimized */}
-          <div style={{
-            display: 'flex',
-            justifyContent: 'center',
-            gap: isMobile ? '15px' : '30px',
-            marginBottom: isMobile ? '10px' : '20px',
-            width: '100%',
-            maxWidth: '600px',
-            textAlign: 'center',
-            flexWrap: 'wrap',
-            padding: isMobile ? '0 5px' : '0'
-          }}>
-            <div style={{ 
-              padding: isMobile ? '8px 10px' : '10px 15px',
-              borderRadius: '8px',
-              color: categoryColors.economy,
-              flex: isMobile ? '1 1 40%' : 'none',
-              minWidth: isMobile ? '120px' : 'auto'
-            }}>
-              <h3 style={{ 
-                margin: '5px 0',
-                fontSize: isMobile ? '14px' : '16px'
-              }}>Economy</h3>
-              <p style={{ 
-                margin: '5px 0', 
-                fontSize: isMobile ? '12px' : '14px' 
-              }}>Standard quality</p>
-            </div>
-            <div style={{ 
-              padding: isMobile ? '8px 10px' : '10px 15px',
-              borderRadius: '8px',
-              color: categoryColors.premium,
-              flex: isMobile ? '1 1 40%' : 'none',
-              minWidth: isMobile ? '120px' : 'auto'
-            }}>
-              <h3 style={{ 
-                margin: '5px 0',
-                fontSize: isMobile ? '14px' : '16px'
-              }}>Premium</h3>
-              <p style={{ 
-                margin: '5px 0', 
-                fontSize: isMobile ? '12px' : '14px' 
-              }}>High quality</p>
-            </div>
-          </div>
-  
-          {/* Tab Navigation - Mobile Optimized */}
+          {/* Tab Navigation - Centered */}
           <div className="tab-container" style={{ 
             display: 'flex', 
             justifyContent: 'center', 
-            marginBottom: isMobile ? '10px' : '20px',
+            marginBottom: isMobile ? '0px' : '20px',
             width: '100%',
             maxWidth: '600px',
+            margin: '0 auto',
             padding: isMobile ? '0 5px' : '0'
           }}>
             {tabs.map(tab => (
@@ -331,44 +387,31 @@ const Tsam = () => {
                 className={`tab-button ${activeTab === tab.id ? 'active-tab' : ''}`}
                 onClick={() => setActiveTab(tab.id)}
                 style={{
-                  flex: 1,
-                  padding: isMobile ? '8px 0' : '12px 0',
-                  margin: isMobile ? '0 3px' : '0 5px',
+                  padding: isMobile ? '8px 15px' : '12px 25px',
+                  margin: isMobile ? '0 5px' : '0 10px',
                   border: 'none',
                   background: activeTab === tab.id ? tabColors[tab.id] : 'transparent',
                   color: activeTab === tab.id ? '#fff' : '#aaa',
                   fontSize: isMobile ? '12px' : '16px',
                   fontWeight: 'bold',
                   cursor: 'pointer',
-                  position: 'relative',
+                  borderRadius: '8px',
                   transition: 'all 0.3s ease',
-                  borderRadius: '8px'
+                  whiteSpace: 'nowrap'
                 }}
               >
                 {tab.label}
-                {activeTab === tab.id && (
-                  <div style={{
-                    position: 'absolute',
-                    bottom: '-2px',
-                    left: '0',
-                    width: '100%',
-                    height: '3px',
-                    background: tabColors[tab.id],
-                    borderRadius: '3px',
-                    transition: 'all 0.3s ease'
-                  }} />
-                )}
               </button>
             ))}
           </div>
         </div>
   
-        {/* Product Display - Takes remaining space */}
+        {/* Product Display */}
         <div
           className="carousel-container"
           style={{
             width: '100%',
-            height: isMobile ? 'calc(100vh - 220px)' : 'auto', // Dynamic height calculation
+            height: isMobile ? 'calc(100vh - 180px)' : 'auto',
             padding: isMobile ? '10px 0' : '0',
             flexGrow: 1,
             overflow: 'hidden'
@@ -415,10 +458,10 @@ const Tsam = () => {
                     }}
                     style={{
                       position: 'absolute',
-                      top: isMobile ? '5px' : '10px',
-                      right: isMobile ? '5px' : '10px',
-                      width: isMobile ? '30px' : '40px',
-                      height: isMobile ? '30px' : '40px',
+                      top: isMobile ? '25px' : '80px',
+                      right: isMobile ? '40px' : '110px',
+                      width: isMobile ? '50px' : '40px',
+                      height: isMobile ? '50px' : '40px',
                       backgroundColor: '#25D366',
                       borderRadius: '50%',
                       display: 'flex',
@@ -431,8 +474,8 @@ const Tsam = () => {
                   >
                     <WhatsAppIcon
                       style={{
-                        width: isMobile ? '18px' : '24px',
-                        height: isMobile ? '18px' : '24px',
+                        width: isMobile ? '40px' : '24px',
+                        height: isMobile ? '40px' : '24px',
                         fill: 'white'
                       }}
                     />
@@ -453,43 +496,51 @@ const Tsam = () => {
                       WebkitUserSelect: 'none',
                     }}
                   />
-                  <div style={{ 
-                    marginTop: isMobile ? '5px' : '10px',
-                    textAlign: 'center',
-                    width: '100%',
-                    padding: isMobile ? '0 5px' : '0'
-                  }}>
-                    <h3 style={{ 
-                      margin: '5px 0',
-                      fontSize: isMobile ? '13px' : '16px',
-                      color: '#333'
-                    }}>{product.name}</h3>
-                    <div style={{ 
-                      display: 'flex',
-                      justifyContent: 'center',
-                      gap: isMobile ? '8px' : '15px',
-                      marginTop: '5px',
-                      flexWrap: 'wrap'
-                    }}>
-                      <span style={{ 
-                        color: categoryColors.premium,
-                        fontWeight: 'bold',
-                        fontSize: isMobile ? '11px' : '14px'
-                      }}>Premium: {prices[activeTab].premium}</span>
-                      <span style={{ 
-                        color: categoryColors.economy,
-                        fontWeight: 'bold',
-                        fontSize: isMobile ? '11px' : '14px'
-                      }}>Economy: {prices[activeTab].economy}</span>
-                    </div>
-                  </div>
+               <div style={{ 
+  display: 'flex',
+  justifyContent: 'center',
+  gap: isMobile ? '8px' : '15px',
+  marginTop: '5px',
+  flexWrap: 'wrap'
+}}>
+  {activeTab === 'tshirts' && (
+    <>
+      <span style={{ color: '#7d99c4', fontWeight: 'bold', fontSize: isMobile ? '11px' : '14px' }}>
+        Premium: {prices.tshirts.premium}
+      </span>
+      <span style={{ color: '#cbb4a4', fontWeight: 'bold', fontSize: isMobile ? '11px' : '14px' }}>
+        Economy: {prices.tshirts.economy}
+      </span>
+    </>
+  )}
+  {activeTab === 'jumpers' && (
+    <>
+      <span style={{ color: '#7d99c4', fontWeight: 'bold', fontSize: isMobile ? '11px' : '14px' }}>
+        Jumper: {prices.jumpers.jumper}
+      </span>
+      <span style={{ color: '#cbb4a4', fontWeight: 'bold', fontSize: isMobile ? '11px' : '14px' }}>
+        Sweatshirt: {prices.jumpers.sweatshirt}
+      </span>
+    </>
+  )}
+  {activeTab === 'caps' && (
+    <>
+      <span style={{ color: '#7d99c4', fontWeight: 'bold', fontSize: isMobile ? '11px' : '14px' }}>
+        Premium: {prices.caps.premium}
+      </span>
+      <span style={{ color: '#cbb4a4', fontWeight: 'bold', fontSize: isMobile ? '11px' : '14px' }}>
+        Standard: {prices.caps.standard}
+      </span>
+    </>
+  )}
+</div>
                 </div>
               </SwiperSlide>
             ))}
           </Swiper>
         </div>
   
-        {/* Double-click instruction - Mobile Optimized */}
+        {/* Double-click instruction */}
         <p style={{ 
           fontSize: isMobile ? '12px' : '16px',
           color: '#666',
@@ -505,13 +556,14 @@ const Tsam = () => {
         </p>
       </div>
       <footer className="tsam-footer">
-        <div ref={footeref} style={{opacity:0}}>
-          <h3> to know more</h3>
+        <div ref={footeref} style={{opacity:0,  textAlign: 'center',
+}}>
+          <h3> Double tap for more color options,</h3>
           <ol>
-            Double tap item to contact us 
+           Tap whatsapp icon to order/inquire
           </ol>
         </div>
-      </footer>Z
+      </footer>
     </div>
   );
 };
