@@ -79,6 +79,9 @@ import chillingcontrollerred from './pics/chilling tshirt controller red.jpg';
 import chillingcontrollerwhite from './pics/chilling tshirt controller.jpg';
 import chillingcap from './pics/chillingcapboys.jpg';
 import capcontroller from './pics/cap controller.jpg';
+import wabisabi from './pics/wabi.jpg';
+import wabicap from './pics/wabi cap.jpg';
+import wabijumper from './pics/wabijumper1.jpg';
 
 import moe from './pics/moe.jpg';
 import pasasweatshirt from './pics/pasasweatshirt.jpg';
@@ -103,6 +106,7 @@ const colorVariants = {
   moe: [moe],
   ikigaiblue: [ikigaiblue, ikigaibrown, ikigaiblack],
   kaizenwhite: [kaizenwhite, kaizenbrown, kaizenblue],
+  wabisabi: [wabisabi],
 
   signedsweatshirt: [signedsweatshirt, sweatshirtsignpink, sweatshirtsigndarkblue, sweatshirtsignred],
   logosweatshirt: [logosweatshirt, sweatshirtlogopink, sweatshirtlogoyellow],
@@ -120,7 +124,10 @@ const colorVariants = {
   noworkcap: [noworkcap, noworkcapblack],
   ikigaicap: [ikigaicap, ikigaicapwhite],
   chillingcap: [chillingcap, capcontroller],
-  moecapfront: [moecapfront, moecap, moecaptext]
+  moecapfront: [moecapfront, moecap, moecaptext],
+  
+  wabicap: [wabicap],
+
 };
 
 const Tsam = () => {
@@ -157,7 +164,7 @@ const Tsam = () => {
     },
     caps: {
       standard: '15,000/=',
-      premium: '30,000/='
+      premium: '25,000/='
     }
   };
 
@@ -180,7 +187,9 @@ const Tsam = () => {
       { id: 'kaizenwhite', image: kaizenwhite, name: "Kaizen" },
       { id: 'chillingtshirtgrey', image: chillingtshirtgrey, name: "Chilling with the Boys" },
       { id: 'moe', image: moe, name: "Minister of Enjoyment" },
-      { id: 'weekend', image: weekend, name: "Weekend T-shirt" }
+      { id: 'weekend', image: weekend, name: "Weekend T-shirt" },
+      { id: 'wabisabi', image: wabisabi, name: "wabisabi T-shirt" }
+
     ],
     jumpers: [
       { id: 'signedsweatshirt', image: signedsweatshirt, name: "Signed Sweatshirt" },
@@ -200,7 +209,10 @@ const Tsam = () => {
       { id: 'noworkcap', image: noworkcap, name: "No Work Cap" },
       { id: 'chillingcap', image: chillingcap, name: "Chilling Cap" },
       { id: 'ikigaicap', image: ikigaicap, name: "Ikigai Cap" },
-      { id: 'moecapfront', image: moecapfront, name: "Minister of Enjoyment" }
+      { id: 'moecapfront', image: moecapfront, name: "Minister of Enjoyment" },
+      { id: 'wabicap', image: wabicap, name: "wabi sabi cap" },
+
+      
     ]
   };
 
