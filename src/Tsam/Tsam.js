@@ -84,6 +84,7 @@ import wabicap from './pics/wabi cap.jpg';
 import wabijumper from './pics/wabijumper1.jpg';
 import tokolaerror from './pics/tokola error2.jpg';
 import tokolaerrorblack from './pics/tokolablack.jpg';
+import tokolaerrorjumper from './pics/tokola eh jumper.jpg';
 
 import moe from './pics/moe.jpg';
 import pasasweatshirt from './pics/pasasweatshirt.jpg';
@@ -158,7 +159,9 @@ const collageLayout = {
     { id: 'jumperboxblue', size: 'medium', rotate: 'left' },
     { id: 'moejumper', size: 'medium', rotate: 'left' },
     { id: 'pasasweatshirt', size: 'medium', rotate: 'left' },
-    { id: 'chillingcontrollerjumper', size: 'large', rotate: 'left' }
+    { id: 'chillingcontrollerjumper', size: 'large', rotate: 'left' },
+    { id: 'tokolaerrorjumper', size: 'medium', rotate: 'left' }
+
   ],
   caps: [
     { id: 'designercap', size: 'medium', rotate: 'left' },
@@ -186,6 +189,7 @@ const Tsam = () => {
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   const [activeProducts, setActiveProducts] = useState({});
   const [activeProductId, setActiveProductId] = useState(null);
+  const [isHeaderExpanded, setIsHeaderExpanded] = useState(false);
 
   const [activeTab, setActiveTab] = useState('tshirts');
   const [colorIndexes, setColorIndexes] = useState({});
@@ -287,7 +291,9 @@ const Tsam = () => {
       { id: 'jumperboxblue', image: jumperboxblue, name: "Jumper Box" },
       { id: 'moejumper', image: moejumper, name: "Minister of Enjoyment" },
       { id: 'pasasweatshirt', image: pasasweatshirt, name: "Chilling with the Boys" },
-      { id: 'chillingcontrollerjumper', image: chillingcontrollerjumper, name: "Chilling Controller" }
+      { id: 'chillingcontrollerjumper', image: chillingcontrollerjumper, name: "Chilling Controller" },
+      { id: 'tokolaerrorjumper', image: tokolaerrorjumper, name: "Tokola Error Jumper " }
+
     ],
     caps: [
       { id: 'designercap', image: capsign, name: "Signed Cap" },
@@ -426,6 +432,17 @@ const Tsam = () => {
   const handleProductClick = (productId) => {
     setActiveProductId(productId);
   };
+  const handleMouseEnter = () => {
+    if (!isMobile) setIsHeaderExpanded(true);
+  };
+  
+  const handleMouseLeave = () => {
+    if (!isMobile) setIsHeaderExpanded(false);
+  };
+  
+  const handleHeaderClick = () => {
+    if (!isMobile) setIsHeaderExpanded(prev => !prev);
+  };
   
   const getCurrentImage = (product) => {
     const variants = colorVariants[product.id] || [product.image];
@@ -447,77 +464,104 @@ const Tsam = () => {
       )}
   
       {/* Fixed Header Section (unchanged) */}
-     {!showSlideshow && (
- <div style={{
-  position: 'fixed',
-  top: 0,
-  zIndex: 10,
-  backgroundColor: 'white',
-  width: '100%',
-  padding: isMobile ? '10px 0' : '0',
-  boxShadow: '0 2px 5px rgba(0,0,0,0.1)',
-  height: isMobile ? 'auto' : 'auto'
-}}>
-  <div className="tsam-heading" style={{ 
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: isMobile ? '0' : '20px',
-    padding: isMobile ? '0 10px' : '0',
-    height: isMobile ? '20px' : 'auto'
-  }}>
-    <div 
-      ref={logoRef} 
-      style={{
-        width: isMobile ? '50px' : '100px',
-        height: isMobile ? '50px' : '100px',
-        marginTop: isMobile? '20px' : '10px',
-        marginRight: '10px'
-      }}
-    />
-    <h1 style={{ 
-      fontSize: isMobile ? '1.5rem' : '2.8rem',
-      marginBottom: isMobile ? '0px' : '10px'
-    }}>Tsam Collection</h1>
-  </div>
-
-  {/* Tab Navigation - Centered */}
-  <div className="tab-container" style={{ 
-    display: 'flex', 
-    justifyContent: 'center', 
-    marginBottom: isMobile ? '0px' : '20px',
-    width: '100%',
-    maxWidth: '600px',
-    margin: '0 auto',
-    padding: isMobile ? '0 5px' : '0'
-  }}>
-    {tabs.map(tab => (
-      <button
-        key={tab.id}
-        className={`tab-button ${activeTab === tab.id ? 'active-tab' : ''}`}
-        onClick={() => setActiveTab(tab.id)}
-        style={{
-          padding: isMobile ? '8px 15px' : '12px 25px',
-          margin: isMobile ? '0 5px' : '0 10px',
-          border: 'none',
-          background: activeTab === tab.id ? tabColors[tab.id] : 'transparent',
-          color: activeTab === tab.id ? '#fff' : '#aaa',
-          fontSize: isMobile ? '12px' : '16px',
-          fontWeight: 'bold',
-          cursor: 'pointer',
-          borderRadius: '8px',
-          transition: 'all 0.3s ease',
-          whiteSpace: 'nowrap'
+      {!showSlideshow && (
+  <div 
+    onMouseEnter={handleMouseEnter}
+    onMouseLeave={handleMouseLeave}
+    onClick={handleHeaderClick}
+    style={{
+      position: 'fixed',
+      top: 0,
+      zIndex: 10,
+      backgroundColor: 'white',
+      width: '100%',
+      padding: isMobile ? '10px 0' : '20px 0',
+      boxShadow: '0 2px 5px rgba(0,0,0,0.1)',
+      height: isMobile ? 'auto' : 'auto'
+    }}
+  >
+    <div style={{ 
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: isMobile ? 'center' : 'space-between',
+      maxWidth: '1200px',
+      margin: '0 auto',
+      flexDirection: isMobile ? 'column' : 'row'
+    }}>
+      {/* Logo and Title - Left aligned on desktop */}
+      <div 
+        className="tsam-heading" 
+        style={{ 
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          marginTop: isMobile ? '0' : '0',
+          padding: isMobile ? '0 10px' : '0',
+          height: isMobile ? '20px' : 'auto',
+          order: isMobile ? 1 : 0
         }}
       >
-        {tab.label}
-      </button>
-    ))}
-  </div>
-</div>
+        <div 
+          ref={logoRef} 
+          style={{
+            width: isMobile ? '50px' : '80px',
+            height: isMobile ? '50px' : '80px',
+            marginTop: isMobile ? '20px' : '0',
+            marginRight: '10px'
+          }}
+        />
+        <h1 style={{ 
+          fontSize: isMobile ? '1.5rem' : '1.2rem',
+          marginBottom: isMobile ? '0px' : '0',
+          whiteSpace: 'nowrap'
+        }}>
+          Tsam Collection
+        </h1>
+      </div>
 
-     )}
-     
+      {/* Tab Navigation - Centered on desktop */}
+      <div 
+        className="tab-container" 
+        style={{ 
+          display: 'flex', 
+          justifyContent: 'center', 
+          marginBottom: isMobile ? '0px' : '0',
+          width: isMobile ? '100%' : 'auto',
+          maxWidth: '600px',
+          margin: isMobile ? '0 auto' : '0',
+          padding: isMobile ? '0 5px' : '0',
+          order: isMobile ? 2 : 0
+        }}
+      >
+        {tabs.map(tab => (
+          <button
+            key={tab.id}
+            className={`tab-button ${activeTab === tab.id ? 'active-tab' : ''}`}
+            onClick={() => setActiveTab(tab.id)}
+            style={{
+              padding: isMobile ? '8px 15px' : '10px 20px',
+              margin: isMobile ? '0 5px' : '0 10px',
+              border: 'none',
+              background: activeTab === tab.id ? tabColors[tab.id] : 'transparent',
+              color: activeTab === tab.id ? '#fff' : '#aaa',
+              fontSize: isMobile ? '12px' : '14px',
+              fontWeight: 'bold',
+              cursor: 'pointer',
+              borderRadius: '8px',
+              transition: 'all 0.3s ease',
+              whiteSpace: 'nowrap'
+            }}
+          >
+            {tab.label}
+          </button>
+        ))}
+      </div>
+      
+      {/* Empty div to balance the flex layout on desktop */}
+      {!isMobile && <div style={{ width: '80px' }}></div>}
+    </div>
+  </div>
+)}
       {/* Collage Product Display */}
     {!showSlideshow && (
     <div
@@ -542,7 +586,7 @@ const Tsam = () => {
   if (!product) return null;
 
   const cellSize = {
-    large: isMobile ? 'span 2' : 'span 2',
+    large: isMobile ? 'span 2' : 'span 1',
     medium: 'span 1',
     small: 'span 1'
   }[item.size];
@@ -599,18 +643,21 @@ const Tsam = () => {
     </div>
   )}
 
-      <img
-        src={getCurrentImage(product)}
-        alt={product.name}
-        style={{
-          width: '100%',
-          height: '100%',
-          objectFit: 'cover',
-          transition: 'transform 0.3s ease'
-        }}
-        onClick={ () =>  handleProductClick(product.id)}
-        onTouchStart={() =>  changeColorVariant(product.id) }
-      />
+<img
+  src={getCurrentImage(product)}
+  alt={product.name}
+  style={{
+    width: '100%',
+    height: '100%',
+    objectFit: 'cover',
+    transition: 'transform 0.3s ease'
+  }}
+  onClick={() => {
+    handleProductClick(product.id);      // show WhatsApp + info
+    changeColorVariant(product.id);      // cycle through colors
+  }}
+/>
+
 
       {/* Product Info Overlay */}
       {activeProductId === product.id && (
