@@ -184,6 +184,9 @@ const Tsam = () => {
   const [imagesLoaded, setImagesLoaded] = useState(false);
   const [showSlideshow, setshowSlideshow] = useState(true);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+  const [activeProducts, setActiveProducts] = useState({});
+  const [activeProductId, setActiveProductId] = useState(null);
+
   const [activeTab, setActiveTab] = useState('tshirts');
   const [colorIndexes, setColorIndexes] = useState({});
   const [cloneCount, setCloneCount] = useState(2); // Start with 2 clones of layout
@@ -420,109 +423,16 @@ const Tsam = () => {
     }
     setLastTapTime(currentTime);
   };
-
+  const handleProductClick = (productId) => {
+    setActiveProductId(productId);
+  };
+  
   const getCurrentImage = (product) => {
     const variants = colorVariants[product.id] || [product.image];
     const index = colorIndexes[product.id] || 0;
     return variants[index % variants.length];
   };
-  const renderItems = () => {
-    // Create 3 copies of the layout for seamless looping
-    const items = [];
-    for (let i = 0; i < 3; i++) {
-      items.push(
-        ...collageLayout[activeTab].map((item, index) => {
-          const product = products[activeTab].find(p => p.id === item.id);
-          if (!product) return null;
 
-          const cellSize = {
-            large: isMobile ? 'span 2' : 'span 2',
-            medium: 'span 1',
-            small: 'span 1'
-          }[item.size];
-
-          const rotation = {
-            left: 'rotate(-3deg)',
-            right: 'rotate(3deg)',
-            none: 'rotate(0deg)'
-          }[item.rotate];
-
-          return (
-            <div
-              key={`${item.id}-${index}-${i}`}
-              style={{
-                gridColumn: cellSize,
-                gridRow: cellSize,
-                position: 'relative',
-                overflow: 'hidden',
-                aspectRatio: '1/1',
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                backgroundColor: '#f5f5f5',
-                transform: rotation,
-                transition: 'transform 0.3s ease',
-                boxShadow: '0 4px 8px rgba(0,0,0,0.1)',
-                borderRadius: '4px',
-              }}
-            >
-              {/* WhatsApp Icon */}
-              <div 
-                onClick={(e) => handleWhatsAppClick(e, product)}
-                style={{
-                  position: 'absolute',
-                  top: '8px',
-                  right: '8px',
-                  width: '28px',
-                  height: '28px',
-                  backgroundColor: '#25D366',
-                  borderRadius: '50%',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  cursor: 'pointer',
-                  zIndex: 10,
-                  boxShadow: '0 2px 5px rgba(0,0,0,0.2)'
-                }}
-              >
-                <WhatsAppIcon style={{ width: '16px', height: '16px', fill: 'white' }} />
-              </div>
-
-              <img
-                src={getCurrentImage(product)}
-                alt={product.name}
-                style={{
-                  width: '100%',
-                  height: '100%',
-                  objectFit: 'cover',
-                  transition: 'transform 0.3s ease'
-                }}
-                onTouchStart={() => handleDoubleTap(product.id)}
-                onDoubleClick={() => changeColorVariant(product.id)}
-              />
-
-              {/* Product Info Overlay */}
-              <div style={{
-                position: 'absolute',
-                bottom: 0,
-                left: 0,
-                right: 0,
-                background: 'linear-gradient(transparent, rgba(0,0,0,0.7))',
-                color: 'white',
-                padding: '10px',
-                fontSize: isMobile ? '10px' : '12px',
-                textAlign: 'center'
-              }}>
-                <div style={{ fontWeight: 'bold' }}>{product.name}</div>
-                <div style={{ fontSize: '0.8em' }}>Tap to view colors</div>
-              </div>
-            </div>
-          );
-        })
-      );
-    }
-    return items;
-  };
   return (
     <div className="tsam-container" style={{ 
       overflow: 'hidden',
@@ -609,7 +519,8 @@ const Tsam = () => {
      )}
      
       {/* Collage Product Display */}
-      <div
+    {!showSlideshow && (
+    <div
     ref={contref}
     style={{
       opacity: 1,
@@ -662,26 +573,31 @@ const Tsam = () => {
       }}
     >
       {/* WhatsApp Icon */}
-      <div 
-        onClick={(e) => handleWhatsAppClick(e, product)}
-        style={{
-          position: 'absolute',
-          top: '8px',
-          right: '8px',
-          width: '28px',
-          height: '28px',
-          backgroundColor: '#25D366',
-          borderRadius: '50%',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          cursor: 'pointer',
-          zIndex: 10,
-          boxShadow: '0 2px 5px rgba(0,0,0,0.2)'
-        }}
-      >
-        <WhatsAppIcon style={{ width: '16px', height: '16px', fill: 'white' }} />
-      </div>
+      {activeProductId === product.id && (
+    <div 
+      onClick={(e) => {
+        e.stopPropagation(); // prevent triggering outer click
+        handleWhatsAppClick(e, product);
+      }}
+      style={{
+        position: 'absolute',
+        top: '8px',
+        right: '8px',
+        width: '28px',
+        height: '28px',
+        backgroundColor: '#25D366',
+        borderRadius: '50%',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        cursor: 'pointer',
+        zIndex: 10,
+        boxShadow: '0 2px 5px rgba(0,0,0,0.2)'
+      }}
+    >
+      <WhatsAppIcon style={{ width: '16px', height: '16px', fill: 'white' }} />
+    </div>
+  )}
 
       <img
         src={getCurrentImage(product)}
@@ -692,52 +608,56 @@ const Tsam = () => {
           objectFit: 'cover',
           transition: 'transform 0.3s ease'
         }}
-        onTouchStart={() => handleDoubleTap(product.id)}
-        onDoubleClick={() => changeColorVariant(product.id)}
+        onClick={ () =>  handleProductClick(product.id)}
+        onTouchStart={() =>  changeColorVariant(product.id) }
       />
 
       {/* Product Info Overlay */}
-      <div style={{
-        position: 'absolute',
-        bottom: 0,
-        left: 0,
-        right: 0,
-        background: 'linear-gradient(transparent, rgba(0,0,0,0.7))',
-        color: 'white',
-        padding: '10px',
-        fontSize: isMobile ? '10px' : '12px',
-        textAlign: 'center'
-      }}>
-        <div style={{ fontWeight: 'bold' }}>{product.name}</div>
-        <div style={{ fontSize: '0.8em' }}>Tap to view colors</div>
-      </div>
+      {activeProductId === product.id && (
+    <div style={{
+      position: 'absolute',
+      bottom: 0,
+      left: 0,
+      right: 0,
+      background: 'linear-gradient(transparent, rgba(0,0,0,0.7))',
+      color: 'white',
+      padding: '10px',
+      fontSize: isMobile ? '10px' : '12px',
+      textAlign: 'center'
+    }}>
+      <div style={{ fontWeight: 'bold' }}>{product.name}</div>
+      <div style={{ fontSize: '0.8em' }}>Tap to view colors</div>
+    </div>
+  )}
     </div>
   );
 })}
 
   </div>
 
+    )}
+  
 
       {/* Double-click instruction */}
       <div style={{ 
-        position: 'fixed',
-        bottom: 0,
-        left: 0,
-        right: 0,
-        backgroundColor: 'white',
-        padding: '10px',
-        textAlign: 'center',
-        boxShadow: '0 -2px 5px rgba(0,0,0,0.1)',
-        zIndex: 10
-      }}>
-        <p style={{ 
-          fontSize: isMobile ? '12px' : '16px',
-          color: '#666',
-          margin: 0
-        }}>
-          Double-tap to see color variants • Tap WhatsApp icon to order
-        </p>
-      </div>
+  position: 'fixed',
+  bottom: 0,
+  left: 0,
+  right: 0,
+  backgroundColor: 'white',
+  padding: '10px',
+  textAlign: 'center',
+  boxShadow: '0 -2px 5px rgba(0,0,0,0.1)',
+  zIndex: 10
+}}>
+  <p style={{ 
+    fontSize: isMobile ? '12px' : '16px',
+    color: '#666',
+    margin: 0
+  }}>
+    Tap image to see other colors •/•  contact us
+  </p>
+</div>
     </div>
   );
 };
