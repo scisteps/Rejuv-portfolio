@@ -171,3 +171,28 @@
     touch-action: manipulation;
   }
 }
+/* Smooth scrolling for the grid */
+.tsam-container {
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Better touch targets for mobile */
+@media (max-width: 768px) {
+  .collage-item {
+    touch-action: manipulation;
+  }
+}
+/* Ensure consistent aspect ratio */
+.collage-item {
+  aspect-ratio: 1/1;
+}
+
+/* For items that span multiple rows */
+.collage-item-tall {
+  aspect-ratio: 1/2;
+}
+
+/* For items that span multiple columns */
+.collage-item-wide {
+  aspect-ratio: 2/1;
+}

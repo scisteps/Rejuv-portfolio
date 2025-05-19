@@ -82,6 +82,8 @@ import capcontroller from './pics/cap controller.jpg';
 import wabisabi from './pics/wabi.jpg';
 import wabicap from './pics/wabi cap.jpg';
 import wabijumper from './pics/wabijumper1.jpg';
+import tokolaerror from './pics/tokola error2.jpg';
+import tokolaerrorblack from './pics/tokolablack.jpg';
 
 import moe from './pics/moe.jpg';
 import pasasweatshirt from './pics/pasasweatshirt.jpg';
@@ -93,6 +95,8 @@ import noworkblackt from './pics/no work black.jpg';
 import moecap from './pics/moe cap.jpg';
 import moecapfront from './pics/moecapfront.jpg';
 import moecaptext from './pics/moecaptext.jpg';
+
+
 
 // Color variants mapping - Fixed all variants
 const colorVariants = {
@@ -107,6 +111,7 @@ const colorVariants = {
   ikigaiblue: [ikigaiblue, ikigaibrown, ikigaiblack],
   kaizenwhite: [kaizenwhite, kaizenbrown, kaizenblue],
   wabisabi: [wabisabi],
+  tokolaerror: [tokolaerror,tokolaerrorblack],
 
   signedsweatshirt: [signedsweatshirt, sweatshirtsignpink, sweatshirtsigndarkblue, sweatshirtsignred],
   logosweatshirt: [logosweatshirt, sweatshirtlogopink, sweatshirtlogoyellow],
@@ -129,19 +134,59 @@ const colorVariants = {
   wabicap: [wabicap],
 
 };
+const collageLayout = {
+  tshirts: [
+    { id: 'signedtshirt', size: 'large', rotate: 'left' }, 
+    { id: 'tshirtwithlogo', size: 'medium', rotate: 'left' },
+    { id: 'thinkoutofbox', size: 'medium', rotate: 'left' },
+    { id: 'fridayfeeling', size: 'small', rotate: 'left' },
+    { id: 'ikigaiblue', size: 'medium', rotate: 'left' },
+    { id: 'noworkwhite', size: 'small', rotate: 'left' },
+    { id: 'kaizenwhite', size: 'medium', rotate: 'left' },
+    { id: 'chillingtshirtgrey', size: 'medium', rotate: 'left' },
+    { id: 'moe', size: 'small', rotate: 'left' },
+    { id: 'weekend', size: 'medium', rotate: 'left' },
+    { id: 'wabisabi', size: 'medium', rotate: 'left' },
+    { id: 'tokolaerror', size: 'small', rotate: 'left' }
+  ],
+  jumpers: [
+    { id: 'signedsweatshirt', size: 'medium', rotate: 'left' },
+    { id: 'logosweatshirt', size: 'medium', rotate: 'left' },
+    { id: 'sweatshirtbox', size: 'medium', rotate: 'left' },
+    { id: 'jumpersignpink', size: 'medium', rotate: 'left' },
+    { id: 'jumperlogodarkblue', size: 'medium', rotate: 'left' },
+    { id: 'jumperboxblue', size: 'medium', rotate: 'left' },
+    { id: 'moejumper', size: 'medium', rotate: 'left' },
+    { id: 'pasasweatshirt', size: 'medium', rotate: 'left' },
+    { id: 'chillingcontrollerjumper', size: 'large', rotate: 'left' }
+  ],
+  caps: [
+    { id: 'designercap', size: 'medium', rotate: 'left' },
+    { id: 'weekendcap', size: 'medium', rotate: 'left' },
+    { id: 'casualcap', size: 'large', rotate: 'left' },
+    { id: 'noworkcap', size: 'medium', rotate: 'left' },
+    { id: 'chillingcap', size: 'medium', rotate: 'left' },
+    { id: 'ikigaicap', size: 'medium', rotate: 'left' },
+    { id: 'moecapfront', size: 'medium', rotate: 'left' },
+    { id: 'wabicap', size: 'medium', rotate: 'left' }
+  ]
+};
+
 
 const Tsam = () => {
   const lottieRef = useRef(null);
   const contref = useRef(null);
   const footeref = useRef(null);
   const logoRef = useRef(null);
-
+  const [scrollPosition, setScrollPosition] = useState(0);
+  const [isScrolling, setIsScrolling] = useState(false);
   const [lastTapTime, setLastTapTime] = useState(0);
   const [imagesLoaded, setImagesLoaded] = useState(false);
   const [showSlideshow, setshowSlideshow] = useState(true);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   const [activeTab, setActiveTab] = useState('tshirts');
   const [colorIndexes, setColorIndexes] = useState({});
+  const [cloneCount, setCloneCount] = useState(2); // Start with 2 clones of layout
 
   const whatsappNumber = "256782240185";
 
@@ -174,7 +219,45 @@ const Tsam = () => {
     { id: 'jumpers', label: 'Jumpers' },
     { id: 'caps', label: 'Caps' }
   ];
+  useEffect(() => {
+    const container = contref.current;
+    if (!container) return;
 
+    const handleScroll = () => {
+      if (isScrolling) return;
+      
+      const { scrollTop, scrollHeight, clientHeight } = container;
+      setScrollPosition(scrollTop);
+      
+      // When we're 80% from the bottom, reset to middle
+      if (scrollTop > scrollHeight - clientHeight * 2) {
+        setIsScrolling(true);
+        
+        // Temporarily disable scroll events
+        container.style.overflowY = 'hidden';
+        
+        // Scroll back to the middle section
+        container.scrollTop = scrollHeight / 3;
+        
+        // Re-enable scrolling after a brief delay
+        setTimeout(() => {
+          container.style.overflowY = 'auto';
+          setIsScrolling(false);
+        }, 100);
+      }
+    };
+
+    container.addEventListener('scroll', handleScroll);
+    return () => container.removeEventListener('scroll', handleScroll);
+  }, [isScrolling]);
+
+  useEffect(() => {
+    if (contref.current && !isScrolling) {
+      const container = contref.current;
+      container.scrollTop = container.scrollHeight / 3;
+    }
+  }, [activeTab, isScrolling]);
+  
   // Product data by category
   const products = {
     tshirts: [
@@ -188,7 +271,8 @@ const Tsam = () => {
       { id: 'chillingtshirtgrey', image: chillingtshirtgrey, name: "Chilling with the Boys" },
       { id: 'moe', image: moe, name: "Minister of Enjoyment" },
       { id: 'weekend', image: weekend, name: "Weekend T-shirt" },
-      { id: 'wabisabi', image: wabisabi, name: "wabisabi T-shirt" }
+      { id: 'wabisabi', image: wabisabi, name: "wabisabi T-shirt" },
+      { id: 'tokolaerror', image: tokolaerror, name: "tokola error T-shirt" }
 
     ],
     jumpers: [
@@ -223,6 +307,29 @@ const Tsam = () => {
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
+
+  useEffect(() => {
+  const handleScroll = () => {
+    const el = contref.current;
+    if (el) {
+      if (el.scrollTop + el.clientHeight >= el.scrollHeight - 10) {
+        // Near the bottom
+        setCloneCount(prev => prev + 1);
+      }
+    }
+  };
+
+  const container = contref.current;
+  if (container) {
+    container.addEventListener('scroll', handleScroll);
+  }
+
+  return () => {
+    if (container) {
+      container.removeEventListener('scroll', handleScroll);
+    }
+  };
+}, [contref]);
 
   useEffect(() => {
     // Initialize color indexes
@@ -319,263 +426,318 @@ const Tsam = () => {
     const index = colorIndexes[product.id] || 0;
     return variants[index % variants.length];
   };
+  const renderItems = () => {
+    // Create 3 copies of the layout for seamless looping
+    const items = [];
+    for (let i = 0; i < 3; i++) {
+      items.push(
+        ...collageLayout[activeTab].map((item, index) => {
+          const product = products[activeTab].find(p => p.id === item.id);
+          if (!product) return null;
 
+          const cellSize = {
+            large: isMobile ? 'span 2' : 'span 2',
+            medium: 'span 1',
+            small: 'span 1'
+          }[item.size];
+
+          const rotation = {
+            left: 'rotate(-3deg)',
+            right: 'rotate(3deg)',
+            none: 'rotate(0deg)'
+          }[item.rotate];
+
+          return (
+            <div
+              key={`${item.id}-${index}-${i}`}
+              style={{
+                gridColumn: cellSize,
+                gridRow: cellSize,
+                position: 'relative',
+                overflow: 'hidden',
+                aspectRatio: '1/1',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                backgroundColor: '#f5f5f5',
+                transform: rotation,
+                transition: 'transform 0.3s ease',
+                boxShadow: '0 4px 8px rgba(0,0,0,0.1)',
+                borderRadius: '4px',
+              }}
+            >
+              {/* WhatsApp Icon */}
+              <div 
+                onClick={(e) => handleWhatsAppClick(e, product)}
+                style={{
+                  position: 'absolute',
+                  top: '8px',
+                  right: '8px',
+                  width: '28px',
+                  height: '28px',
+                  backgroundColor: '#25D366',
+                  borderRadius: '50%',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  cursor: 'pointer',
+                  zIndex: 10,
+                  boxShadow: '0 2px 5px rgba(0,0,0,0.2)'
+                }}
+              >
+                <WhatsAppIcon style={{ width: '16px', height: '16px', fill: 'white' }} />
+              </div>
+
+              <img
+                src={getCurrentImage(product)}
+                alt={product.name}
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'cover',
+                  transition: 'transform 0.3s ease'
+                }}
+                onTouchStart={() => handleDoubleTap(product.id)}
+                onDoubleClick={() => changeColorVariant(product.id)}
+              />
+
+              {/* Product Info Overlay */}
+              <div style={{
+                position: 'absolute',
+                bottom: 0,
+                left: 0,
+                right: 0,
+                background: 'linear-gradient(transparent, rgba(0,0,0,0.7))',
+                color: 'white',
+                padding: '10px',
+                fontSize: isMobile ? '10px' : '12px',
+                textAlign: 'center'
+              }}>
+                <div style={{ fontWeight: 'bold' }}>{product.name}</div>
+                <div style={{ fontSize: '0.8em' }}>Tap to view colors</div>
+              </div>
+            </div>
+          );
+        })
+      );
+    }
+    return items;
+  };
   return (
-<div className="tsam-container" style={{ 
-  overflow: 'auto', // Changed from 'hidden'
-  userSelect: 'none',
-  backgroundColor: 'white',
-  width: '100%',
-  height: '100vh', // Changed from 'fixed'
-  position: 'relative' // Changed from 'fixed'
-}}>
+    <div className="tsam-container" style={{ 
+      overflow: 'hidden',
+      userSelect: 'none',
+      backgroundColor: 'white',
+      width: '100%',
+      height: '100vh',
+      position: 'relative'
+    }}>
       {showSlideshow && (
         <div style={{ position: 'absolute', zIndex: 5 }} ref={lottieRef} className="lottie-holder" />
       )}
   
-      <div
-        ref={contref}
+      {/* Fixed Header Section (unchanged) */}
+     {!showSlideshow && (
+ <div style={{
+  position: 'fixed',
+  top: 0,
+  zIndex: 10,
+  backgroundColor: 'white',
+  width: '100%',
+  padding: isMobile ? '10px 0' : '0',
+  boxShadow: '0 2px 5px rgba(0,0,0,0.1)',
+  height: isMobile ? 'auto' : 'auto'
+}}>
+  <div className="tsam-heading" style={{ 
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: isMobile ? '0' : '20px',
+    padding: isMobile ? '0 10px' : '0',
+    height: isMobile ? '20px' : 'auto'
+  }}>
+    <div 
+      ref={logoRef} 
+      style={{
+        width: isMobile ? '50px' : '100px',
+        height: isMobile ? '50px' : '100px',
+        marginTop: isMobile? '20px' : '10px',
+        marginRight: '10px'
+      }}
+    />
+    <h1 style={{ 
+      fontSize: isMobile ? '1.5rem' : '2.8rem',
+      marginBottom: isMobile ? '0px' : '10px'
+    }}>Tsam Collection</h1>
+  </div>
+
+  {/* Tab Navigation - Centered */}
+  <div className="tab-container" style={{ 
+    display: 'flex', 
+    justifyContent: 'center', 
+    marginBottom: isMobile ? '0px' : '20px',
+    width: '100%',
+    maxWidth: '600px',
+    margin: '0 auto',
+    padding: isMobile ? '0 5px' : '0'
+  }}>
+    {tabs.map(tab => (
+      <button
+        key={tab.id}
+        className={`tab-button ${activeTab === tab.id ? 'active-tab' : ''}`}
+        onClick={() => setActiveTab(tab.id)}
         style={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          width: '100%',
-          opacity: 0,
-          padding: isMobile ? '0 10px' : '0',
-          height: '100%',
-          position: 'relative'
+          padding: isMobile ? '8px 15px' : '12px 25px',
+          margin: isMobile ? '0 5px' : '0 10px',
+          border: 'none',
+          background: activeTab === tab.id ? tabColors[tab.id] : 'transparent',
+          color: activeTab === tab.id ? '#fff' : '#aaa',
+          fontSize: isMobile ? '12px' : '16px',
+          fontWeight: 'bold',
+          cursor: 'pointer',
+          borderRadius: '8px',
+          transition: 'all 0.3s ease',
+          whiteSpace: 'nowrap'
         }}
       >
-        {/* Fixed Header Section */}
-        <div style={{
-  position: 'sticky',
-  top: 0,
-          zIndex: 10,
-          backgroundColor: 'white',
-          width: '100%',
-          padding: isMobile ? '10px 0' : '0',
-          boxShadow: isMobile ? '0 2px 5px rgba(0,0,0,0.1)' : 'none',
-          height: isMobile ? 'auto' : 'auto' // Ensure header doesn't get cut off
-
-
-        }}>
-          <div className="tsam-heading" style={{ 
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            marginTop: isMobile ? '0' : '20px',
-            padding: isMobile ? '0 10px' : '0',
-            height: isMobile ? '20px' : 'auto' // Fixed height for mobile
-
-          }}>
-            <div 
-              ref={logoRef} 
-              style={{
-                width: isMobile ? '50px' : '100px',
-                height: isMobile ? '50px' : '100px',
-                marginTop: isMobile? '20px' : '10px',
-                marginRight: '10px'
-              }}
-            />
-            <h1 style={{ 
-              fontSize: isMobile ? '1.5rem' : '2.8rem',
-              marginBottom: isMobile ? '0px' : '10px'
-            }}>Tsam Collection</h1>
-          </div>
-  
-          {/* Tab Navigation - Centered */}
-          <div className="tab-container" style={{ 
-            display: 'flex', 
-            justifyContent: 'center', 
-            marginBottom: isMobile ? '0px' : '20px',
-            width: '100%',
-            maxWidth: '600px',
-            margin: '0 auto',
-            padding: isMobile ? '0 5px' : '0'
-          }}>
-            {tabs.map(tab => (
-              <button
-                key={tab.id}
-                className={`tab-button ${activeTab === tab.id ? 'active-tab' : ''}`}
-                onClick={() => setActiveTab(tab.id)}
-                style={{
-                  padding: isMobile ? '8px 15px' : '12px 25px',
-                  margin: isMobile ? '0 5px' : '0 10px',
-                  border: 'none',
-                  background: activeTab === tab.id ? tabColors[tab.id] : 'transparent',
-                  color: activeTab === tab.id ? '#fff' : '#aaa',
-                  fontSize: isMobile ? '12px' : '16px',
-                  fontWeight: 'bold',
-                  cursor: 'pointer',
-                  borderRadius: '8px',
-                  transition: 'all 0.3s ease',
-                  whiteSpace: 'nowrap'
-                }}
-              >
-                {tab.label}
-              </button>
-            ))}
-          </div>
-        </div>
-  
-        {/* Product Display */}
-        <div
-          className="carousel-container"
-          style={{
-            width: '100%',
-            height: isMobile ? 'calc(100vh - 180px)' : 'auto',
-            padding: isMobile ? '10px 0' : '0',
-            flexGrow: 1,
-            overflow: 'hidden'
-          }}
-        >
-          <Swiper
-            direction={isMobile ? 'vertical' : 'horizontal'}
-            slidesPerView={isMobile ? 2 : 3}
-            spaceBetween={isMobile ? 15 : 30}
-            loop={true}
-            mousewheel={true}
-            navigation={!isMobile}
-            pagination={{ clickable: true }}
-            modules={[Navigation, Pagination, Mousewheel]}
-            style={{
-              height: '100%',
-              padding: isMobile ? '0' : '0'
-            }}
-          >
-            {products[activeTab].map((product, index) => (
-              <SwiperSlide key={index}>
-                <div
-                  className="slide"
-                  onTouchStart={() => handleDoubleTap(product.id)}
-                  onDoubleClick={() => changeColorVariant(product.id)}
-                  onClick={(e) => e.preventDefault()}
-                  style={{
-                    position: 'relative',
-                    textAlign: 'center',
-                    height: '100%',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    touchAction: 'manipulation',
-                    padding: isMobile ? '10px 0' : '0'
-                  }}
-                >
-                  {/* WhatsApp Icon */}
-                  <div 
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleWhatsAppClick(e, product);
-                    }}
-                    style={{
-                      position: 'absolute',
-                      top: isMobile ? '25px' : '80px',
-                      right: isMobile ? '40px' : '110px',
-                      width: isMobile ? '50px' : '40px',
-                      height: isMobile ? '50px' : '40px',
-                      backgroundColor: '#25D366',
-                      borderRadius: '50%',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      cursor: 'pointer',
-                      zIndex: 10,
-                      boxShadow: '0 2px 5px rgba(0,0,0,0.2)'
-                    }}
-                  >
-                    <WhatsAppIcon
-                      style={{
-                        width: isMobile ? '40px' : '24px',
-                        height: isMobile ? '40px' : '24px',
-                        fill: 'white'
-                      }}
-                    />
-                  </div>
-  
-                  <img
-                    src={getCurrentImage(product)}
-                    alt={product.name}
-                    style={{
-                      width: isMobile ? '90%' : '500px',
-                      height: 'auto',
-                      maxHeight: isMobile ? '60vh' : 'none',
-                      objectFit: 'contain',
-                      transition: 'transform 0.5s ease',
-                      display: 'block',
-                      margin: '0 auto',
-                      userSelect: 'none',
-                      WebkitUserSelect: 'none',
-                    }}
-                  />
-               <div style={{ 
-  display: 'flex',
-  justifyContent: 'center',
-  gap: isMobile ? '8px' : '15px',
-  marginTop: '5px',
-  flexWrap: 'wrap'
-}}>
-  {activeTab === 'tshirts' && (
-    <>
-      <span style={{ color: '#7d99c4', fontWeight: 'bold', fontSize: isMobile ? '11px' : '14px' }}>
-        Premium: {prices.tshirts.premium}
-      </span>
-      <span style={{ color: '#cbb4a4', fontWeight: 'bold', fontSize: isMobile ? '11px' : '14px' }}>
-        Economy: {prices.tshirts.economy}
-      </span>
-    </>
-  )}
-  {activeTab === 'jumpers' && (
-    <>
-      <span style={{ color: '#7d99c4', fontWeight: 'bold', fontSize: isMobile ? '11px' : '14px' }}>
-        Jumper: {prices.jumpers.jumper}
-      </span>
-      <span style={{ color: '#cbb4a4', fontWeight: 'bold', fontSize: isMobile ? '11px' : '14px' }}>
-        Sweatshirt: {prices.jumpers.sweatshirt}
-      </span>
-    </>
-  )}
-  {activeTab === 'caps' && (
-    <>
-      <span style={{ color: '#7d99c4', fontWeight: 'bold', fontSize: isMobile ? '11px' : '14px' }}>
-        Premium: {prices.caps.premium}
-      </span>
-      <span style={{ color: '#cbb4a4', fontWeight: 'bold', fontSize: isMobile ? '11px' : '14px' }}>
-        Standard: {prices.caps.standard}
-      </span>
-    </>
-  )}
+        {tab.label}
+      </button>
+    ))}
+  </div>
 </div>
-                </div>
-              </SwiperSlide>
-            ))}
-          </Swiper>
-        </div>
-  
-        {/* Double-click instruction */}
+
+     )}
+     
+      {/* Collage Product Display */}
+      <div
+    ref={contref}
+    style={{
+      opacity: 1,
+      marginTop: isMobile ? '150px' : '200px',
+      padding: '0',
+      display: 'grid',
+      gridTemplateColumns: isMobile ? 'repeat(3, 1fr)' : 'repeat(4, 1fr)',
+      gridAutoRows: isMobile ? 'minmax(150px, 1fr)' : 'minmax(250px, 1fr)',
+      gap: isMobile ? '4px' : '8px',
+      width: '100%',
+      overflowY: 'auto',
+      transform: 'rotate(-2deg)',
+      transformOrigin: 'center',
+      paddingBottom: '60px'
+    }}
+  >
+  {Array.from({ length: cloneCount }).flatMap(() => collageLayout[activeTab]).map((item, index) => {
+  const product = products[activeTab].find(p => p.id === item.id);
+  if (!product) return null;
+
+  const cellSize = {
+    large: isMobile ? 'span 2' : 'span 2',
+    medium: 'span 1',
+    small: 'span 1'
+  }[item.size];
+
+  const rotation = {
+    left: 'rotate(-3deg)',
+    right: 'rotate(3deg)',
+    none: 'rotate(0deg)'
+  }[item.rotate];
+
+  return (
+    <div
+      key={`${item.id}-${index}-${cloneCount}`} // include cloneCount to ensure uniqueness
+      style={{
+        gridColumn: cellSize,
+        gridRow: cellSize,
+        position: 'relative',
+        overflow: 'hidden',
+        aspectRatio: '1/1',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#f5f5f5',
+        transform: rotation,
+        transition: 'transform 0.3s ease',
+        boxShadow: '0 4px 8px rgba(0,0,0,0.1)',
+        borderRadius: '4px',
+      }}
+    >
+      {/* WhatsApp Icon */}
+      <div 
+        onClick={(e) => handleWhatsAppClick(e, product)}
+        style={{
+          position: 'absolute',
+          top: '8px',
+          right: '8px',
+          width: '28px',
+          height: '28px',
+          backgroundColor: '#25D366',
+          borderRadius: '50%',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          cursor: 'pointer',
+          zIndex: 10,
+          boxShadow: '0 2px 5px rgba(0,0,0,0.2)'
+        }}
+      >
+        <WhatsAppIcon style={{ width: '16px', height: '16px', fill: 'white' }} />
+      </div>
+
+      <img
+        src={getCurrentImage(product)}
+        alt={product.name}
+        style={{
+          width: '100%',
+          height: '100%',
+          objectFit: 'cover',
+          transition: 'transform 0.3s ease'
+        }}
+        onTouchStart={() => handleDoubleTap(product.id)}
+        onDoubleClick={() => changeColorVariant(product.id)}
+      />
+
+      {/* Product Info Overlay */}
+      <div style={{
+        position: 'absolute',
+        bottom: 0,
+        left: 0,
+        right: 0,
+        background: 'linear-gradient(transparent, rgba(0,0,0,0.7))',
+        color: 'white',
+        padding: '10px',
+        fontSize: isMobile ? '10px' : '12px',
+        textAlign: 'center'
+      }}>
+        <div style={{ fontWeight: 'bold' }}>{product.name}</div>
+        <div style={{ fontSize: '0.8em' }}>Tap to view colors</div>
+      </div>
+    </div>
+  );
+})}
+
+  </div>
+
+
+      {/* Double-click instruction */}
+      <div style={{ 
+        position: 'fixed',
+        bottom: 0,
+        left: 0,
+        right: 0,
+        backgroundColor: 'white',
+        padding: '10px',
+        textAlign: 'center',
+        boxShadow: '0 -2px 5px rgba(0,0,0,0.1)',
+        zIndex: 10
+      }}>
         <p style={{ 
           fontSize: isMobile ? '12px' : '16px',
           color: '#666',
-          margin: isMobile ? '5px 0' : '10px 0',
-          textAlign: 'center',
-          padding: isMobile ? '0 10px 10px' : '0',
-          position: isMobile ? 'sticky' : 'relative',
-          bottom: 0,
-          backgroundColor: 'white',
-          width: '100%'
+          margin: 0
         }}>
-          Double-tap to see color variants
+          Double-tap to see color variants • Tap WhatsApp icon to order
         </p>
       </div>
-      <footer className="tsam-footer">
-        <div ref={footeref} style={{opacity:0,  textAlign: 'center',
-}}>
-          <h3> Double tap for more color options,</h3>
-          <ol>
-           Tap whatsapp icon to order/inquire
-          </ol>
-        </div>
-      </footer>
     </div>
   );
 };
