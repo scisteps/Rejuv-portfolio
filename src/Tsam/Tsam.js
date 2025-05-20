@@ -112,7 +112,6 @@ const colorVariants = {
   ikigaiblue: [ikigaiblue, ikigaibrown, ikigaiblack],
   kaizenwhite: [kaizenwhite, kaizenbrown, kaizenblue],
   wabisabi: [wabisabi],
-  tokolaerror: [tokolaerror,tokolaerrorblack],
 
   signedsweatshirt: [signedsweatshirt, sweatshirtsignpink, sweatshirtsigndarkblue, sweatshirtsignred],
   logosweatshirt: [logosweatshirt, sweatshirtlogopink, sweatshirtlogoyellow],
@@ -148,7 +147,6 @@ const collageLayout = {
     { id: 'moe', size: 'small', rotate: 'left' },
     { id: 'weekend', size: 'medium', rotate: 'left' },
     { id: 'wabisabi', size: 'medium', rotate: 'left' },
-    { id: 'tokolaerror', size: 'small', rotate: 'left' }
   ],
   jumpers: [
     { id: 'signedsweatshirt', size: 'medium', rotate: 'left' },
@@ -160,7 +158,6 @@ const collageLayout = {
     { id: 'moejumper', size: 'medium', rotate: 'left' },
     { id: 'pasasweatshirt', size: 'medium', rotate: 'left' },
     { id: 'chillingcontrollerjumper', size: 'large', rotate: 'left' },
-    { id: 'tokolaerrorjumper', size: 'medium', rotate: 'left' }
 
   ],
   caps: [
@@ -279,7 +276,6 @@ const Tsam = () => {
       { id: 'moe', image: moe, name: "Minister of Enjoyment" },
       { id: 'weekend', image: weekend, name: "Weekend T-shirt" },
       { id: 'wabisabi', image: wabisabi, name: "wabisabi T-shirt" },
-      { id: 'tokolaerror', image: tokolaerror, name: "tokola error T-shirt" }
 
     ],
     jumpers: [
@@ -292,7 +288,6 @@ const Tsam = () => {
       { id: 'moejumper', image: moejumper, name: "Minister of Enjoyment" },
       { id: 'pasasweatshirt', image: pasasweatshirt, name: "Chilling with the Boys" },
       { id: 'chillingcontrollerjumper', image: chillingcontrollerjumper, name: "Chilling Controller" },
-      { id: 'tokolaerrorjumper', image: tokolaerrorjumper, name: "Tokola Error Jumper " }
 
     ],
     caps: [
@@ -449,7 +444,103 @@ const Tsam = () => {
     const index = colorIndexes[product.id] || 0;
     return variants[index % variants.length];
   };
-
+  const ProductCell = ({ item, index, activeTab, products, activeProductId, isMobile, 
+    handleWhatsAppClick, getCurrentImage, handleProductClick, changeColorVariant }) => {
+    const product = products[activeTab].find(p => p.id === item.id);
+    if (!product) return null;
+  
+    const cellSize = {
+      large: isMobile ? 'span 2' : 'span 1',
+      medium: 'span 1',
+      small: 'span 1'
+    }[item.size];
+  
+    const rotation = {
+      left: 'rotate(-3deg)',
+      right: 'rotate(3deg)',
+      none: 'rotate(0deg)'
+    }[item.rotate];
+  
+    return (
+      <div
+        style={{
+          gridColumn: cellSize,
+          gridRow: cellSize,
+          position: 'relative',
+          overflow: 'hidden',
+          aspectRatio: '1/1',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          backgroundColor: '#f5f5f5',
+          transform: rotation,
+          transition: 'transform 0.3s ease',
+          boxShadow: '0 4px 8px rgba(0,0,0,0.1)',
+          borderRadius: '4px',
+        }}
+      >
+        {/* WhatsApp Icon */}
+        {activeProductId === product.id && (
+          <div 
+            onClick={(e) => {
+              e.stopPropagation();
+              handleWhatsAppClick(e, product);
+            }}
+            style={{
+              position: 'absolute',
+              top: '8px',
+              right: '8px',
+              width: '28px',
+              height: '28px',
+              backgroundColor: '#25D366',
+              borderRadius: '50%',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              cursor: 'pointer',
+              zIndex: 10,
+              boxShadow: '0 2px 5px rgba(0,0,0,0.2)'
+            }}
+          >
+            <WhatsAppIcon style={{ width: '16px', height: '16px', fill: 'white' }} />
+          </div>
+        )}
+  
+        <img
+          src={getCurrentImage(product)}
+          alt={product.name}
+          style={{
+            width: '100%',
+            height: '100%',
+            objectFit: 'cover',
+            transition: 'transform 0.3s ease'
+          }}
+          onClick={() => {
+            handleProductClick(product.id);
+            changeColorVariant(product.id);
+          }}
+        />
+  
+        {/* Product Info Overlay */}
+        {activeProductId === product.id && (
+          <div style={{
+            position: 'absolute',
+            bottom: 0,
+            left: 0,
+            right: 0,
+            background: 'linear-gradient(transparent, rgba(0,0,0,0.7))',
+            color: 'white',
+            padding: '10px',
+            fontSize: isMobile ? '10px' : '12px',
+            textAlign: 'center'
+          }}>
+            <div style={{ fontWeight: 'bold' }}>{product.name}</div>
+            <div style={{ fontSize: '0.8em' }}>Tap to view colors</div>
+          </div>
+        )}
+      </div>
+    );
+  };
   return (
     <div className="tsam-container" style={{ 
       overflow: 'hidden',
@@ -466,8 +557,7 @@ const Tsam = () => {
       {/* Fixed Header Section (unchanged) */}
       {!showSlideshow && (
   <div 
-    onMouseEnter={handleMouseEnter}
-    onMouseLeave={handleMouseLeave}
+ 
     onClick={handleHeaderClick}
     style={{
       position: 'fixed',
@@ -477,7 +567,7 @@ const Tsam = () => {
       width: '100%',
       padding: isMobile ? '10px 0' : '20px 0',
       boxShadow: '0 2px 5px rgba(0,0,0,0.1)',
-      height: isMobile ? 'auto' : 'auto'
+      height: isMobile ? 'auto' : '50px'
     }}
   >
     <div style={{ 
@@ -497,7 +587,7 @@ const Tsam = () => {
           justifyContent: 'center',
           marginTop: isMobile ? '0' : '0',
           padding: isMobile ? '0 10px' : '0',
-          height: isMobile ? '20px' : 'auto',
+          height: isMobile ? '20px' : '100px',
           order: isMobile ? 1 : 0
         }}
       >
@@ -507,12 +597,14 @@ const Tsam = () => {
             width: isMobile ? '50px' : '80px',
             height: isMobile ? '50px' : '80px',
             marginTop: isMobile ? '20px' : '0',
+            marginBottom: isMobile ? '0' : '40px',
+
             marginRight: '10px'
           }}
         />
         <h1 style={{ 
           fontSize: isMobile ? '1.5rem' : '1.2rem',
-          marginBottom: isMobile ? '0px' : '0',
+          marginBottom: isMobile ? '0px' : '60px',
           whiteSpace: 'nowrap'
         }}>
           Tsam Collection
@@ -525,7 +617,7 @@ const Tsam = () => {
         style={{ 
           display: 'flex', 
           justifyContent: 'center', 
-          marginBottom: isMobile ? '0px' : '0',
+          marginBottom: isMobile ? '0px' : '50px',
           width: isMobile ? '100%' : 'auto',
           maxWidth: '600px',
           margin: isMobile ? '0 auto' : '0',
@@ -563,127 +655,133 @@ const Tsam = () => {
   </div>
 )}
       {/* Collage Product Display */}
-    {!showSlideshow && (
-    <div
-    ref={contref}
+   {!showSlideshow && (
+  <div 
     style={{
-      opacity: 1,
-      marginTop: isMobile ? '150px' : '200px',
-      padding: '0',
-      display: 'grid',
-      gridTemplateColumns: isMobile ? 'repeat(3, 1fr)' : 'repeat(4, 1fr)',
-      gridAutoRows: isMobile ? 'minmax(150px, 1fr)' : 'minmax(250px, 1fr)',
-      gap: isMobile ? '4px' : '8px',
-      width: '100%',
+      height: '80vh',
       overflowY: 'auto',
-      transform: 'rotate(-2deg)',
-      transformOrigin: 'center',
-      paddingBottom: '60px'
+      padding: '20px 0',
+      marginTop: isMobile ? '150px' : '200px',
+      position: 'relative',
+    }}
+    onScroll={(e) => {
+      const { scrollTop, scrollHeight, clientHeight } = e.currentTarget;
+      // When scrolled near the bottom, reset to middle
+      if (scrollTop > scrollHeight - clientHeight * 2) {
+        e.currentTarget.scrollTop = scrollHeight / 3;
+      } 
+      // When scrolled near the top, reset to middle
+      else if (scrollTop < clientHeight) {
+        e.currentTarget.scrollTop = scrollHeight / 3;
+      }
+    }}
+    ref={(el) => {
+      if (el) {
+        // Set initial scroll position to middle
+        setTimeout(() => {
+          el.scrollTop = el.scrollHeight / 3;
+        }, 0);
+      }
     }}
   >
-  {Array.from({ length: cloneCount }).flatMap(() => collageLayout[activeTab]).map((item, index) => {
-  const product = products[activeTab].find(p => p.id === item.id);
-  if (!product) return null;
-
-  const cellSize = {
-    large: isMobile ? 'span 2' : 'span 1',
-    medium: 'span 1',
-    small: 'span 1'
-  }[item.size];
-
-  const rotation = {
-    left: 'rotate(-3deg)',
-    right: 'rotate(3deg)',
-    none: 'rotate(0deg)'
-  }[item.rotate];
-
-  return (
+    {/* First clone (top) */}
     <div
-      key={`${item.id}-${index}-${cloneCount}`} // include cloneCount to ensure uniqueness
+      ref={contref}
       style={{
-        gridColumn: cellSize,
-        gridRow: cellSize,
-        position: 'relative',
-        overflow: 'hidden',
-        aspectRatio: '1/1',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#f5f5f5',
-        transform: rotation,
-        transition: 'transform 0.3s ease',
-        boxShadow: '0 4px 8px rgba(0,0,0,0.1)',
-        borderRadius: '4px',
+        opacity: 1,
+        padding: '0',
+        display: 'grid',
+        gridTemplateColumns: isMobile ? 'repeat(3, 1fr)' : 'repeat(4, 1fr)',
+        gridAutoRows: isMobile ? 'minmax(150px, 1fr)' : 'minmax(250px, 1fr)',
+        gap: isMobile ? '4px' : '8px',
+        width: '100%',
+        transform: 'rotate(-2deg)',
+        transformOrigin: 'center',
+        paddingBottom: '60px'
       }}
     >
-      {/* WhatsApp Icon */}
-      {activeProductId === product.id && (
-    <div 
-      onClick={(e) => {
-        e.stopPropagation(); // prevent triggering outer click
-        handleWhatsAppClick(e, product);
-      }}
+      {Array.from({ length: cloneCount }).flatMap(() => collageLayout[activeTab]).map((item, index) => (
+        <ProductCell 
+          key={`top-${item.id}-${index}`}
+          item={item}
+          index={index}
+          activeTab={activeTab}
+          products={products}
+          activeProductId={activeProductId}
+          isMobile={isMobile}
+          handleWhatsAppClick={handleWhatsAppClick}
+          getCurrentImage={getCurrentImage}
+          handleProductClick={handleProductClick}
+          changeColorVariant={changeColorVariant}
+        />
+      ))}
+    </div>
+    
+    {/* Original content (middle) */}
+    <div
       style={{
-        position: 'absolute',
-        top: '8px',
-        right: '8px',
-        width: '28px',
-        height: '28px',
-        backgroundColor: '#25D366',
-        borderRadius: '50%',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        cursor: 'pointer',
-        zIndex: 10,
-        boxShadow: '0 2px 5px rgba(0,0,0,0.2)'
+        opacity: 1,
+        padding: '0',
+        display: 'grid',
+        gridTemplateColumns: isMobile ? 'repeat(3, 1fr)' : 'repeat(4, 1fr)',
+        gridAutoRows: isMobile ? 'minmax(150px, 1fr)' : 'minmax(250px, 1fr)',
+        gap: isMobile ? '4px' : '8px',
+        width: '100%',
+        transform: 'rotate(-2deg)',
+        transformOrigin: 'center',
+        paddingBottom: '60px'
       }}
     >
-      <WhatsAppIcon style={{ width: '16px', height: '16px', fill: 'white' }} />
+      {Array.from({ length: cloneCount }).flatMap(() => collageLayout[activeTab]).map((item, index) => (
+        <ProductCell 
+          key={`middle-${item.id}-${index}`}
+          item={item}
+          index={index}
+          activeTab={activeTab}
+          products={products}
+          activeProductId={activeProductId}
+          isMobile={isMobile}
+          handleWhatsAppClick={handleWhatsAppClick}
+          getCurrentImage={getCurrentImage}
+          handleProductClick={handleProductClick}
+          changeColorVariant={changeColorVariant}
+        />
+      ))}
     </div>
-  )}
-
-<img
-  src={getCurrentImage(product)}
-  alt={product.name}
-  style={{
-    width: '100%',
-    height: '100%',
-    objectFit: 'cover',
-    transition: 'transform 0.3s ease'
-  }}
-  onClick={() => {
-    handleProductClick(product.id);      // show WhatsApp + info
-    changeColorVariant(product.id);      // cycle through colors
-  }}
-/>
-
-
-      {/* Product Info Overlay */}
-      {activeProductId === product.id && (
-    <div style={{
-      position: 'absolute',
-      bottom: 0,
-      left: 0,
-      right: 0,
-      background: 'linear-gradient(transparent, rgba(0,0,0,0.7))',
-      color: 'white',
-      padding: '10px',
-      fontSize: isMobile ? '10px' : '12px',
-      textAlign: 'center'
-    }}>
-      <div style={{ fontWeight: 'bold' }}>{product.name}</div>
-      <div style={{ fontSize: '0.8em' }}>Tap to view colors</div>
+    
+    {/* Second clone (bottom) */}
+    <div
+      style={{
+        opacity: 1,
+        padding: '0',
+        display: 'grid',
+        gridTemplateColumns: isMobile ? 'repeat(3, 1fr)' : 'repeat(4, 1fr)',
+        gridAutoRows: isMobile ? 'minmax(150px, 1fr)' : 'minmax(250px, 1fr)',
+        gap: isMobile ? '4px' : '8px',
+        width: '100%',
+        transform: 'rotate(-2deg)',
+        transformOrigin: 'center',
+        paddingBottom: '60px'
+      }}
+    >
+      {Array.from({ length: cloneCount }).flatMap(() => collageLayout[activeTab]).map((item, index) => (
+        <ProductCell 
+          key={`bottom-${item.id}-${index}`}
+          item={item}
+          index={index}
+          activeTab={activeTab}
+          products={products}
+          activeProductId={activeProductId}
+          isMobile={isMobile}
+          handleWhatsAppClick={handleWhatsAppClick}
+          getCurrentImage={getCurrentImage}
+          handleProductClick={handleProductClick}
+          changeColorVariant={changeColorVariant}
+        />
+      ))}
     </div>
-  )}
-    </div>
-  );
-})}
-
   </div>
-
-    )}
-  
+)}
 
       {/* Double-click instruction */}
       <div style={{ 

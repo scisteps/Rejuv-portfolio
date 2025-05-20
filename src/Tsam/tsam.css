@@ -182,17 +182,58 @@
     touch-action: manipulation;
   }
 }
-/* Ensure consistent aspect ratio */
+.collage-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  padding: 20px;
+  background: white;
+}
+
 .collage-item {
-  aspect-ratio: 1/1;
+  position: relative;
+  border: 5px solid black;
+  overflow: hidden;
+  background-color: #fff;
+  transition: transform 0.3s ease;
 }
 
-/* For items that span multiple rows */
-.collage-item-tall {
-  aspect-ratio: 1/2;
+.collage-item img {
+  width: 100%;
+  height: auto;
+  display: block;
 }
 
-/* For items that span multiple columns */
-.collage-item-wide {
-  aspect-ratio: 2/1;
+/* Slight rotation for dynamic effect */
+.rotate-left {
+  transform: rotate(-3deg);
+}
+
+.rotate-right {
+  transform: rotate(3deg);
+}
+
+.collage-small {
+  width: 150px;
+  height: 150px;
+}
+
+.collage-medium {
+  width: 200px;
+  height: 200px;
+}
+
+.collage-large {
+  width: 250px;
+  height: 250px;
+}
+
+/* Responsive fallback */
+@media (max-width: 768px) {
+  .collage-item {
+    width: 45%;
+    height: auto;
+    transform: rotate(0deg) !important;
+  }
 }
