@@ -7,13 +7,10 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import { Player } from '@lottiefiles/react-lottie-player';
-
 import './tsam.css';
 import sign from './jsons/sign.json';
 import tsamlogo from './jsons/tsamlogo.json';
-
 import { ReactComponent as WhatsAppIcon } from './icons/whatsapp.svg';
-
 import signedtshirt from './pics/tsign.png';
 import signedsweatshirt from './pics/tjump.png';
 import tshirtwithlogo from './pics/logoshirt.png';
@@ -85,7 +82,6 @@ import wabijumper from './pics/wabijumper1.jpg';
 import tokolaerror from './pics/tokola error2.jpg';
 import tokolaerrorblack from './pics/tokolablack.jpg';
 import tokolaerrorjumper from './pics/tokola eh jumper.jpg';
-
 import moe from './pics/moe.jpg';
 import pasasweatshirt from './pics/pasasweatshirt.jpg';
 import pasasweatshirtblue from './pics/pasasweatshirtblue.jpg';
@@ -96,8 +92,6 @@ import noworkblackt from './pics/no work black.jpg';
 import moecap from './pics/moe cap.jpg';
 import moecapfront from './pics/moecapfront.jpg';
 import moecaptext from './pics/moecaptext.jpg';
-
-
 
 // Color variants mapping - Fixed all variants
 const colorVariants = {
@@ -171,8 +165,6 @@ const collageLayout = {
     { id: 'wabicap', size: 'medium', rotate: 'left' }
   ]
 };
-
-
 const Tsam = () => {
   const lottieRef = useRef(null);
   const contref = useRef(null);
@@ -223,44 +215,8 @@ const Tsam = () => {
     { id: 'jumpers', label: 'Jumpers' },
     { id: 'caps', label: 'Caps' }
   ];
-  useEffect(() => {
-    const container = contref.current;
-    if (!container) return;
 
-    const handleScroll = () => {
-      if (isScrolling) return;
-      
-      const { scrollTop, scrollHeight, clientHeight } = container;
-      setScrollPosition(scrollTop);
-      
-      // When we're 80% from the bottom, reset to middle
-      if (scrollTop > scrollHeight - clientHeight * 2) {
-        setIsScrolling(true);
-        
-        // Temporarily disable scroll events
-        container.style.overflowY = 'hidden';
-        
-        // Scroll back to the middle section
-        container.scrollTop = scrollHeight / 3;
-        
-        // Re-enable scrolling after a brief delay
-        setTimeout(() => {
-          container.style.overflowY = 'auto';
-          setIsScrolling(false);
-        }, 100);
-      }
-    };
-
-    container.addEventListener('scroll', handleScroll);
-    return () => container.removeEventListener('scroll', handleScroll);
-  }, [isScrolling]);
-
-  useEffect(() => {
-    if (contref.current && !isScrolling) {
-      const container = contref.current;
-      container.scrollTop = container.scrollHeight / 3;
-    }
-  }, [activeTab, isScrolling]);
+ 
   
   // Product data by category
   const products = {
@@ -278,6 +234,7 @@ const Tsam = () => {
       { id: 'wabisabi', image: wabisabi, name: "wabisabi T-shirt" },
 
     ],
+
     jumpers: [
       { id: 'signedsweatshirt', image: signedsweatshirt, name: "Signed Sweatshirt" },
       { id: 'logosweatshirt', image: logosweatshirt, name: "Logo Jumper" },
@@ -290,6 +247,7 @@ const Tsam = () => {
       { id: 'chillingcontrollerjumper', image: chillingcontrollerjumper, name: "Chilling Controller" },
 
     ],
+
     caps: [
       { id: 'designercap', image: capsign, name: "Signed Cap" },
       { id: 'weekendcap', image: caplogo, name: "Weekend Cap" },
@@ -312,28 +270,7 @@ const Tsam = () => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  useEffect(() => {
-  const handleScroll = () => {
-    const el = contref.current;
-    if (el) {
-      if (el.scrollTop + el.clientHeight >= el.scrollHeight - 10) {
-        // Near the bottom
-        setCloneCount(prev => prev + 1);
-      }
-    }
-  };
-
-  const container = contref.current;
-  if (container) {
-    container.addEventListener('scroll', handleScroll);
-  }
-
-  return () => {
-    if (container) {
-      container.removeEventListener('scroll', handleScroll);
-    }
-  };
-}, [contref]);
+  
 
   useEffect(() => {
     // Initialize color indexes
@@ -400,7 +337,9 @@ const Tsam = () => {
   }, []);
 
   const handleWhatsAppClick = (e, product) => {
-    e.stopPropagation();
+
+    // e.stopPropagation(); 
+
     const message = `Hi, I'm interested in the '${product.name}' (${activeTab}) from Tsam!`;
     const url = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
     window.open(url, '_blank');
@@ -483,7 +422,6 @@ const Tsam = () => {
         {activeProductId === product.id && (
           <div 
             onClick={(e) => {
-              e.stopPropagation();
               handleWhatsAppClick(e, product);
             }}
             style={{
@@ -513,12 +451,12 @@ const Tsam = () => {
             width: '100%',
             height: '100%',
             objectFit: 'cover',
-            transition: 'transform 0.3s ease'
           }}
-          onClick={() => {
+          onClick={    () => {
             handleProductClick(product.id);
             changeColorVariant(product.id);
-          }}
+          } }
+         
         />
   
         {/* Product Info Overlay */}
@@ -657,130 +595,47 @@ const Tsam = () => {
       {/* Collage Product Display */}
    {!showSlideshow && (
   <div 
+  style={{ 
+    height: '80vh',
+    overflowY: 'auto',
+    padding: '20px 0',
+    marginTop: isMobile ? '150px' : '200px',
+    position: 'fixed',
+  }}
+  ref={contref}  // Only keep if you use this ref elsewhere
+>
+  {/* Single grid - no clones */}
+  <div
     style={{
-      height: '80vh',
-      overflowY: 'auto',
-      padding: '20px 0',
-      marginTop: isMobile ? '150px' : '200px',
-      position: 'relative',
-    }}
-    onScroll={(e) => {
-      const { scrollTop, scrollHeight, clientHeight } = e.currentTarget;
-      // When scrolled near the bottom, reset to middle
-      if (scrollTop > scrollHeight - clientHeight * 2) {
-        e.currentTarget.scrollTop = scrollHeight / 3;
-      } 
-      // When scrolled near the top, reset to middle
-      else if (scrollTop < clientHeight) {
-        e.currentTarget.scrollTop = scrollHeight / 3;
-      }
-    }}
-    ref={(el) => {
-      if (el) {
-        // Set initial scroll position to middle
-        setTimeout(() => {
-          el.scrollTop = el.scrollHeight / 3;
-        }, 0);
-      }
+      opacity: 1,
+      padding: '0',
+      display: 'grid',
+      gridTemplateColumns: isMobile ? 'repeat(3, 1fr)' : 'repeat(4, 1fr)',
+      gridAutoRows: isMobile ? 'minmax(150px, 1fr)' : 'minmax(250px, 1fr)',
+      gap: isMobile ? '4px' : '8px',
+      width: '100%',
+      transform: 'rotate(-2deg)',
+      transformOrigin: 'center',
+      paddingBottom: '60px'
     }}
   >
-    {/* First clone (top) */}
-    <div
-      ref={contref}
-      style={{
-        opacity: 1,
-        padding: '0',
-        display: 'grid',
-        gridTemplateColumns: isMobile ? 'repeat(3, 1fr)' : 'repeat(4, 1fr)',
-        gridAutoRows: isMobile ? 'minmax(150px, 1fr)' : 'minmax(250px, 1fr)',
-        gap: isMobile ? '4px' : '8px',
-        width: '100%',
-        transform: 'rotate(-2deg)',
-        transformOrigin: 'center',
-        paddingBottom: '60px'
-      }}
-    >
-      {Array.from({ length: cloneCount }).flatMap(() => collageLayout[activeTab]).map((item, index) => (
-        <ProductCell 
-          key={`top-${item.id}-${index}`}
-          item={item}
-          index={index}
-          activeTab={activeTab}
-          products={products}
-          activeProductId={activeProductId}
-          isMobile={isMobile}
-          handleWhatsAppClick={handleWhatsAppClick}
-          getCurrentImage={getCurrentImage}
-          handleProductClick={handleProductClick}
-          changeColorVariant={changeColorVariant}
-        />
-      ))}
-    </div>
-    
-    {/* Original content (middle) */}
-    <div
-      style={{
-        opacity: 1,
-        padding: '0',
-        display: 'grid',
-        gridTemplateColumns: isMobile ? 'repeat(3, 1fr)' : 'repeat(4, 1fr)',
-        gridAutoRows: isMobile ? 'minmax(150px, 1fr)' : 'minmax(250px, 1fr)',
-        gap: isMobile ? '4px' : '8px',
-        width: '100%',
-        transform: 'rotate(-2deg)',
-        transformOrigin: 'center',
-        paddingBottom: '60px'
-      }}
-    >
-      {Array.from({ length: cloneCount }).flatMap(() => collageLayout[activeTab]).map((item, index) => (
-        <ProductCell 
-          key={`middle-${item.id}-${index}`}
-          item={item}
-          index={index}
-          activeTab={activeTab}
-          products={products}
-          activeProductId={activeProductId}
-          isMobile={isMobile}
-          handleWhatsAppClick={handleWhatsAppClick}
-          getCurrentImage={getCurrentImage}
-          handleProductClick={handleProductClick}
-          changeColorVariant={changeColorVariant}
-        />
-      ))}
-    </div>
-    
-    {/* Second clone (bottom) */}
-    <div
-      style={{
-        opacity: 1,
-        padding: '0',
-        display: 'grid',
-        gridTemplateColumns: isMobile ? 'repeat(3, 1fr)' : 'repeat(4, 1fr)',
-        gridAutoRows: isMobile ? 'minmax(150px, 1fr)' : 'minmax(250px, 1fr)',
-        gap: isMobile ? '4px' : '8px',
-        width: '100%',
-        transform: 'rotate(-2deg)',
-        transformOrigin: 'center',
-        paddingBottom: '60px'
-      }}
-    >
-      {Array.from({ length: cloneCount }).flatMap(() => collageLayout[activeTab]).map((item, index) => (
-        <ProductCell 
-          key={`bottom-${item.id}-${index}`}
-          item={item}
-          index={index}
-          activeTab={activeTab}
-          products={products}
-          activeProductId={activeProductId}
-          isMobile={isMobile}
-          handleWhatsAppClick={handleWhatsAppClick}
-          getCurrentImage={getCurrentImage}
-          handleProductClick={handleProductClick}
-          changeColorVariant={changeColorVariant}
-        />
-      ))}
-    </div>
+    {collageLayout[activeTab].map((item, index) => (
+      <ProductCell 
+        key={`${item.id}-${index}`}
+        item={item}
+        index={index}
+        activeTab={activeTab}
+        products={products}
+        activeProductId={activeProductId}
+        isMobile={isMobile}
+        handleWhatsAppClick={handleWhatsAppClick}
+        getCurrentImage={getCurrentImage}
+        handleProductClick={handleProductClick}
+        changeColorVariant={changeColorVariant}
+      />
+    ))}
   </div>
+</div>
 )}
 
       {/* Double-click instruction */}
@@ -806,5 +661,4 @@ const Tsam = () => {
     </div>
   );
 };
-
 export default Tsam;
