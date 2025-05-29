@@ -101,7 +101,7 @@ const colorVariants = {
   fridayfeeling: [fridayfeeling],
   weekend: [weekend],
   noworkwhite: [noworkwhite, noworkblackt],
-  chillingtshirtgrey: [chillingtshirtgrey, chillingtshirtboysblack, chillingboys, pasatshirtw, chillingtshirtboysblue, chillingcontrollerblue, chillingcontrollerred, chillingcontrollerwhite],
+  chillingtshirtgrey: [chillingtshirtgrey , chillingcontrollerblue, chillingcontrollerred],
   moe: [moe],
   ikigaiblue: [ikigaiblue, ikigaibrown, ikigaiblack],
   kaizenwhite: [kaizenwhite, kaizenbrown, kaizenblue],
@@ -346,15 +346,14 @@ const Tsam = () => {
   };
 
   const changeColorVariant = (productId) => {
-    requestAnimationFrame(() => { // Ensures smooth animation frame
-      setColorIndexes(prev => {
-        const currentIndex = prev[productId] || 0;
-        const variants = colorVariants[productId] || [products[activeTab].find(p => p.id === productId)?.image];
-        const nextIndex = (currentIndex + 1) % variants.length;
-        return { ...prev, [productId]: nextIndex };
-      });
+    setColorIndexes(prev => {
+      const currentIndex = prev[productId] || 0;
+      const variants = colorVariants[productId] || [products[activeTab].find(p => p.id === productId)?.image];
+      const nextIndex = (currentIndex + 1) % variants.length;
+      return { ...prev, [productId]: nextIndex };
     });
   };
+
 
   const handleProductClick = (productId) => {
     setActiveProductId(productId);
@@ -441,9 +440,9 @@ const Tsam = () => {
           src={getCurrentImage(product)}
           alt={product.name}
           style={{
+            overflow:'hidden',
             width: '100%',
-            height: '100%',
-            objectFit: 'cover',
+            height: isMobile? '100%': '300px',
           }}
           onClick={    () => {
             handleProductClick(product.id);
@@ -589,7 +588,7 @@ const Tsam = () => {
   <div 
   style={{ 
     height: '80vh',
-    overflowY: 'scroll',
+    overflowY: 'auto',
     padding: '20px 0',
     marginTop: isMobile ? '150px' : '200px',
     position: 'absolute',
@@ -607,7 +606,6 @@ const Tsam = () => {
       gap: isMobile ? '4px' : '8px',
       width: '100%',
       transform: 'rotate(-2deg)',
-      transformOrigin: 'center',
       paddingBottom: '60px'
     }}
   >
@@ -630,7 +628,26 @@ const Tsam = () => {
 </div>
 )}
 
-     
+      {/* Double-click instruction */}
+      <div style={{ 
+  position: 'fixed',
+  bottom: 0,
+  left: 0,
+  right: 0,
+  backgroundColor: 'white',
+  padding: '10px',
+  textAlign: 'center',
+  boxShadow: '0 -2px 5px rgba(0,0,0,0.1)',
+  zIndex: 10
+}}>
+  <p style={{ 
+    fontSize: isMobile ? '12px' : '16px',
+    color: '#666',
+    margin: 0
+  }}>
+    Tap image to see other colors •/•  contact us
+  </p>
+</div>
     </div>
   );
 };
