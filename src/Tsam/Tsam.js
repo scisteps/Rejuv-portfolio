@@ -346,23 +346,16 @@ const Tsam = () => {
   };
 
   const changeColorVariant = (productId) => {
-    setColorIndexes(prev => {
-      const currentIndex = prev[productId] || 0;
-      const variants = colorVariants[productId] || [products[activeTab].find(p => p.id === productId)?.image];
-      const nextIndex = (currentIndex + 1) % variants.length;
-      return { ...prev, [productId]: nextIndex };
+    requestAnimationFrame(() => { // Ensures smooth animation frame
+      setColorIndexes(prev => {
+        const currentIndex = prev[productId] || 0;
+        const variants = colorVariants[productId] || [products[activeTab].find(p => p.id === productId)?.image];
+        const nextIndex = (currentIndex + 1) % variants.length;
+        return { ...prev, [productId]: nextIndex };
+      });
     });
   };
 
-  const handleDoubleTap = (productId) => {
-    const currentTime = new Date().getTime();
-    const tapLength = currentTime - lastTapTime;
-    
-    if (tapLength < 300 && tapLength > 0) {
-      changeColorVariant(productId);
-    }
-    setLastTapTime(currentTime);
-  };
   const handleProductClick = (productId) => {
     setActiveProductId(productId);
   };
@@ -496,7 +489,6 @@ const Tsam = () => {
       {!showSlideshow && (
   <div 
  
-    onClick={handleHeaderClick}
     style={{
       position: 'fixed',
       top: 0,
@@ -597,10 +589,10 @@ const Tsam = () => {
   <div 
   style={{ 
     height: '80vh',
-    overflowY: 'auto',
+    overflowY: 'scroll',
     padding: '20px 0',
     marginTop: isMobile ? '150px' : '200px',
-    position: 'fixed',
+    position: 'absolute',
   }}
   ref={contref}  // Only keep if you use this ref elsewhere
 >
@@ -638,26 +630,7 @@ const Tsam = () => {
 </div>
 )}
 
-      {/* Double-click instruction */}
-      <div style={{ 
-  position: 'fixed',
-  bottom: 0,
-  left: 0,
-  right: 0,
-  backgroundColor: 'white',
-  padding: '10px',
-  textAlign: 'center',
-  boxShadow: '0 -2px 5px rgba(0,0,0,0.1)',
-  zIndex: 10
-}}>
-  <p style={{ 
-    fontSize: isMobile ? '12px' : '16px',
-    color: '#666',
-    margin: 0
-  }}>
-    Tap image to see other colors •/•  contact us
-  </p>
-</div>
+     
     </div>
   );
 };
