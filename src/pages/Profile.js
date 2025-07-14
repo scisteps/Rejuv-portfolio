@@ -34,7 +34,7 @@ const Profile = () => {
   const tabsRef = useRef(null);
   const contentRef = useRef(null);
   const profileTextRef = useRef(null);
-  const profileImages = [me,formal,me4,me5,celo ];
+  const profileImages = [me,formal,me4,celo ];
   const posters = [poster1, poster2, poster3];
   const brochures = [brochure1, brochure2];
   const businessCards = [businessCard1, businessCard2];
@@ -107,15 +107,14 @@ const Profile = () => {
           <h1>Sam Nkurunungi</h1>
           <h2>Software Engineer & Graphics Designer</h2>
           <p>
-            With over 5 years of professional experience, I bridge the gap between 
+            With over 7 years of professional experience, I bridge the gap between 
             technical implementation and creative design. My unique combination of 
             coding expertise and visual design skills allows me to create solutions 
-            that are both functionally robust and aesthetically compelling.
+            that are robust and aesthetically compelling.
           </p>
           <p>
             As a software engineer, I specialize in building responsive web 
-            applications with modern frameworks. As a graphics designer, I create 
-            visual identities that communicate brand values effectively.
+            applications with modern frameworks. As a graphics designer, I design compelling brand visuals that effectively communicate a company’s values.
           </p>
         </div>
       </div>
