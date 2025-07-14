@@ -12,6 +12,7 @@ import Tabitha from './tokens/Tabitha';
 import { Analytics } from "@vercel/analytics/react"
 import Third from './pages/Third';
 import Tsam from './Tsam/Tsam';
+import Profile from './pages/Profile';
 function App() {
   return (
     <Router>
@@ -30,6 +31,7 @@ function App() {
       <Route path="/tabi" element={<Tabitha  />} />
       <Route path="/stillgraphics" element={<Third  />} />
       <Route path="/tsam" element={<Tsam  />} />
+      <Route path="/profile" element={<Profile  />} />
 
       </Routes>
       </div>
