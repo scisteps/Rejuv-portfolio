@@ -115,7 +115,7 @@ const Profile = () => {
 
         <div className="profile-text" ref={profileTextRef}>
           <h1>Sam Nkurunungi</h1>
-          <h2>Software Engineer & Graphics Designer</h2>
+          <h2>Software Engineer & Animator</h2>
           <p>
             With over 7 years of professional experience, I bridge the gap between 
             <span className="highlight"> web development and creative design</span>. My unique combination of 

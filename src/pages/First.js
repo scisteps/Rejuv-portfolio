@@ -451,7 +451,7 @@ const videoRefs = {
         <div style={{display:'flex',flexDirection:'column',justifyContent:'center'}}>
         <div style={{display:'flex',alignContent:'center',justifyContent:'center'}}>
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-  <div style={{ position: 'relative', width: '250px', height: '100px' }}>
+  <div style={{ position: 'relative', width: '250px', height: '150px' }}>
     <Player ref={animref} loop={true} autoplay={true} src={crown} style={{height:'200px',width:'250px'}}/>
   </div>
   
