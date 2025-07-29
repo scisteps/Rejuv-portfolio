@@ -435,7 +435,7 @@ const videoRefs = {
       <Link to='/profile'> 
       <br/>
       <button  className="about-me-btn" style={{color: 'black', backgroundColor:colorPalette.secondary}}>
-       Meet the creator
+       Meet the founder
       </button>
       </Link>
      
@@ -775,7 +775,7 @@ controlsList="nodownload"
   <h5 
     onClick={() => { handleShowPopup('Waki',imagessyd); handleVideoClick(5); }} 
     style={{ display: 'inline', margin: '0', paddingRight: '5px' }}>
-      & Sydney Wakisati
+      & Sydney Waki
   </h5>
 </span>
 <br/>
