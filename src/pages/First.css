@@ -227,7 +227,15 @@ body {
   border-radius: 5px;
   margin-top: 10px;
 }
-
+.about-me-btn {
+  border: none;
+  padding: 10px 15px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 5px;
+  margin-top: 10px;
+}
 .read-more-btn2 {
   background-color: #2438b5; /* Button color */
   color: white;
@@ -239,7 +247,10 @@ body {
   border-radius: 5px;
   margin-top: 10px;
 }
-
+.about-me-btn:hover {
+  background-color: #ffffff; /* Hover effect */
+  color: black;
+}
 .read-more-btn:hover {
   background-color: #d48820; /* Hover effect */
 }

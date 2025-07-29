@@ -184,17 +184,17 @@ useEffect(() => {
 
 const [playingVideo, setPlayingVideo] = useState(null); // Track the currently playing video
 const videoRefs = {
-  1: useRef(null),
-  2: useRef(null),
-  3: useRef(null),
-  4: useRef(null),
-  6: useRef(null),
-  7: useRef(null),
-  8: useRef(null),
-  9: useRef(null),
-  10: useRef(null),
-
-
+  1: useRef(null), // Rejuvenation
+  2: useRef(null), // The journey of a Creative
+  3: useRef(null), // New Years
+  4: useRef(null), // Kobe Bryant Tribute
+  5: useRef(null), // Lip Sync Test
+  6: useRef(null), // Merry Xmas
+  7: useRef(null), // Journey Through Time
+  8: useRef(null), // Carolle Skater
+  9: useRef(null), // Migu & Feathers Episode 1
+  10: useRef(null), // Migu & Feathers Episode 2
+  11: useRef(null) // Migu & Feathers Episode 3
 };
 
 
@@ -434,7 +434,7 @@ const videoRefs = {
       </button>
       <Link to='/profile'> 
       <br/>
-      <button  className="read-more-btn" style={{color: 'black', backgroundColor:colorPalette.secondary}}>
+      <button  className="about-me-btn" style={{color: 'black', backgroundColor:colorPalette.secondary}}>
        Meet the creator
       </button>
       </Link>
@@ -464,7 +464,7 @@ const videoRefs = {
         </div>
         <div>
         <p style={{ color: fontColor }} >
-        Have a look at some of our  <span style={{ color: highlightColor }}> passion projects below. </span> showcasing different themes and styles
+        Have a look at some of our  <span style={{ color: highlightColor }}> passion projects below. </span> showcasing different themes and styles.</p> <p> please <span style={{ color: highlightColor }}>tap a reaction </span> below each video
         
           </p>
         </div>
@@ -482,6 +482,8 @@ const videoRefs = {
             ref={videoRefs[1]}
 
   preload="auto"
+  controlsList="nodownload"
+
             controls
             width="100%"
             className="motivational-video"
@@ -514,6 +516,8 @@ const videoRefs = {
                       ref={videoRefs[4]}
                       controlsList="nodownload"
 preload="metadata"
+controlsList="nodownload"
+
             controls
             width="100%"
             className="motivational-video"
@@ -562,6 +566,7 @@ This animation is inspired by the talented & professional skater  <span style={{
              ref={videoRefs[8]}
              preload="auto" // Changed from "metadata" to "auto"
              controls
+
             width="100%"
             className="motivational-video"
             onProgress={handleProgress}
@@ -599,6 +604,8 @@ This animation is designed to  <span style={{ color: highlightColor }}>inspire m
              ref={videoRefs[2]}
 preload="metadata"
             controls
+            controlsList="nodownload"
+
             width="100%"
             className="motivational-video"
             onPlay={() => handleVideoClick(2)}
@@ -622,6 +629,8 @@ This animation is   Intended to  <span style={{ color: highlightColor }}> Tell t
           <video
            ref={videoRefs[3]}
 preload="metadata"
+controlsList="nodownload"
+
             controls
             width="100%"
             className="motivational-video"
@@ -641,19 +650,20 @@ preload="metadata"
         <p style={{ color: fontColor }} >
 Going through the different <span style={{ color: highlightColor }}> generations  </span> through time.
 </p>
-          <video
-              ref={videoRefs[7]}
-              controlsList="nodownload"
 
-preload="metadata"
-            controls
-            width="100%"
-            className="motivational-video"
-            onPlay={() => handleVideoClick(7)}
-          >
-            <source src={timejourney} type="video/webm" />
-            Your browser does not support the video tag.
-          </video>
+<video
+  ref={videoRefs[7]}
+  controlsList="nodownload"
+  preload="metadata"
+  controls
+  width="100%"
+  className="motivational-video"
+  onPlay={() => handleVideoClick(7)}
+>
+  <source src={timejourney} type="video/webm" />
+  Your browser does not support the video tag.
+</video>
+
           <EmojiPanel backgroundColor={emojibg} strokecolor={emojistroke} textcolor={emojitxt} vidid={12}/>
 
           <h5 >
@@ -684,6 +694,7 @@ This animation is   Intended to  <span style={{ color: highlightColor }}> Tell t
           <video
              ref={videoRefs[6]}
 preload="metadata"
+
             controls
             width="100%"
             className="motivational-video"
@@ -781,11 +792,19 @@ controlsList="nodownload"
         <p className="story-description">
           <span className="highlight"> Episode 1: Pilot Episode </span> Introduces the characters of the show and the birth of their rivalry.
           </p>
-          <video    ref={videoRefs[7]} preload="auto"  controls width="100%" className="migu-video">
-            <source src={migu1} type="video/mp4" />
-            Your browser does not support the video tag.
-            
-          </video>
+          <video 
+  ref={videoRefs[9]} 
+  preload="auto"  
+  controlsList="nodownload"
+
+  controls 
+  width="100%" 
+  className="migu-video"
+  onPlay={() => handleVideoClick(9)}
+>
+  <source src={migu1} type="video/mp4" />
+  Your browser does not support the video tag.
+</video>
           <EmojiPanel backgroundColor={'black'} strokecolor={emojistroke} textcolor={'white'} vidid={9}/>
 
         </div>
@@ -796,10 +815,17 @@ controlsList="nodownload"
         <p className="story-description">
           <span className="highlight"> Episode 2: Fruit Fight </span> Migu looks for revenge against feathers following the events of episode 1.
           </p>
-          <video  ref={videoRefs[8]} preload="auto" controls width="100%" className="migu-video">
-            <source src={migu2} type="video/webm" />
-            Your browser does not support the video tag.
-          </video>
+          <video 
+  ref={videoRefs[10]} 
+  preload="auto" 
+  controls 
+  width="100%" 
+  className="migu-video"
+  onPlay={() => handleVideoClick(10)}
+>
+  <source src={migu2} type="video/webm" />
+  Your browser does not support the video tag.
+</video>
           <EmojiPanel backgroundColor={'black'} strokecolor={emojistroke} textcolor={'white'} vidid={10}/>
 
           
@@ -810,11 +836,18 @@ controlsList="nodownload"
         <p className="story-description">
           <span className="highlight"> Episode 3:  Honey Hunt </span> Migu & Feathers fight over honey and face the consequences.
           </p>
-          <video preload="metadata" ref={videoRefs[9]} controls width="100%"   controlsList="nodownload" // Prevents download option
- className="migu-video">
-            <source src={migu3} type="video/webm" />
-            Your browser does not support the video tag.
-          </video>
+          <video 
+  ref={videoRefs[11]} 
+  preload="metadata" 
+  controls 
+  width="100%"   
+  controlsList="nodownload"
+  className="migu-video"
+  onPlay={() => handleVideoClick(11)}
+>
+  <source src={migu3} type="video/webm" />
+  Your browser does not support the video tag.
+</video>
           <EmojiPanel backgroundColor={'black'} strokecolor={emojistroke} textcolor={'white'} vidid={11}/>
 
         </div>
