@@ -201,7 +201,7 @@ body {
 }
 /* Styling for highlighted text */
 .highlight {
-  color: #ff9e02; /* Bright color for emphasis */
+  color: #FFBC00; /* Bright color for emphasis */
   font-weight: 600; /* Semi-bold text */
 }
 
@@ -217,8 +217,8 @@ body {
 
 /* Other styles */
 .read-more-btn {
-  background-color: #f5a623; /* Button color */
-  color: white;
+  background-color: white; /* Button color */
+  color: black;
   border: none;
   padding: 10px 15px;
   font-size: 16px;
@@ -284,10 +284,10 @@ body {
 
 
 .close-btn:hover {
-  color: #ff9e02; /* Change color on hover */
+  color: #FFBC00; /* Change color on hover */
 }
 .close-text:hover {
-  color: #ff9e02;  /* Change color on hover */
+  color: #FFBC00;  /* Change color on hover */
 }
 .close-text {
   font-size: 30px; /* Same font size as the icon */

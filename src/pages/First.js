@@ -47,7 +47,7 @@ import { gsap } from "gsap";
 
 const First = () => {
   const [motivationalBackground, setMotivationalBackground] = useState("#440006");
-  const images = [rejuveblack,me,rejuveprofile,me3 ]; // Add more images or videos as needed
+  const images = [rejuveblack,rejuveprofile ]; // Add more images or videos as needed
   const images2 = [migudp, miguim2]; // Add more images or videos as needed
   const imagesb = [shanetemp, shanetemp,shanetemp]; // Add more images or videos as needed
   const xmasref = useRef(null);
@@ -90,6 +90,7 @@ const First = () => {
     setimagesf(imagesb)
   };
 
+
   const handleClosePopup = () => {
     setShowTeamPopup(false);
     setIsContentBlurred(false); // Removes blur from the background content
@@ -98,6 +99,12 @@ const First = () => {
   const handleToggle = () => {
     setShowMore((prevShowMore) => !prevShowMore);
   };
+  const colorPalette = {
+    primary:'#440006',
+    secondary:'#FFBC00',
+    dark:'#000000'
+  };
+
 
   useEffect(() => {
     window.addEventListener('resize', handleResize);
@@ -390,35 +397,25 @@ const videoRefs = {
 
          className="text-container"> 
         <p className="left-aligned">
-  Welcome to <span className="highlight">Rejuv</span> —  a hub for creatives where imagination and creativity come to life through animation.  
-  Founded by me,<span className="highlight bold"> Sam Nkurunungi.</span> "Rejuv provides a collaborative platform for sharing, learning, and creating together."
+  Welcome to <span className="highlight">Rejuv</span> —  We are a community of animators led and founded by.  
+   <span className="highlight bold"> Sam Nkurunungi.</span> "We work on different projects ranging from <span className="highlight"> animated short stories, animated explainers, music & lyric videos</span> and other passion projects that come along the way."
   
 </p>
 
 
       {showMore && (
         <>
-          <p className="left-aligned">
-            We also create  <span className="highlight bold"> explainers</span> and {" "}
-            <span className="highlight">Brand animations</span>, offering services to help businesses and individuals convey their messages effectively, and.
-          </p>
-          <Link to="/brands">
+         
+          {/* <Link to="/brands">
 
           <button  className="read-more-btn2">
           Brand Animations & Explainers    
           </button>
-          </Link>
+          </Link> */}
           <br/>
-
-          
-          <p className="left-aligned">
-            In my free time, I channel my creativity into crafting <span className="highlight bold">short, animated stories</span> that explore unique themes and characters, showcasing the limitless possibilities of animation.
-          </p>
-          <p className="left-aligned">
-            Additionally, I share my expertise by <span className="highlight">teaching animation</span>, inspiring others to discover and develop their own creative potential. Whether you're seeking engaging explainers or looking to learn the art of animation, I'm here to help.
-          </p>
+        
           <br/>
-          <p> <span className="highlight bold"> Contact me on +256 782240185</span> </p>
+          <p> <span className="highlight bold"> Contact us on +256 782240185</span> </p>
           <p> <span > email - rejuveanimation@gmail.com</span> </p>
           <p>
   <a 
@@ -426,15 +423,22 @@ const videoRefs = {
     target="_blank" 
     rel="noopener noreferrer"
     className="highlight">
-    Follow me on Instagram
+    click to view Instagram
   </a>
 </p>
         </>
       )}
 
       <button onClick={handleToggle} className="read-more-btn">
-        {showMore ? "Read Less" : "Read More"}
+        {showMore ? "hide Contacts" : "show Contacts"}
       </button>
+      <Link to='/profile'> 
+      <br/>
+      <button  className="read-more-btn" style={{color: 'black', backgroundColor:colorPalette.secondary}}>
+       Meet the creator
+      </button>
+      </Link>
+     
     </div>
 
       </div>
@@ -446,31 +450,32 @@ const videoRefs = {
       >
         <div style={{display:'flex',flexDirection:'column',justifyContent:'center'}}>
         <div style={{display:'flex',alignContent:'center',justifyContent:'center'}}>
-        <div style={{position:'relative',width:'150px', height:'150px'}}>
-        <Player ref={animref} loop={true} autoplay={true} src={youtube} />
-        </div>
-        <div   style={{
-    marginTop: isMobile ? '10px' : '40px', // Set marginTop only when isMobile is true
-  }}>
-        <h2 style={{ color: fontColor }}>Animated Shorts</h2>
-     
-        </div>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+  <div style={{ position: 'relative', width: '250px', height: '100px' }}>
+    <Player ref={animref} loop={true} autoplay={true} src={crown} style={{height:'200px',width:'250px'}}/>
+  </div>
+  
+  <div style={{ marginTop: isMobile ? '10px' : '40px' }}>
+    <h2 style={{ color: fontColor }}>Animated Shorts</h2>
+  </div>
+</div>
+
       
         </div>
         <div>
         <p style={{ color: fontColor }} >
-        Check out our  <span style={{ color: highlightColor }}> animations below. </span> And leave some reactions
+        Have a look at some of our  <span style={{ color: highlightColor }}> passion projects below. </span> showcasing different themes and styles
         
           </p>
         </div>
         </div>
      
        <div ref={redref}  className="video-container bordered">
-       <h2 style={{ color: fontColor }} >1.  The Rejuvenation</h2>
+       <h2 style={{ color: fontColor }} >1. Rejuvenation</h2>
 
        <p style={{ color: fontColor }}>
-   It reflects one of our core purposes:  
-  the <span style={{ color: highlightColor }}>relentless drive to grow, rise, and move forward,</span> because there are no limits to our creativity and how far Rejuv can go.
+   It reflects the:  
+   <span style={{ color: highlightColor }}>relentless drive to grow,</span> and keep exceeding your limit in the creative field.
 </p>
 
   <video
@@ -502,7 +507,7 @@ const videoRefs = {
         <h2 style={{ color: fontColor }} >2.  Kobe Bryant Tribute </h2>
 
         <p style={{ color: fontColor }} >
-        This animation is   Intended to pay <span style={{ color: highlightColor }}> tribute to the late Kobe bryant </span> who died on Jan 26 2021
+        This animation is   Intended to pay <span style={{ color: highlightColor }}> tribute to the late Kobe bryant </span> who died on Jan 26 2020
           </p>
           <div data-vjs-player>
           <video

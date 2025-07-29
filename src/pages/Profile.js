@@ -5,9 +5,11 @@ import "swiper/css";
 import "swiper/css/pagination";
 import "./profile.css";
 import gsap from "gsap";
+import { FaHome } from "react-icons/fa";
 
 // Import your images
 import me from '../images/Rejuv dp.jpg';
+import me3 from '../images/Samred.jpg';
 
 import me4 from '../still/me4.png';
 import me5 from '../still/mountains.jpg';
@@ -26,15 +28,16 @@ import animation3 from "../videos/counterfeit.mp4";
 import animation4 from "../videos/hcm.webm";
 import animation5 from "../anims/wexmas.mp4";
 import animation6 from "../anims/mothers.mp4";
+import { Link } from "react-router-dom";
 
 const Profile = () => {
-  const [activeTab, setActiveTab] = useState("still");
+  const [activeTab, setActiveTab] = useState("animation");
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
   const profileHeaderRef = useRef(null);
   const tabsRef = useRef(null);
   const contentRef = useRef(null);
   const profileTextRef = useRef(null);
-  const profileImages = [me,formal,me4,celo ];
+  const profileImages = [me,formal,me4,me3 ];
   const posters = [poster1, poster2, poster3];
   const brochures = [brochure1, brochure2];
   const businessCards = [businessCard1, businessCard2];
@@ -77,6 +80,13 @@ const Profile = () => {
   }, []);
   return (
     <div className="profile-container">
+     <div className="home-button-wrapper">
+  <Link to="/" className="home-button">
+    <FaHome className="home-icon" />
+  </Link>
+</div>
+
+
       {/* Profile Header with Circular Slideshow */}
       <div className="profile-header" ref={profileHeaderRef} >
         <div className="slideshow-container">
@@ -108,31 +118,50 @@ const Profile = () => {
           <h2>Software Engineer & Graphics Designer</h2>
           <p>
             With over 7 years of professional experience, I bridge the gap between 
-            technical implementation and creative design. My unique combination of 
+            <span className="highlight"> web development and creative design</span>. My unique combination of 
             coding expertise and visual design skills allows me to create solutions 
-            that are robust and aesthetically compelling.
+            that cut across these fields and allow them to compliment each other in a variety of ways.
           </p>
           <p>
             As a software engineer, I specialize in building responsive web 
             applications with modern frameworks. As a graphics designer, I design compelling brand visuals that effectively communicate a company’s values.
           </p>
+          <p className="left-aligned">
+            In my free time, I channel my creativity into crafting <span className="highlight bold">short, animated stories</span> that explore unique themes and characters, showcasing the limitless possibilities of animation.
+          </p>
+          <p className="left-aligned">
+            Additionally, I share my expertise by <span className="highlight">teaching animation</span>, inspiring others to discover and develop their own creative potential. Whether you're seeking engaging explainers or looking to learn the art of animation, I'm here to help.
+          </p>
+          <br/>
+          <p> <span className="highlight bold"> Contact me on +256 782240185</span> </p>
+          <p> <span > email - rejuveanimation@gmail.com</span> </p>
+          <p>
+  <a 
+    href="https://www.instagram.com/_rejuv_/" 
+    target="_blank" 
+    rel="noopener noreferrer"
+    className="highlight">
+    click to view Instagram
+  </a>
+</p>
         </div>
       </div>
 
       {/* Navigation Tabs */}
       <div className="tabs-container" ref={tabsRef}>
+      <button
+          className={`tab-button ${activeTab === "animation" ? "active" : ""}`}
+          onClick={() => setActiveTab("animation")}
+        >
+          Animation
+        </button>
         <button
           className={`tab-button ${activeTab === "still" ? "active" : ""}`}
           onClick={() => setActiveTab("still")}
         >
           Still Graphics
         </button>
-        <button
-          className={`tab-button ${activeTab === "animation" ? "active" : ""}`}
-          onClick={() => setActiveTab("animation")}
-        >
-          Animation
-        </button>
+     
       </div>
 
       {/* Content Sections */}
@@ -150,30 +179,8 @@ const Profile = () => {
            ))}
          </div>
        </div>
-     
-       {/* Brochures Section */}
-       <div className="portfolio-section">
-         <h3>Brochures</h3>
-         <div className="grid-container">
-           {brochures.map((brochure, index) => (
-             <div key={index} className="portfolio-item">
-               <img src={brochure} alt={`Brochure ${index + 1}`} />
-             </div>
-           ))}
-         </div>
-       </div>
-     
-       {/* Business Cards Section */}
-       <div className="portfolio-section">
-         <h3>Business Cards</h3>
-         <div className="grid-container">
-           {businessCards.map((card, index) => (
-             <div key={index} className="portfolio-item">
-               <img src={card} alt={`Business Card ${index + 1}`} />
-             </div>
-           ))}
-         </div>
-       </div>
+    
+    
      </>
      
         ) : (

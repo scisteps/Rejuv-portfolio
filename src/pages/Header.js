@@ -72,7 +72,7 @@ const Header = () => {
   alt="information Icon"
   style={{ width: '20px', marginRight: '8px', verticalAlign: 'middle' }}
 />
-                  About
+                  Home
                 </Link>
               )}
             </li>
@@ -89,7 +89,7 @@ const Header = () => {
   alt="video Icon"
   style={{ width: '20px', marginRight: '8px', verticalAlign: 'middle' }}
 />
-                 Reels
+                 Shorts
               </Link>
             </li>
             <li>

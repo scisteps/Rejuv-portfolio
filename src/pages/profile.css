@@ -6,6 +6,36 @@
     color: white; /* universal text color */
 }
   
+.home-button-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+  position: relative;
+}
+
+.home-button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: white;
+  font-size: 18px;
+  text-decoration: none;
+  transition: transform 0.3s ease;
+}
+
+.home-button:hover {
+  transform: scale(1.1);
+}
+
+.home-icon {
+  font-size: 24px;
+}
+
+.home-text {
+  font-weight: 500;
+}
+
+
   .profile-header {
     display: flex;
     flex-direction: column;
@@ -15,9 +45,9 @@
   }
   
   .slideshow-container {
-    width: 250px;
-    height: 250px;
-    margin-bottom: 2rem;
+    width: 400px;
+    height: 400px;
+    margin-top: 2rem;
   }
   
  /* Replace .circle-slide with: */
@@ -148,8 +178,8 @@
     }
   
     .slideshow-container {
-      width: 200px;
-      height: 200px;
+      width: 350px;
+      height: 350px;
     }
   
     .grid-container {
