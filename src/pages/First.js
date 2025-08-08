@@ -45,7 +45,7 @@ import shanetemp from '../images/shane.jpg';
 import timejourney from '../anims/timejourney3.webm';
 import chill from '../images/avunie.jpg';
 import caroline from'../videos/Carolle.mp4';
-import keepmovingforward from'../anims/Rejuv25.mp4';
+import keepmovingforward from'../anims/Rejuv27.mp4';
 
 import { gsap } from "gsap";
 
