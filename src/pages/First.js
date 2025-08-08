@@ -59,6 +59,8 @@ const First = () => {
   const imagess = [me,me2,me3 ]; // Add more images or videos as needed
   const imagessyd = [syd1,syd2,syd3 ]; // Add more images or videos as needed
   const imageschill = [chill,chill,chill ]; // Add more images or videos as needed
+  
+  const butref = useRef(null);
 
   const newyearsref = useRef(null);
   const redref = useRef(null);
@@ -133,6 +135,10 @@ useEffect(() => {
       opacity: 0, 
       y: -50 // Start 50px above their current position 
     });
+    gsap.set( butref.current, { 
+      opacity: 0, 
+      y: -50 // Start 50px above their current position 
+    });
   
     gsap.to(picref.current, {
       duration: 1.7,
@@ -156,10 +162,16 @@ useEffect(() => {
       ease: "power4.inOut",
       delay: 1,
     });
-  
+    gsap.to(butref.current, {
+      duration: 1.5,
+      opacity: 1,
+      y: 0, // Move to original position
+      ease: "power4.inOut",
+      delay: 2.6,
+    });
   }
   
-}, [picref,shortsref,wordref,isLoading]);
+}, [picref,shortsref,wordref,isLoading,butref]);
 
 
 
@@ -455,7 +467,7 @@ const videoRefs = {
       </button> */}
       <Link to='/profile'> 
       <br/>
-      <button 
+      <div ref={butref}> <button 
   className="about-me-btn" 
   style={{
     color: 'black',
@@ -463,7 +475,8 @@ const videoRefs = {
   }}
 >
   Meet the founder
-</button>
+</button></div>
+     
 
       </Link>
      
