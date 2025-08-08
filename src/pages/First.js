@@ -510,7 +510,7 @@ const videoRefs = {
           </video>
 
 
-  <EmojiPanel backgroundColor={emojibg} strokecolor={emojistroke} textcolor={emojitxt} vidid={1} />
+  <EmojiPanel backgroundColor={emojibg} strokecolor={emojistroke} textcolor={emojitxt} vidid={12} />
 
   <h5  onClick={() => { handleShowPopup('Rejuv',imagess); handleVideoClick(1); }}
  
