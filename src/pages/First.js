@@ -26,6 +26,8 @@ import silent from '../anims/optimized_silent.mp4';
 import bball from '../anims/improved.webm';
 import youtube from '../jsons/youtube.json';
 import crown from '../jsons/crown.json';
+import blackcrown from '../jsons/crown.json';
+
 import videojs from "video.js";
 import { Link } from "react-router-dom";
 import "video.js/dist/video-js.css"; // Import Video.js default styles
@@ -43,6 +45,8 @@ import shanetemp from '../images/shane.jpg';
 import timejourney from '../anims/timejourney3.webm';
 import chill from '../images/avunie.jpg';
 import caroline from'../videos/Carolle.mp4';
+import keepmovingforward from'../anims/60M.mp4';
+
 import { gsap } from "gsap";
 
 const First = () => {
@@ -58,12 +62,15 @@ const First = () => {
 
   const newyearsref = useRef(null);
   const redref = useRef(null);
+  const keepref = useRef(null);
+
   const silentref = useRef(null);
   const snormalref = useRef(null);
   const carolref = useRef(null);
   const wordref = useRef(null);
   const picref = useRef(null);
   const shortsref = useRef(null);
+  const [logoh, setlogoh] = useState(crown);
 
   const [showMore, setShowMore] = useState(false);
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
@@ -194,7 +201,9 @@ const videoRefs = {
   8: useRef(null), // Carolle Skater
   9: useRef(null), // Migu & Feathers Episode 1
   10: useRef(null), // Migu & Feathers Episode 2
-  11: useRef(null) // Migu & Feathers Episode 3
+  11: useRef(null), // Migu & Feathers Episode 3
+  12: useRef(null) // keep moving forward
+
 };
 
 
@@ -295,7 +304,15 @@ const videoRefs = {
     setemojitxt('black');
 
   }
-    
+  else if (video === 12){
+    setMotivationalBackground("#F5F4EB");
+    setFontColor("black");
+    setHighlightColor("black");
+    setemojibg('#5C5766');
+    setemojistroke('black');
+    setemojitxt('black');
+    setlogoh(blackcrown);
+  }  
   };
 
   return (
@@ -469,13 +486,43 @@ const videoRefs = {
           </p>
         </div>
         </div>
-     
+        <div ref={keepref}  className="video-container bordered">
+       <h2 style={{ color: fontColor }} >1. Keep moving forward</h2>
+
+       <p style={{ color: fontColor }}>
+   Take a deep breath, 
+   <span style={{ color: highlightColor }}>and keep moving forward</span> whether in time of plenty or scarcity, this too shall pass just like the mountains and lakes you have crossed in the past.
+</p>
+
+  <video
+            ref={videoRefs[12]}
+
+  preload="auto"
+
+            controls
+            width="100%"
+            className="motivational-video"
+            onPlay={() => handleVideoClick(12)}
+
+          >
+            <source src={keepmovingforward} type="video/webm" />
+            Your browser does not support the video tag.
+          </video>
+
+
+  <EmojiPanel backgroundColor={emojibg} strokecolor={emojistroke} textcolor={emojitxt} vidid={1} />
+
+  <h5  onClick={() => { handleShowPopup('Rejuv',imagess); handleVideoClick(1); }}
+ 
+        style={{ cursor:'cell', color: 'blue' }}><span style={{ color: highlightColor }}>Created by Nkurunungi Samuel, May 11 2022</span></h5>
+</div>
+
        <div ref={redref}  className="video-container bordered">
-       <h2 style={{ color: fontColor }} >1. Rejuvenation</h2>
+       <h2 style={{ color: fontColor }} >2. Rejuvenation</h2>
 
        <p style={{ color: fontColor }}>
    It reflects the:  
-   <span style={{ color: highlightColor }}>relentless drive to grow,</span> and keep exceeding your limit in the creative field.
+   <span style={{ color: highlightColor }}> strive to </span>  exceed your limits with every project in the creative field.
 </p>
 
   <video
@@ -506,7 +553,7 @@ const videoRefs = {
         <br/>
 
         <div ref={newyearsref} onClick={() => handleVideoClick(4)} className="video-container bordered">
-        <h2 style={{ color: fontColor }} >2.  Kobe Bryant Tribute </h2>
+        <h2 style={{ color: fontColor }} >3.  Kobe Bryant Tribute </h2>
 
         <p style={{ color: fontColor }} >
         This animation is   Intended to pay <span style={{ color: highlightColor }}> tribute to the late Kobe bryant </span> who died on Jan 26 2020
@@ -516,7 +563,6 @@ const videoRefs = {
                       ref={videoRefs[4]}
                       controlsList="nodownload"
 preload="metadata"
-controlsList="nodownload"
 
             controls
             width="100%"
@@ -553,11 +599,11 @@ controlsList="nodownload"
         <br/>
         <br/>
         <div ref={carolref} onClick={() => handleVideoClick(8)} className="video-container bordered || current-animation">
-        <h2 style={{ color: fontColor }} >3.  Carolle Skater </h2>
+        <h2 style={{ color: fontColor }} >4.  Carolle Skater </h2>
 
         <p style={{ color: fontColor }}>
 
-This animation is inspired by the talented & professional skater  <span style={{ color: highlightColor }}>Caroline Njeri </span> 
+This animation is inspired by the talented & professional skater from Nairobi  <span style={{ color: highlightColor }}>Caroline Njeri </span> 
 </p>
 
 <div>
@@ -594,7 +640,7 @@ This animation is inspired by the talented & professional skater  <span style={{
         <br/>
         <br/>
         <div ref={snormalref} onClick={() => handleVideoClick(2)} className="video-container bordered">
-        <h2 style={{ color: fontColor }} >4.  The journey of a Creative </h2>
+        <h2 style={{ color: fontColor }} >5.  The journey of a Creative </h2>
 
         <p style={{ color: fontColor }}>
 
@@ -604,7 +650,6 @@ This animation is designed to  <span style={{ color: highlightColor }}>inspire m
              ref={videoRefs[2]}
 preload="metadata"
             controls
-            controlsList="nodownload"
 
             width="100%"
             className="motivational-video"
@@ -622,7 +667,7 @@ preload="metadata"
         <br/>
         <br/>
         <div ref={newyearsref} onClick={() => handleVideoClick(3)} className="video-container bordered">
-        <h2 style={{ color: fontColor }} className="video-caption"> 5. New Years</h2>
+        <h2 style={{ color: fontColor }} className="video-caption"> 6. New Years</h2>
         <p style={{ color: fontColor }}>
 This animation is   Intended to  <span style={{ color: highlightColor }}> Tell the story of a new year </span> And give hope to the world.
 </p>
@@ -646,7 +691,7 @@ controlsList="nodownload"
 
         </div>
         <div ref={silentref} onClick={() => handleVideoClick(7)} className="video-container bordered ">
-        <h2 style={{ color: fontColor }}>6. A journey through time </h2>
+        <h2 style={{ color: fontColor }}>7. A journey through time </h2>
         <p style={{ color: fontColor }} >
 Going through the different <span style={{ color: highlightColor }}> generations  </span> through time.
 </p>
@@ -687,7 +732,7 @@ Going through the different <span style={{ color: highlightColor }}> generations
 
         </div>
         <div ref={xmasref} onClick={() => handleVideoClick(6)} className="video-container bordered">
-        <h2 style={{ color: fontColor }} className="video-caption">7. Merry Xmas</h2>
+        <h2 style={{ color: fontColor }} className="video-caption">8. Merry Christmas</h2>
         <p style={{ color: fontColor }}>
 This animation is   Intended to  <span style={{ color: highlightColor }}> Tell the story of a new year </span> And give hope to the world.
 </p>
@@ -710,7 +755,7 @@ preload="metadata"
 
         </div>
        
-        <div ref={silentref} onClick={() => handleVideoClick(5)} className="video-container bordered">
+        {/* <div ref={silentref} onClick={() => handleVideoClick(5)} className="video-container bordered">
         <h2 style={{ color: fontColor }}>8. lip sync test</h2>
         <p style={{ color: fontColor }} >
         This <span style={{ color: highlightColor }}> Testing </span> Lip sync
@@ -733,14 +778,14 @@ controlsList="nodownload"
           <h5  onClick={() => { handleShowPopup('Rejuv',imagess); handleVideoClick(7); }}> <span style={{ color: highlightColor }}> Created by Nkurunungi Samuel </span></h5>
 
 
-        </div>
+        </div> */}
       </div>
 
       {/* Animated Stories Section */}
       <div className="animated-stories-section">
         <div style={{display:'flex',alignContent:'center',justifyContent:'center'}}>
         <div style={{position:'relative',width:'350px', height:'200px',marginTop:'10px'}}>
-        <Player ref={animref} loop={true} autoplay={true} src={crown} />
+        <Player ref={animref} loop={true} autoplay={true} src={logoh} />
         </div>
         </div>
         <br/>

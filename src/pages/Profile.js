@@ -22,8 +22,8 @@ import brochure1 from "../still/brochure1.jpg";
 import brochure2 from "../still/brochure2.jpg";
 import businessCard1 from "../still/bizcard1.jpg";
 import businessCard2 from "../still/bizcard2.jpg";
-import animation1 from "../videos/phsplus.webm";
-import animation2 from "../anims/redascension.mp4";
+import animation2 from "../videos/phsplus.webm";
+import animation1 from "../anims/60M.mp4";
 import animation3 from "../videos/counterfeit.mp4";
 import animation4 from "../videos/hcm.webm";
 import animation5 from "../anims/wexmas.mp4";
@@ -117,7 +117,9 @@ const Profile = () => {
           <h1>Sam Nkurunungi</h1>
           <h2>Software Engineer & Animator</h2>
           <p>
-            With over 7 years of professional experience, I bridge the gap between 
+            I am a  <span className="highlight">Ugandan from Kampala </span>with a deep passion for art and computers from a very young age,
+            I used to draw comic books in my childhood years, persued software engineering at university and built a variety of web apps & programs.</p>
+           <p> With over 7 years of professional experience, I bridge the gap between 
             <span className="highlight"> web development and creative design</span>. My unique combination of 
             coding expertise and visual design skills allows me to create solutions 
             that cut across these fields and allow them to compliment each other in a variety of ways.
