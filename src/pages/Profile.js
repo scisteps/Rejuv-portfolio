@@ -23,7 +23,7 @@ import brochure2 from "../still/brochure2.jpg";
 import businessCard1 from "../still/bizcard1.jpg";
 import businessCard2 from "../still/bizcard2.jpg";
 import animation2 from "../videos/phsplus.webm";
-import animation1 from "../anims/60M.mp4";
+import animation1 from "../anims/Rejuv25.mp4";
 import animation3 from "../videos/counterfeit.mp4";
 import animation4 from "../videos/hcm.webm";
 import animation5 from "../anims/wexmas.mp4";
