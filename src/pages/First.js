@@ -505,7 +505,7 @@ const videoRefs = {
         </div>
         <div>
         <p style={{ color: fontColor }} >
-        Have a look at some of our  <span style={{ color: highlightColor }}> passion projects below. </span> showcasing different themes and styles.</p> <p>  <span style={{ color: highlightColor }}>tap on a reaction below the video </span> 
+        Have a look at some of our  <span style={{ color: highlightColor }}> passion projects below. </span> showcasing different themes and styles.</p> <p>  <span style={{ color: highlightColor }}> Enjoy </span> 
         
           </p>
         </div>

@@ -177,8 +177,8 @@ const EmojiPanel = ({ backgroundColor, strokecolor, textcolor, vidid }) => {
         fontSize:'12px',
         color: textcolor || "white",
       }}
-    >
-      Reactions
+    > Tap your
+      Reaction
       {emojis.map((emoji, index) => (
   <div
     key={index}
@@ -197,7 +197,7 @@ const EmojiPanel = ({ backgroundColor, strokecolor, textcolor, vidid }) => {
   borderRadius: "50%",
   boxShadow: `
     0 1px 3px rgba(0, 0, 0, 0.6),             // Subtle outer shadow
-    inset 0 0 20px 10px rgba(0, 0, 0, 1.7)     // Dominant inner shadow
+    inset 0 0 10px 5px rgba(0, 0, 0, 1.7)     // Dominant inner shadow
   `,
   display: "flex",
   justifyContent: "center",
