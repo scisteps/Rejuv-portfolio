@@ -308,7 +308,7 @@ const videoRefs = {
     setMotivationalBackground("#F5F4EB");
     setFontColor("black");
     setHighlightColor("black");
-    setemojibg('#5C5766');
+    setemojibg('#C2C0AF');
     setemojistroke('black');
     setemojitxt('black');
     setlogoh(blackcrown);
@@ -368,41 +368,43 @@ const videoRefs = {
   <div
     className={`mobile-profile ${showMore ? 'shrink' : ''}`}
   >
-    <Slider
-      autoplay={true}
-      autoplaySpeed={3000}
-      infinite={true}
-      slidesToShow={1}
-      slidesToScroll={1}
-      dots={true}
-      className="slick-carousel-container"
-    >
-      {images.map((image, index) => (
-        <div key={index}>
-          <img src={image} alt={`Slideshow ${index}`} className="profile-image" />
-        </div>
-      ))}
-    </Slider>
+<Slider
+  autoplay={true}
+  autoplaySpeed={3000}
+  infinite={true}
+  slidesToShow={1}
+  slidesToScroll={1}
+  dots={true}
+  fade={true}  // This enables the fade effect
+  className="slick-carousel-container"
+>
+  {images.map((image, index) => (
+    <div key={index}>
+      <img src={image} alt={`Slideshow ${index}`} className="profile-image" />
+    </div>
+  ))}
+</Slider>
   </div>
 ) : (
   <div 
   ref={picref}
   className="image-container">
-    <Slider
-      autoplay={true}
-      autoplaySpeed={3000}
-      infinite={true}
-      slidesToShow={1}
-      slidesToScroll={1}
-      dots={true}
-      className="slick-carousel-container"
-    >
-      {images.map((image, index) => (
-        <div key={index}>
-          <img src={image} alt={`Slideshow ${index}`} className="profile-image" />
-        </div>
-      ))}
-    </Slider>
+   <Slider
+  autoplay={true}
+  autoplaySpeed={4000}
+  infinite={true}
+  slidesToShow={1}
+  slidesToScroll={1}
+  dots={true}
+  fade={true}  // This enables the fade effect
+  className="slick-carousel-container"
+>
+  {images.map((image, index) => (
+    <div key={index}>
+      <img src={image} alt={`Slideshow ${index}`} className="profile-image" />
+    </div>
+  ))}
+</Slider>
   </div>
 )}
 
@@ -419,7 +421,9 @@ const videoRefs = {
   
 </p>
 
-
+  <p> <span className="highlight bold"> Contact us on +256 782240185</span> </p>
+          <p> <span > email - rejuveanimation@gmail.com</span> </p>
+          
       {showMore && (
         <>
          
@@ -446,14 +450,21 @@ const videoRefs = {
         </>
       )}
 
-      <button onClick={handleToggle} className="read-more-btn">
+      {/* <button onClick={handleToggle} className="read-more-btn">
         {showMore ? "hide Contacts" : "show Contacts"}
-      </button>
+      </button> */}
       <Link to='/profile'> 
       <br/>
-      <button  className="about-me-btn" style={{color: 'black', backgroundColor:colorPalette.secondary}}>
-       Meet the founder
-      </button>
+      <button 
+  className="about-me-btn" 
+  style={{
+    color: 'black',
+    backgroundColor: colorPalette.secondary
+  }}
+>
+  Meet the founder
+</button>
+
       </Link>
      
     </div>
@@ -481,7 +492,7 @@ const videoRefs = {
         </div>
         <div>
         <p style={{ color: fontColor }} >
-        Have a look at some of our  <span style={{ color: highlightColor }}> passion projects below. </span> showcasing different themes and styles.</p> <p> please <span style={{ color: highlightColor }}>tap a reaction </span> below each video
+        Have a look at some of our  <span style={{ color: highlightColor }}> passion projects below. </span> showcasing different themes and styles.</p> <p>  <span style={{ color: highlightColor }}>tap on a reaction below the video </span> 
         
           </p>
         </div>
@@ -514,7 +525,7 @@ const videoRefs = {
 
   <h5  onClick={() => { handleShowPopup('Rejuv',imagess); handleVideoClick(1); }}
  
-        style={{ cursor:'cell', color: 'blue' }}><span style={{ color: highlightColor }}>Created by Nkurunungi Samuel, August 7 2025</span></h5>
+        style={{ cursor:'cell', color: 'blue' }}><span style={{ color: highlightColor }}>Created by Nkurunungi Samuel,</span><span style={{color:fontColor}}> August 7 2025</span></h5>
 </div>
 
        <div ref={redref}  className="video-container bordered">
@@ -546,7 +557,7 @@ const videoRefs = {
 
   <h5  onClick={() => { handleShowPopup('Rejuv',imagess); handleVideoClick(1); }}
  
-        style={{ cursor:'cell', color: 'blue' }}><span style={{ color: highlightColor }}>Created by Nkurunungi Samuel, May 11 2022</span></h5>
+        style={{ cursor:'cell', color: 'blue' }}><span style={{ color: highlightColor }}>Created by Nkurunungi Samuel</span> <span style={{color:fontColor}}> May 11 2022</span> </h5>
 </div>
 
         <br/>
@@ -592,7 +603,7 @@ preload="metadata"
     style={{ display: 'inline-block', margin: '0', paddingRight: '5px' }}>
     Maxwell Aligawesa, 
   </h5>
-</span>  Dec 03 2024
+</span> <span style={{color:fontColor}}>Dec 03 2024</span> 
 
 
         </div>
@@ -635,7 +646,7 @@ This animation is inspired by the talented & professional skater from Nairobi  <
     style={{ display: 'inline-block', margin: '0', paddingRight: '5px',color:highlightColor }}>
   & Njeri Caroline
    </h5>
-
+<span style={{color:fontColor}}> Feb 23 2024</span>
         </div>
         <br/>
         <br/>
@@ -660,7 +671,7 @@ preload="metadata"
           </video>
           <EmojiPanel backgroundColor={emojibg} strokecolor={emojistroke} textcolor={emojitxt} vidid={6}/>
 
-          <h5 onClick={() => { handleShowPopup('rejuv',imagess); handleVideoClick(2); }} > <span style={{ color: highlightColor }}> Created by Nkurunungi Samuel </span></h5>
+          <h5 onClick={() => { handleShowPopup('rejuv',imagess); handleVideoClick(2); }} > <span style={{ color: highlightColor }}> Created by Nkurunungi Samuel </span><span style={{color:fontColor}}> August 9 2023</span></h5>
 
 
         </div>
@@ -686,7 +697,7 @@ controlsList="nodownload"
           </video>
           <EmojiPanel backgroundColor={emojibg} strokecolor={emojistroke} textcolor={emojitxt} vidid={7}/>
 
-          <h5  onClick={() => { handleShowPopup('Rejuv',imagess); handleVideoClick(3); }}> <span style={{ color: highlightColor }}> Created by Nkurunungi Samuel </span></h5>
+          <h5  onClick={() => { handleShowPopup('Rejuv',imagess); handleVideoClick(3); }}> <span style={{ color: highlightColor }}> Created by Nkurunungi Samuel</span><span style={{color:fontColor}}> 1 Jan 2023 </span></h5>
 
 
         </div>
@@ -728,7 +739,8 @@ Going through the different <span style={{ color: highlightColor }}> generations
        & Avuni Elvis
   </p>
 </span></h5>
-
+<span style={{color:fontColor}}>Nov 30 2023
+</span>
 
         </div>
         <div ref={xmasref} onClick={() => handleVideoClick(6)} className="video-container bordered">
@@ -750,7 +762,7 @@ preload="metadata"
           </video>
           <EmojiPanel backgroundColor={emojibg} strokecolor={emojistroke} textcolor={emojitxt} vidid={9}/>
 
-          <h5  onClick={() => { handleShowPopup('Rejuv',imagess); handleVideoClick(3); }}> <span style={{ color: highlightColor }}> Created by Nkurunungi Samuel </span></h5>
+          <h5  onClick={() => { handleShowPopup('Rejuv',imagess); handleVideoClick(3); }}> <span style={{ color: highlightColor }}> Created by Nkurunungi Samuel </span><span style={{color:fontColor}}> Dec 25 2022</span></h5>
 
 
         </div>

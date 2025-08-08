@@ -10,7 +10,6 @@ import { FaHome } from "react-icons/fa";
 // Import your images
 import me from '../images/Rejuv dp.jpg';
 import me3 from '../images/Samred.jpg';
-
 import me4 from '../still/me4.png';
 import me5 from '../still/mountains.jpg';
 import celo from '../still/celo.jpg';
@@ -22,16 +21,22 @@ import brochure1 from "../still/brochure1.jpg";
 import brochure2 from "../still/brochure2.jpg";
 import businessCard1 from "../still/bizcard1.jpg";
 import businessCard2 from "../still/bizcard2.jpg";
-import animation2 from "../videos/phsplus.webm";
-import animation1 from "../anims/Rejuv25.mp4";
-import animation3 from "../videos/counterfeit.mp4";
-import animation4 from "../videos/hcm.webm";
-import animation5 from "../anims/wexmas.mp4";
-import animation6 from "../anims/mothers.mp4";
+import animation3 from "../anims/wexmas.mp4";
+import animation1 from "../anims/paulisa.mp4";
+import animation5 from "../videos/phsplus.webm";
+import animation2 from "../anims/hcmvoice.mp4";
+import animation6 from "../anims/Phs2.mp4";
+import animation8 from "../videos/counterfeit.mp4";
+import animation7 from "../anims/Inypay2.mp4";
+import animation4 from "../anims/farming.mp4";
+import animation9 from "../anims/Alphabet.mp4";
+
 import { Link } from "react-router-dom";
 
 const Profile = () => {
   const [activeTab, setActiveTab] = useState("animation");
+  const [playingVideo, setPlayingVideo] = useState(null);
+  const videoRefs = useRef([]);
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
   const profileHeaderRef = useRef(null);
   const tabsRef = useRef(null);
@@ -41,7 +46,19 @@ const Profile = () => {
   const posters = [poster1, poster2, poster3];
   const brochures = [brochure1, brochure2];
   const businessCards = [businessCard1, businessCard2];
-  const animations = [animation1, animation2, animation3, animation4, animation5, animation6];
+  
+  // Animation data with categories
+  const animations = [
+    { src: animation1, category: "Fashion & design", title: "Paulisa Prints" },
+    { src: animation2, category: "Technical Services", title: "HCM Provider App" },
+    { src: animation3, category: "Festive Season", title: "Wetech xmas Greetings" },
+    { src: animation4, category: "Agriculture", title: "GHSmartfarm" },
+    { src: animation5, category: "Healthcare", title: "PHS Plus 1" },
+    { src: animation6, category: "Healthcare", title: "PHS Plus 2" },
+    { src: animation7, category: "Finance", title: "Inypay" },
+    { src: animation8, category: "Healthcare", title: "Counterfeit Drugs Warning" },
+    { src: animation9, category: "Children", title: "Song for Alphabet in Luganda" }
+  ];
 
   React.useEffect(() => {
     const handleResize = () => {
@@ -52,10 +69,8 @@ const Profile = () => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-
   // GSAP Animations
   useEffect(() => {
-    // First hide all elements initially
     gsap.set([
       profileHeaderRef.current,
       ...profileTextRef.current.children,
@@ -63,7 +78,6 @@ const Profile = () => {
       contentRef.current
     ], { opacity: 0, y: 20 });
 
-    // Create timeline
     const tl = gsap.timeline({
       defaults: { ease: "power3.out", duration: 0.8 }
     });
@@ -78,17 +92,20 @@ const Profile = () => {
       .to(tabsRef.current, { opacity: 1, y: 0 }, "-=0.2")
       .to(contentRef.current, { opacity: 1, y: 0 }, "-=0.2");
   }, []);
+
   return (
     <div className="profile-container">
-     <div className="home-button-wrapper">
+   <div className="home-button-wrapper">
   <Link to="/" className="home-button">
     <FaHome className="home-icon" />
+    <span className="home-text">Home</span>
   </Link>
 </div>
-
+<br/>
+<br/>
 
       {/* Profile Header with Circular Slideshow */}
-      <div className="profile-header" ref={profileHeaderRef} >
+      <div className="profile-header" ref={profileHeaderRef}>
         <div className="slideshow-container">
           <Swiper
             spaceBetween={30}
@@ -119,14 +136,14 @@ const Profile = () => {
           <p>
             I am a  <span className="highlight">Ugandan from Kampala </span>with a deep passion for art and computers from a very young age,
             I used to draw comic books in my childhood years, persued software engineering at university and built a variety of web apps & programs.</p>
-           <p> With over 7 years of professional experience, I bridge the gap between 
+          <p> With over 7 years of professional experience, I bridge the gap between 
             <span className="highlight"> web development and creative design</span>. My unique combination of 
             coding expertise and visual design skills allows me to create solutions 
             that cut across these fields and allow them to compliment each other in a variety of ways.
           </p>
           <p>
             As a software engineer, I specialize in building responsive web 
-            applications with modern frameworks. As a graphics designer, I design compelling brand visuals that effectively communicate a company’s values.
+            applications with modern frameworks. As a graphics designer, I design compelling brand visuals that effectively communicate a company's values.
           </p>
           <p className="left-aligned">
             In my free time, I channel my creativity into crafting <span className="highlight bold">short, animated stories</span> that explore unique themes and characters, showcasing the limitless possibilities of animation.
@@ -138,20 +155,20 @@ const Profile = () => {
           <p> <span className="highlight bold"> Contact me on +256 782240185</span> </p>
           <p> <span > email - rejuveanimation@gmail.com</span> </p>
           <p>
-  <a 
-    href="https://www.instagram.com/_rejuv_/" 
-    target="_blank" 
-    rel="noopener noreferrer"
-    className="highlight">
-    click to view Instagram
-  </a>
-</p>
+            <a 
+              href="https://www.instagram.com/_rejuv_/" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="highlight">
+              click to view Instagram
+            </a>
+          </p>
         </div>
       </div>
 
       {/* Navigation Tabs */}
       <div className="tabs-container" ref={tabsRef}>
-      <button
+        <button
           className={`tab-button ${activeTab === "animation" ? "active" : ""}`}
           onClick={() => setActiveTab("animation")}
         >
@@ -163,46 +180,71 @@ const Profile = () => {
         >
           Still Graphics
         </button>
-     
       </div>
 
       {/* Content Sections */}
-      <div className="profile-container"  ref={contentRef}>
+      <div className="profile-container" ref={contentRef}>
         {activeTab === "still" ? (
-       <>
-       {/* Posters Section */}
-       <div className="portfolio-section">
-         <h3>Posters</h3>
-         <div className="grid-container">
-           {posters.map((poster, index) => (
-             <div key={index} className="portfolio-item">
-               <img src={poster} alt={`Poster ${index + 1}`} />
-             </div>
-           ))}
-         </div>
-       </div>
-    
-    
-     </>
-     
+          <>
+            {/* Posters Section */}
+            <div className="portfolio-section">
+              <h3>Posters</h3>
+              <div className="grid-container">
+                {posters.map((poster, index) => (
+                  <div key={index} className="portfolio-item">
+                    <img src={poster} alt={`Poster ${index + 1}`} />
+                  </div>
+                ))}
+              </div>
+            </div>
+          </>
         ) : (
           /* Animation Section */
           <div className="portfolio-section">
-            <h3>Animation Work</h3>
+            <h3>Animated Adverts & Explainers</h3>
             <div className={`grid-container ${isMobile ? "mobile" : "desktop"}`}>
-              {animations.map((animation, index) => (
-                <div key={index} className="portfolio-item">
-                  <video controls>
-                    <source src={animation} type="video/mp4" />
-                    Your browser does not support the video tag.
-                  </video>
-                </div>
-              ))}
+         
+{animations.map((animation, index) => (
+  <div key={index} className="portfolio-item">
+    <div className="animation-category">
+      {animation.category}
+    </div>
+    <div className="animation-title">
+      {animation.title}
+    </div>
+    <video 
+      controls
+      ref={(el) => (videoRefs.current[index] = el)}
+      onClick={() => {
+        // Pause all other videos when this one is clicked
+        if (playingVideo !== null && playingVideo !== index) {
+          videoRefs.current[playingVideo]?.pause();
+        }
+        setPlayingVideo(index);
+      }}
+      onPause={() => {
+        if (playingVideo === index) {
+          setPlayingVideo(null);
+        }
+      }}
+    >
+      <source src={animation.src} type="video/mp4" />
+      Your browser does not support the video tag.
+    </video>
+  </div>
+))}
             </div>
           </div>
         )}
       </div>
+      <div className="home-button-wrapper">
+       <Link to="/" className="home-button">
+         <FaHome className="home-icon" />
+         <span className="home-text">Home</span>
+       </Link>
+     </div>
     </div>
+      
   );
 };
 
