@@ -14,8 +14,14 @@ const EmojiPanel = ({ backgroundColor, strokecolor, textcolor, vidid }) => {
   const playerRefs = useRef([]);
   const activeEmojis = useRef([]);
   const [counts, setCounts] = useState([0, 0, 0, 0, 0]);
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
 
   const emojis = [cool, love, laugh, smile,dislike];
+  const handleResize = () => {
+    setIsMobile(window.innerWidth <= 768);
+};
+
+
 
   useEffect(() => {
     const fetchCounts = async () => {
@@ -165,7 +171,7 @@ const EmojiPanel = ({ backgroundColor, strokecolor, textcolor, vidid }) => {
         backgroundColor: backgroundColor || "lightblue",
         borderRadius: "10px",
         height: "80px",
-        width: "80%",
+        width:isMobile?"100%": "80%",
         margin: "0 auto",
         border: `0px solid ${strokecolor || "black"}`,
         fontSize:'12px',
@@ -174,40 +180,52 @@ const EmojiPanel = ({ backgroundColor, strokecolor, textcolor, vidid }) => {
     >
       Reactions
       {emojis.map((emoji, index) => (
-        <div
-          key={index}
-          ref={(el) => (emojiRefs.current[index] = el)}
-          onClick={() => handleEmojiClick(index)}
-          style={{
-            cursor: "pointer",
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            alignItems: "center",
-            transform: "scale(1)",
-          }}
-        >
-          <Player
-            ref={(player) => (playerRefs.current[index] = player)}
-            autoplay={false}
-            loop={false}
-            keepLastFrame={true}
-            src={emoji}
-            style={{ height: "50px", width: "50px" }}
-          />
-          <span
-            style={{
-              color: textcolor || "white",
-              marginTop: "-5px",
-              marginBottom: "7px",
-              fontSize: "10px",
-              fontWeight: "bold",
-            }}
-          >
-            {counts[index]}
-          </span>
-        </div>
-      ))}
+  <div
+    key={index}
+    ref={(el) => (emojiRefs.current[index] = el)}
+    onClick={() => handleEmojiClick(index)}
+    style={{
+      cursor: "pointer",
+      display: "flex",
+      flexDirection: "column",
+      justifyContent: "center",
+      alignItems: "center",
+      transform: "scale(1)",
+    }}
+  >
+  <div style={{
+  borderRadius: "50%",
+  boxShadow: `
+    0 1px 3px rgba(0, 0, 0, 0.6),             // Subtle outer shadow
+    inset 0 0 20px 10px rgba(0, 0, 0, 1.7)     // Dominant inner shadow
+  `,
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  backgroundColor: "rgba(0, 0, 0, 0.1)",      // Optional: enhances depth
+}}>
+      <Player
+        ref={(player) => (playerRefs.current[index] = player)}
+        autoplay={false}
+        loop={false}
+        keepLastFrame={true}
+        src={emoji}
+        style={{ height: "50px", width: "50px" }}
+      />
+    </div>
+    <span
+      style={{
+        color: textcolor || "white",
+        marginTop: "3px",
+        marginBottom: "7px",
+        fontSize: "10px",
+        fontWeight: "bold",
+      }}
+    >
+      {counts[index]}
+    </span>
+  </div>
+))}
     </div>
   );
 };

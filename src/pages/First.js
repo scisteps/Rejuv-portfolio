@@ -308,7 +308,7 @@ const videoRefs = {
     setMotivationalBackground("#F5F4EB");
     setFontColor("black");
     setHighlightColor("black");
-    setemojibg('#C2C0AF');
+    setemojibg('#F5F4EB');
     setemojistroke('black');
     setemojitxt('black');
     setlogoh(blackcrown);
