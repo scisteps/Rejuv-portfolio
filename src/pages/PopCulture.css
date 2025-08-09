@@ -1,0 +1,98 @@
+.pop-culture-container {
+    background-color: #121212;
+    min-height: 100vh;
+    padding: 2rem;
+    color: white;
+    font-family: 'Arial', sans-serif;
+  }
+  
+  .title {
+    text-align: center;
+    margin-bottom: 2rem;
+    color: #fff;
+    font-size: 2.5rem;
+  }
+  
+  .categories {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 2rem;
+  }
+  
+  .category-btn {
+    background: #333;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  .category-btn:hover {
+    background: #555;
+  }
+  
+  .category-btn.active {
+    background: #6200ee;
+  }
+  .lottie-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+  }
+  
+  @media (max-width: 768px) {
+    .lottie-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  
+  .lottie-card {
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+  }
+  
+  .lottie-card:hover {
+    transform: scale(1.05);
+  }
+  
+  
+  .card-label {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.7);
+    padding: 0.5rem;
+    text-align: center;
+    font-size: 0.8rem;
+  }
+  
+  .grid-separator {
+    grid-column: 1 / -1;
+    height: 2px;
+    background: #333;
+    margin: 1rem 0;
+  }
+  
+  /* Mobile responsiveness */
+  @media (max-width: 768px) {
+    
+    
+    .categories {
+      justify-content: flex-start;
+      overflow-x: auto;
+      padding-bottom: 0.5rem;
+      -webkit-overflow-scrolling: touch;
+    }
+    
+    .category-btn {
+      white-space: nowrap;
+    }
+  }

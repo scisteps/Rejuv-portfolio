@@ -13,6 +13,7 @@ import { Analytics } from "@vercel/analytics/react"
 import Third from './pages/Third';
 import Tsam from './Tsam/Tsam';
 import Profile from './pages/Profile';
+import PopCulture from './pages/PopCulture';
 function App() {
   return (
     <Router>
@@ -32,6 +33,7 @@ function App() {
       <Route path="/stillgraphics" element={<Third  />} />
       <Route path="/tsam" element={<Tsam  />} />
       <Route path="/profile" element={<Profile  />} />
+      <Route path="/popc" element={<PopCulture  />} />
 
       </Routes>
       </div>
