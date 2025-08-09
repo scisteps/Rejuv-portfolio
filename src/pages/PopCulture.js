@@ -21,17 +21,17 @@ const PopCulture = () => {
   const containerRef = useRef(null);
   const animerefs = useRef({});
 
-  const categoryButtons = ['Movies', 'Music', 'TV Shows', 'Games', 'Internet'];
+  const categoryButtons = ['Marvel', 'people', 'rangers', ];
   const lottieData = [
-    { id: 1, animationData: spidey1, category: 'Movies' },
-    { id: 2, animationData: spidey2, category: 'Music' },
-    { id: 3, animationData: spidey3, category: 'TV Shows' },
-    { id: 4, animationData: agnes, category: 'Games' },
-    { id: 5, animationData: greentored, category: 'Internet' },
-    { id: 6, animationData: bluetored, category: 'Movies' },
-    { id: 7, animationData: redtoblue, category: 'Music' },
-    { id: 8, animationData: bluetogreen, category: 'TV Shows' },
-    { id: 9, animationData: greentoblue, category: 'Games' },
+    { id: 1, animationData: spidey1, category: 'Marvel' },
+    { id: 2, animationData: spidey2, category: 'Marvel' },
+    { id: 3, animationData: spidey3, category: 'Marvel' },
+    { id: 4, animationData: agnes, category: 'people' },
+    { id: 5, animationData: greentored, category: 'rangers' },
+    { id: 6, animationData: bluetored, category: 'rangers' },
+    { id: 7, animationData: redtoblue, category: 'rangers' },
+    { id: 8, animationData: bluetogreen, category: 'rangers' },
+    { id: 9, animationData: greentoblue, category: 'rangers' },
   ];
 
   const [activeCategory, setActiveCategory] = useState('All');
