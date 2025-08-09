@@ -127,7 +127,7 @@ const PopCulture = () => {
   };
 
   return (
-    <div className="pop-culture-container" ref={containerRef}>
+    <div className="pop-culture-container" ref={containerRef} style={{userSelect:'none'}}>
       <h1 className="title">Pop Culture</h1>
 
       <div className="categories">
