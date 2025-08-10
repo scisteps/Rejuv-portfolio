@@ -11,7 +11,7 @@ import bluetogreen from '../jsons/bluetogreen.json';
 import tabithalottie from '../jsons/tab3.json';
 import agnes from '../jsons/agnes.json';
 import robotboy1 from '../jsons/robotboy1.json';
-import kami from '../jsons/kami.json';
+import head1 from '../jsons/head1.json';
 import dex from '../jsons/dex.json';
 import spidey1 from '../jsons/spidey1.json';
 import spidey2 from '../jsons/blackspiderman.json';
@@ -30,8 +30,8 @@ const PopCulture = () => {
     { id: 5, animationData: greentored, category: 'rangers' },
     { id: 6, animationData: bluetored, category: 'rangers' },
     { id: 7, animationData: redtoblue, category: 'rangers' },
-    { id: 8, animationData: bluetogreen, category: 'rangers' },
-    { id: 9, animationData: greentoblue, category: 'rangers' },
+ 
+
   ];
 
   const [activeCategory, setActiveCategory] = useState('All');
