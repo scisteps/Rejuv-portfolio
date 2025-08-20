@@ -49,13 +49,9 @@ const PopCulture = () => {
       background: '#ffffff'
     },
   ];
-  
-
 
   // Handle card click for play/reverse
   const handleCardClick = (id, category) => {
-   
-
     // For spidey cards - toggle play direction
     const isClicked = clicked[id] || false;
     const player = animerefs.current[id];
@@ -142,28 +138,7 @@ const PopCulture = () => {
     });
   };
 
-  // Handle wheel events for scrolling
-  const handleWheel = (e) => {
-    if (isAnimating) return;
-    
-    if (window.innerWidth <= 768) {
-      // Mobile - vertical scrolling
-      if (e.deltaY > 50) {
-        navigateTo(currentIndex + 1, 1);
-      } else if (e.deltaY < -50) {
-        navigateTo(currentIndex - 1, -1);
-      }
-    } else {
-      // Desktop - horizontal scrolling
-      if (e.deltaX > 30 || e.deltaY > 30) {
-        navigateTo(currentIndex + 1, 1);
-      } else if (e.deltaX < -30 || e.deltaY < -30) {
-        navigateTo(currentIndex - 1, -1);
-      }
-    }
-  };
-
-  // Handle touch/mouse events for swiping
+  // Improved touch/mouse events for swiping
   const handleTouchStart = (e) => {
     if (isAnimating) return;
     setIsDragging(true);
@@ -173,6 +148,7 @@ const PopCulture = () => {
     } else {
       setStartY(e.clientY);
       setStartX(e.clientX);
+      e.preventDefault(); // Prevent text selection on desktop
     }
   };
 
@@ -183,6 +159,7 @@ const PopCulture = () => {
     if (e.type.includes('touch')) {
       currentY = e.touches[0].clientY;
       currentX = e.touches[0].clientX;
+      e.preventDefault(); // Prevent scrolling while dragging
     } else {
       currentY = e.clientY;
       currentX = e.clientX;
@@ -192,7 +169,7 @@ const PopCulture = () => {
     const diffX = currentX - startX;
     
     // For mobile (vertical swipe)
-    if (window.innerWidth <= 768 && Math.abs(diffY) > 50 && Math.abs(diffY) > Math.abs(diffX)) {
+    if (window.innerWidth <= 768 && Math.abs(diffY) > 30 && Math.abs(diffY) > Math.abs(diffX)) {
       if (diffY > 0) {
         // Swipe down - previous
         navigateTo(currentIndex - 1, -1);
@@ -204,7 +181,7 @@ const PopCulture = () => {
     }
     
     // For desktop (horizontal swipe)
-    if (window.innerWidth > 768 && Math.abs(diffX) > 50 && Math.abs(diffX) > Math.abs(diffY)) {
+    if (window.innerWidth > 768 && Math.abs(diffX) > 30 && Math.abs(diffX) > Math.abs(diffY)) {
       if (diffX > 0) {
         // Swipe right - previous
         navigateTo(currentIndex - 1, -1);
@@ -220,6 +197,27 @@ const PopCulture = () => {
     setIsDragging(false);
   };
 
+  // Handle wheel events for scrolling
+  const handleWheel = (e) => {
+    if (isAnimating) return;
+    
+    if (window.innerWidth <= 768) {
+      // Mobile - vertical scrolling
+      if (e.deltaY > 30) {
+        navigateTo(currentIndex + 1, 1);
+      } else if (e.deltaY < -30) {
+        navigateTo(currentIndex - 1, -1);
+      }
+    } else {
+      // Desktop - horizontal scrolling
+      if (e.deltaX > 20 || e.deltaY > 20) {
+        navigateTo(currentIndex + 1, 1);
+      } else if (e.deltaX < -20 || e.deltaY < -20) {
+        navigateTo(currentIndex - 1, -1);
+      }
+    }
+  };
+
   // Set initial background and add event listeners
   useEffect(() => {
     if (containerRef.current) {
@@ -229,9 +227,9 @@ const PopCulture = () => {
     // Add event listeners
     const container = containerRef.current;
     if (container) {
-      container.addEventListener('wheel', handleWheel);
-      container.addEventListener('touchstart', handleTouchStart);
-      container.addEventListener('touchmove', handleTouchMove);
+      container.addEventListener('wheel', handleWheel, { passive: false });
+      container.addEventListener('touchstart', handleTouchStart, { passive: false });
+      container.addEventListener('touchmove', handleTouchMove, { passive: false });
       container.addEventListener('touchend', handleTouchEnd);
       container.addEventListener('mousedown', handleTouchStart);
       container.addEventListener('mousemove', handleTouchMove);
@@ -257,7 +255,7 @@ const PopCulture = () => {
     <div 
       className="pop-culture-container" 
       ref={containerRef}
-      style={{userSelect: 'none'}}
+      style={{userSelect: 'none', WebkitTapHighlightColor: 'transparent'}}
     >
       <div className="lottie-viewport" ref={viewportRef}>
         <div className="lottie-card">
@@ -270,11 +268,10 @@ const PopCulture = () => {
             autoplay={false}
             className="lottie-player"
           />
-        
         </div>
       </div>
 
-      <div className="navigation-dots">
+      {/* <div className="navigation-dots">
         {lottieData.map((_, index) => (
           <button
             key={index}
@@ -282,11 +279,12 @@ const PopCulture = () => {
             onClick={() => navigateTo(index)}
           ></button>
         ))}
-      </div>
+      </div> */}
 
       <div 
         className="lottie-card-clickable"
         onClick={() => handleCardClick(lottieData[currentIndex].id, lottieData[currentIndex].category)}
+        onTouchStart={(e) => e.preventDefault()} // Prevent highlight on touch
       ></div>
     </div>
   );
