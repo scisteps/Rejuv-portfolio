@@ -8,7 +8,11 @@ import bluetored from '../jsons/bluetored.json';
 import spidey1 from '../jsons/spidey sense.json';
 import spidey2 from '../jsons/blackspidey4.json';
 import spidey3 from '../jsons/milesx2.json';
-import spidey4 from '../jsons/x7.json';
+import spidey4 from '../jsons/x8.json';
+import face from '../jsons/face2.json';
+import eaze from '../jsons/eaze.json';
+import dex from '../jsons/dex5.json';
+
 
 const PopCulture = () => {
   const containerRef = useRef(null);
@@ -25,12 +29,14 @@ const PopCulture = () => {
   // Define the lottie data with backgrounds
   const lottieData = [
     { 
+      
       id: 1, 
       animationData: spidey1, 
       category: 'spidey',
       background: '#FFE8B6'
     },
     { 
+      
       id: 2, 
       animationData: spidey2, 
       category: 'spidey',
@@ -44,9 +50,33 @@ const PopCulture = () => {
     },
     { 
       id: 4, 
+      animationData: spidey4, 
+      category: 'spidey',
+      background: '#000000'
+    },
+    { 
+      id: 5, 
       animationData: greentored, 
       category: 'ranger',
       background: '#ffffff'
+    },
+    { 
+      id: 6, 
+      animationData: face, 
+      category: 'ranger',
+      background: '#ffffff'
+    },
+    { 
+      id: 7, 
+      animationData: eaze, 
+      category: 'ranger',
+      background: '#2B2B2B'
+    },
+    { 
+      id: 8, 
+      animationData: dex, 
+      category: 'ranger',
+      background: '#1E2B3B'
     },
   ];
 
