@@ -40,6 +40,11 @@
   width: 150% !important;
   height: 150% !important;
   filter: drop-shadow(0 0 20px rgba(0, 0, 0, 0.4));
+  /* Center the player within the card */
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .lottie-card-clickable {
