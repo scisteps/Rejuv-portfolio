@@ -311,10 +311,10 @@ const PopCulture = () => {
       </div> 
 
       <div 
-        className="lottie-card-clickable"
-        onClick={() => handleCardClick(lottieData[currentIndex].id, lottieData[currentIndex].category)}
-        onTouchStart={(e) => e.preventDefault()} // Prevent highlight on touch
-      ></div>
+  className="lottie-card-clickable"
+  onClick={() => handleCardClick(lottieData[currentIndex].id, lottieData[currentIndex].category)}
+></div>
+
     </div>
   );
 };
