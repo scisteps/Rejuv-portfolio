@@ -8,10 +8,12 @@ import bluetored from '../jsons/bluetored.json';
 import spidey1 from '../jsons/spidey sense.json';
 import spidey2 from '../jsons/blackspidey4.json';
 import spidey3 from '../jsons/milesx2.json';
-import spidey4 from '../jsons/x8.json';
-import face from '../jsons/face2.json';
+import spidey4 from '../jsons/xmilex.json';
+import face from '../jsons/talker2.json';
 import eaze from '../jsons/eaze.json';
-import dex from '../jsons/dex5.json';
+import dex from '../jsons/dex8.json';
+import ro from '../jsons/ro2.json';
+import ro2 from '../jsons/ro3.json';
 
 const PopCulture = () => {
   const containerRef = useRef(null);
@@ -30,21 +32,22 @@ const PopCulture = () => {
   const lottieData = [
     { 
       id: 1, 
+      animationData: face, 
+      category: 'ranger',
+      background: '#ffffff'
+     
+    },
+    { 
+      id: 2, 
       animationData: spidey1, 
       category: 'spidey',
       background: '#FFE8B6'
     },
     { 
-      id: 2, 
+      id: 3, 
       animationData: spidey2, 
       category: 'spidey',
       background: '#1E2B3B'
-    },
-    { 
-      id: 3, 
-      animationData: spidey4, 
-      category: 'spidey',
-      background: '#000000'
     },
     { 
       id: 4, 
@@ -54,24 +57,32 @@ const PopCulture = () => {
     },
     { 
       id: 5, 
+      animationData: ro2, 
+      category: 'spidey',
+      background: '#81D2FB'
+    },
+    { 
+      id: 6, 
+      animationData: ro, 
+      category: 'spidey',
+      background: '#81D2FB'
+    },
+    { 
+      id: 7, 
       animationData: greentored, 
       category: 'ranger',
       background: '#ffffff'
     },
+   
+ 
     { 
-      id: 6, 
-      animationData: face, 
-      category: 'ranger',
-      background: '#ffffff'
-    },
-    { 
-      id: 7, 
+      id: 8, 
       animationData: eaze, 
       category: 'ranger',
       background: '#2B2B2B'
     },
     { 
-      id: 8, 
+      id: 9, 
       animationData: dex, 
       category: 'ranger',
       background: '#1E2B3B'
@@ -185,7 +196,7 @@ const PopCulture = () => {
           player.setPlayerDirection(1);
           player.play();
         }
-      }, 1000);
+      }, 500);
       
       return () => clearTimeout(timer);
     }
