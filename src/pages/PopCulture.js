@@ -82,7 +82,7 @@ const PopCulture = () => {
     const viewportHeight = window.innerHeight;
     const targetX = (viewportWidth - card.offsetWidth) / 2;
     const targetY = (viewportHeight - card.offsetHeight) / 2;
-
+//miles morales
     gsap.to('.lottie-card:not(#card-' + id + ')', {
       opacity: 0,
       duration: 0.3,
