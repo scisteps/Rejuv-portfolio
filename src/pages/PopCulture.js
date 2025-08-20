@@ -6,8 +6,9 @@ import greentored from '../jsons/green to red.json';
 import redtoblue from '../jsons/redtoblue.json';
 import bluetored from '../jsons/bluetored.json';
 import spidey1 from '../jsons/spidey sense.json';
-import spidey2 from '../jsons/blackspidey3.json';
+import spidey2 from '../jsons/blackspidey4.json';
 import spidey3 from '../jsons/milesx2.json';
+import spidey4 from '../jsons/x7.json';
 
 const PopCulture = () => {
   const containerRef = useRef(null);
@@ -25,19 +26,19 @@ const PopCulture = () => {
   const lottieData = [
     { 
       id: 1, 
-      animationData: greentored, 
+      animationData: spidey1, 
       category: 'spidey',
-      background: '#ffffff'
+      background: '#FFE8B6'
     },
     { 
       id: 2, 
       animationData: spidey2, 
       category: 'spidey',
-      background: '#ffffff'
+      background: '#1E2B3B'
     },
     { 
       id: 3, 
-      animationData: spidey3, 
+      animationData: spidey4, 
       category: 'spidey',
       background: '#000000'
     },

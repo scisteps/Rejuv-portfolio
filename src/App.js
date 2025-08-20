@@ -33,7 +33,7 @@ function App() {
       <Route path="/stillgraphics" element={<Third  />} />
       <Route path="/tsam" element={<Tsam  />} />
       <Route path="/profile" element={<Profile  />} />
-      <Route path="/popc" element={<PopCulture  />} />
+      <Route path="/pc" element={<PopCulture  />} />
 
       </Routes>
       </div>
