@@ -59,13 +59,10 @@ const First = () => {
   const imagess = [me,me2,me3 ]; // Add more images or videos as needed
   const imagessyd = [syd1,syd2,syd3 ]; // Add more images or videos as needed
   const imageschill = [chill,chill,chill ]; // Add more images or videos as needed
-  
   const butref = useRef(null);
-
   const newyearsref = useRef(null);
   const redref = useRef(null);
   const keepref = useRef(null);
-
   const silentref = useRef(null);
   const snormalref = useRef(null);
   const carolref = useRef(null);
@@ -73,7 +70,6 @@ const First = () => {
   const picref = useRef(null);
   const shortsref = useRef(null);
   const [logoh, setlogoh] = useState(crown);
-
   const [showMore, setShowMore] = useState(false);
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
   const [fontColor, setFontColor] = useState("white"); // Default font color
@@ -108,6 +104,7 @@ const First = () => {
   const handleToggle = () => {
     setShowMore((prevShowMore) => !prevShowMore);
   };
+
   const colorPalette = {
     primary:'#440006',
     secondary:'#FFBC00',
@@ -121,6 +118,7 @@ const First = () => {
         window.removeEventListener('resize', handleResize);
     };
 }, []);
+
 useEffect(() => {
   if(!isLoading){
     gsap.set( wordref.current, { 
@@ -187,6 +185,8 @@ const handleProgress = () => {
     }
   }
 };
+
+
   const handleResize = () => {
     setIsMobile(window.innerWidth <= 768);
 };
@@ -200,8 +200,8 @@ useEffect(() => {
 }, []);
 
 
-
 const [playingVideo, setPlayingVideo] = useState(null); // Track the currently playing video
+
 const videoRefs = {
   1: useRef(null), // Rejuvenation
   2: useRef(null), // The journey of a Creative
@@ -217,8 +217,6 @@ const videoRefs = {
   12: useRef(null) // keep moving forward
 
 };
-
-
 
   const settings = {
     dots: true, // Show dots for navigation

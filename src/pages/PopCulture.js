@@ -2,20 +2,20 @@ import React, { useRef, useState } from 'react';
 import { gsap } from 'gsap';
 import { Player } from '@lottiefiles/react-lottie-player';
 import './PopCulture.css';
-
+import { lottie } from 'react-lottie';
 import greentored from '../jsons/green to red.json';
 import redtoblue from '../jsons/redtoblue.json';
 import greentoblue from '../jsons/greentoblue.json';
 import bluetored from '../jsons/bluetored.json';
 import bluetogreen from '../jsons/bluetogreen.json';
 import tabithalottie from '../jsons/tab3.json';
-import agnes from '../jsons/agnes.json';
+import ro from '../jsons/ro.json';
 import robotboy1 from '../jsons/robotboy1.json';
 import head1 from '../jsons/head1.json';
 import dex from '../jsons/dex.json';
-import spidey1 from '../jsons/spidey1.json';
-import spidey2 from '../jsons/blackspiderman.json';
-import spidey3 from '../jsons/miles.json';
+import spidey1 from '../jsons/spidey sense.json';
+import spidey2 from '../jsons/blackspidey2.json';
+import spidey3 from '../jsons/milesx.json';
 
 const PopCulture = () => {
   const containerRef = useRef(null);
@@ -23,10 +23,11 @@ const PopCulture = () => {
 
   const categoryButtons = ['Marvel', 'people', 'rangers', ];
   const lottieData = [
+    
     { id: 1, animationData: spidey1, category: 'Marvel' },
     { id: 2, animationData: spidey2, category: 'Marvel' },
     { id: 3, animationData: spidey3, category: 'Marvel' },
-    { id: 4, animationData: agnes, category: 'people' },
+    { id: 4, animationData: ro, category: 'people' },
     { id: 5, animationData: greentored, category: 'rangers' },
     { id: 6, animationData: bluetored, category: 'rangers' },
     { id: 7, animationData: redtoblue, category: 'rangers' },
@@ -91,7 +92,7 @@ const PopCulture = () => {
     gsap.to(card, {
       x: targetX - card.getBoundingClientRect().left,
       y: targetY - card.getBoundingClientRect().top,
-      scale: 3,
+      scale: 2.5,
       duration: 0.5,
       ease: 'back.out(1.7)',
       zIndex: 100,
