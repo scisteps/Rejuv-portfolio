@@ -13,7 +13,6 @@ import face from '../jsons/face2.json';
 import eaze from '../jsons/eaze.json';
 import dex from '../jsons/dex5.json';
 
-
 const PopCulture = () => {
   const containerRef = useRef(null);
   const viewportRef = useRef(null);
@@ -25,18 +24,17 @@ const PopCulture = () => {
   const [startY, setStartY] = useState(0);
   const [startX, setStartX] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
+  const [shouldPlayAfterDelay, setShouldPlayAfterDelay] = useState(false);
   
   // Define the lottie data with backgrounds
   const lottieData = [
     { 
-      
       id: 1, 
       animationData: spidey1, 
       category: 'spidey',
       background: '#FFE8B6'
     },
     { 
-      
       id: 2, 
       animationData: spidey2, 
       category: 'spidey',
@@ -106,6 +104,7 @@ const PopCulture = () => {
     if (index >= lottieData.length) index = 0;
     
     setIsAnimating(true);
+    setShouldPlayAfterDelay(false);
     
     // Determine animation direction
     let animationDirection = direction;
@@ -132,7 +131,10 @@ const PopCulture = () => {
             opacity: 1,
             duration: 0.6,
             ease: 'power2.out',
-            onComplete: () => setIsAnimating(false)
+            onComplete: () => {
+              setIsAnimating(false);
+              setShouldPlayAfterDelay(true);
+            }
           });
         }
       });
@@ -154,7 +156,10 @@ const PopCulture = () => {
             opacity: 1,
             duration: 0.6,
             ease: 'power2.out',
-            onComplete: () => setIsAnimating(false)
+            onComplete: () => {
+              setIsAnimating(false);
+              setShouldPlayAfterDelay(true);
+            }
           });
         }
       });
@@ -167,6 +172,24 @@ const PopCulture = () => {
       ease: 'power2.inOut'
     });
   };
+
+  // Play animation after 1 second delay
+  useEffect(() => {
+    if (shouldPlayAfterDelay) {
+      const timer = setTimeout(() => {
+        const currentId = lottieData[currentIndex].id;
+        const player = animerefs.current[currentId];
+        
+        if (player) {
+          player.stop();
+          player.setPlayerDirection(1);
+          player.play();
+        }
+      }, 1000);
+      
+      return () => clearTimeout(timer);
+    }
+  }, [shouldPlayAfterDelay, currentIndex]);
 
   // Improved touch/mouse events for swiping
   const handleTouchStart = (e) => {
@@ -300,21 +323,29 @@ const PopCulture = () => {
           />
         </div>
       </div>
- <div className="navigation-dots">
-        {lottieData.map((_, index) => (
-          <button
-            key={index}
-            className={`dot ${index === currentIndex ? 'active' : ''}`}
-            onClick={() => navigateTo(index)}
-          ></button>
-        ))}
-      </div> 
+
+      {/* Navigation Arrows */}
+      <div className="navigation-arrows">
+        <button 
+          className="nav-arrow prev-arrow" 
+          onClick={() => navigateTo(currentIndex - 1, -1)}
+          aria-label="Previous animation"
+        >
+          &#8249;
+        </button>
+        <button 
+          className="nav-arrow next-arrow" 
+          onClick={() => navigateTo(currentIndex + 1, 1)}
+          aria-label="Next animation"
+        >
+          &#8250;
+        </button>
+      </div>
 
       <div 
-  className="lottie-card-clickable"
-  onClick={() => handleCardClick(lottieData[currentIndex].id, lottieData[currentIndex].category)}
-></div>
-
+        className="lottie-card-clickable"
+        onClick={() => handleCardClick(lottieData[currentIndex].id, lottieData[currentIndex].category)}
+      ></div>
     </div>
   );
 };
