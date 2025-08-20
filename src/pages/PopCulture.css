@@ -1,98 +1,116 @@
 .pop-culture-container {
-    background-color: #121212;
-    min-height: 100vh;
-    padding: 2rem;
-    color: white;
-    font-family: 'Arial', sans-serif;
-  }
-  
-  .title {
-    text-align: center;
-    margin-bottom: 2rem;
-    color: #fff;
-    font-size: 2.5rem;
-  }
-  
-  .categories {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    margin-bottom: 2rem;
-  }
-  
-  .category-btn {
-    background: #333;
-    color: white;
-    border: none;
-    padding: 0.5rem 1rem;
-    border-radius: 20px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-  }
-  
-  .category-btn:hover {
-    background: #555;
-  }
-  
-  .category-btn.active {
-    background: #6200ee;
-  }
-  .lottie-grid {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 10px;
-  }
-  
-  @media (max-width: 768px) {
-    .lottie-grid {
-      grid-template-columns: repeat(2, 1fr);
-    }
-  }
-  
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  transition: background-color 0.5s ease;
+  overflow: hidden;
+  cursor: grab;
+}
+
+.pop-culture-container:active {
+  cursor: grabbing;
+}
+
+.lottie-viewport {
+  width: 100%;
+  height: 70vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.lottie-card {
+  width: 300px;
+  height: 300px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  background: transparent;
+}
+
+.lottie-player {
+  width: 100% !important;
+  height: 100% !important;
+  filter: drop-shadow(0 0 20px rgba(0, 0, 0, 0.4));
+}
+
+.lottie-card-clickable {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 70vh;
+  cursor: pointer;
+  z-index: 10;
+}
+
+.ranger-indicator {
+  position: absolute;
+  bottom: -30px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  color: inherit;
+  font-weight: bold;
+  font-size: 1rem;
+  mix-blend-mode: difference;
+}
+
+.navigation-dots {
+  display: flex;
+  justify-content: center;
+  margin-top: 2rem;
+  z-index: 20;
+  position: absolute;
+  bottom: 20px;
+  left: 0;
+  right: 0;
+}
+
+.dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 2px solid;
+  background-color: transparent;
+  margin: 0 0.5rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  mix-blend-mode: difference;
+}
+
+.dot.active {
+  background-color: currentColor;
+}
+
+/* Mobile styles */
+@media (max-width: 768px) {
   .lottie-card {
-    background: white;
-    border-radius: 8px;
-    overflow: hidden;
-    cursor: pointer;
-    transition: transform 0.2s ease;
+    width: 250px;
+    height: 250px;
   }
   
-  .lottie-card:hover {
-    transform: scale(1.05);
+  .lottie-viewport {
+    height: 60vh;
   }
   
-  
-  .card-label {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: rgba(0, 0, 0, 0.7);
-    padding: 0.5rem;
-    text-align: center;
-    font-size: 0.8rem;
+  .lottie-card-clickable {
+    height: 60vh;
   }
-  
-  .grid-separator {
-    grid-column: 1 / -1;
-    height: 2px;
-    background: #333;
-    margin: 1rem 0;
+}
+
+/* Desktop styles */
+@media (min-width: 769px) {
+  .lottie-card {
+    width: 350px;
+    height: 350px;
   }
-  
-  /* Mobile responsiveness */
-  @media (max-width: 768px) {
-    
-    
-    .categories {
-      justify-content: flex-start;
-      overflow-x: auto;
-      padding-bottom: 0.5rem;
-      -webkit-overflow-scrolling: touch;
-    }
-    
-    .category-btn {
-      white-space: nowrap;
-    }
-  }
+}
