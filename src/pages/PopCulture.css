@@ -11,6 +11,8 @@
   transition: background-color 0.5s ease;
   overflow: hidden;
   cursor: grab;
+  touch-action: none; /* Prevents default touch behaviors like pinch-zoom */
+
 }
 
 .pop-culture-container:active {
@@ -42,6 +44,7 @@
   filter: drop-shadow(0 0 20px rgba(0, 0, 0, 0.4));
   /* Center the player within the card */
   position: absolute;
+  pointer-events: none;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
