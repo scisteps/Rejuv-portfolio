@@ -2,7 +2,7 @@ import React, { useRef, useState, useEffect } from 'react';
 import { gsap } from 'gsap';
 import { Player } from '@lottiefiles/react-lottie-player';
 import './PopCulture.css';
-import greentored from '../jsons/green to red.json';
+import greentored from '../jsons/ggpr.json';
 import redtoblue from '../jsons/redtoblue.json';
 import bluetored from '../jsons/bluetored.json';
 import spidey1 from '../jsons/spidey sense.json';
@@ -10,8 +10,8 @@ import spidey2 from '../jsons/blackspidey4.json';
 import spidey3 from '../jsons/milesx2.json';
 import spidey4 from '../jsons/xmilex.json';
 import face from '../jsons/talker2.json';
-import eaze from '../jsons/eaze.json';
-import dex from '../jsons/dex8.json';
+import eaze from '../jsons/eaze2.json';
+import dex from '../jsons/dex9.json';
 import ro from '../jsons/ro2.json';
 import ro2 from '../jsons/ro3.json';
 
@@ -218,7 +218,7 @@ const PopCulture = () => {
 
   const handleTouchMove = (e) => {
     if (!isDragging || isAnimating) return;
-    
+  
     let currentY, currentX;
     if (e.type.includes('touch')) {
       currentY = e.touches[0].clientY;
@@ -228,24 +228,12 @@ const PopCulture = () => {
       currentY = e.clientY;
       currentX = e.clientX;
     }
-    
+  
     const diffY = currentY - startY;
     const diffX = currentX - startX;
-    
-    // For mobile (vertical swipe)
-    if (window.innerWidth <= 768 && Math.abs(diffY) > 30 && Math.abs(diffY) > Math.abs(diffX)) {
-      if (diffY > 0) {
-        // Swipe down - previous
-        navigateTo(currentIndex - 1, -1);
-      } else {
-        // Swipe up - next
-        navigateTo(currentIndex + 1, 1);
-      }
-      setIsDragging(false);
-    }
-    
-    // For desktop (horizontal swipe)
-    if (window.innerWidth > 768 && Math.abs(diffX) > 30 && Math.abs(diffX) > Math.abs(diffY)) {
+  
+    // For both mobile and desktop: prioritize horizontal swipes
+    if (Math.abs(diffX) > 30 && Math.abs(diffX) > Math.abs(diffY)) {
       if (diffX > 0) {
         // Swipe right - previous
         navigateTo(currentIndex - 1, -1);
