@@ -27,8 +27,7 @@ const PopCulture = () => {
   const [startX, setStartX] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
   const [shouldPlayAfterDelay, setShouldPlayAfterDelay] = useState(false);
-  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
-
+  
   // Define the lottie data with backgrounds
   const lottieData = [
     { 
@@ -89,9 +88,6 @@ const PopCulture = () => {
       background: '#1E2B3B'
     },
   ];
-  const handleResize = () => {
-    setIsMobile(window.innerWidth <= 768);
-};
 
   // Handle card click for play/reverse
   const handleCardClick = (id, category) => {
@@ -207,42 +203,52 @@ const PopCulture = () => {
   }, [shouldPlayAfterDelay, currentIndex]);
 
   // Improved touch/mouse events for swiping
-const handleTouchStart = (e) => {
-  if (e.touches) {
-    setStartX(e.touches[0].clientX);
-  } else {
-    setStartX(e.clientX);
-  }
-};
-
-const handleTouchMove = (e) => {
-  // Get the current X position based on event type
-  let currentX;
-  if (e.touches) {
-    currentX = e.touches[0].clientX;
-  } else {
-    currentX = e.clientX;
-  }
-  
-  const diff = currentX - startX;
-  
-  // Only trigger navigation if swipe distance is significant
-  if (Math.abs(diff) > 50) {
-    if (diff > 0) {
-      navigateTo(currentIndex - 1);
+  const handleTouchStart = (e) => {
+    if (isAnimating) return;
+    setIsDragging(true);
+    if (e.type.includes('touch')) {
+      setStartY(e.touches[0].clientY);
+      setStartX(e.touches[0].clientX);
     } else {
-      navigateTo(currentIndex + 1);
+      setStartY(e.clientY);
+      setStartX(e.clientX);
+      e.preventDefault(); // Prevent text selection on desktop
     }
-    setStartX(currentX);
-  }
-};
+  };
 
-const handleTouchEnd = () => {
-  // Reset startX
-  setStartX(0);
-};
+  const handleTouchMove = (e) => {
+    if (!isDragging || isAnimating) return;
   
+    let currentY, currentX;
+    if (e.type.includes('touch')) {
+      currentY = e.touches[0].clientY;
+      currentX = e.touches[0].clientX;
+      // e.preventDefault(); // Prevent scrolling while dragging
+    } else {
+      currentY = e.clientY;
+      currentX = e.clientX;
+    }
   
+    const diffY = currentY - startY;
+    const diffX = currentX - startX;
+  
+    // For both mobile and desktop: prioritize horizontal swipes
+    if (Math.abs(diffX) > 30 && Math.abs(diffX) > Math.abs(diffY)) {
+      if (diffX > 0) {
+        // Swipe right - previous
+        navigateTo(currentIndex - 1, -1);
+      } else {
+        // Swipe left - next
+        navigateTo(currentIndex + 1, 1);
+      }
+      setIsDragging(false);
+    }
+  };
+
+  const handleTouchEnd = () => {
+    setIsDragging(false);
+  };
+
   // Handle wheel events for scrolling
   const handleWheel = (e) => {
     if (isAnimating) return;
