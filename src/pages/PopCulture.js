@@ -270,8 +270,7 @@ const PopCulture = () => {
           />
         </div>
       </div>
-{/* 
-      {/* <div className="navigation-dots">
+ <div className="navigation-dots">
         {lottieData.map((_, index) => (
           <button
             key={index}
@@ -279,7 +278,7 @@ const PopCulture = () => {
             onClick={() => navigateTo(index)}
           ></button>
         ))}
-      </div> */} */}
+      </div> 
 
       <div 
         className="lottie-card-clickable"
