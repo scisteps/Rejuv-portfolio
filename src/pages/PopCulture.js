@@ -8,16 +8,20 @@ import bluetored from '../jsons/bluetored.json';
 import spidey1 from '../jsons/spidey sense.json';
 import spidey2 from '../jsons/blackspidey4.json';
 import spidey3 from '../jsons/milesx2.json';
-import spidey4 from '../jsons/xmilex.json';
+import spidey4 from '../jsons/xmilex2.json';
 import face from '../jsons/talker2.json';
 import eaze from '../jsons/eaze2.json';
 import dex from '../jsons/dex9.json';
 import ro from '../jsons/ro2.json';
 import ro2 from '../jsons/ro3.json';
+import soeasy from '../jsons/sounds/soeasy3.mp3';
+import multiverse from '../jsons/sounds/Another Dimension.mp3';
 
 const PopCulture = () => {
   const containerRef = useRef(null);
   const viewportRef = useRef(null);
+    const audioref = useRef(null);
+
   const animerefs = useRef({});
   const [currentIndex, setCurrentIndex] = useState(0);
   const [clicked, setClicked] = useState({});
@@ -27,7 +31,8 @@ const PopCulture = () => {
   const [startX, setStartX] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
   const [shouldPlayAfterDelay, setShouldPlayAfterDelay] = useState(false);
-  
+  const [sounder, setsounder] = useState(multiverse);
+
   // Define the lottie data with backgrounds
   const lottieData = [
     { 
@@ -71,7 +76,7 @@ const PopCulture = () => {
       id: 7, 
       animationData: greentored, 
       category: 'ranger',
-      background: '#ffffff'
+      background: '#A3A3A3'
     },
    
  
@@ -89,24 +94,24 @@ const PopCulture = () => {
     },
   ];
 
-  // Handle card click for play/reverse
-  const handleCardClick = (id, category) => {
-    // For spidey cards - toggle play direction
-    const isClicked = clicked[id] || false;
-    const player = animerefs.current[id];
+  // // Handle card click for play/reverse
+  // const handleCardClick = (id, category) => {
+  //   // For spidey cards - toggle play direction
+  //   const isClicked = clicked[id] || false;
+  //   const player = animerefs.current[id];
 
-    if (!player) return;
+  //   if (!player) return;
 
-    if (!isClicked) {
-      player.setPlayerDirection(1);
-      player.play();
-    } else {
-      player.setPlayerDirection(-1);
-      player.play();
-    }
+  //   if (!isClicked) {
+  //     player.setPlayerDirection(1);
+  //     player.play();
+  //   } else {
+  //     player.setPlayerDirection(-1);
+  //     player.play();
+  //   }
 
-    setClicked(prev => ({ ...prev, [id]: !isClicked }));
-  };
+  //   setClicked(prev => ({ ...prev, [id]: !isClicked }));
+  // };
 
   // Handle navigation to next/previous lottie with GSAP animation
   const navigateTo = (index, direction = null) => {
@@ -201,6 +206,57 @@ const PopCulture = () => {
       return () => clearTimeout(timer);
     }
   }, [shouldPlayAfterDelay, currentIndex]);
+
+  // --- inside PopCulture component --- //
+
+// Watch whenever currentIndex changes
+useEffect(() => {
+  const currentId = lottieData[currentIndex].id;
+
+  if (currentId === 4) {
+    setsounder(multiverse);
+    // wait a tick for src to update
+    setTimeout(() => {
+      if (audioref.current) {
+        audioref.current.currentTime = 0;
+        audioref.current.play().catch(() => {});
+      }
+    }, 100);
+  } else if (currentId === 8) {
+    setsounder(soeasy);
+    setTimeout(() => {
+      if (audioref.current) {
+        audioref.current.currentTime = 0;
+        audioref.current.play().catch(() => {});
+      }
+    }, 100);
+  } else {
+    setsounder(null); // no sound for other animations
+  }
+}, [currentIndex]);
+
+const handleCardClick = (id, category) => {
+  const isClicked = clicked[id] || false;
+  const player = animerefs.current[id];
+
+  if (!player) return;
+
+  if (!isClicked) {
+    player.setPlayerDirection(1);
+    player.play();
+  } else {
+    player.setPlayerDirection(-1);
+    player.play();
+  }
+
+  // 🔊 Play sound on click if this animation has one
+  if ((id === 4 || id === 8) && audioref.current) {
+    audioref.current.currentTime = 0;
+    audioref.current.play().catch(() => {});
+  }
+
+  setClicked(prev => ({ ...prev, [id]: !isClicked }));
+};
 
   // Improved touch/mouse events for swiping
   const handleTouchStart = (e) => {
@@ -320,6 +376,8 @@ const PopCulture = () => {
             autoplay={false}
             className="lottie-player"
           />
+<audio ref={audioref} src={sounder || ''}/>
+
         </div>
       </div>
 
