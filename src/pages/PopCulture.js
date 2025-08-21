@@ -58,7 +58,7 @@ const PopCulture = () => {
       id: 4, 
       animationData: spidey4, 
       category: 'spidey',
-      background: '#000000'
+      background: '#1E2B3B'
     },
     { 
       id: 5, 
