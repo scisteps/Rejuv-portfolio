@@ -205,10 +205,14 @@ const PopCulture = () => {
             setroholder(ro2);
           
             setTimeout(() => {
-              const totalFrames = animation.getDuration(true);
-              animation.goToAndStop(totalFrames , true);
-      
-            }, 100);
+              const newAnim = animerefs.current[5];
+              if (newAnim) {
+                // Go to the last frame of ro2 and pause
+                const totalFrames = newAnim.getDuration(true);
+                newAnim.goToAndStop(totalFrames, true);
+              }
+              setRoPhase(3);
+            }, 5); 
        
           }, animation.getDuration() * 1000);
           setRoPhase(3);
