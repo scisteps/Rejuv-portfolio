@@ -176,29 +176,56 @@ const PopCulture = () => {
           animation.setDirection(1);
           animation.play();
           setRoPhase(1);
+
+          setTimeout(() => {
+            setroholder(ro);
+            setRoPhase(1);
+          }, animation.getDuration() * 1000);
           break;
         case 1: // Second click - play reverse
-          animation.setDirection(-1);
-          animation.play();
-          setRoPhase(2);
-          break;
-        case 2: // Third click - switch to ro2 and play forward
-          setroholder(ro2);
+       
+
+
           setTimeout(() => {
             const newAnim = animerefs.current[5];
-            if (newAnim) {
-              newAnim.setDirection(1);
-              newAnim.play();
-            }
+            animation.setDirection(1);
+            animation.play();
           }, 100);
-          setRoPhase(3);
+          setRoPhase(2);
           break;
+
+        case 2: // Third click - switch to ro2 and play forward
+   
+
+          animation.setDirection(-1);
+          animation.play();
+          
+          // Reset after animation completes
+          setTimeout(() => {
+            setroholder(ro2);
+          
+            setTimeout(() => {
+              const totalFrames = animation.getDuration(true);
+              animation.goToAndStop(totalFrames , true);
+      
+            }, 100);
+       
+          }, animation.getDuration() * 1000);
+          setRoPhase(3);
+
+          break;
+
         case 3: // Fourth click - play ro2 reverse and reset
+
+
+        const totalFrames = animation.getDuration(true);
+        animation.goToAndStop(totalFrames , true);
+
           animation.setDirection(-1);
           animation.play();
           // Reset after animation completes
           setTimeout(() => {
-            setroholder(ro);
+            // setroholder(ro);
             setRoPhase(0);
           }, animation.getDuration() * 1000);
           break;
@@ -350,8 +377,8 @@ const PopCulture = () => {
       container.addEventListener('wheel', handleWheel, { passive: false });
       container.addEventListener('touchstart', handleTouchStart, { passive: false });
       container.addEventListener('touchmove', handleTouchMove, { passive: false });
-      container.addEventListener('mousedown', handleTouchStart);
-      container.addEventListener('mousemove', handleTouchMove);
+      // container.addEventListener('mousedown', handleTouchStart);
+      // container.addEventListener('mousemove', handleTouchMove);
     }
     
     return () => {
@@ -359,8 +386,8 @@ const PopCulture = () => {
         container.removeEventListener('wheel', handleWheel);
         container.removeEventListener('touchstart', handleTouchStart);
         container.removeEventListener('touchmove', handleTouchMove);
-        container.removeEventListener('mousedown', handleTouchStart);
-        container.removeEventListener('mousemove', handleTouchMove);
+        // container.removeEventListener('mousedown', handleTouchStart);
+        // container.removeEventListener('mousemove', handleTouchMove);
       }
     };
   }, [currentIndex, isAnimating]);
