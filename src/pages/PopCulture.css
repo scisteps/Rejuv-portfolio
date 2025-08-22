@@ -117,14 +117,15 @@
   
   .navigation-arrows {
     top: auto;
-    bottom: 20px;
+    bottom: 80px;
+    left:-15px;
     transform: none;
   }
   
   .nav-arrow {
     width: 40px;
     height: 40px;
-    font-size: 20px;
+    font-size: 30px;
     position: relative;
     z-index: 20;
   }

@@ -370,7 +370,7 @@ const PopCulture = () => {
     <div 
       className="pop-culture-container" 
       ref={containerRef}
-      style={{userSelect: 'none', WebkitTapHighlightColor: 'transparent'}}
+      style={{userSelect: 'none', WebkitTapHighlightColor: 'transparent',height:'100vh',width:'100vw'}}
     >
       <div className="lottie-carousel" ref={carouselRef}>
         {lottieData.map((item, index) => (
