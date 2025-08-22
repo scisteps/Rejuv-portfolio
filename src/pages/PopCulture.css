@@ -75,25 +75,7 @@
   transform: scale(1.1);
 }
 
-.carousel-indicators {
-  position: absolute;
-  bottom: 20px;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-  z-index: 10;
-}
-
-.indicator {
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  border: none;
-  background: rgba(255, 255, 255, 0.5);
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
+.indicator 
 
 .indicator.active {
   background: white;
@@ -138,4 +120,33 @@
 /* Prevent blue highlight on tap on mobile */
 * {
   -webkit-tap-highlight-color: transparent;
+}@media (max-width: 768px) {
+  .navigation-arrows {
+    top: auto;
+    bottom: 100px; /* Move higher to avoid overlap with indicators */
+    left: 0;
+    right: 0;
+    transform: none;
+    display: flex;
+    flex-direction: column; /* Stack arrows vertically */
+    align-items: center;
+    gap: 20px;
+  }
+
+  .nav-arrow {
+    width: 50px; /* Slightly larger for better tap target */
+    height: 50px;
+    font-size: 28px;
+    background: rgba(255, 255, 255, 0.4);
+    border-radius: 50%;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  }
+
+  .prev-arrow::before {
+    content: '↑'; /* Up arrow for previous */
+  }
+
+  .next-arrow::before {
+    content: '↓'; /* Down arrow for next */
+  }
 }

@@ -276,23 +276,21 @@ const PopCulture = () => {
     });
   };
 
-  // Improved touch events for mobile
   const handleTouchStart = (e) => {
     if (isAnimating) return;
     setStartY(e.touches[0].clientY);
     setStartX(e.touches[0].clientX);
   };
-
+  
   const handleTouchMove = (e) => {
     if (isAnimating) return;
   
     const currentY = e.touches[0].clientY;
-    const currentX = e.touches[0].clientX;
     const diffY = currentY - startY;
-    const diffX = currentX - startX;
-    
-    // Check if it's a clear swipe
-    if (Math.abs(diffY) > 50 && Math.abs(diffY) > Math.abs(diffX)) {
+  
+    // Only handle vertical swipes on mobile
+    if (Math.abs(diffY) > 30) { // Lowered threshold for sensitivity
+      e.preventDefault(); // Prevent default scrolling
       if (diffY > 0) {
         // Swipe down - previous
         navigateTo(currentIndex - 1);
@@ -301,6 +299,12 @@ const PopCulture = () => {
         navigateTo(currentIndex + 1);
       }
     }
+  };
+  
+  const handleTouchEnd = () => {
+    // Reset touch state
+    setStartY(0);
+    setStartX(0);
   };
 
   // Handle wheel events for desktop
@@ -324,7 +328,6 @@ const PopCulture = () => {
     }
   };
 
-  // Set initial position and add event listeners
   useEffect(() => {
     // Position carousel at current index
     if (carouselRef.current) {
@@ -340,6 +343,7 @@ const PopCulture = () => {
       container.addEventListener('wheel', handleWheel, { passive: false });
       container.addEventListener('touchstart', handleTouchStart, { passive: false });
       container.addEventListener('touchmove', handleTouchMove, { passive: false });
+      container.addEventListener('touchend', handleTouchEnd, { passive: false });
     }
     
     return () => {
@@ -347,10 +351,10 @@ const PopCulture = () => {
         container.removeEventListener('wheel', handleWheel);
         container.removeEventListener('touchstart', handleTouchStart);
         container.removeEventListener('touchmove', handleTouchMove);
+        container.removeEventListener('touchend', handleTouchEnd);
       }
     };
   }, [currentIndex, isAnimating]);
-
   // Handle window resize
   useEffect(() => {
     const handleResize = () => {
