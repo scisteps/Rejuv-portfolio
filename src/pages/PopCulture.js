@@ -30,7 +30,7 @@ const PopCulture = () => {
   const [isAnimating, setIsAnimating] = useState(false);
   const [startY, setStartY] = useState(0);
   const [startX, setStartX] = useState(0);
-  const [roPhase, setRoPhase] = useState(0); // Track the phase for ID 5 animation
+  const [roPhase, setRoPhase] = useState(0);
 
   // Define the lottie data with backgrounds
   const lottieData = [
@@ -157,8 +157,6 @@ const PopCulture = () => {
     }
   }, [currentIndex]);
 
-
-  
   const handleCardClick = (id, category) => {
     const isClicked = clicked[id] || false;
     const animation = animerefs.current[id];
@@ -185,9 +183,6 @@ const PopCulture = () => {
           }, animation.getDuration() * 1000);
           break;
         case 1: // Second click - play reverse
-       
-
-
           setTimeout(() => {
             const newAnim = animerefs.current[5];
             animation.setDirection(1);
@@ -197,8 +192,6 @@ const PopCulture = () => {
           break;
 
         case 2: // Third click - switch to ro2 and play forward
-   
-
           animation.setDirection(-1);
           animation.play();
           
@@ -215,23 +208,18 @@ const PopCulture = () => {
               }
               setRoPhase(3);
             }, 50); 
-       
           }, animation.getDuration() * 1000);
           setRoPhase(3);
-
           break;
 
         case 3: // Fourth click - play ro2 reverse and reset
-
-
-        const totalFrames = animation.getDuration(true);
-        animation.goToAndStop(totalFrames , true);
+          const totalFrames = animation.getDuration(true);
+          animation.goToAndStop(totalFrames , true);
 
           animation.setDirection(-1);
           animation.play();
           // Reset after animation completes
           setTimeout(() => {
-            // setroholder(ro);
             setRoPhase(0);
           }, animation.getDuration() * 1000);
           break;
@@ -259,43 +247,26 @@ const PopCulture = () => {
   };
 
   // Handle navigation to next/previous lottie with GSAP animation
-  const navigateTo = (index, direction = null) => {
-    if (isAnimating) return;
+  const navigateTo = (index) => {
+    if (isAnimating || index === currentIndex) return;
     if (index < 0) index = lottieData.length - 1;
     if (index >= lottieData.length) index = 0;
     
     setIsAnimating(true);
     
-    // Determine animation direction
-    let animationDirection = direction;
-    if (!animationDirection) {
-      animationDirection = index > currentIndex ? 1 : -1;
-    }
+    // Determine if mobile
+    const isMobile = window.innerWidth <= 768;
     
     // Animate transition
-    if (window.innerWidth <= 768) {
-      // Mobile - vertical animation
-      gsap.to(carouselRef.current, {
-        y: -index * window.innerHeight,
-        duration: 0.6,
-        ease: 'power2.out',
-        onComplete: () => {
-          setIsAnimating(false);
-          setCurrentIndex(index);
-        }
-      });
-    } else {
-      // Desktop - horizontal animation
-      gsap.to(carouselRef.current, {
-        x: -index * window.innerWidth,
-        duration: 0.6,
-        ease: 'power2.out',
-        onComplete: () => {
-          setIsAnimating(false);
-          setCurrentIndex(index);
-        }
-      });
-    }
+    gsap.to(carouselRef.current, {
+      [isMobile ? 'y' : 'x']: isMobile ? -index * window.innerHeight : -index * window.innerWidth,
+      duration: 0.6,
+      ease: 'power2.out',
+      onComplete: () => {
+        setIsAnimating(false);
+        setCurrentIndex(index);
+      }
+    });
     
     // Animate background transition with fade
     gsap.to(containerRef.current, {
@@ -305,76 +276,62 @@ const PopCulture = () => {
     });
   };
 
-  // Improved touch/mouse events for swiping
+  // Improved touch events for mobile
   const handleTouchStart = (e) => {
     if (isAnimating) return;
-    if (e.type.includes('touch')) {
-      setStartY(e.touches[0].clientY);
-      setStartX(e.touches[0].clientX);
-    } else {
-      setStartY(e.clientY);
-      setStartX(e.clientX);
-      e.preventDefault();
-    }
+    setStartY(e.touches[0].clientY);
+    setStartX(e.touches[0].clientX);
   };
 
   const handleTouchMove = (e) => {
     if (isAnimating) return;
   
-    let currentY, currentX;
-    if (e.type.includes('touch')) {
-      currentY = e.touches[0].clientY;
-      currentX = e.touches[0].clientX;
-    } else {
-      currentY = e.clientY;
-      currentX = e.clientX;
-    }
-  
+    const currentY = e.touches[0].clientY;
+    const currentX = e.touches[0].clientX;
     const diffY = currentY - startY;
     const diffX = currentX - startX;
-  
-    // For both mobile and desktop: prioritize horizontal swipes
-    if (Math.abs(diffX) > 30 && Math.abs(diffX) > Math.abs(diffY)) {
-      if (diffX > 0) {
-        // Swipe right - previous
-        navigateTo(currentIndex - 1, -1);
+    
+    // Check if it's a clear swipe
+    if (Math.abs(diffY) > 50 && Math.abs(diffY) > Math.abs(diffX)) {
+      if (diffY > 0) {
+        // Swipe down - previous
+        navigateTo(currentIndex - 1);
       } else {
-        // Swipe left - next
-        navigateTo(currentIndex + 1, 1);
+        // Swipe up - next
+        navigateTo(currentIndex + 1);
       }
     }
   };
 
-  // Handle wheel events for scrolling
+  // Handle wheel events for desktop
   const handleWheel = (e) => {
     if (isAnimating) return;
     
     if (window.innerWidth <= 768) {
       // Mobile - vertical scrolling
       if (e.deltaY > 30) {
-        navigateTo(currentIndex + 1, 1);
+        navigateTo(currentIndex + 1);
       } else if (e.deltaY < -30) {
-        navigateTo(currentIndex - 1, -1);
+        navigateTo(currentIndex - 1);
       }
     } else {
       // Desktop - horizontal scrolling
       if (e.deltaX > 20 || e.deltaY > 20) {
-        navigateTo(currentIndex + 1, 1);
+        navigateTo(currentIndex + 1);
       } else if (e.deltaX < -20 || e.deltaY < -20) {
-        navigateTo(currentIndex - 1, -1);
+        navigateTo(currentIndex - 1);
       }
     }
   };
 
-  // Set initial background and add event listeners
+  // Set initial position and add event listeners
   useEffect(() => {
     // Position carousel at current index
     if (carouselRef.current) {
-      if (window.innerWidth <= 768) {
-        gsap.set(carouselRef.current, { y: -currentIndex * window.innerHeight });
-      } else {
-        gsap.set(carouselRef.current, { x: -currentIndex * window.innerWidth });
-      }
+      const isMobile = window.innerWidth <= 768;
+      gsap.set(carouselRef.current, { 
+        [isMobile ? 'y' : 'x']: isMobile ? -currentIndex * window.innerHeight : -currentIndex * window.innerWidth 
+      });
     }
     
     // Add event listeners
@@ -383,8 +340,6 @@ const PopCulture = () => {
       container.addEventListener('wheel', handleWheel, { passive: false });
       container.addEventListener('touchstart', handleTouchStart, { passive: false });
       container.addEventListener('touchmove', handleTouchMove, { passive: false });
-      // container.addEventListener('mousedown', handleTouchStart);
-      // container.addEventListener('mousemove', handleTouchMove);
     }
     
     return () => {
@@ -392,11 +347,24 @@ const PopCulture = () => {
         container.removeEventListener('wheel', handleWheel);
         container.removeEventListener('touchstart', handleTouchStart);
         container.removeEventListener('touchmove', handleTouchMove);
-        // container.removeEventListener('mousedown', handleTouchStart);
-        // container.removeEventListener('mousemove', handleTouchMove);
       }
     };
   }, [currentIndex, isAnimating]);
+
+  // Handle window resize
+  useEffect(() => {
+    const handleResize = () => {
+      if (carouselRef.current) {
+        const isMobile = window.innerWidth <= 768;
+        gsap.set(carouselRef.current, { 
+          [isMobile ? 'y' : 'x']: isMobile ? -currentIndex * window.innerHeight : -currentIndex * window.innerWidth 
+        });
+      }
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, [currentIndex]);
 
   return (
     <div 
@@ -429,14 +397,14 @@ const PopCulture = () => {
       <div className="navigation-arrows">
         <button 
           className="nav-arrow prev-arrow" 
-          onClick={() => navigateTo(currentIndex - 1, -1)}
+          onClick={() => navigateTo(currentIndex - 1)}
           aria-label="Previous animation"
         >
           &#8249;
         </button>
         <button 
           className="nav-arrow next-arrow" 
-          onClick={() => navigateTo(currentIndex + 1, 1)}
+          onClick={() => navigateTo(currentIndex + 1)}
           aria-label="Next animation"
         >
           &#8250;
