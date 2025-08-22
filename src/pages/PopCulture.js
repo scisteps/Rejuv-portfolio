@@ -157,6 +157,8 @@ const PopCulture = () => {
     }
   }, [currentIndex]);
 
+
+  
   const handleCardClick = (id, category) => {
     const isClicked = clicked[id] || false;
     const animation = animerefs.current[id];
@@ -212,7 +214,7 @@ const PopCulture = () => {
                 newAnim.goToAndStop(totalFrames, true);
               }
               setRoPhase(3);
-            }, 5); 
+            }, 50); 
        
           }, animation.getDuration() * 1000);
           setRoPhase(3);

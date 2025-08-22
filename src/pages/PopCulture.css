@@ -112,15 +112,17 @@
   0% { opacity: 0; }
   100% { opacity: 1; }
 }
-
 @media (max-width: 768px) {
   .lottie-carousel {
     flex-direction: column;
+    height: 100vh; /* Ensure full height */
+    overflow: hidden;
   }
   
   .lottie-slide {
     width: 100vw;
     height: 100vh;
+    flex-shrink: 0;
   }
   
   .navigation-arrows {
@@ -133,5 +135,11 @@
     width: 40px;
     height: 40px;
     font-size: 20px;
+  }
+  
+  /* Add this to ensure proper scrolling */
+  .pop-culture-container {
+    touch-action: pan-y; /* Allow vertical scrolling */
+    overflow: hidden;
   }
 }
