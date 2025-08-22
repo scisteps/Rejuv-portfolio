@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { gsap } from 'gsap';
-import { Player } from '@lottiefiles/react-lottie-player';
+import lottie from 'lottie-web';
 import './PopCulture.css';
 import greentored from '../jsons/ggpr.json';
 import redtoblue from '../jsons/redtoblue.json';
@@ -19,19 +19,18 @@ import multiverse from '../jsons/sounds/Another Dimension.mp3';
 
 const PopCulture = () => {
   const containerRef = useRef(null);
-  const viewportRef = useRef(null);
-    const audioref = useRef(null);
-
+  const carouselRef = useRef(null);
+  const audioref = useRef(null);
   const animerefs = useRef({});
   const [currentIndex, setCurrentIndex] = useState(0);
   const [clicked, setClicked] = useState({});
-  const [rangerColorIndex, setRangerColorIndex] = useState(0);
-  const [isDragging, setIsDragging] = useState(false);
+  const [tvar1, setTvar1] = useState(true);
+  const [roholder, setroholder] = useState(ro2);
+  const [sounder, setsounder] = useState(multiverse);
+  const [isAnimating, setIsAnimating] = useState(false);
   const [startY, setStartY] = useState(0);
   const [startX, setStartX] = useState(0);
-  const [isAnimating, setIsAnimating] = useState(false);
-  const [shouldPlayAfterDelay, setShouldPlayAfterDelay] = useState(false);
-  const [sounder, setsounder] = useState(multiverse);
+  const [roPhase, setRoPhase] = useState(0); // Track the phase for ID 5 animation
 
   // Define the lottie data with backgrounds
   const lottieData = [
@@ -40,7 +39,6 @@ const PopCulture = () => {
       animationData: face, 
       category: 'ranger',
       background: '#ffffff'
-     
     },
     { 
       id: 2, 
@@ -62,7 +60,7 @@ const PopCulture = () => {
     },
     { 
       id: 5, 
-      animationData: ro2, 
+      animationData: roholder, 
       category: 'spidey',
       background: '#81D2FB'
     },
@@ -78,8 +76,6 @@ const PopCulture = () => {
       category: 'ranger',
       background: '#A3A3A3'
     },
-   
- 
     { 
       id: 8, 
       animationData: eaze, 
@@ -94,24 +90,140 @@ const PopCulture = () => {
     },
   ];
 
-  // // Handle card click for play/reverse
-  // const handleCardClick = (id, category) => {
-  //   // For spidey cards - toggle play direction
-  //   const isClicked = clicked[id] || false;
-  //   const player = animerefs.current[id];
+  // Initialize Lottie animations
+  useEffect(() => {
+    if (!carouselRef.current) return;
+    
+    const containers = carouselRef.current.querySelectorAll('.lottie-container');
+    
+    containers.forEach((container, index) => {
+      // Clear container first
+      container.innerHTML = '';
+      
+      try {
+        const anim = lottie.loadAnimation({
+          container: container,
+          renderer: 'svg',
+          loop: false,
+          autoplay: false,
+          animationData: lottieData[index].animationData,
+        });
+        
+        animerefs.current[lottieData[index].id] = anim;
+      } catch (error) {
+        console.error('Error loading animation:', error);
+      }
+    });
 
-  //   if (!player) return;
+    // Set initial background with fade in
+    if (containerRef.current) {
+      gsap.to(containerRef.current, {
+        backgroundColor: lottieData[currentIndex].background,
+        duration: 1,
+        ease: 'power2.inOut'
+      });
+    }
 
-  //   if (!isClicked) {
-  //     player.setPlayerDirection(1);
-  //     player.play();
-  //   } else {
-  //     player.setPlayerDirection(-1);
-  //     player.play();
-  //   }
+    return () => {
+      // Cleanup animations
+      Object.values(animerefs.current).forEach(anim => {
+        if (anim) anim.destroy();
+      });
+    };
+  }, [roholder]);
 
-  //   setClicked(prev => ({ ...prev, [id]: !isClicked }));
-  // };
+  // Handle sound when currentIndex changes
+  useEffect(() => {
+    const currentId = lottieData[currentIndex].id;
+
+    if (currentId === 4) {
+      setsounder(multiverse);
+      setTimeout(() => {
+        if (audioref.current) {
+          audioref.current.currentTime = 0;
+          audioref.current.play().catch(() => {});
+        }
+      }, 100);
+    } else if (currentId === 8) {
+      setsounder(soeasy);
+      setTimeout(() => {
+        if (audioref.current) {
+          audioref.current.currentTime = 0;
+          audioref.current.play().catch(() => {});
+        }
+      }, 100);
+    } else {
+      setsounder(null);
+    }
+  }, [currentIndex]);
+
+  const handleCardClick = (id, category) => {
+    const isClicked = clicked[id] || false;
+    const animation = animerefs.current[id];
+
+    if (!animation) return;
+
+    // Handle ID 5 with a clear 4-step cycle
+    if (id === 5) {
+      // Reset animation if it's the first interaction
+      if (roPhase === 0) {
+        animation.goToAndStop(0, true);
+      }
+      
+      // Step through the phases
+      switch(roPhase) {
+        case 0: // First click - play forward
+          animation.setDirection(1);
+          animation.play();
+          setRoPhase(1);
+          break;
+        case 1: // Second click - play reverse
+          animation.setDirection(-1);
+          animation.play();
+          setRoPhase(2);
+          break;
+        case 2: // Third click - switch to ro2 and play forward
+          setroholder(ro2);
+          setTimeout(() => {
+            const newAnim = animerefs.current[5];
+            if (newAnim) {
+              newAnim.setDirection(1);
+              newAnim.play();
+            }
+          }, 100);
+          setRoPhase(3);
+          break;
+        case 3: // Fourth click - play ro2 reverse and reset
+          animation.setDirection(-1);
+          animation.play();
+          // Reset after animation completes
+          setTimeout(() => {
+            setroholder(ro);
+            setRoPhase(0);
+          }, animation.getDuration() * 1000);
+          break;
+        default:
+          setRoPhase(0);
+      }
+    } else {
+      // For other IDs - toggle play direction
+      if (!isClicked) {
+        animation.setDirection(1);
+        animation.play();
+      } else {
+        animation.setDirection(-1);
+        animation.play();
+      }
+
+      // Play sound on click if this animation has one
+      if ((id === 4 || id === 8) && audioref.current) {
+        audioref.current.currentTime = 0;
+        audioref.current.play().catch(() => {});
+      }
+    }
+
+    setClicked(prev => ({ ...prev, [id]: !isClicked }));
+  };
 
   // Handle navigation to next/previous lottie with GSAP animation
   const navigateTo = (index, direction = null) => {
@@ -120,7 +232,6 @@ const PopCulture = () => {
     if (index >= lottieData.length) index = 0;
     
     setIsAnimating(true);
-    setShouldPlayAfterDelay(false);
     
     // Determine animation direction
     let animationDirection = direction;
@@ -131,57 +242,29 @@ const PopCulture = () => {
     // Animate transition
     if (window.innerWidth <= 768) {
       // Mobile - vertical animation
-      gsap.to(viewportRef.current, {
-        y: animationDirection * window.innerHeight,
-        opacity: 0,
-        duration: 0.4,
-        ease: 'power2.inOut',
+      gsap.to(carouselRef.current, {
+        y: -index * window.innerHeight,
+        duration: 0.6,
+        ease: 'power2.out',
         onComplete: () => {
+          setIsAnimating(false);
           setCurrentIndex(index);
-          gsap.set(viewportRef.current, {
-            y: -animationDirection * window.innerHeight,
-            opacity: 0
-          });
-          gsap.to(viewportRef.current, {
-            y: 0,
-            opacity: 1,
-            duration: 0.6,
-            ease: 'power2.out',
-            onComplete: () => {
-              setIsAnimating(false);
-              setShouldPlayAfterDelay(true);
-            }
-          });
         }
       });
     } else {
       // Desktop - horizontal animation
-      gsap.to(viewportRef.current, {
-        x: animationDirection * window.innerWidth,
-        opacity: 0,
-        duration: 0.4,
-        ease: 'power2.inOut',
+      gsap.to(carouselRef.current, {
+        x: -index * window.innerWidth,
+        duration: 0.6,
+        ease: 'power2.out',
         onComplete: () => {
+          setIsAnimating(false);
           setCurrentIndex(index);
-          gsap.set(viewportRef.current, {
-            x: -animationDirection * window.innerWidth,
-            opacity: 0
-          });
-          gsap.to(viewportRef.current, {
-            x: 0,
-            opacity: 1,
-            duration: 0.6,
-            ease: 'power2.out',
-            onComplete: () => {
-              setIsAnimating(false);
-              setShouldPlayAfterDelay(true);
-            }
-          });
         }
       });
     }
     
-    // Animate background transition
+    // Animate background transition with fade
     gsap.to(containerRef.current, {
       backgroundColor: lottieData[index].background,
       duration: 1,
@@ -189,97 +272,26 @@ const PopCulture = () => {
     });
   };
 
-  // Play animation after 1 second delay
-  useEffect(() => {
-    if (shouldPlayAfterDelay) {
-      const timer = setTimeout(() => {
-        const currentId = lottieData[currentIndex].id;
-        const player = animerefs.current[currentId];
-        
-        if (player) {
-          player.stop();
-          player.setPlayerDirection(1);
-          player.play();
-        }
-      }, 500);
-      
-      return () => clearTimeout(timer);
-    }
-  }, [shouldPlayAfterDelay, currentIndex]);
-
-  // --- inside PopCulture component --- //
-
-// Watch whenever currentIndex changes
-useEffect(() => {
-  const currentId = lottieData[currentIndex].id;
-
-  if (currentId === 4) {
-    setsounder(multiverse);
-    // wait a tick for src to update
-    setTimeout(() => {
-      if (audioref.current) {
-        audioref.current.currentTime = 0;
-        audioref.current.play().catch(() => {});
-      }
-    }, 100);
-  } else if (currentId === 8) {
-    setsounder(soeasy);
-    setTimeout(() => {
-      if (audioref.current) {
-        audioref.current.currentTime = 0;
-        audioref.current.play().catch(() => {});
-      }
-    }, 100);
-  } else {
-    setsounder(null); // no sound for other animations
-  }
-}, [currentIndex]);
-
-const handleCardClick = (id, category) => {
-  const isClicked = clicked[id] || false;
-  const player = animerefs.current[id];
-
-  if (!player) return;
-
-  if (!isClicked) {
-    player.setPlayerDirection(1);
-    player.play();
-  } else {
-    player.setPlayerDirection(-1);
-    player.play();
-  }
-
-  // 🔊 Play sound on click if this animation has one
-  if ((id === 4 || id === 8) && audioref.current) {
-    audioref.current.currentTime = 0;
-    audioref.current.play().catch(() => {});
-  }
-
-  setClicked(prev => ({ ...prev, [id]: !isClicked }));
-};
-
   // Improved touch/mouse events for swiping
   const handleTouchStart = (e) => {
     if (isAnimating) return;
-    setIsDragging(true);
     if (e.type.includes('touch')) {
       setStartY(e.touches[0].clientY);
       setStartX(e.touches[0].clientX);
     } else {
       setStartY(e.clientY);
       setStartX(e.clientX);
-      e.preventDefault(); // Prevent text selection on desktop
+      e.preventDefault();
     }
   };
 
   const handleTouchMove = (e) => {
-    if (!isDragging || isAnimating) return;
+    if (isAnimating) return;
   
     let currentY, currentX;
     if (e.type.includes('touch')) {
       currentY = e.touches[0].clientY;
       currentX = e.touches[0].clientX;
-      // e.preventDefault(); // Prevent scrolling while dragging
     } else {
       currentY = e.clientY;
       currentX = e.clientX;
@@ -297,12 +309,7 @@ const handleCardClick = (id, category) => {
         // Swipe left - next
         navigateTo(currentIndex + 1, 1);
       }
-      setIsDragging(false);
     }
-  };
-
-  const handleTouchEnd = () => {
-    setIsDragging(false);
   };
 
   // Handle wheel events for scrolling
@@ -328,8 +335,13 @@ const handleCardClick = (id, category) => {
 
   // Set initial background and add event listeners
   useEffect(() => {
-    if (containerRef.current) {
-      containerRef.current.style.backgroundColor = lottieData[currentIndex].background;
+    // Position carousel at current index
+    if (carouselRef.current) {
+      if (window.innerWidth <= 768) {
+        gsap.set(carouselRef.current, { y: -currentIndex * window.innerHeight });
+      } else {
+        gsap.set(carouselRef.current, { x: -currentIndex * window.innerWidth });
+      }
     }
     
     // Add event listeners
@@ -338,11 +350,8 @@ const handleCardClick = (id, category) => {
       container.addEventListener('wheel', handleWheel, { passive: false });
       container.addEventListener('touchstart', handleTouchStart, { passive: false });
       container.addEventListener('touchmove', handleTouchMove, { passive: false });
-      container.addEventListener('touchend', handleTouchEnd);
       container.addEventListener('mousedown', handleTouchStart);
       container.addEventListener('mousemove', handleTouchMove);
-      container.addEventListener('mouseup', handleTouchEnd);
-      container.addEventListener('mouseleave', handleTouchEnd);
     }
     
     return () => {
@@ -350,11 +359,8 @@ const handleCardClick = (id, category) => {
         container.removeEventListener('wheel', handleWheel);
         container.removeEventListener('touchstart', handleTouchStart);
         container.removeEventListener('touchmove', handleTouchMove);
-        container.removeEventListener('touchend', handleTouchEnd);
         container.removeEventListener('mousedown', handleTouchStart);
         container.removeEventListener('mousemove', handleTouchMove);
-        container.removeEventListener('mouseup', handleTouchEnd);
-        container.removeEventListener('mouseleave', handleTouchEnd);
       }
     };
   }, [currentIndex, isAnimating]);
@@ -365,21 +371,26 @@ const handleCardClick = (id, category) => {
       ref={containerRef}
       style={{userSelect: 'none', WebkitTapHighlightColor: 'transparent'}}
     >
-      <div className="lottie-viewport" ref={viewportRef}>
-        <div className="lottie-card">
-          <Player
-            ref={(el) => (animerefs.current[lottieData[currentIndex].id] = el)}
-            id={`lottie-${lottieData[currentIndex].id}`}
-            src={lottieData[currentIndex].animationData}
-            loop={false}
-            keepLastFrame={true}
-            autoplay={false}
-            className="lottie-player"
-          />
-<audio ref={audioref} src={sounder || ''}/>
-
-        </div>
+      <div className="lottie-carousel" ref={carouselRef}>
+        {lottieData.map((item, index) => (
+          <div 
+            key={item.id}
+            className="lottie-slide"
+            style={{
+              width: window.innerWidth,
+              height: window.innerHeight,
+            }}
+          >
+            <div 
+              className="lottie-container"
+              id={`lottie-${item.id}`}
+              onClick={() => handleCardClick(item.id, item.category)}
+            />
+          </div>
+        ))}
       </div>
+
+      <audio ref={audioref} src={sounder || ''}/>
 
       {/* Navigation Arrows */}
       <div className="navigation-arrows">
@@ -399,10 +410,17 @@ const handleCardClick = (id, category) => {
         </button>
       </div>
 
-      <div 
-        className="lottie-card-clickable"
-        onClick={() => handleCardClick(lottieData[currentIndex].id, lottieData[currentIndex].category)}
-      ></div>
+      {/* Indicators */}
+      <div className="carousel-indicators">
+        {lottieData.map((_, index) => (
+          <button
+            key={index}
+            className={`indicator ${index === currentIndex ? 'active' : ''}`}
+            onClick={() => navigateTo(index)}
+            aria-label={`Go to slide ${index + 1}`}
+          />
+        ))}
+      </div>
     </div>
   );
 };
