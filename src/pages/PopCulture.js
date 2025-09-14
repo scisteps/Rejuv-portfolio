@@ -12,10 +12,12 @@ import spidey4 from '../jsons/xmilex2.json';
 import face from '../jsons/talker2.json';
 import eaze from '../jsons/eaze2.json';
 import dex from '../jsons/dex9.json';
+import bp from '../jsons/black panther.json';
+
 import ro from '../jsons/ro2.json';
 import ro2 from '../jsons/ro3.json';
-import soeasy from '../jsons/sounds/soeasy3.mp3';
-import multiverse from '../jsons/sounds/Another Dimension.mp3';
+// import soeasy from '../jsons/sounds/soeasy3.mp3';
+// import multiverse from '../jsons/sounds/Another Dimension.mp3';
 
 const PopCulture = () => {
   const containerRef = useRef(null);
@@ -26,7 +28,7 @@ const PopCulture = () => {
   const [clicked, setClicked] = useState({});
   const [tvar1, setTvar1] = useState(true);
   const [roholder, setroholder] = useState(ro2);
-  const [sounder, setsounder] = useState(multiverse);
+  const [sounder, setsounder] = useState(null);
   const [isAnimating, setIsAnimating] = useState(false);
   const [startY, setStartY] = useState(0);
   const [startX, setStartX] = useState(0);
@@ -88,6 +90,12 @@ const PopCulture = () => {
       category: 'ranger',
       background: '#1E2B3B'
     },
+    { 
+      id: 10, 
+      animationData: bp, 
+      category: 'ranger',
+      background: '#1E2B3B'
+    },
   ];
 
   // Initialize Lottie animations
@@ -137,7 +145,7 @@ const PopCulture = () => {
     const currentId = lottieData[currentIndex].id;
 
     if (currentId === 4) {
-      setsounder(multiverse);
+      // setsounder(multiverse);
       setTimeout(() => {
         if (audioref.current) {
           audioref.current.currentTime = 0;
@@ -145,7 +153,7 @@ const PopCulture = () => {
         }
       }, 100);
     } else if (currentId === 8) {
-      setsounder(soeasy);
+      // setsounder(soeasy);
       setTimeout(() => {
         if (audioref.current) {
           audioref.current.currentTime = 0;
@@ -399,21 +407,17 @@ const PopCulture = () => {
 
       {/* Navigation Arrows */}
       <div className="navigation-arrows">
-        <button 
-          className="nav-arrow prev-arrow" 
-          onClick={() => navigateTo(currentIndex - 1)}
-          aria-label="Previous animation"
-        >
-          &#8249;
-        </button>
-        <button 
-          className="nav-arrow next-arrow" 
-          onClick={() => navigateTo(currentIndex + 1)}
-          aria-label="Next animation"
-        >
-          &#8250;
-        </button>
-      </div>
+  <button 
+    className="nav-arrow prev-arrow" 
+    onClick={() => navigateTo(currentIndex - 1)}
+    aria-label="Previous animation"
+  />
+  <button 
+    className="nav-arrow next-arrow" 
+    onClick={() => navigateTo(currentIndex + 1)}
+    aria-label="Next animation"
+  />
+</div>
 
       {/* Indicators */}
       <div className="carousel-indicators">
