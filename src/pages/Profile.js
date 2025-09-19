@@ -131,7 +131,8 @@ const Profile = () => {
         </div>
 
         <div className="profile-text" ref={profileTextRef}>
-          <h1>Sam Nkurunungi</h1>
+          <h1>Sam "NUNGI"  </h1>
+          
           <h2>Software Engineer & Animator</h2>
           <p>
             I am a  <span className="highlight">Ugandan from Kampala </span>with a deep passion for art and computers from a very young age,
