@@ -12,7 +12,7 @@ import spidey4 from '../jsons/xmilex2.json';
 import face from '../jsons/talker2.json';
 import eaze from '../jsons/eaze2.json';
 import dex from '../jsons/dex9.json';
-import bp from '../jsons/black panther.json';
+import bp from '../jsons/blackpanther2.json';
 
 import ro from '../jsons/ro2.json';
 import ro2 from '../jsons/ro3.json';
