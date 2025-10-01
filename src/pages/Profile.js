@@ -136,7 +136,8 @@ const Profile = () => {
           <h2>Software Engineer & Animator</h2>
           <p>
             I am a  <span className="highlight">Ugandan from Kampala </span>with a deep passion for art and computers from a very young age,
-            I used to draw comic books in my childhood years, persued software engineering at university and built a variety of web apps & programs.</p>
+            I used to draw comic books in my childhood years, pursued software engineering at university and built a variety of web apps & programs.</p>
+            <p> During the covid pandemic I started learning graphics design and soon went on to learn animation from various international online communities eventually creating my own brand 'rejuv'.</p>
           <p> With over 7 years of professional experience, I bridge the gap between 
             <span className="highlight"> web development and creative design</span>. My unique combination of 
             coding expertise and visual design skills allows me to create solutions 
@@ -144,7 +145,7 @@ const Profile = () => {
           </p>
           <p>
             As a software engineer, I specialize in building responsive web 
-            applications with modern frameworks. As a graphics designer, I design compelling brand visuals that effectively communicate a company's values.
+            applications with modern frameworks. As a graphics designer, I design compelling brand visuals & animations that effectively communicate a company's values.
           </p>
           <p className="left-aligned">
             In my free time, I channel my creativity into crafting <span className="highlight bold">short, animated stories</span> that explore unique themes and characters, showcasing the limitless possibilities of animation.
@@ -153,7 +154,6 @@ const Profile = () => {
             Additionally, I share my expertise by <span className="highlight">teaching animation</span>, inspiring others to discover and develop their own creative potential. Whether you're seeking engaging explainers or looking to learn the art of animation, I'm here to help.
           </p>
           <br/>
-          <p> <span className="highlight bold"> Contact me on +256 782240185</span> </p>
           <p> <span > email - rejuveanimation@gmail.com</span> </p>
           <p>
             <a 
