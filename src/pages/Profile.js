@@ -8,12 +8,12 @@ import gsap from "gsap";
 import { FaHome } from "react-icons/fa";
 
 // Import your images
-import me from '../images/Rejuv dp.jpg';
+import me from '../images/headshot2.jpg';
 import me3 from '../images/Samred.jpg';
-import me4 from '../still/me4.png';
+import me4 from '../images/forestpic.jpg';
 import me5 from '../still/mountains.jpg';
 import celo from '../still/celo.jpg';
-import formal from '../still/formal.jpg';
+import formal from '../images/me green.jpg';
 import poster1 from "../still/provider.jpg";
 import poster2 from "../still/riyadh.jpg";
 import poster3 from "../still/bombardier.jpg";
