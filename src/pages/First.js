@@ -426,8 +426,8 @@ const videoRefs = {
 
          className="text-container"> 
         <p className="left-aligned">
-  Welcome to <span className="highlight">Rejuv</span> —  We are a community of animators led and founded by  
-   <span className="highlight bold"> Sam Nungi.</span> "We work on different projects ranging from <span className="highlight"> animated short stories, animated explainers, music & lyric videos</span> and other passion projects, scroll down to view them.
+  Welcome to <span className="highlight">Rejuv</span> —  A community of creatives led by Sam Nungi a.k.a
+   <span className="highlight bold">   Mr.Rejuv .</span> "We come together occassionally to collaborate on different projects such as <span className="highlight"> animated short stories, animated explainers</span> and other passion projects that come along the way, scroll down to view them. we also have animation classes for anyone who would love to try out.
   
 </p>
 
@@ -472,7 +472,7 @@ const videoRefs = {
     backgroundColor: colorPalette.secondary
   }}
 >
-  Meet the founder
+  The Founder
 </button></div>
      
 

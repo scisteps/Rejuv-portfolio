@@ -130,41 +130,58 @@ const Profile = () => {
           </Swiper>
         </div>
 
-        <div className="profile-text" ref={profileTextRef}>
-          <h1>Sam "NUNGI"  </h1>
-          
-          <h2>Software Engineer & Animator</h2>
-          <p>
-            I am a  <span className="highlight">Ugandan from Kampala </span>with a deep passion for art and computers from a very young age,
-            I used to draw comic books in my childhood years, pursued software engineering at university and built a variety of web apps & programs.</p>
-            <p> During the covid pandemic I started learning graphics design and soon went on to learn animation from various international online communities eventually creating my own brand 'rejuv'.</p>
-          <p> With over 7 years of professional experience, I bridge the gap between 
+       <div className="profile-text" ref={profileTextRef}>
+  <h1>Sam Nungi 'Mr. Rejuv'</h1>
+  <h2>Software Engineer & Animator</h2>
+
+  {/* Passion Section */}
+  <section className="passion">
+    <h3>Passion</h3>
+    <p>
+      I am a <span className="highlight">Ugandan from Kampala </span>with a deep passion for art and computers from a very young age,
+      I used to draw comic books in my childhood years, pursued software engineering at university and built a variety of web apps & programs.
+    </p>
+    <p>
+      During the covid pandemic I started learning graphics design and soon went on to learn animation from various international online communities eventually creating brand <span className="highlight"> 'rejuv'</span>  which is short for <span className="highlight">Rejuvenation'. </span>
+    </p>
+    <p>
+      I started rejuv because I want to rejuvenate the minds of young viewers as they watched my animations, show them something new and fill their hearts with joy and excitement as they watch the animations I created , but most of all I did it to inspire these young minds to believe in themselves and go beyond the limits
+    </p>
+    <p>
+      And that's why I also teach animation to young creatives who have a burning passion for animation.
+    </p>
+  </section>
+
+  {/* Profession Section */}
+  <section className="profession">
+    <h3>Profession</h3>
+    <p>
+      As a software engineer, I specialize in building responsive web 
+      applications with modern frameworks. As a graphics designer, I design compelling brand visuals & animations that effectively communicate a company's values.
+    </p>
+    <p> With over 7 years of professional experience, I bridge the gap between 
             <span className="highlight"> web development and creative design</span>. My unique combination of 
             coding expertise and visual design skills allows me to create solutions 
             that cut across these fields and allow them to compliment each other in a variety of ways.
           </p>
-          <p>
-            As a software engineer, I specialize in building responsive web 
-            applications with modern frameworks. As a graphics designer, I design compelling brand visuals & animations that effectively communicate a company's values.
-          </p>
-          <p className="left-aligned">
-            In my free time, I channel my creativity into crafting <span className="highlight bold">short, animated stories</span> that explore unique themes and characters, showcasing the limitless possibilities of animation.
-          </p>
-          <p className="left-aligned">
-            Additionally, I share my expertise by <span className="highlight">teaching animation</span>, inspiring others to discover and develop their own creative potential. Whether you're seeking engaging explainers or looking to learn the art of animation, I'm here to help.
-          </p>
-          <br/>
-          <p> <span > email - rejuveanimation@gmail.com</span> </p>
-          <p>
-            <a 
-              href="https://www.instagram.com/_rejuv_/" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="highlight">
-              click to view Instagram
-            </a>
-          </p>
-        </div>
+    <p className="left-aligned">
+      Additionally, I share my expertise by <span className="highlight">teaching animation</span>, inspiring others to discover and develop their own creative potential. Whether you're seeking engaging explainers or looking to learn the art of animation, I'm here to help.
+    </p>
+    <br/>
+    <p><span> email - rejuveanimation@gmail.com</span></p>
+    <p>
+      <a 
+        href="https://www.instagram.com/_rejuv_/" 
+        target="_blank" 
+        rel="noopener noreferrer"
+        className="highlight"
+      >
+        click to view Instagram
+      </a>
+    </p>
+  </section>
+</div>
+
       </div>
 
       {/* Navigation Tabs */}
