@@ -535,7 +535,7 @@ const videoRefs = {
 
   <h5  onClick={() => { handleShowPopup('Rejuv',imagess); handleVideoClick(1); }}
  
-        style={{ cursor:'cell', color: 'blue' }}><span style={{ color: highlightColor }}>Created by Nkurunungi Samuel,</span><span style={{color:fontColor}}> August 7 2025</span></h5>
+        style={{ cursor:'cell', color: 'blue' }}><span style={{ color: highlightColor }}>Created by Nungi Samuel,</span><span style={{color:fontColor}}> August 7 2025</span></h5>
 </div>
 
        <div ref={redref}  className="video-container bordered">
@@ -567,7 +567,7 @@ const videoRefs = {
 
   <h5  onClick={() => { handleShowPopup('Rejuv',imagess); handleVideoClick(1); }}
  
-        style={{ cursor:'cell', color: 'blue' }}><span style={{ color: highlightColor }}>Created by Nkurunungi Samuel</span> <span style={{color:fontColor}}> May 11 2022</span> </h5>
+        style={{ cursor:'cell', color: 'blue' }}><span style={{ color: highlightColor }}>Created by Nungi Samuel</span> <span style={{color:fontColor}}> May 11 2022</span> </h5>
 </div>
 
         <br/>
@@ -601,7 +601,7 @@ preload="metadata"
   <h5 
     onClick={() => { handleShowPopup('Rejuv',imagess); handleVideoClick(4); }} 
     style={{ display: 'inline-block', margin: '0', paddingRight: '5px' }}>
-    Created by Nkurunungi Samuel,
+    Created by Nungi Samuel,
   </h5>
   <h5 
     onClick={() => { handleShowPopup('Wisey',imagesb); handleVideoClick(4); }} 
@@ -649,7 +649,7 @@ This animation is inspired by the talented & professional skater from Nairobi  <
           <h5 
     onClick={() => { handleShowPopup('Rejuv',imagess); handleVideoClick(8); }} 
     style={{ display: 'inline-block', margin: '0', paddingRight: '5px',color:highlightColor }}>
-    Created by Nkurunungi Samuel,
+    Created by Nungi Samuel,
   </h5>
   <h5 
     onClick={() => { handleShowPopup('Rejuv',imagess); handleVideoClick(8); }} 
@@ -681,7 +681,7 @@ preload="metadata"
           </video>
           <EmojiPanel backgroundColor={emojibg} strokecolor={emojistroke} textcolor={emojitxt} vidid={6}/>
 
-          <h5 onClick={() => { handleShowPopup('rejuv',imagess); handleVideoClick(2); }} > <span style={{ color: highlightColor }}> Created by Nkurunungi Samuel </span><span style={{color:fontColor}}> August 9 2023</span></h5>
+          <h5 onClick={() => { handleShowPopup('rejuv',imagess); handleVideoClick(2); }} > <span style={{ color: highlightColor }}> Created by Nungi Samuel </span><span style={{color:fontColor}}> August 9 2023</span></h5>
 
 
         </div>
@@ -707,7 +707,7 @@ controlsList="nodownload"
           </video>
           <EmojiPanel backgroundColor={emojibg} strokecolor={emojistroke} textcolor={emojitxt} vidid={7}/>
 
-          <h5  onClick={() => { handleShowPopup('Rejuv',imagess); handleVideoClick(3); }}> <span style={{ color: highlightColor }}> Created by Nkurunungi Samuel</span><span style={{color:fontColor}}> 1 Jan 2023 </span></h5>
+          <h5  onClick={() => { handleShowPopup('Rejuv',imagess); handleVideoClick(3); }}> <span style={{ color: highlightColor }}> Created by Nungi Samuel</span><span style={{color:fontColor}}> 1 Jan 2023 </span></h5>
 
 
         </div>
@@ -737,7 +737,7 @@ Going through the different <span style={{ color: highlightColor }}> generations
   <p 
     onClick={() => { handleShowPopup('Rejuv',imagess); handleVideoClick(7); }} 
     style={{fontSize:'15px', color: highlightColor,marginRight:'10px' }}>
-        Created by Nkurunungi Samuel  
+        Created by Nungi Samuel  
          
   </p>
   <br/>
@@ -772,7 +772,7 @@ preload="metadata"
           </video>
           <EmojiPanel backgroundColor={emojibg} strokecolor={emojistroke} textcolor={emojitxt} vidid={9}/>
 
-          <h5  onClick={() => { handleShowPopup('Rejuv',imagess); handleVideoClick(3); }}> <span style={{ color: highlightColor }}> Created by Nkurunungi Samuel </span><span style={{color:fontColor}}> Dec 25 2022</span></h5>
+          <h5  onClick={() => { handleShowPopup('Rejuv',imagess); handleVideoClick(3); }}> <span style={{ color: highlightColor }}> Created by Nungi Samuel </span><span style={{color:fontColor}}> Dec 25 2022</span></h5>
 
 
         </div>
@@ -797,7 +797,7 @@ controlsList="nodownload"
           </video>
           <EmojiPanel backgroundColor={emojibg} strokecolor={emojistroke} textcolor={emojitxt} vidid={8}/>
 
-          <h5  onClick={() => { handleShowPopup('Rejuv',imagess); handleVideoClick(7); }}> <span style={{ color: highlightColor }}> Created by Nkurunungi Samuel </span></h5>
+          <h5  onClick={() => { handleShowPopup('Rejuv',imagess); handleVideoClick(7); }}> <span style={{ color: highlightColor }}> Created by Nungi Samuel </span></h5>
 
 
         </div> */}
@@ -837,7 +837,7 @@ controlsList="nodownload"
   <h5 
     onClick={() => { handleShowPopup('Rejuv',imagess); handleVideoClick(5); }} 
     style={{ display: 'inline', margin: '0', paddingRight: '5px' }}>
-        Created by Nkurunungi Samuel
+        Created by Nungi Samuel
   </h5>
   <h5 
     onClick={() => { handleShowPopup('Waki',imagessyd); handleVideoClick(5); }} 
