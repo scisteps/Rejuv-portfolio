@@ -253,4 +253,45 @@ video::-webkit-media-controls-play-button {
       box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
     }
   }
-  
+  /* Expandable Sections */
+.passion, .profession {
+  position: relative;
+  margin-bottom: 2rem;
+}
+
+.summary {
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: #e49903;
+  margin-bottom: 1rem;
+  border-left: 3px solid #e49903;
+  padding-left: 1rem;
+}
+
+.expandable-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.5s ease, opacity 0.3s ease;
+  opacity: 0;
+}
+
+.expandable-content.expanded {
+  max-height: 1000px;
+  opacity: 1;
+}
+
+.read-more {
+  background: #e49903;
+  color: rgb(4, 1, 1);
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background 0.3s ease;
+  margin-top: 1rem;
+}
+
+.read-more:hover {
+  background: #671f00;
+}

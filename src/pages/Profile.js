@@ -46,7 +46,16 @@ const Profile = () => {
   const posters = [poster1, poster2, poster3];
   const brochures = [brochure1, brochure2];
   const businessCards = [businessCard1, businessCard2];
-  
+  const [expandedSections, setExpandedSections] = useState({
+    passion: false,
+    profession: false
+  });
+  const toggleSection = (section) => {
+    setExpandedSections(prev => ({
+      ...prev,
+      [section]: !prev[section]
+    }));
+  };
   // Animation data with categories
   const animations = [
     { src: animation1, category: "Fashion & design", title: "Paulisa Prints" },
@@ -129,56 +138,77 @@ const Profile = () => {
             ))}
           </Swiper>
         </div>
-
-       <div className="profile-text" ref={profileTextRef}>
-  <h1>Sam Nungi 'Mr. Rejuv'</h1>
+        <div className="profile-text" ref={profileTextRef}>
+  <h1>Sam Nungi aka 'Rejuv'</h1>
   <h2>Software Engineer & Animator</h2>
 
   {/* Passion Section */}
   <section className="passion">
     <h3>Passion</h3>
-    <p>
-      I am a <span className="highlight">Ugandan from Kampala </span>with a deep passion for art and computers from a very young age,
-      I used to draw comic books in my childhood years, pursued software engineering at university and built a variety of web apps & programs.
+    <p className="summary">
+      Creating animations that rejuvenate minds and inspire young creatives.
     </p>
-    <p>
-      During the covid pandemic I started learning graphics design and soon went on to learn animation from various international online communities eventually creating brand <span className="highlight"> 'rejuv'</span>  which is short for <span className="highlight">Rejuvenation'. </span>
-    </p>
-    <p>
-      I started rejuv because I want to rejuvenate the minds of young viewers as they watched my animations, show them something new and fill their hearts with joy and excitement as they watch the animations I created , but most of all I did it to inspire these young minds to believe in themselves and go beyond the limits
-    </p>
-    <p>
-      And that's why I also teach animation to young creatives who have a burning passion for animation.
-    </p>
+    <div className={`expandable-content ${expandedSections.passion ? 'expanded' : ''}`}>
+      <p>
+        I am a <span className="highlight">Ugandan from Kampala </span>with a deep passion for art and computers from a very young age,
+        I used to draw comic books in my childhood years, pursued software engineering at university and built a variety of web apps & programs.
+      </p>
+      <p>
+        During the covid pandemic I started learning graphics design and soon went on to learn animation from various international online communities eventually creating brand <span className="highlight"> 'rejuv'</span>  which is short for <span className="highlight">Rejuvenation'. </span>
+      </p>
+      <p>
+        I started rejuv because I want to rejuvenate the minds of young viewers as they watched my animations, show them something new and fill their hearts with joy and excitement as they watch the animations I created , but most of all I did it to inspire these young minds to believe in themselves and go beyond the limits
+      </p>
+      <p>
+        And that's why I also teach animation to young creatives who have a burning passion for animation.
+      </p>
+    </div>
+    <button 
+      className={`read-more ${expandedSections.passion ? 'expanded' : ''}`}
+      onClick={() => toggleSection('passion')}
+    >
+      {expandedSections.passion ? 'Read Less' : 'Read More'}
+    </button>
   </section>
 
   {/* Profession Section */}
   <section className="profession">
     <h3>Profession</h3>
-    <p>
-      As a software engineer, I specialize in building responsive web 
-      applications with modern frameworks. As a graphics designer, I design compelling brand visuals & animations that effectively communicate a company's values.
+    <p className="summary">
+      Bridging web development and creative design to build compelling digital experiences.
     </p>
-    <p> With over 7 years of professional experience, I bridge the gap between 
-            <span className="highlight"> web development and creative design</span>. My unique combination of 
-            coding expertise and visual design skills allows me to create solutions 
-            that cut across these fields and allow them to compliment each other in a variety of ways.
-          </p>
-    <p className="left-aligned">
-      Additionally, I share my expertise by <span className="highlight">teaching animation</span>, inspiring others to discover and develop their own creative potential. Whether you're seeking engaging explainers or looking to learn the art of animation, I'm here to help.
-    </p>
-    <br/>
-    <p><span> email - rejuveanimation@gmail.com</span></p>
-    <p>
-      <a 
-        href="https://www.instagram.com/_rejuv_/" 
-        target="_blank" 
-        rel="noopener noreferrer"
-        className="highlight"
-      >
-        click to view Instagram
-      </a>
-    </p>
+    <div className={`expandable-content ${expandedSections.profession ? 'expanded' : ''}`}>
+      <p>
+        As a software engineer, I specialize in building responsive web 
+        applications with modern frameworks. As a graphics designer, I design compelling brand visuals & animations that effectively communicate a company's values.
+      </p>
+      <p> With over 7 years of professional experience, I bridge the gap between 
+        <span className="highlight"> web development and creative design</span>. My unique combination of 
+        coding expertise and visual design skills allows me to create solutions 
+        that cut across these fields and allow them to compliment each other in a variety of ways.
+      </p>
+      <p className="left-aligned">
+        Additionally, I share my expertise by <span className="highlight">teaching animation</span>, inspiring others to discover and develop their own creative potential. Whether you're seeking engaging explainers or looking to learn the art of animation, I'm here to help.
+      </p>
+      <br/>
+      <p><span> email - rejuveanimation@gmail.com</span></p>
+      <p>
+        <a 
+          href="https://www.instagram.com/_rejuv_/" 
+          target="_blank" 
+          rel="noopener noreferrer"
+          className="highlight"
+        >
+          click to view Instagram
+        </a>
+      </p>
+    </div>
+    <button 
+      className={`read-more ${expandedSections.profession ? 'expanded' : ''}`}
+      onClick={() => toggleSection('profession')}
+    >
+      {expandedSections.profession ? 'Read Less' : 'Read More'}
+    </button>
   </section>
 </div>
 
