@@ -426,8 +426,7 @@ const videoRefs = {
 
          className="text-container"> 
         <p className="left-aligned">
-  Welcome to <span className="highlight">Rejuv</span> —  A community of creatives led by Sam Nungi a.k.a
-   <span className="highlight bold">   Mr.Rejuv .</span> "We come together occassionally to collaborate on different projects such as <span className="highlight"> animated short stories, animated explainers</span> and other passion projects that come along the way, scroll down to view them. we also have animation classes for anyone who would love to try out.
+  Welcome to the world of <span className="highlight">Rejuv</span> —  A community of creatives led by Sam Nungi. "We come gather occassionally to collaborate on different creative projects as well as hold  <span className="highlight"> classes </span> where we teach different skills in design & animation.<span className="highlight"> scroll down to view</span>  some of our past projects. 
   
 </p>
 
@@ -472,7 +471,7 @@ const videoRefs = {
     backgroundColor: colorPalette.secondary
   }}
 >
-  The Founder
+  Founder / team leader
 </button></div>
      
 
@@ -850,7 +849,7 @@ controlsList="nodownload"
 <br/>
 
           <p className="story-description">
-          <span className="highlight"> Migu and Feathers  </span> is a short animated series set in prehistoric times, exploring the rivalry between a boy and a young ostrich.
+          <span className="highlight"> Migu and Feathers  </span> is a short animated series set in prehistoric times, exploring the rivalry between a boy and a Crane.
           </p>
         </div>
 </div>
