@@ -7,7 +7,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css"
 import rejuvbanner from '../images/rejuv banner.png';
 import rejuveprofile from '../images/rejuve main logo.png';
-import migu1 from '../anims/migu1.mp4';
+import migu1 from '../anims/m1.mp4';
 import migudp from '../images/migudp.png';
 import redascension from '../anims/Shadow.webm';
 import newyears from '../anims/optimizedNewYear.mp4';
@@ -777,8 +777,8 @@ preload="metadata"
 
         </div>
        
-        {/* <div ref={silentref} onClick={() => handleVideoClick(5)} className="video-container bordered">
-        <h2 style={{ color: fontColor }}>8. lip sync test</h2>
+        <div ref={silentref} onClick={() => handleVideoClick(5)} className="video-container bordered">
+        <h2 style={{ color: fontColor }}>9. lip sync test</h2>
         <p style={{ color: fontColor }} >
         This <span style={{ color: highlightColor }}> Testing </span> Lip sync
         </p>
@@ -800,7 +800,7 @@ controlsList="nodownload"
           <h5  onClick={() => { handleShowPopup('Rejuv',imagess); handleVideoClick(7); }}> <span style={{ color: highlightColor }}> Created by Nungi Sam </span></h5>
 
 
-        </div> */}
+        </div>
       </div>
 
       {/* Animated Stories Section */}
