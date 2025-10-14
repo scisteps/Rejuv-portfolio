@@ -619,7 +619,7 @@ preload="metadata"
         </div>
         <br/>
         <br/>
-        <div ref={carolref} onClick={() => handleVideoClick(8)} className="video-container bordered || current-animation">
+        {/* <div ref={carolref} onClick={() => handleVideoClick(8)} className="video-container bordered || current-animation">
         <h2 style={{ color: fontColor }} >4.  Carolle Skater </h2>
 
         <p style={{ color: fontColor }}>
@@ -657,7 +657,7 @@ This animation is inspired by the talented & professional skater from Nairobi  <
   & Njeri Caroline
    </h5>
 <span style={{color:fontColor}}> Feb 23 2024</span>
-        </div>
+        </div> */}
         <br/>
         <br/>
         <div ref={snormalref} onClick={() => handleVideoClick(2)} className="video-container bordered">
