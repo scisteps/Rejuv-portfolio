@@ -930,7 +930,7 @@ controlsList="nodownload"
 
       </div>
       <div className="story-description">
-        <p>WhatsApp - +256 782240185</p>
+        {/* <p>WhatsApp - +256 782240185</p> */}
         <p>email - rejuveanimation@gmail.com</p>
       </div>
       </div>
