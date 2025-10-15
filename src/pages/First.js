@@ -471,7 +471,7 @@ const videoRefs = {
     backgroundColor: colorPalette.secondary
   }}
 >
-  Founder / team leader
+  Founder
 </button></div>
      
 
