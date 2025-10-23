@@ -1,4 +1,4 @@
-import React, { useState, useEffect,useRef } from "react";
+import React, { useState, useEffect,useRef,useCallback  } from "react";
 import "./First.css"; // CSS file for styling
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/swiper-bundle.css"; // Import Swiper styles
@@ -86,6 +86,21 @@ const First = () => {
   const [aliass, setaliass] = useState(null); // To blur the background content
   const [imagesf, setimagesf] = useState(null); // To blur the background content
   const [loadingPercentage, setLoadingPercentage] = useState(0);
+  const [isTripleClicked, setIsTripleClicked] = useState(false);
+  const [clickCount, setClickCount] = useState(0);
+  const clickTimeoutRef = useRef(null);
+
+  // ... existing useEffect and other functions
+
+
+  // Cleanup timeout on unmount
+  useEffect(() => {
+    return () => {
+      if (clickTimeoutRef.current) {
+        clearTimeout(clickTimeoutRef.current);
+      }
+    };
+  }, []);
 
   
   const handleShowPopup = (value,imagesb) => {
@@ -95,6 +110,27 @@ const First = () => {
     setimagesf(imagesb)
   };
 
+  const handleMobileProfileClick = () => {
+    if (butref.current) {
+      gsap.fromTo(butref.current, 
+        { opacity: 0, y: -50 },
+        {
+          duration: 1.5,
+          opacity: 1,
+          y: 0,
+          ease: "power4.inOut"
+        }
+      );
+      setTimeout(() => {
+        gsap.to(butref.current, {
+          duration: 1.7,
+          opacity: 0,
+          ease: "power3.inOut",
+        });
+      
+      }, 2500);
+    }
+  }; 
 
   const handleClosePopup = () => {
     setShowTeamPopup(false);
@@ -160,13 +196,13 @@ useEffect(() => {
       ease: "power4.inOut",
       delay: 1,
     });
-    gsap.to(butref.current, {
-      duration: 1.5,
-      opacity: 1,
-      y: 0, // Move to original position
-      ease: "power4.inOut",
-      delay: 2.6,
-    });
+    // gsap.to(butref.current, {
+    //   duration: 1.5,
+    //   opacity: 1,
+    //   y: 0, // Move to original position
+    //   ease: "power4.inOut",
+    //   delay: 2.6,
+    // });
   }
   
 }, [picref,shortsref,wordref,isLoading,butref]);
@@ -376,6 +412,8 @@ const videoRefs = {
         
         {isMobile ? (
   <div
+  onDoubleClick={handleMobileProfileClick}
+
     className={`mobile-profile ${showMore ? 'shrink' : ''}`}
   >
 <Slider
@@ -397,6 +435,7 @@ const videoRefs = {
   </div>
 ) : (
   <div 
+  onDoubleClick={handleMobileProfileClick}
   ref={picref}
   className="image-container">
    <Slider
@@ -426,7 +465,7 @@ const videoRefs = {
 
          className="text-container"> 
         <p className="left-aligned">
-  Welcome to the world of <span className="highlight">Rejuv</span> —  A community of creatives led by Sam Nungi. "We come gather occassionally to collaborate on different creative projects as well as hold  <span className="highlight"> classes </span> where we teach different skills in design & animation.<span className="highlight"> scroll down to view</span>  some of our past projects. 
+  Welcome to the world of <span className="highlight">Rejuv</span> —  A community of creatives led by Nungi. "We come gather occassionally to collaborate on different creative projects as well as hold  <span className="highlight"> classes </span> where we teach different skills in design & animation.<span className="highlight"> scroll down to view</span>  some of our past projects. 
   
 </p>
 
@@ -462,6 +501,8 @@ const videoRefs = {
       {/* <button onClick={handleToggle} className="read-more-btn">
         {showMore ? "hide Contacts" : "show Contacts"}
       </button> */}
+                    {(isTripleClicked || !isMobile) && (
+
       <Link to='/profile'> 
       <br/>
       <div ref={butref}> <button 
@@ -476,7 +517,7 @@ const videoRefs = {
      
 
       </Link>
-     
+                    )}
     </div>
 
       </div>
@@ -535,7 +576,7 @@ const videoRefs = {
 
   <h5  onClick={() => { handleShowPopup('Rejuv',imagess); handleVideoClick(1); }}
  
-        style={{ cursor:'cell', color: 'blue' }}><span style={{ color: highlightColor }}>Created by Nungi Sam,</span><span style={{color:fontColor}}> August 7 2025</span></h5>
+        style={{ cursor:'cell', color: 'blue' }}><span style={{ color: highlightColor }}>Created by Nungi ,</span><span style={{color:fontColor}}> August 7 2025</span></h5>
 </div>
 
        <div ref={redref}  className="video-container bordered">
@@ -567,7 +608,7 @@ const videoRefs = {
 
   <h5  onClick={() => { handleShowPopup('Rejuv',imagess); handleVideoClick(1); }}
  
-        style={{ cursor:'cell', color: 'blue' }}><span style={{ color: highlightColor }}>Created by Nungi Sam</span> <span style={{color:fontColor}}> May 11 2022</span> </h5>
+        style={{ cursor:'cell', color: 'blue' }}><span style={{ color: highlightColor }}>Created by Nungi </span> <span style={{color:fontColor}}> May 11 2022</span> </h5>
 </div>
 
         <br/>
@@ -601,17 +642,17 @@ preload="metadata"
   <h5 
     onClick={() => { handleShowPopup('Rejuv',imagess); handleVideoClick(4); }} 
     style={{ display: 'inline-block', margin: '0', paddingRight: '5px' }}>
-    Created by Nungi Sam,
+    Created by Nungi,
   </h5>
   <h5 
     onClick={() => { handleShowPopup('Wisey',imagesb); handleVideoClick(4); }} 
     style={{ display: 'inline-block', margin: '0', paddingRight: '5px' }}>
-    Shanewise Rukundo &
+    Shane &
   </h5>
   <h5 
     onClick={() => { handleShowPopup('Rejuv',imagess); handleVideoClick(4); }} 
     style={{ display: 'inline-block', margin: '0', paddingRight: '5px' }}>
-    Maxwell Aligawesa, 
+    Max, 
   </h5>
 </span> <span style={{color:fontColor}}>Dec 03 2024</span> 
 
@@ -619,7 +660,7 @@ preload="metadata"
         </div>
         <br/>
         <br/>
-        {/* <div ref={carolref} onClick={() => handleVideoClick(8)} className="video-container bordered || current-animation">
+        <div ref={carolref} onClick={() => handleVideoClick(8)} className="video-container bordered || current-animation">
         <h2 style={{ color: fontColor }} >4.  Carolle Skater </h2>
 
         <p style={{ color: fontColor }}>
@@ -649,15 +690,15 @@ This animation is inspired by the talented & professional skater from Nairobi  <
           <h5 
     onClick={() => { handleShowPopup('Rejuv',imagess); handleVideoClick(8); }} 
     style={{ display: 'inline-block', margin: '0', paddingRight: '5px',color:highlightColor }}>
-    Created by Nungi Sam,
+    Created by Nungi ,
   </h5>
   <h5 
     onClick={() => { handleShowPopup('Rejuv',imagess); handleVideoClick(8); }} 
     style={{ display: 'inline-block', margin: '0', paddingRight: '5px',color:highlightColor }}>
-  & Njeri Caroline
+  &  Caroline
    </h5>
 <span style={{color:fontColor}}> Feb 23 2024</span>
-        </div> */}
+        </div>
         <br/>
         <br/>
         <div ref={snormalref} onClick={() => handleVideoClick(2)} className="video-container bordered">
@@ -681,7 +722,7 @@ preload="metadata"
           </video>
           <EmojiPanel backgroundColor={emojibg} strokecolor={emojistroke} textcolor={emojitxt} vidid={6}/>
 
-          <h5 onClick={() => { handleShowPopup('rejuv',imagess); handleVideoClick(2); }} > <span style={{ color: highlightColor }}> Created by Nungi Sam </span><span style={{color:fontColor}}> August 9 2023</span></h5>
+          <h5 onClick={() => { handleShowPopup('rejuv',imagess); handleVideoClick(2); }} > <span style={{ color: highlightColor }}> Created by Nungi  </span><span style={{color:fontColor}}> August 9 2023</span></h5>
 
 
         </div>
@@ -707,7 +748,7 @@ controlsList="nodownload"
           </video>
           <EmojiPanel backgroundColor={emojibg} strokecolor={emojistroke} textcolor={emojitxt} vidid={7}/>
 
-          <h5  onClick={() => { handleShowPopup('Rejuv',imagess); handleVideoClick(3); }}> <span style={{ color: highlightColor }}> Created by Nungi Sam</span><span style={{color:fontColor}}> 1 Jan 2023 </span></h5>
+          <h5  onClick={() => { handleShowPopup('Rejuv',imagess); handleVideoClick(3); }}> <span style={{ color: highlightColor }}> Created by Nungi</span><span style={{color:fontColor}}> 1 Jan 2023 </span></h5>
 
 
         </div>
@@ -737,7 +778,7 @@ Going through the different <span style={{ color: highlightColor }}> generations
   <p 
     onClick={() => { handleShowPopup('Rejuv',imagess); handleVideoClick(7); }} 
     style={{fontSize:'15px', color: highlightColor,marginRight:'10px' }}>
-        Created by Nungi Sam  
+        Created by Nungi   
          
   </p>
   <br/>
@@ -746,7 +787,7 @@ Going through the different <span style={{ color: highlightColor }}> generations
   <p 
     onClick={() => { handleShowPopup('Elvis',imageschill); handleVideoClick(7); }} 
     style={{fontSize:'15px', color: highlightColor }}>
-       & Avuni Elvis
+       & Avuni 
   </p>
 </span></h5>
 <span style={{color:fontColor}}>Nov 30 2023
@@ -772,7 +813,7 @@ preload="metadata"
           </video>
           <EmojiPanel backgroundColor={emojibg} strokecolor={emojistroke} textcolor={emojitxt} vidid={9}/>
 
-          <h5  onClick={() => { handleShowPopup('Rejuv',imagess); handleVideoClick(3); }}> <span style={{ color: highlightColor }}> Created by Nungi Sam </span><span style={{color:fontColor}}> Dec 25 2022</span></h5>
+          <h5  onClick={() => { handleShowPopup('Rejuv',imagess); handleVideoClick(3); }}> <span style={{ color: highlightColor }}> Created by Nungi  </span><span style={{color:fontColor}}> Dec 25 2022</span></h5>
 
 
         </div>
@@ -797,7 +838,7 @@ controlsList="nodownload"
           </video>
           <EmojiPanel backgroundColor={emojibg} strokecolor={emojistroke} textcolor={emojitxt} vidid={8}/>
 
-          <h5  onClick={() => { handleShowPopup('Rejuv',imagess); handleVideoClick(7); }}> <span style={{ color: highlightColor }}> Created by Nungi Sam </span></h5>
+          <h5  onClick={() => { handleShowPopup('Rejuv',imagess); handleVideoClick(7); }}> <span style={{ color: highlightColor }}> Created by Nungi  </span></h5>
 
 
         </div>
@@ -837,12 +878,12 @@ controlsList="nodownload"
   <h5 
     onClick={() => { handleShowPopup('Rejuv',imagess); handleVideoClick(5); }} 
     style={{ display: 'inline', margin: '0', paddingRight: '5px' }}>
-        Created by Nungi Sam
+        Created by Nungi 
   </h5>
   <h5 
     onClick={() => { handleShowPopup('Waki',imagessyd); handleVideoClick(5); }} 
     style={{ display: 'inline', margin: '0', paddingRight: '5px' }}>
-      & Sydney Waki
+      & Waki
   </h5>
 </span>
 <br/>
