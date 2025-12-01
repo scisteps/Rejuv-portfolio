@@ -36,7 +36,7 @@ function App() {
       <Route path="/tsam" element={<Tsam  />} />
       <Route path="/profile" element={<Profile  />} />
       <Route path="/pc" element={<PopCulture  />} />
-      <Route path="/sales-tracker" element={<SalesTracker />} />
+      <Route path="/maps" element={<SalesTracker />} />
 
       </Routes>
       </div>

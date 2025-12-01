@@ -139,8 +139,8 @@ const Profile = () => {
           </Swiper>
         </div>
         <div className="profile-text" ref={profileTextRef}>
-  <h1>Sam Nungi aka 'Rejuv'</h1>
-  <h2>Software Engineer & Animator</h2>
+  <h1>Sam Nungi</h1>
+  <h2>Founder & Lead animator</h2>
 
   {/* Passion Section */}
   <section className="passion">

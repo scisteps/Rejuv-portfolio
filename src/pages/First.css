@@ -292,7 +292,30 @@ body {
   cursor: pointer;
   z-index: 1100; /* Ensure it is on top of other content */
 }
+.button-group {
+  display: flex;
+  flex-direction: column; /* Stack buttons vertically */
+  gap: 15px; /* Space between buttons */
+  margin-top: 20px;
+  width: 50%; /* Change from 100% to auto */
+  align-items: flex-start; /* Align buttons to the left */
+}
 
+.button-group .about-me-btn {
+  flex: 1;
+  min-width: 100px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .button-group {
+    flex-direction: column;
+  }
+  
+  .button-group .about-me-btn {
+    width: 100%;
+  }
+}
 
 .close-btn:hover {
   color: #FFBC00; /* Change color on hover */
@@ -315,7 +338,21 @@ body {
 
 
 
-
+.about-me-btn2 {
+  position: relative;
+  overflow: visible; /* allow ripples outside */
+  padding: 12px 28px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 50px; /* pill shape */
+  background-color: #440006;
+  color: black;
+  cursor: pointer;
+  outline: none;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  z-index: 1;
+}
 .about-me-btn {
   position: relative;
   overflow: visible; /* allow ripples outside */
