@@ -386,7 +386,7 @@ const First = () => {
             }}>
               <div className="popup-content">
                 <FaTimes className="close-btn" onClick={handleClosePopup} />
-                <span className="close-text" onClick={handleClosePopup}>Close</span> {/* Add the text here */}
+                <span className="close-text" onClick={handleClosePopup}>Close it</span> {/* Add the text here */}
                 <Theteam alias={aliass} imagesa={imagesf}/>
               </div>
             </div>
