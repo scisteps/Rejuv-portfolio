@@ -140,7 +140,7 @@ const Profile = () => {
         </div>
         <div className="profile-text" ref={profileTextRef}>
   <h1>Sam Nungi</h1>
-  <h2>Founder & Lead animator</h2>
+  <h2>Animator</h2>
 
   {/* Passion Section */}
   <section className="passion">

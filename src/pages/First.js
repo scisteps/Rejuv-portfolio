@@ -46,13 +46,14 @@ import timejourney from '../anims/timejourney3.webm';
 import chill from '../images/avunie.jpg';
 import caroline from'../videos/Carolle.mp4';
 import keepmovingforward from'../anims/Rejuv27.mp4';
+import headshot2 from '../images/headshot2.jpg';
 
 import { gsap } from "gsap";
 
 const First = () => {
   const [motivationalBackground, setMotivationalBackground] = useState("#440006");
   const [showPersonalProjects, setShowPersonalProjects] = useState(false); // New state for personal projects
-  const images = [rejuveblack,rejuveprofile ]; // Add more images or videos as needed
+  const images = [headshot2,rejuveblack,me3,rejuveprofile ]; // Add more images or videos as needed
   const images2 = [migudp, miguim2]; // Add more images or videos as needed
   const imagesb = [shanetemp, shanetemp,shanetemp]; // Add more images or videos as needed
   const xmasref = useRef(null);
@@ -400,7 +401,10 @@ const First = () => {
             }}
           >      
             <div>
+              {showPersonalProjects && (
               <Header/>
+
+              )}
             </div>
             <br/>
             <br/>
@@ -462,7 +466,7 @@ const First = () => {
               {/* Right Text */}
               <div ref={wordref} className="text-container"> 
                 <p className="left-aligned">
-                  Welcome to the world of <span className="highlight">Rejuv</span> —  A community of creatives led by <span className="highlight">Sam Nungi.</span> "We come gather occassionally to collaborate on different creative projects as well as hold  <span className="highlight"> classes </span> where we teach different skills in design & animation.<span className="highlight"> scroll down to view</span>  some of our past projects. 
+                  My name is Sam Nungi, a <span className="highlight">2d animator </span> —  specialising in after effects since 2021 under the alias <span className="highlight">Rejuv</span> "I often create animations and  collaborate with different individuals/organisations on creative projects. I also conduct <span className="highlight"> classes </span> in animation, teaching the different skills in design & animation skills I've developed over the years.<span className="highlight"> scroll below to view </span>  some of our past projects. 
                 </p>
 
                 <p> <span className="highlight bold"> Contact us via :</span> </p>
@@ -472,7 +476,7 @@ const First = () => {
                   <>
                     <br/>
                     <br/>
-                    <p> <span className="highlight bold"> Contact us on +256 782240185</span> </p>
+                    <p> <span className="highlightnbold"> Contact us on +256 782240185</span> </p>
                     <p> <span > email - rejuveanimation@gmail.com</span> </p>
                     <p>
                       <a 
@@ -517,133 +521,461 @@ const First = () => {
             {/* Personal Projects Section - Initially Hidden */}
             {showPersonalProjects && (
               <div ref={personalProjectsRef}>
-                {/* Motivational Shorts Section */}
-                <div ref={shortsref}
-                  className="motivational-shorts-section"
-                  style={{ backgroundColor: motivationalBackground }}
-                >
-                  <div style={{display:'flex',flexDirection:'column',justifyContent:'center'}}>
-                    <div style={{display:'flex',alignContent:'center',justifyContent:'center'}}>
-                      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                        <div style={{ position: 'relative', width: '250px', height: '150px' }}>
-                          <Player ref={animref} loop={true} autoplay={true} src={crown} style={{height:'200px',width:'250px'}}/>
-                        </div>
-                        <div style={{ marginTop: isMobile ? '10px' : '40px' }}>
-                          <h2 style={{ color: fontColor }}>Animated Shorts</h2>
-                        </div>
-                      </div>
-                    </div>
-                    <div>
-                      <p style={{ color: fontColor }} >
-                        Have a look at some of our  <span style={{ color: highlightColor }}> passion projects below. </span> showcasing different themes and styles.</p> <p>  <span style={{ color: highlightColor }}> Enjoy </span> 
-                      </p>
-                    </div>
-                  </div>
-                  
-                  {/* Rest of your video sections remain the same */}
-                  <div ref={keepref} className="video-container bordered">
-                    <h2 style={{ color: fontColor }} >1. Keep moving forward</h2>
-                    <p style={{ color: fontColor }}>
-                      Take a deep breath, 
-                      <span style={{ color: highlightColor }}>and keep moving forward</span> whether in time of plenty or scarcity, this too shall pass just like the mountains and lakes you have crossed in the past.
-                    </p>
-                    <video
-                      ref={videoRefs[12]}
-                      preload="auto"
-                      controls
-                      width="100%"
-                      className="motivational-video"
-                      onPlay={() => handleVideoClick(12)}
-                    >
-                      <source src={keepmovingforward} type="video/webm" />
-                      Your browser does not support the video tag.
-                    </video>
-                    <EmojiPanel backgroundColor={emojibg} strokecolor={emojistroke} textcolor={emojitxt} vidid={12} />
-                    <h5 onClick={() => { handleShowPopup('Rejuv',imagess); handleVideoClick(1); }}
-                      style={{ cursor:'cell', color: 'blue' }}><span style={{ color: highlightColor }}>Created by Nungi ,</span><span style={{color:fontColor}}> August 7 2025</span></h5>
-                  </div>
+             
+      {/* Motivational Shorts Section */}
+      <div ref={shortsref}
+        className="motivational-shorts-section"
+        style={{ backgroundColor: motivationalBackground }}
+      >
+        <div style={{display:'flex',flexDirection:'column',justifyContent:'center'}}>
+        <div style={{display:'flex',alignContent:'center',justifyContent:'center'}}>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+  <div style={{ position: 'relative', width: '250px', height: '150px' }}>
+    <Player ref={animref} loop={true} autoplay={true} src={crown} style={{height:'200px',width:'250px'}}/>
+  </div>
+  
+  <div style={{ marginTop: isMobile ? '10px' : '40px' }}>
+    <h2 style={{ color: fontColor }}>Animated Shorts</h2>
+  </div>
+</div>
 
-                  {/* ... rest of your video containers remain exactly the same ... */}
-                  <div ref={redref} className="video-container bordered">
-                    <h2 style={{ color: fontColor }} >2. Rejuvenation</h2>
-                    <p style={{ color: fontColor }}>
-                      It reflects the:  
-                      <span style={{ color: highlightColor }}> strive to </span>  exceed your limits with every project in the creative field.
-                    </p>
-                    <video
-                      ref={videoRefs[1]}
-                      preload="auto"
+      
+        </div>
+        <div>
+        <p style={{ color: fontColor }} >
+        Have a look at some of our  <span style={{ color: highlightColor }}> passion projects below. </span> showcasing different themes and styles.</p> <p>  <span style={{ color: highlightColor }}> Enjoy </span> 
+        
+          </p>
+        </div>
+        </div>
+        <div ref={keepref}  className="video-container bordered">
+       <h2 style={{ color: fontColor }} >1. Keep moving forward</h2>
+
+       <p style={{ color: fontColor }}>
+   Take a deep breath, 
+   <span style={{ color: highlightColor }}>and keep moving forward</span> whether in time of plenty or scarcity, this too shall pass just like the mountains and lakes you have crossed in the past.
+</p>
+
+  <video
+            ref={videoRefs[12]}
+
+  preload="auto"
+
+            controls
+            width="100%"
+            className="motivational-video"
+            onPlay={() => handleVideoClick(12)}
+
+          >
+            <source src={keepmovingforward} type="video/webm" />
+            Your browser does not support the video tag.
+          </video>
+
+
+  <EmojiPanel backgroundColor={emojibg} strokecolor={emojistroke} textcolor={emojitxt} vidid={12} />
+
+  <h5  onClick={() => { handleShowPopup('Rejuv',imagess); handleVideoClick(1); }}
+ 
+        style={{ cursor:'cell', color: 'blue' }}><span style={{ color: highlightColor }}>Created by Nungi Sam,</span><span style={{color:fontColor}}> August 7 2025</span></h5>
+</div>
+
+       <div ref={redref}  className="video-container bordered">
+       <h2 style={{ color: fontColor }} >2. Rejuvenation</h2>
+
+       <p style={{ color: fontColor }}>
+   It reflects the:  
+   <span style={{ color: highlightColor }}> strive to </span>  exceed your limits with every project in the creative field.
+</p>
+
+  <video
+            ref={videoRefs[1]}
+
+  preload="auto"
+  controlsList="nodownload"
+
+            controls
+            width="100%"
+            className="motivational-video"
+            onPlay={() => handleVideoClick(1)}
+
+          >
+            <source src={redascension} type="video/webm" />
+            Your browser does not support the video tag.
+          </video>
+
+
+  <EmojiPanel backgroundColor={emojibg} strokecolor={emojistroke} textcolor={emojitxt} vidid={1} />
+
+  <h5  onClick={() => { handleShowPopup('Rejuv',imagess); handleVideoClick(1); }}
+ 
+        style={{ cursor:'cell', color: 'blue' }}><span style={{ color: highlightColor }}>Created by Nungi Sam</span> <span style={{color:fontColor}}> May 11 2022</span> </h5>
+</div>
+
+        <br/>
+        <br/>
+
+        <div ref={newyearsref} onClick={() => handleVideoClick(4)} className="video-container bordered">
+        <h2 style={{ color: fontColor }} >3.  Kobe Bryant Tribute </h2>
+
+        <p style={{ color: fontColor }} >
+        This animation is   Intended to pay <span style={{ color: highlightColor }}> tribute to the late Kobe bryant </span> who died on Jan 26 2020
+          </p>
+          <div data-vjs-player>
+          <video
+                      ref={videoRefs[4]}
                       controlsList="nodownload"
-                      controls
-                      width="100%"
-                      className="motivational-video"
-                      onPlay={() => handleVideoClick(1)}
-                    >
-                      <source src={redascension} type="video/webm" />
-                      Your browser does not support the video tag.
-                    </video>
-                    <EmojiPanel backgroundColor={emojibg} strokecolor={emojistroke} textcolor={emojitxt} vidid={1} />
-                    <h5 onClick={() => { handleShowPopup('Rejuv',imagess); handleVideoClick(1); }}
-                      style={{ cursor:'cell', color: 'blue' }}><span style={{ color: highlightColor }}>Created by Nungi </span> <span style={{color:fontColor}}> May 11 2022</span> </h5>
-                  </div>
+preload="metadata"
 
-                  {/* ... include all the other video containers exactly as they were ... */}
+            controls
+            width="100%"
+            className="motivational-video"
+            onPlay={() => handleVideoClick(4)}
 
-                </div>
+          >
+            <source src={bball} type="video/webm" />
+            Your browser does not support the video tag.
+          </video>
+      </div>
+          <EmojiPanel backgroundColor={emojibg} strokecolor={emojistroke} textcolor={emojitxt} vidid={5}/>
+
+          <span style={{ color: highlightColor, cursor: 'cell' }}>
+  <h5 
+    onClick={() => { handleShowPopup('Rejuv',imagess); handleVideoClick(4); }} 
+    style={{ display: 'inline-block', margin: '0', paddingRight: '5px' }}>
+    Created by Nungi Sam,
+  </h5>
+  <h5 
+    onClick={() => { handleShowPopup('Wisey',imagesb); handleVideoClick(4); }} 
+    style={{ display: 'inline-block', margin: '0', paddingRight: '5px' }}>
+    Shanewise Rukundo &
+  </h5>
+  <h5 
+    onClick={() => { handleShowPopup('Rejuv',imagess); handleVideoClick(4); }} 
+    style={{ display: 'inline-block', margin: '0', paddingRight: '5px' }}>
+  </h5>
+</span> <span style={{color:fontColor}}>Dec 03 2024</span> 
+
+
+        </div>
+        <br/>
+        <br/>
+        {/* <div ref={carolref} onClick={() => handleVideoClick(8)} className="video-container bordered || current-animation">
+        <h2 style={{ color: fontColor }} >4.  Carolle Skater </h2>
+
+        <p style={{ color: fontColor }}>
+
+This animation is inspired by the talented & professional skater from Nairobi  <span style={{ color: highlightColor }}>Caroline Njeri </span> 
+</p>
+
+<div>
+
+          <video
+             ref={videoRefs[8]}
+             preload="auto" // Changed from "metadata" to "auto"
+             controls
+
+            width="100%"
+            className="motivational-video"
+            onProgress={handleProgress}
+
+            onPlay={() => handleVideoClick(8)}
+          >
+            <source src={caroline} type="video/webm" />
+            Your browser does not support the video tag.
+          </video>
+    </div>
+          <EmojiPanel backgroundColor={emojibg} strokecolor={emojistroke} textcolor={emojitxt} vidid={13}/>
+
+          <h5 
+    onClick={() => { handleShowPopup('Rejuv',imagess); handleVideoClick(8); }} 
+    style={{ display: 'inline-block', margin: '0', paddingRight: '5px',color:highlightColor }}>
+    Created by Nungi Sam,
+  </h5>
+  <h5 
+    onClick={() => { handleShowPopup('Rejuv',imagess); handleVideoClick(8); }} 
+    style={{ display: 'inline-block', margin: '0', paddingRight: '5px',color:highlightColor }}>
+  & Njeri Caroline
+   </h5>
+<span style={{color:fontColor}}> Feb 23 2024</span>
+        </div> */}
+        <br/>
+        <br/>
+        <div ref={snormalref} onClick={() => handleVideoClick(2)} className="video-container bordered">
+        <h2 style={{ color: fontColor }} >5.  The journey of a Creative </h2>
+
+        <p style={{ color: fontColor }}>
+
+This animation is designed to  <span style={{ color: highlightColor }}>inspire my animation students </span> to embrace their unique gifts and individuality.
+</p>
+          <video
+             ref={videoRefs[2]}
+preload="metadata"
+            controls
+
+            width="100%"
+            className="motivational-video"
+            onPlay={() => handleVideoClick(2)}
+          >
+            <source src={supernormal} type="video/webm" />
+            Your browser does not support the video tag.
+          </video>
+          <EmojiPanel backgroundColor={emojibg} strokecolor={emojistroke} textcolor={emojitxt} vidid={6}/>
+
+          <h5 onClick={() => { handleShowPopup('rejuv',imagess); handleVideoClick(2); }} > <span style={{ color: highlightColor }}> Created by Nungi Sam </span><span style={{color:fontColor}}> August 9 2023</span></h5>
+
+
+        </div>
+        <br/>
+        <br/>
+        <div ref={newyearsref} onClick={() => handleVideoClick(3)} className="video-container bordered">
+        <h2 style={{ color: fontColor }} className="video-caption"> 6. New Years</h2>
+        <p style={{ color: fontColor }}>
+This animation is   Intended to  <span style={{ color: highlightColor }}> Tell the story of a new year </span> And give hope to the world.
+</p>
+          <video
+           ref={videoRefs[3]}
+preload="metadata"
+controlsList="nodownload"
+
+            controls
+            width="100%"
+            className="motivational-video"
+            onPlay={() => handleVideoClick(3)}
+          >
+            <source src={newyears} type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+          <EmojiPanel backgroundColor={emojibg} strokecolor={emojistroke} textcolor={emojitxt} vidid={7}/>
+
+          <h5  onClick={() => { handleShowPopup('Rejuv',imagess); handleVideoClick(3); }}> <span style={{ color: highlightColor }}> Created by Nungi Sam</span><span style={{color:fontColor}}> 1 Jan 2023 </span></h5>
+
+
+        </div>
+        <div ref={silentref} onClick={() => handleVideoClick(7)} className="video-container bordered ">
+        <h2 style={{ color: fontColor }}>7. A journey through time </h2>
+        <p style={{ color: fontColor }} >
+Going through the different <span style={{ color: highlightColor }}> generations  </span> through time.
+</p>
+
+<video
+  ref={videoRefs[7]}
+  controlsList="nodownload"
+  preload="metadata"
+  controls
+  width="100%"
+  className="motivational-video"
+  onPlay={() => handleVideoClick(7)}
+>
+  <source src={timejourney} type="video/webm" />
+  Your browser does not support the video tag.
+</video>
+
+          <EmojiPanel backgroundColor={emojibg} strokecolor={emojistroke} textcolor={emojitxt} vidid={12}/>
+
+          <h5 >
+            <span className="highlight" style={{display:'flex',justifyContent:'center',alignContent:'center',alignItems:'center'}}>
+  <p 
+    onClick={() => { handleShowPopup('Rejuv',imagess); handleVideoClick(7); }} 
+    style={{fontSize:'15px', color: highlightColor,marginRight:'10px' }}>
+        Created by Nungi Sam  
+         
+  </p>
+  <br/>
+  <br/>
+
+  <p 
+    onClick={() => { handleShowPopup('Elvis',imageschill); handleVideoClick(7); }} 
+    style={{fontSize:'15px', color: highlightColor }}>
+       & Avuni Elvis
+  </p>
+</span></h5>
+<span style={{color:fontColor}}>Nov 30 2023
+</span>
+
+        </div>
+        <div ref={xmasref} onClick={() => handleVideoClick(6)} className="video-container bordered">
+        <h2 style={{ color: fontColor }} className="video-caption">8. Merry Christmas</h2>
+        <p style={{ color: fontColor }}>
+This animation is   Intended to  <span style={{ color: highlightColor }}> Tell the story of a new year </span> And give hope to the world.
+</p>
+          <video
+             ref={videoRefs[6]}
+preload="metadata"
+
+            controls
+            width="100%"
+            className="motivational-video"
+            onPlay={() => handleVideoClick(6)}
+          >
+            <source src={xmas} type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+          <EmojiPanel backgroundColor={emojibg} strokecolor={emojistroke} textcolor={emojitxt} vidid={9}/>
+
+          <h5  onClick={() => { handleShowPopup('Rejuv',imagess); handleVideoClick(3); }}> <span style={{ color: highlightColor }}> Created by Nungi Sam </span><span style={{color:fontColor}}> Dec 25 2022</span></h5>
+
+
+        </div>
+       
+        <div ref={silentref} onClick={() => handleVideoClick(5)} className="video-container bordered">
+        <h2 style={{ color: fontColor }}>9. lip sync test</h2>
+        <p style={{ color: fontColor }} >
+        This <span style={{ color: highlightColor }}> Testing </span> Lip sync
+        </p>
+          <video
+              ref={videoRefs[5]}
+preload="metadata"
+controlsList="nodownload"
+
+            controls
+            width="100%"
+            className="motivational-video"
+            onPlay={() => handleVideoClick(5)}
+          >
+            <source src={silent} type="video/webm" />
+            Your browser does not support the video tag.
+          </video>
+          <EmojiPanel backgroundColor={emojibg} strokecolor={emojistroke} textcolor={emojitxt} vidid={8}/>
+
+          <h5  onClick={() => { handleShowPopup('Rejuv',imagess); handleVideoClick(7); }}> <span style={{ color: highlightColor }}> Created by Nungi Sam </span></h5>
+
+
+        </div>
+      </div>
+
 
                 {/* Animated Stories Section */}
                 <div className="animated-stories-section">
-                  <div style={{display:'flex',alignContent:'center',justifyContent:'center'}}>
-                    <div style={{position:'relative',width:'350px', height:'200px',marginTop:'10px'}}>
-                      <Player ref={animref} loop={true} autoplay={true} src={logoh} />
-                    </div>
-                  </div>
-                  <br/>
-                  <br/>
-                  <h2 style={{color:'yellow'}}>Animated Stories</h2>
-                  <h3>Migu and Feathers</h3>
-                  <div>
-                    <div className="image-container">
-                      <Slider
-                        autoplay={true}
-                        autoplaySpeed={3000}
-                        infinite={true}
-                        slidesToShow={1}
-                        slidesToScroll={1}
-                        dots={true}
-                        className="slick-carousel-container"
-                      >
-                        {images2.map((image, index) => (
-                          <div key={index}>
-                            <img src={image} alt={`Slideshow ${index}`} className="profile-image" />
-                          </div>
-                        ))}
-                      </Slider>
-                      <br/>
-                      <span className="highlight">
-                        <h5 
-                          onClick={() => { handleShowPopup('Rejuv',imagess); handleVideoClick(5); }} 
-                          style={{ display: 'inline', margin: '0', paddingRight: '5px' }}>
-                          Created by Nungi 
-                        </h5>
-                        <h5 
-                          onClick={() => { handleShowPopup('Waki',imagessyd); handleVideoClick(5); }} 
-                          style={{ display: 'inline', margin: '0', paddingRight: '5px' }}>
-                          & Waki
-                        </h5>
-                      </span>
-                      <br/>
-                      <br/>
-                      <p className="story-description">
-                        <span className="highlight"> Migu and Feathers  </span> is a short animated series set in prehistoric times, exploring the rivalry between a boy and a Crane.
-                      </p>
-                    </div>
-                  </div>
+        <div style={{display:'flex',alignContent:'center',justifyContent:'center'}}>
+        <div style={{position:'relative',width:'350px', height:'200px',marginTop:'10px'}}>
+        <Player ref={animref} loop={true} autoplay={true} src={logoh} />
+        </div>
+        </div>
+        <br/>
+        <br/>
 
-                  {/* ... rest of your animated stories section remains the same ... */}
-                  
-                </div>
-              </div>
+        <h2 style={{color:'yellow'}}>Animated Stories</h2>
+        <h3>Migu and Feathers</h3>
+<div >
+        <div className="image-container">
+        <Slider
+    autoplay={true}
+    autoplaySpeed={3000}
+    infinite={true}
+    slidesToShow={1}
+    slidesToScroll={1}
+    dots={true}
+    className="slick-carousel-container"
+  >
+    {images2.map((image, index) => (
+      <div key={index}>
+        <img src={image} alt={`Slideshow ${index}`} className="profile-image" />
+      </div>
+    ))}
+  </Slider>
+  <br/>
+  <span className="highlight">
+  <h5 
+    onClick={() => { handleShowPopup('Rejuv',imagess); handleVideoClick(5); }} 
+    style={{ display: 'inline', margin: '0', paddingRight: '5px' }}>
+        Created by Nungi Sam
+  </h5>
+  <h5 
+    onClick={() => { handleShowPopup('Waki',imagessyd); handleVideoClick(5); }} 
+    style={{ display: 'inline', margin: '0', paddingRight: '5px' }}>
+      & Sydney Waki
+  </h5>
+</span>
+<br/>
+<br/>
+
+          <p className="story-description">
+          <span className="highlight"> Migu and Feathers  </span> is a short animated series set in prehistoric times, exploring the rivalry between a boy and a Crane.
+          </p>
+        </div>
+</div>
+       
+
+        <div className="video-container bordered">
+        <p className="story-description">
+          <span className="highlight"> Episode 1: Pilot Episode </span> Introduces the characters of the show and the birth of their rivalry.
+          </p>
+          <video 
+  ref={videoRefs[9]} 
+  preload="auto"  
+  controlsList="nodownload"
+
+  controls 
+  width="100%" 
+  className="migu-video"
+  onPlay={() => handleVideoClick(9)}
+>
+  <source src={migu1} type="video/mp4" />
+  Your browser does not support the video tag.
+</video>
+          <EmojiPanel backgroundColor={'black'} strokecolor={emojistroke} textcolor={'white'} vidid={9}/>
+
+        </div>
+        <br/>
+        <br/>
+
+        <div className="video-container bordered">
+        <p className="story-description">
+          <span className="highlight"> Episode 2: Fruit Fight </span> Migu looks for revenge against feathers following the events of episode 1.
+          </p>
+          <video 
+  ref={videoRefs[10]} 
+  preload="auto" 
+  controls 
+  width="100%" 
+  className="migu-video"
+  onPlay={() => handleVideoClick(10)}
+>
+  <source src={migu2} type="video/webm" />
+  Your browser does not support the video tag.
+</video>
+          <EmojiPanel backgroundColor={'black'} strokecolor={emojistroke} textcolor={'white'} vidid={10}/>
+
+          
+        </div>
+        <br/>
+          <br/>
+        <div className="video-container bordered">
+        <p className="story-description">
+          <span className="highlight"> Episode 3:  Honey Hunt </span> Migu & Feathers fight over honey and face the consequences.
+          </p>
+          <video 
+  ref={videoRefs[11]} 
+  preload="metadata" 
+  controls 
+  width="100%"   
+  controlsList="nodownload"
+  className="migu-video"
+  onPlay={() => handleVideoClick(11)}
+>
+  <source src={migu3} type="video/webm" />
+  Your browser does not support the video tag.
+</video>
+          <EmojiPanel backgroundColor={'black'} strokecolor={emojistroke} textcolor={'white'} vidid={11}/>
+
+        </div>
+        <div  style={{
+    position: 'relative',
+    bottom: '0',
+    left: '50%',
+    transform: `translateX(${isMobile ? '-50%' : '-50%'})`,
+    width: '100%',
+  }} >
+        <img src={rejuveblack} alt={rejuveblack} style={{width:'300px',height:'300px'}}  />
+       
+
+      </div>
+      <div className="story-description">
+        {/* <p>WhatsApp - +256 782240185</p> */}
+        <p>email - rejuveanimation@gmail.com</p>
+      </div>
+      </div>
+    </div>
             )}
           </div>
         </div>
