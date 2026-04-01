@@ -1,11 +1,11 @@
-import React, { useState, useEffect, useRef, useCallback } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import "./First.css"; // CSS file for styling
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/swiper-bundle.css"; // Import Swiper styles
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css"; 
 import "slick-carousel/slick/slick-theme.css"
-import rejuvbanner from '../images/rejuv banner.png';
+// import rejuvbanner from '../images/rejuv banner.png';
 import rejuveprofile from '../images/rejuve main logo.png';
 import migu1 from '../anims/m1.mp4';
 import migudp from '../images/migudp.png';
@@ -15,8 +15,8 @@ import supernormal from '../anims/ab_optimized.webm';
 import migu2 from '../anims/Migu & Feathers_optimized2.mp4';
 import migu3 from '../anims/migu3.2.webm';
 import miguim2 from '../images/m&f.png';
-import miguim3 from '../images/migu3.png';
-import scistepsquare from '../images/scistepsquare.png';
+// import miguim3 from '../images/migu3.png';
+// import scistepsquare from '../images/scistepsquare.png';
 import me from '../images/Rejuv dp.jpg';
 import Header from "./Header";
 import rejuveblack from '../images/black.png';
@@ -24,16 +24,15 @@ import me2 from '../images/samred2.png';
 import me3 from '../images/Samred.jpg';
 import silent from '../anims/optimized_silent.mp4';
 import bball from '../anims/improved.webm';
-import youtube from '../jsons/youtube.json';
+// import youtube from '../jsons/youtube.json';
 import crown from '../jsons/crown.json';
 import blackcrown from '../jsons/crown.json';
 
-import videojs from "video.js";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "video.js/dist/video-js.css"; // Import Video.js default styles
 import { Player } from '@lottiefiles/react-lottie-player';
 import EmojiPanel from "../emojis/EmojiPanel";
-import VideoPlayer from './VideoPlayer'; // Import the VideoPlayer component
+// import VideoPlayer from './VideoPlayer'; // Import the VideoPlayer component
 import Mainloading from "../Loaders/Mainloading";
 import Theteam from "./Theteam";
 import { FaTimes } from 'react-icons/fa';
@@ -57,7 +56,6 @@ const First = () => {
   const images2 = [migudp, miguim2]; // Add more images or videos as needed
   const imagesb = [shanetemp, shanetemp,shanetemp]; // Add more images or videos as needed
   const xmasref = useRef(null);
-  const canvasRef = useRef(null);
   const imagess = [me,me2,me3 ]; // Add more images or videos as needed
   const imagessyd = [syd1,syd2,syd3 ]; // Add more images or videos as needed
   const imageschill = [chill,chill,chill ]; // Add more images or videos as needed
@@ -82,28 +80,15 @@ const First = () => {
   const [emojitxt, setemojitxt] = useState("white"); // Default highlight color
   const [emojibg, setemojibg] = useState('#440006');
   const videoRef = useRef(null);
-  const playerRef = useRef(null);
   const [isLoading, setIsLoading] = useState(true);
   const [showTeamPopup, setShowTeamPopup] = useState(false);
   const [isContentBlurred, setIsContentBlurred] = useState(false); // To blur the background content
   const [aliass, setaliass] = useState(null); // To blur the background content
   const [imagesf, setimagesf] = useState(null); // To blur the background content
   const [loadingPercentage, setLoadingPercentage] = useState(0);
-  const [isTripleClicked, setIsTripleClicked] = useState(false);
-  const [clickCount, setClickCount] = useState(0);
-  const clickTimeoutRef = useRef(null);
   const navigate = useNavigate(); // For navigation
 
-  // ... existing useEffect and other functions
 
-  // Cleanup timeout on unmount
-  useEffect(() => {
-    return () => {
-      if (clickTimeoutRef.current) {
-        clearTimeout(clickTimeoutRef.current);
-      }
-    };
-  }, []);
 
   // Handle Personal Projects button click
   const handlePersonalProjectsClick = () => {
@@ -170,9 +155,6 @@ const First = () => {
     setIsContentBlurred(false); // Removes blur from the background content
   }; 
 
-  const handleToggle = () => {
-    setShowMore((prevShowMore) => !prevShowMore);
-  };
 
   const colorPalette = {
     primary:'#440006',
@@ -273,18 +255,7 @@ const First = () => {
     12: useRef(null) // keep moving forward
   };
 
-  const settings = {
-    dots: true, // Show dots for navigation
-    infinite: true, // Infinite loop of images
-    speed: 500, // Speed of transition
-    slidesToShow: 1, // Show one image at a time
-    slidesToScroll: 1, // Scroll one image at a time
-    autoplay: true, // Enable autoplay
-    autoplaySpeed: 3000, // Speed of autoplay (3 seconds)
-    arrows: false, // Disable previous/next arrows
-    pauseOnHover: true, // Pause autoplay on hover (optional)
-  };
-
+  
   const handleVideoClick = (video) => {
     Object.keys(videoRefs).forEach((key) => {
       if (parseInt(key) !== video && videoRefs[key].current) {
@@ -658,7 +629,7 @@ preload="metadata"
         </div>
         <br/>
         <br/>
-        {/* <div ref={carolref} onClick={() => handleVideoClick(8)} className="video-container bordered || current-animation">
+        <div ref={carolref} onClick={() => handleVideoClick(8)} className="video-container bordered || current-animation">
         <h2 style={{ color: fontColor }} >4.  Carolle Skater </h2>
 
         <p style={{ color: fontColor }}>
@@ -696,7 +667,7 @@ This animation is inspired by the talented & professional skater from Nairobi  <
   & Njeri Caroline
    </h5>
 <span style={{color:fontColor}}> Feb 23 2024</span>
-        </div> */}
+        </div>
         <br/>
         <br/>
         <div ref={snormalref} onClick={() => handleVideoClick(2)} className="video-container bordered">
