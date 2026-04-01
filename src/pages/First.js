@@ -257,7 +257,6 @@ const First = () => {
     return () => clearTimeout(timer);
   }, []);
 
-  const [playingVideo, setPlayingVideo] = useState(null); // Track the currently playing video
 
   const videoRefs = {
     1: useRef(null), // Rejuvenation
