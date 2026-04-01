@@ -14,7 +14,6 @@ import Third from './pages/Third';
 import Tsam from './Tsam/Tsam';
 import Profile from './pages/Profile';
 import PopCulture from './pages/PopCulture';
-import SalesTracker from './SalesTracker';  // ← NEW PAGE
 
 function App() {
   return (
@@ -36,7 +35,6 @@ function App() {
       <Route path="/tsam" element={<Tsam  />} />
       <Route path="/profile" element={<Profile  />} />
       <Route path="/pc" element={<PopCulture  />} />
-      <Route path="/maps" element={<SalesTracker />} />
 
       </Routes>
       </div>
