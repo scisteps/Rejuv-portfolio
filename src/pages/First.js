@@ -554,11 +554,11 @@ const First = () => {
           </video>
 
 
-  <EmojiPanel backgroundColor={emojibg} strokecolor={emojistroke} textcolor={emojitxt} vidid={12} />
+  <EmojiPanel backgroundColor={emojibg} strokecolor={emojistroke} textcolor={emojitxt} vidid={14} />
 
-  <h5  onClick={() => { handleShowPopup('Rejuv',imagess); handleVideoClick(1); }}
+  <h5  onClick={() => { handleShowPopup('Rejuv',imagess); handleVideoClick(13); }}
  
-        style={{ cursor:'cell', color: 'blue' }}><span style={{ color: highlightColor }}>Created by Nungi Sam,</span><span style={{color:fontColor}}> August 7 2025</span></h5>
+        style={{ cursor:'cell', color: 'blue' }}><span style={{ color: highlightColor }}>Created by Nungi Sam,</span><span style={{color:fontColor}}> April 3 2026</span></h5>
 </div>
         <div ref={keepref}  className="video-container bordered">
        <h2 style={{ color: fontColor }} >1. Keep moving forward</h2>
