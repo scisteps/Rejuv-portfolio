@@ -44,8 +44,9 @@ import shanetemp from '../images/shane.jpg';
 import timejourney from '../anims/timejourney3.webm';
 import chill from '../images/avunie.jpg';
 import caroline from'../videos/Carolle.mp4';
-import keepmovingforward from'../anims/Rejuv27.mp4';
+import keepmovingforward from'../anims/Keep11.mp4';
 import headshot2 from '../images/headshot2.jpg';
+import babs from'../anims/babsworld.mp4';
 
 import { gsap } from "gsap";
 
@@ -63,6 +64,8 @@ const First = () => {
   const newyearsref = useRef(null);
   const redref = useRef(null);
   const keepref = useRef(null);
+    const babsref = useRef(null);
+
   const silentref = useRef(null);
   const snormalref = useRef(null);
   const carolref = useRef(null);
@@ -335,6 +338,15 @@ const First = () => {
       setemojitxt('black');
       setlogoh(blackcrown);
     }  
+      else if (video === 13){
+      setMotivationalBackground("#ECBA86");
+      setFontColor("black");
+      setHighlightColor("black");
+      setemojibg('#ECBA86');
+      setemojistroke('black');
+      setemojitxt('black');
+      setlogoh(blackcrown);
+    }  
   };
 
   return (
@@ -518,6 +530,36 @@ const First = () => {
           </p>
         </div>
         </div>
+         <div ref={babsref}  className="video-container bordered">
+       <h2 style={{ color: fontColor }} >1. Babs character</h2>
+
+       <p style={{ color: fontColor }}>
+   A new character emerges, meet
+   <span style={{ color: highlightColor }}>Babs</span> 
+</p>
+
+  <video
+            ref={videoRefs[13]}
+
+  preload="auto"
+
+            controls
+            width="100%"
+            className="motivational-video"
+            onPlay={() => handleVideoClick(13)}
+
+          >
+            <source src={babs} type="video/webm" />
+            Your browser does not support the video tag.
+          </video>
+
+
+  <EmojiPanel backgroundColor={emojibg} strokecolor={emojistroke} textcolor={emojitxt} vidid={12} />
+
+  <h5  onClick={() => { handleShowPopup('Rejuv',imagess); handleVideoClick(1); }}
+ 
+        style={{ cursor:'cell', color: 'blue' }}><span style={{ color: highlightColor }}>Created by Nungi Sam,</span><span style={{color:fontColor}}> August 7 2025</span></h5>
+</div>
         <div ref={keepref}  className="video-container bordered">
        <h2 style={{ color: fontColor }} >1. Keep moving forward</h2>
 

@@ -27,8 +27,6 @@ function App() {
       <Route path="/team" element={<Theteam  />} />
       <Route path="/addcontributor" element={<AddContributor  />} />
       <Route path="/morphintime" element={<MightyMorphin  />} />
-      <Route path="/agnes" element={<Agnes  />} />
-      <Route path="/brands" element={<Brand  />} />
       <Route path="/profiles" element={<Members  />} />
       <Route path="/tabi" element={<Tabitha  />} />
       <Route path="/stillgraphics" element={<Third  />} />
