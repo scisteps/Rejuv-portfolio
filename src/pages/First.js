@@ -535,7 +535,7 @@ const First = () => {
 
        <p style={{ color: fontColor }}>
    A new character emerges, meet
-   <span style={{ color: highlightColor }}>Babs</span> 
+   <span style={{ color: highlightColor }}> Babs</span> 
 </p>
 
   <video
