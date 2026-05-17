@@ -47,6 +47,8 @@ import caroline from'../videos/Carolle.mp4';
 import keepmovingforward from'../anims/Keep11.mp4';
 import headshot2 from '../images/headshot2.jpg';
 import babs from'../anims/babsworld.mp4';
+import blackpanther from'../anims/bpth4.mp4';
+
 
 import { gsap } from "gsap";
 
@@ -71,6 +73,8 @@ const First = () => {
   const carolref = useRef(null);
   const wordref = useRef(null);
   const picref = useRef(null);
+    const blackpantherref = useRef(null);
+
   const shortsref = useRef(null);
   const personalProjectsRef = useRef(null); // Ref for personal projects section
   const [logoh, setlogoh] = useState(crown);
@@ -255,7 +259,10 @@ const First = () => {
     9: useRef(null), // Migu & Feathers Episode 1
     10: useRef(null), // Migu & Feathers Episode 2
     11: useRef(null), // Migu & Feathers Episode 3
-    12: useRef(null) // keep moving forward
+    12: useRef(null), // keep moving forward
+    13: useRef(null), // babs
+    14: useRef(null) // black panther
+
   };
 
   
@@ -339,14 +346,24 @@ const First = () => {
       setlogoh(blackcrown);
     }  
       else if (video === 13){
-      setMotivationalBackground("#ECBA86");
+      setMotivationalBackground("#E8AC6D");
       setFontColor("black");
       setHighlightColor("black");
-      setemojibg('#ECBA86');
+      setemojibg('#E8AC6D');
       setemojistroke('black');
       setemojitxt('black');
       setlogoh(blackcrown);
+      
     }  
+      else if (video === 14){
+      setMotivationalBackground("#1A1924");
+      setFontColor("#A04EF2");
+      setHighlightColor("white");
+      setemojibg('#1A1924');
+      setemojistroke('black');
+      setemojitxt('white');
+      setlogoh(blackcrown);
+    } 
   };
 
   return (
@@ -530,36 +547,7 @@ const First = () => {
           </p>
         </div>
         </div>
-         <div ref={babsref}  className="video-container bordered">
-       <h2 style={{ color: fontColor }} >1. Babs character</h2>
-
-       <p style={{ color: fontColor }}>
-   A new character emerges, meet
-   <span style={{ color: highlightColor }}> Babs</span> 
-</p>
-
-  <video
-            ref={videoRefs[13]}
-
-  preload="auto"
-
-            controls
-            width="100%"
-            className="motivational-video"
-            onPlay={() => handleVideoClick(13)}
-
-          >
-            <source src={babs} type="video/webm" />
-            Your browser does not support the video tag.
-          </video>
-
-
-  <EmojiPanel backgroundColor={emojibg} strokecolor={emojistroke} textcolor={emojitxt} vidid={14} />
-
-  <h5  onClick={() => { handleShowPopup('Rejuv',imagess); handleVideoClick(13); }}
- 
-        style={{ cursor:'cell', color: 'blue' }}><span style={{ color: highlightColor }}>Created by Nungi Sam,</span><span style={{color:fontColor}}> April 3 2026</span></h5>
-</div>
+     
         <div ref={keepref}  className="video-container bordered">
        <h2 style={{ color: fontColor }} >1. Keep moving forward</h2>
 
@@ -589,6 +577,36 @@ const First = () => {
   <h5  onClick={() => { handleShowPopup('Rejuv',imagess); handleVideoClick(1); }}
  
         style={{ cursor:'cell', color: 'blue' }}><span style={{ color: highlightColor }}>Created by Nungi Sam,</span><span style={{color:fontColor}}> August 7 2025</span></h5>
+</div>
+    <div ref={blackpantherref}  className="video-container bordered">
+       <h2 style={{ color: fontColor }} >2. Black Panther Animation</h2>
+
+       <p style={{ color: fontColor }}>
+Inspired by Marvel's
+   <span style={{ color: highlightColor }}>  black panther.</span> 
+</p>
+
+  <video
+            ref={videoRefs[14]}
+
+  preload="auto"
+
+            controls
+            width="100%"
+            className="motivational-video"
+            onPlay={() => handleVideoClick(14)}
+
+          >
+            <source src={blackpanther} type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+
+
+  <EmojiPanel backgroundColor={emojibg} strokecolor={emojistroke} textcolor={emojitxt} vidid={14} />
+
+  <h5  onClick={() => { handleShowPopup('Rejuv',imagess); handleVideoClick(14); }}
+ 
+        style={{ cursor:'cell', color: 'blue' }}><span style={{ color: highlightColor }}>Created by Nungi Sam,</span><span style={{color:fontColor}}> December 14 2025</span></h5>
 </div>
 
        <div ref={redref}  className="video-container bordered">

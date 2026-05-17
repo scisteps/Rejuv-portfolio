@@ -252,6 +252,7 @@ const Profile = () => {
             <h3>Animated Adverts & Explainers</h3>
             <div className={`grid-container ${isMobile ? "mobile" : "desktop"}`}>
          
+
 {animations.map((animation, index) => (
   <div key={index} className="portfolio-item">
     <div className="animation-category">
@@ -260,14 +261,16 @@ const Profile = () => {
     <div className="animation-title">
       {animation.title}
     </div>
-    <video 
+    <video
       controls
       ref={(el) => (videoRefs.current[index] = el)}
-      onClick={() => {
-        // Pause all other videos when this one is clicked
-        if (playingVideo !== null && playingVideo !== index) {
-          videoRefs.current[playingVideo]?.pause();
-        }
+      onPlay={() => {
+        // Pause all other videos when this one starts playing
+        videoRefs.current.forEach((video, i) => {
+          if (i !== index && video && !video.paused) {
+            video.pause();
+          }
+        });
         setPlayingVideo(index);
       }}
       onPause={() => {
