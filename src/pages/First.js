@@ -23,10 +23,11 @@ import rejuveblack from '../images/black.png';
 import me2 from '../images/samred2.png';
 import me3 from '../images/Samred.jpg';
 import silent from '../anims/optimized_silent.mp4';
-import bball from '../anims/improved.webm';
+import bball from '../anims/mamba.mp4';
 // import youtube from '../jsons/youtube.json';
-import crown from '../jsons/crown.json';
-import blackcrown from '../jsons/crown.json';
+import crown from '../jsons/newrejuvlogo.json';
+
+import blackcrown from '../jsons/newrejuvlogo.json';
 
 import { useNavigate } from "react-router-dom";
 import "video.js/dist/video-js.css"; // Import Video.js default styles
@@ -44,7 +45,7 @@ import shanetemp from '../images/shane.jpg';
 import timejourney from '../anims/timejourney3.webm';
 import chill from '../images/avunie.jpg';
 import caroline from'../videos/Carolle.mp4';
-import keepmovingforward from'../anims/Keep11.mp4';
+import keepmovingforward from'../anims/keep.mp4';
 import headshot2 from '../images/headshot2.jpg';
 import babs from'../anims/babsworld.mp4';
 import blackpanther from'../anims/bpth4.mp4';

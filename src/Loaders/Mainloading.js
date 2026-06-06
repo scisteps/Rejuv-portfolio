@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Player } from "@lottiefiles/react-lottie-player";
-import crown from '../jsons/crown.json';
+import crown from '../jsons/newrejuvlogo.json';
 
 const Mainloading = ({ nextPageRoute }) => {
   const [timer, setTimer] = useState(5); // 4-second timer
@@ -9,7 +9,7 @@ const Mainloading = ({ nextPageRoute }) => {
   useEffect(() => {
     const intervalId = setInterval(() => {
       setTimer((prevTimer) => prevTimer - 1);
-    }, 1000);
+    }, 1300);
 
     if (timer === 0) {
       setRedirect(true);
