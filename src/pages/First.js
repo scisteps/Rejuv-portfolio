@@ -26,6 +26,7 @@ import silent from '../anims/optimized_silent.mp4';
 import bball from '../anims/mamba.mp4';
 // import youtube from '../jsons/youtube.json';
 import crown from '../jsons/newrejuvlogo.json';
+import crown2 from '../jsons/crown.json';
 
 import blackcrown from '../jsons/newrejuvlogo.json';
 
@@ -154,7 +155,7 @@ const First = () => {
           ease: "power3.inOut",
         });
       
-      }, 2500);
+      }, 2200);
     }
   }; 
 
@@ -201,7 +202,7 @@ const First = () => {
         opacity: 1,
         y: 0, // Move to original position
         ease: "power3.inOut",
-        delay: 1.7,
+        delay: 1,
       });
     
       gsap.to(shortsref.current, {
@@ -216,7 +217,7 @@ const First = () => {
         opacity: 1,
         y: 0, // Move to original position
         ease: "power4.inOut",
-        delay: 1,
+        delay: 0.5,
       });
     }
     
@@ -242,7 +243,7 @@ const First = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsLoading(false);
-    }, 3600);
+    }, 3000);
 
     return () => clearTimeout(timer);
   }, []);
@@ -531,7 +532,7 @@ const First = () => {
         <div style={{display:'flex',alignContent:'center',justifyContent:'center'}}>
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
   <div style={{ position: 'relative', width: '250px', height: '150px' }}>
-    <Player ref={animref} loop={true} autoplay={true} src={crown} style={{height:'200px',width:'250px'}}/>
+    <Player ref={animref} loop={true} autoplay={true} src={crown2} style={{height:'200px',width:'250px'}}/>
   </div>
   
   <div style={{ marginTop: isMobile ? '10px' : '40px' }}>
@@ -879,7 +880,7 @@ controlsList="nodownload"
                 <div className="animated-stories-section">
         <div style={{display:'flex',alignContent:'center',justifyContent:'center'}}>
         <div style={{position:'relative',width:'350px', height:'200px',marginTop:'10px'}}>
-        <Player ref={animref} loop={true} autoplay={true} src={logoh} />
+        <Player ref={animref} loop={true} autoplay={true} src={crown2} />
         </div>
         </div>
         <br/>
