@@ -1,0 +1,60 @@
+/* src/components/User/CategoryFilter.css */
+.category-filter {
+  height: 100%;
+}
+
+.category-filter h3 {
+  margin: 0 0 16px 0;
+  font-size: 16px;
+  color: #1a1a2e;
+}
+
+.filter-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.filter-item {
+  display: flex;
+  align-items: center;
+  padding: 10px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+  background: transparent;
+  border-left: 4px solid transparent;
+}
+
+.filter-item:hover {
+  background: #f8f9fa;
+}
+
+.filter-item.active {
+  background: #f0f4ff;
+}
+
+.filter-icon {
+  font-size: 18px;
+  margin-right: 12px;
+}
+
+.filter-name {
+  flex: 1;
+  font-size: 14px;
+  color: #2d3436;
+  font-weight: 500;
+}
+
+.filter-count {
+  font-size: 12px;
+  color: #999;
+  margin-right: 8px;
+}
+
+.filter-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 2px solid rgba(0, 0, 0, 0.1);
+}

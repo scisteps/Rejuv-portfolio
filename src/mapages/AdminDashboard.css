@@ -1,0 +1,161 @@
+/* src/pages/AdminDashboard.css */
+.admin-dashboard {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100vw;
+  background: #f0f2f5;
+}
+
+.admin-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 24px;
+  background: white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  z-index: 100;
+}
+
+.admin-header h1 {
+  margin: 0;
+  font-size: 24px;
+  color: #1a1a2e;
+}
+
+.admin-controls {
+  display: flex;
+  gap: 12px;
+}
+
+.btn-add, .btn-refresh {
+  padding: 8px 20px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.btn-add {
+  background: #4285F4;
+  color: white;
+}
+
+.btn-add:hover {
+  background: #3367D6;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(66, 133, 244, 0.3);
+}
+
+.btn-refresh {
+  background: #f0f0f0;
+  color: #333;
+}
+
+.btn-refresh:hover {
+  background: #e0e0e0;
+}
+
+.map-container {
+  flex: 1;
+  position: relative;
+}
+
+.loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  font-size: 18px;
+  color: #636e72;
+}
+
+.location-info-window {
+  max-width: 300px;
+  padding: 4px;
+}
+
+.location-info-window h3 {
+  margin: 0 0 8px 0;
+  font-size: 16px;
+  color: #1a1a2e;
+}
+
+.category-badge {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 500;
+  margin-bottom: 8px;
+}
+
+.location-info-window p {
+  font-size: 13px;
+  color: #555;
+  margin: 8px 0;
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin: 8px 0;
+}
+
+.tag {
+  background: #f0f2f5;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 11px;
+  color: #555;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.btn-delete {
+  padding: 4px 12px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 500;
+  background: #dc3545;
+  color: white;
+}
+
+.btn-delete:hover {
+  background: #c82333;
+}
+/* src/pages/AdminDashboard.css - Add this */
+.click-error {
+  position: absolute;
+  bottom: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #ffebee;
+  color: #c62828;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 13px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}

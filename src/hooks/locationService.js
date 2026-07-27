@@ -3,11 +3,35 @@ export const locationService = {
   getCurrentPosition(options = {}) {
     return new Promise((resolve, reject) => {
       if (!navigator.geolocation) {
-        reject(new Error('Geolocation is not supported'));
+        reject(new Error('Geolocation is not supported by your browser'));
         return;
       }
       
-      navigator.geolocation.getCurrentPosition(resolve, reject, options);
+      // Default options with better timeout handling
+      const defaultOptions = {
+        enableHighAccuracy: false,
+        timeout: 10000,
+        maximumAge: 60000
+      };
+      
+      const finalOptions = { ...defaultOptions, ...options };
+      
+      // Set a timeout to reject if location takes too long
+      const timeoutId = setTimeout(() => {
+        reject(new Error('Location request timed out'));
+      }, finalOptions.timeout + 1000);
+      
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          clearTimeout(timeoutId);
+          resolve(position);
+        },
+        (error) => {
+          clearTimeout(timeoutId);
+          reject(error);
+        },
+        finalOptions
+      );
     });
   },
 
@@ -17,11 +41,21 @@ export const locationService = {
       return null;
     }
     
-    return navigator.geolocation.watchPosition(onSuccess, onError, options);
+    const defaultOptions = {
+      enableHighAccuracy: false,
+      timeout: 10000,
+      maximumAge: 60000
+    };
+    
+    return navigator.geolocation.watchPosition(
+      onSuccess,
+      onError,
+      { ...defaultOptions, ...options }
+    );
   },
 
   clearWatch(watchId) {
-    if (navigator.geolocation) {
+    if (navigator.geolocation && watchId) {
       navigator.geolocation.clearWatch(watchId);
     }
   }
