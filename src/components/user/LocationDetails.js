@@ -1,4 +1,4 @@
-// src/components/User/LocationDetails.jsx
+// src/components/user/LocationDetails.jsx
 import React, { useState } from 'react';
 import { CATEGORY_ICONS, CATEGORY_COLORS } from '../../utils/geoData';
 import './LocationDetails.css';

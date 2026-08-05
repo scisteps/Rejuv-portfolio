@@ -8,87 +8,109 @@ import { CATEGORY_COLORS, CATEGORY_ICONS, CATEGORY_TYPES } from '../utils/geoDat
 import CategoryFilter from '../components/user/CategoryFilter';
 import LocationDetails from '../components/user/LocationDetails';
 import PathTracker from '../components/user/PathTracker';
+import AddImageModal from '../components/user/AddImageModal';
 import './UserDashboard.css';
-
-// Makerere University bounds — map cannot scroll outside campus
-const MAKERERE_BOUNDS = {
-  north: 0.3515,
-  south: 0.3440,
-  east: 32.5880,
-  west: 32.5780,
-};
-
-// Makerere University center
-const MAKERERE_CENTER = {
-  lat: 0.3476,
-  lng: 32.5825
-};
 
 const UserDashboard = () => {
   const [selectedLocation, setSelectedLocation] = useState(null);
   const [showTracker, setShowTracker] = useState(false);
-  const [mapCenter, setMapCenter] = useState(MAKERERE_CENTER);
+  const [showImageModal, setShowImageModal] = useState(false);
+  const [mapCenter, setMapCenter] = useState({ lat: 0, lng: 0 }); // Start with 0, will update
   const [mapZoom, setMapZoom] = useState(16);
+  const [mapLoaded, setMapLoaded] = useState(false);
 
-  const { locations, paths, roads, selectedCategories, toggleCategory, getFilteredLocations } = useGeoData();
+  const { locations, paths, roads, selectedCategories, toggleCategory, getFilteredLocations, updateLocation } = useGeoData();
   const { isTracking, path, pathStats, startTracking, stopTracking, clearPath } = usePathTracking();
   const { 
     userLocation, 
     loading: locationLoading, 
     error: locationError, 
     isUsingFallback, 
-    getUserLocation 
+    getUserLocation,
+    startWatching,
+    stopWatching
   } = useUserLocation();
 
-  // Get real GPS on mount and pan the map to it
+  // Get user location on mount and center map
   useEffect(() => {
-    getUserLocation().then((position) => {
-      if (position) {
+    const getLocation = async () => {
+      const position = await getUserLocation();
+      if (position && position.lat && position.lng) {
         setMapCenter({ lat: position.lat, lng: position.lng });
-        setMapZoom(18);
+        setMapZoom(17);
       }
+    };
+    getLocation();
+
+    // Start watching for location updates
+    const watchId = startWatching((newLocation) => {
+      // Optionally update map center when user moves
+      // setMapCenter({ lat: newLocation.lat, lng: newLocation.lng });
     });
+
+    return () => {
+      stopWatching();
+    };
   }, []);
 
-  // Keep map centered on user as they move (only while tracking)
+  // Update map center when user location changes (but only if not tracking)
   useEffect(() => {
-    if (isTracking && userLocation) {
-      setMapCenter({ lat: userLocation.lat, lng: userLocation.lng });
+    if (!isTracking && userLocation && userLocation.lat && userLocation.lng) {
+      // Only update if map hasn't been manually moved recently
+      // You can add a flag here if needed
     }
   }, [userLocation, isTracking]);
 
-  const handleCenterOnUser = () => {
-    getUserLocation().then((pos) => {
-      if (pos) {
-        setMapCenter({ lat: pos.lat, lng: pos.lng });
-        setMapZoom(18);
+  const handleCenterOnUser = async () => {
+    const position = await getUserLocation();
+    if (position && position.lat && position.lng) {
+      setMapCenter({ lat: position.lat, lng: position.lng });
+      setMapZoom(18);
+    }
+  };
+
+  const handleAddImage = async (locationId, imageData) => {
+    try {
+      const location = locations.find(l => l.id === locationId);
+      if (location) {
+        const updatedImages = [...(location.images || []), imageData];
+        await updateLocation(locationId, { images: updatedImages });
+        setSelectedLocation(null);
+        setShowImageModal(false);
+        alert('✅ Image added successfully!');
       }
-    });
+    } catch (error) {
+      console.error('Failed to add image:', error);
+      alert('❌ Failed to add image. Please try again.');
+    }
   };
 
   const filteredLocations = getFilteredLocations();
 
-  // Custom user location marker icon (no google object needed)
-  const userMarkerIcon = {
-    path: 'M0,-15 C-10,-15 -10,0 0,15 C10,0 10,-15 0,-15',
-    fillColor: isUsingFallback ? '#FF9800' : '#4285F4',
-    fillOpacity: 1,
-    strokeWeight: 3,
-    strokeColor: '#FFFFFF',
-    scale: 0.8
-  };
+  // Show loading state while getting location
+  if (locationLoading && !userLocation) {
+    return (
+      <div className="user-dashboard">
+        <div className="loading-container">
+          <div className="loading-spinner"></div>
+          <p>📍 Getting your location...</p>
+          <p className="loading-hint">Please allow location access when prompted</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="user-dashboard">
       <div className="user-header">
-        <h1>🎓 Makerere Campus Map</h1>
+        <h1>🌍 Community Map</h1>
         <div className="user-controls">
           <button
             className="btn-location"
             onClick={handleCenterOnUser}
             disabled={locationLoading}
           >
-            {locationLoading ? '⏳ Getting location...' : '📍 My Location'}
+            {locationLoading ? '⏳ Getting...' : '📍 My Location'}
           </button>
           <button className="btn-track" onClick={() => setShowTracker(!showTracker)}>
             {showTracker ? '📊 Hide Tracker' : '📊 Path Tracker'}
@@ -103,9 +125,9 @@ const UserDashboard = () => {
           <button onClick={handleCenterOnUser}>Retry</button>
         </div>
       )}
-      {isUsingFallback && !locationError && (
+      {isUsingFallback && !locationError && userLocation && (
         <div className="location-banner warning">
-          📍 Showing Makerere campus center — enable GPS for your exact location
+          📍 Using approximate location — enable GPS for more accuracy
         </div>
       )}
 
@@ -116,6 +138,15 @@ const UserDashboard = () => {
             onToggleCategory={toggleCategory}
             categories={Object.values(CATEGORY_TYPES)}
           />
+          <div className="map-legend">
+            <h4>📍 Legend</h4>
+            {Object.values(CATEGORY_TYPES).map(cat => (
+              <div key={cat} className="legend-item">
+                <span className="legend-dot" style={{ background: CATEGORY_COLORS[cat] }}></span>
+                <span>{CATEGORY_ICONS[cat]} {cat.charAt(0).toUpperCase() + cat.slice(1)}</span>
+              </div>
+            ))}
+          </div>
         </div>
 
         <div className="map-container">
@@ -126,13 +157,7 @@ const UserDashboard = () => {
               gestureHandling="greedy"
               onCenterChange={(center) => setMapCenter(center)}
               onZoomChange={(zoom) => setMapZoom(zoom)}
-              // Lock map to Makerere campus only
-              restriction={{
-                latLngBounds: MAKERERE_BOUNDS,
-                strictBounds: true,
-              }}
-              minZoom={15}
-              maxZoom={20}
+              onLoad={() => setMapLoaded(true)}
             >
               {/* Campus roads */}
               {roads.map((road) => (
@@ -155,7 +180,18 @@ const UserDashboard = () => {
                 />
               )}
 
-              {/* Campus location markers */}
+              {/* Saved paths from other users */}
+              {paths.map((savedPath) => (
+                <Polyline
+                  key={savedPath.id}
+                  path={savedPath.coordinates}
+                  strokeColor="#34A853"
+                  strokeWeight={3}
+                  strokeOpacity={0.5}
+                />
+              ))}
+
+              {/* Location markers */}
               {filteredLocations.map((location) => (
                 <Marker
                   key={location.id}
@@ -178,26 +214,78 @@ const UserDashboard = () => {
               ))}
 
               {/* User's current GPS position */}
-              {userLocation && (
+              {userLocation && userLocation.lat && userLocation.lng && (
                 <Marker
                   position={{ lat: userLocation.lat, lng: userLocation.lng }}
-                  icon={userMarkerIcon}
+                  icon={{
+                    path: 'M0,-15 C-10,-15 -10,0 0,15 C10,0 10,-15 0,-15',
+                    fillColor: isUsingFallback ? '#FF9800' : '#4285F4',
+                    fillOpacity: 1,
+                    strokeWeight: 3,
+                    strokeColor: '#FFFFFF',
+                    scale: 0.8
+                  }}
                   title="You are here"
                   zIndex={1000}
                 />
               )}
 
-              {/* Info window for selected location */}
+              {/* Info window for selected location with Add Image button */}
               {selectedLocation && (
                 <InfoWindow
                   position={{ lat: selectedLocation.lat, lng: selectedLocation.lng }}
                   onCloseClick={() => setSelectedLocation(null)}
                 >
-                  <LocationDetails location={selectedLocation} />
+                  <div className="location-info-window user-info-window">
+                    <h3>{selectedLocation.name}</h3>
+                    <div className="category-badge">
+                      {CATEGORY_ICONS[selectedLocation.category]} {selectedLocation.category}
+                    </div>
+                    <p>{selectedLocation.description}</p>
+                    {selectedLocation.tags && selectedLocation.tags.length > 0 && (
+                      <div className="tags">
+                        {selectedLocation.tags.map((tag) => (
+                          <span key={tag} className="tag">#{tag}</span>
+                        ))}
+                      </div>
+                    )}
+                    
+                    {/* Images section */}
+                    {selectedLocation.images && selectedLocation.images.length > 0 && (
+                      <div className="user-images">
+                        <h4>📸 Images</h4>
+                        <div className="image-grid">
+                          {selectedLocation.images.map((img, idx) => (
+                            <div key={idx} className="image-thumb">
+                              <img src={img} alt={`${selectedLocation.name} ${idx + 1}`} />
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                    
+                    <button 
+                      className="btn-add-image"
+                      onClick={() => setShowImageModal(true)}
+                    >
+                      📸 Add Image
+                    </button>
+                  </div>
                 </InfoWindow>
               )}
             </Map>
           </APIProvider>
+
+          {/* Location status at bottom */}
+          {userLocation && userLocation.lat && userLocation.lng && (
+            <div className="location-status success">
+              <span className="status-icon">📍</span>
+              <span>Location active</span>
+              {!isUsingFallback && (
+                <span className="accuracy-badge">±{Math.round(userLocation.accuracy || 0)}m</span>
+              )}
+            </div>
+          )}
         </div>
 
         {showTracker && (
@@ -213,8 +301,17 @@ const UserDashboard = () => {
           </div>
         )}
       </div>
+
+      {/* Add Image Modal */}
+      {showImageModal && selectedLocation && (
+        <AddImageModal
+          location={selectedLocation}
+          onClose={() => setShowImageModal(false)}
+          onSave={(imageData) => handleAddImage(selectedLocation.id, imageData)}
+        />
+      )}
     </div>
   );
 };
-//not
+
 export default UserDashboard;
