@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Slider from "react-slick"; // Import react-slick
-import "slick-carousel/slick/slick.css"; // Slick carousel styles
-import "slick-carousel/slick/slick-theme.css"; // Slick carousel theme styles
+
 import { getFirestore, collection, query, where, getDocs } from "firebase/firestore";
 import { initializeApp } from "firebase/app";
 

@@ -3,8 +3,7 @@ import "./First.css"; // CSS file for styling
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/swiper-bundle.css"; // Import Swiper styles
 import Slider from "react-slick";
-import "slick-carousel/slick/slick.css"; 
-import "slick-carousel/slick/slick-theme.css"
+
 // import rejuvbanner from '../images/rejuv banner.png';
 import rejuveprofile from '../images/rejuve main logo.png';
 import migu1 from '../anims/m1.mp4';
@@ -429,7 +428,7 @@ const First = () => {
                       slidesToScroll={1}
                       dots={true}
                       fade={true}  // This enables the fade effect
-                      className="slick-carousel-container"
+                      // className="slick-carousel-container"
                     >
                       {images.map((image, index) => (
                         <div key={index}>
@@ -452,7 +451,7 @@ const First = () => {
                       slidesToScroll={1}
                       dots={true}
                       fade={true}  // This enables the fade effect
-                      className="slick-carousel-container"
+                      // className="slick-carousel-container"
                     >
                       {images.map((image, index) => (
                         <div key={index}>
@@ -897,7 +896,7 @@ controlsList="nodownload"
     slidesToShow={1}
     slidesToScroll={1}
     dots={true}
-    className="slick-carousel-container"
+    // className="slick-carousel-container"
   >
     {images2.map((image, index) => (
       <div key={index}>

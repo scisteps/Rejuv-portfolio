@@ -8,15 +8,27 @@ import { CATEGORY_COLORS, CATEGORY_ICONS, CATEGORY_TYPES } from '../utils/geoDat
 import CategoryFilter from '../components/user/CategoryFilter';
 import LocationDetails from '../components/user/LocationDetails';
 import PathTracker from '../components/user/PathTracker';
-// Make sure LocationStatus is properly exported
-// import LocationStatus from '../components/common/LocationStatus'; 
 import './UserDashboard.css';
+
+// Makerere University bounds — map cannot scroll outside campus
+const MAKERERE_BOUNDS = {
+  north: 0.3515,
+  south: 0.3440,
+  east: 32.5880,
+  west: 32.5780,
+};
+
+// Makerere University center
+const MAKERERE_CENTER = {
+  lat: 0.3476,
+  lng: 32.5825
+};
 
 const UserDashboard = () => {
   const [selectedLocation, setSelectedLocation] = useState(null);
-  const [mapCenter, setMapCenter] = useState({ lat: 37.3605, lng: -122.0655 });
-  const [mapZoom, setMapZoom] = useState(16);
   const [showTracker, setShowTracker] = useState(false);
+  const [mapCenter, setMapCenter] = useState(MAKERERE_CENTER);
+  const [mapZoom, setMapZoom] = useState(16);
 
   const { locations, paths, roads, selectedCategories, toggleCategory, getFilteredLocations } = useGeoData();
   const { isTracking, path, pathStats, startTracking, stopTracking, clearPath } = usePathTracking();
@@ -24,38 +36,78 @@ const UserDashboard = () => {
     userLocation, 
     loading: locationLoading, 
     error: locationError, 
-    getUserLocation,
-    isUsingFallback 
+    isUsingFallback, 
+    getUserLocation 
   } = useUserLocation();
 
+  // Get real GPS on mount and pan the map to it
   useEffect(() => {
-    getUserLocation().then(position => {
+    getUserLocation().then((position) => {
       if (position) {
         setMapCenter({ lat: position.lat, lng: position.lng });
-        setMapZoom(17);
+        setMapZoom(18);
       }
     });
   }, []);
 
-  const handleRetryLocation = () => {
-    getUserLocation();
+  // Keep map centered on user as they move (only while tracking)
+  useEffect(() => {
+    if (isTracking && userLocation) {
+      setMapCenter({ lat: userLocation.lat, lng: userLocation.lng });
+    }
+  }, [userLocation, isTracking]);
+
+  const handleCenterOnUser = () => {
+    getUserLocation().then((pos) => {
+      if (pos) {
+        setMapCenter({ lat: pos.lat, lng: pos.lng });
+        setMapZoom(18);
+      }
+    });
   };
 
   const filteredLocations = getFilteredLocations();
 
+  // Custom user location marker icon (no google object needed)
+  const userMarkerIcon = {
+    path: 'M0,-15 C-10,-15 -10,0 0,15 C10,0 10,-15 0,-15',
+    fillColor: isUsingFallback ? '#FF9800' : '#4285F4',
+    fillOpacity: 1,
+    strokeWeight: 3,
+    strokeColor: '#FFFFFF',
+    scale: 0.8
+  };
+
   return (
     <div className="user-dashboard">
       <div className="user-header">
-        <h1>🌍 Community Map</h1>
+        <h1>🎓 Makerere Campus Map</h1>
         <div className="user-controls">
-          <button className="btn-location" onClick={handleRetryLocation}>
-            📍 Update Location
+          <button
+            className="btn-location"
+            onClick={handleCenterOnUser}
+            disabled={locationLoading}
+          >
+            {locationLoading ? '⏳ Getting location...' : '📍 My Location'}
           </button>
           <button className="btn-track" onClick={() => setShowTracker(!showTracker)}>
             {showTracker ? '📊 Hide Tracker' : '📊 Path Tracker'}
           </button>
         </div>
       </div>
+
+      {/* Location status banner */}
+      {locationError && (
+        <div className="location-banner error">
+          ⚠️ {locationError}
+          <button onClick={handleCenterOnUser}>Retry</button>
+        </div>
+      )}
+      {isUsingFallback && !locationError && (
+        <div className="location-banner warning">
+          📍 Showing Makerere campus center — enable GPS for your exact location
+        </div>
+      )}
 
       <div className="user-layout">
         <div className="filter-sidebar">
@@ -72,10 +124,18 @@ const UserDashboard = () => {
               center={mapCenter}
               zoom={mapZoom}
               gestureHandling="greedy"
-              onCenterChange={setMapCenter}
-              onZoomChange={setMapZoom}
+              onCenterChange={(center) => setMapCenter(center)}
+              onZoomChange={(zoom) => setMapZoom(zoom)}
+              // Lock map to Makerere campus only
+              restriction={{
+                latLngBounds: MAKERERE_BOUNDS,
+                strictBounds: true,
+              }}
+              minZoom={15}
+              maxZoom={20}
             >
-              {roads.map(road => (
+              {/* Campus roads */}
+              {roads.map((road) => (
                 <Polyline
                   key={road.id}
                   path={road.coordinates}
@@ -85,6 +145,7 @@ const UserDashboard = () => {
                 />
               ))}
 
+              {/* User's recorded path while tracking */}
               {path.length > 1 && (
                 <Polyline
                   path={path}
@@ -94,7 +155,8 @@ const UserDashboard = () => {
                 />
               )}
 
-              {filteredLocations.map(location => (
+              {/* Campus location markers */}
+              {filteredLocations.map((location) => (
                 <Marker
                   key={location.id}
                   position={{ lat: location.lat, lng: location.lng }}
@@ -105,35 +167,27 @@ const UserDashboard = () => {
                     fillOpacity: 1,
                     strokeWeight: 2,
                     strokeColor: '#FFFFFF',
-                    scale: 1.2
+                    scale: 1.2,
                   }}
                   label={{
                     text: CATEGORY_ICONS[location.category] || '📍',
                     fontSize: '14px',
-                    fontWeight: 'bold'
+                    fontWeight: 'bold',
                   }}
                 />
               ))}
 
+              {/* User's current GPS position */}
               {userLocation && (
                 <Marker
                   position={{ lat: userLocation.lat, lng: userLocation.lng }}
-                  icon={{
-                    path: 'M0,-15 C-10,-15 -10,0 0,15 C10,0 10,-15 0,-15',
-                    fillColor: isUsingFallback ? '#FF9800' : '#4285F4',
-                    fillOpacity: 1,
-                    strokeWeight: 3,
-                    strokeColor: '#FFFFFF',
-                    scale: 0.8
-                  }}
-                  label={{
-                    text: '📍',
-                    fontSize: '16px',
-                    fontWeight: 'bold'
-                  }}
+                  icon={userMarkerIcon}
+                  title="You are here"
+                  zIndex={1000}
                 />
               )}
 
+              {/* Info window for selected location */}
               {selectedLocation && (
                 <InfoWindow
                   position={{ lat: selectedLocation.lat, lng: selectedLocation.lng }}
@@ -144,17 +198,6 @@ const UserDashboard = () => {
               )}
             </Map>
           </APIProvider>
-
-          {/* Location Status - This is likely line 151 */}
-          {locationError && (
-            <div className="location-status error">
-              <span className="status-icon">⚠️</span>
-              <span>{locationError}</span>
-              <button className="retry-btn" onClick={handleRetryLocation}>
-                Retry
-              </button>
-            </div>
-          )}
         </div>
 
         {showTracker && (
