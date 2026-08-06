@@ -1,0 +1,40 @@
+// firestore.rules
+// Deploy with: firebase deploy --only firestore:rules
+//
+// Go to Firebase Console → Firestore → Rules tab and paste this in,
+// OR put this file in your project root and run the deploy command above.
+
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // location_images collection
+    // Anyone can read (so all users see all camera pins)
+    // Anyone can create (no auth — anonymous uploads allowed)
+    // Nobody can edit or delete via the client (admin only via Console)
+    match /location_images/{docId} {
+      allow read: if true;
+      allow create: if
+        // Must include these required fields
+        request.resource.data.keys().hasAll([
+          'userId', 'lat', 'lng', 'imageUrl',
+          'fileName', 'fileSize', 'storagePath', 'createdAt'
+        ])
+        // lat/lng must be valid numbers in roughly Uganda range
+        && request.resource.data.lat is float
+        && request.resource.data.lng is float
+        && request.resource.data.lat > -5 && request.resource.data.lat < 5
+        && request.resource.data.lng > 29 && request.resource.data.lng < 36
+        // fileSize must be a number under 5MB
+        && request.resource.data.fileSize is int
+        && request.resource.data.fileSize <= 5242880;
+
+      allow update, delete: if false; // admin only — use Firebase Console
+    }
+
+    // Block everything else by default
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

@@ -4,7 +4,6 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import AdminDashboard from './mapages/AdminDashboard';
 import UserDashboard from './mapages/UserDashboard';
 
-import Members from './pages/Members';
 import { Analytics } from "@vercel/analytics/react"
 
 
@@ -21,7 +20,6 @@ function App() {
           <Route path="/admin" element={<AdminDashboard />} />
           
          
-          <Route path="/profiles" element={<Members />} />
     
      
         

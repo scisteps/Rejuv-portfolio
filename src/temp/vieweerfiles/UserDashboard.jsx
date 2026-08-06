@@ -198,7 +198,7 @@ export default function UserDashboard() {
 
       {/* Header */}
       <div className="user-header">
-        <h1> Geo WAY</h1>
+        <h1>🎓 Makerere Campus Map</h1>
         <div className="user-controls">
           <button className="btn-location" onClick={handleCenterOnUser} disabled={locationLoading}>
             {locationLoading ? '⏳ Locating...' : '📍 My Location'}

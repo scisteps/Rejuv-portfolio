@@ -1,0 +1,32 @@
+// storage.rules
+// Deploy with: firebase deploy --only storage
+//
+// Go to Firebase Console → Storage → Rules tab and paste this in.
+
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+
+    // location_images/{userId}/{filename}
+    match /location_images/{userId}/{filename} {
+
+      // Anyone can read (public image URLs work)
+      allow read: if true;
+
+      // Write rules:
+      allow write: if
+        // File must be an image
+        request.resource.contentType.matches('image/.*')
+        // File must be under 5MB
+        && request.resource.size <= 5 * 1024 * 1024;
+
+      // No deletes from client — admin only
+      allow delete: if false;
+    }
+
+    // Block all other paths
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}
