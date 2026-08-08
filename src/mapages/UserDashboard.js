@@ -291,28 +291,45 @@ export default function UserDashboard() {
               ))}
 
               {/* Camera pins — one per unique location */}
-              {Object.values(imagePinGroups).map(group => (
-                <AdvancedMarker
-                  key={`img_${group.lat}_${group.lng}`}
-                  position={{ lat: group.lat, lng: group.lng }}
-                  zIndex={500}
-                  onClick={() => setViewingImages(group.images)}
-                >
-                  <CameraPin count={group.images.length} />
-                </AdvancedMarker>
-              ))}
+            {Object.values(imagePinGroups).map(group => (
+  <Marker
+    key={`img_${group.lat}_${group.lng}`}
+    position={{ lat: group.lat, lng: group.lng }}
+    zIndex={500}
+    onClick={() => setViewingImages(group.images)}
+    icon={{
+      path: 'M0,-20 C-15,-20 -20,-5 0,15 C20,-5 15,-20 0,-20',
+      fillColor: '#4285F4',
+      fillOpacity: 1,
+      strokeWeight: 2,
+      strokeColor: '#FFFFFF',
+      scale: 0.8
+    }}
+    label={{
+      text: '📸',
+      fontSize: '14px',
+      fontWeight: 'bold'
+    }}
+  />
+))}
 
               {/* Live user pin — tap to add photo */}
-              {userLocation && (
-                <AdvancedMarker
-                  position={{ lat: userLocation.lat, lng: userLocation.lng }}
-                  zIndex={1000}
-                  title="You are here — tap to add a photo"
-                  onClick={() => setShowUploadPanel(true)}
-                >
-                  <UserPin isUsingFallback={isUsingFallback} accuracy={accuracy} />
-                </AdvancedMarker>
-              )}
+          {userLocation && (
+  <Marker
+    position={{ lat: userLocation.lat, lng: userLocation.lng }}
+    zIndex={1000}
+    title="You are here — tap to add a photo"
+    onClick={() => setShowUploadPanel(true)}
+    icon={{
+      path: 'M0,-15 C-10,-15 -10,0 0,15 C10,0 10,-15 0,-15',
+      fillColor: isUsingFallback ? '#FF9800' : '#4285F4',
+      fillOpacity: 1,
+      strokeWeight: 3,
+      strokeColor: '#FFFFFF',
+      scale: 0.8
+    }}
+  />
+)}
 
               {/* Building info window */}
               {selectedLocation && (
