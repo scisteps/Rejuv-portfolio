@@ -1,8 +1,8 @@
 // src/hooks/useUserLocation.js
 import { useState, useEffect, useRef } from 'react';
 
-// Default fallback (you can change this to your desired fallback location)
-const DEFAULT_CENTER = { lat: 0.3476, lng: 32.5825 }; // Makerere
+// Default fallback location (Makerere University, Kampala)
+const DEFAULT_CENTER = { lat: 0.3476, lng: 32.5825 };
 
 export function useUserLocation() {
   const [userLocation, setUserLocation] = useState(null);
@@ -10,12 +10,17 @@ export function useUserLocation() {
   const [error, setError] = useState(null);
   const [isUsingFallback, setIsUsingFallback] = useState(true);
   const [accuracy, setAccuracy] = useState(null);
-  const watchIdRef = useRef(null);
+  const [watchId, setWatchId] = useState(null);
+  const [retryCount, setRetryCount] = useState(0);
+  const maxRetries = 3;
 
+  // ── Get GPS Location with High Accuracy ──
   const getUserLocation = () => {
     return new Promise((resolve) => {
+      // Check if geolocation is supported
       if (!navigator.geolocation) {
-        setError('Geolocation is not supported by your browser');
+        const errorMsg = 'Geolocation is not supported by your browser';
+        setError(errorMsg);
         setIsUsingFallback(true);
         setLoading(false);
         resolve(DEFAULT_CENTER);
@@ -25,130 +30,208 @@ export function useUserLocation() {
       setLoading(true);
       setError(null);
 
-      // First attempt: High accuracy (GPS)
-      console.log('📍 Attempting high accuracy location...');
-      
+      // High accuracy GPS options
+      const options = {
+        enableHighAccuracy: true,  // Force GPS
+        timeout: 30000,            // Wait up to 30 seconds
+        maximumAge: 0,             // Don't use cached position
+      };
+
+      console.log('📡 Requesting GPS with high accuracy...');
+
       navigator.geolocation.getCurrentPosition(
+        // ── Success Handler ──
         (position) => {
           const location = {
             lat: position.coords.latitude,
             lng: position.coords.longitude,
             accuracy: position.coords.accuracy,
+            altitude: position.coords.altitude,
+            speed: position.coords.speed,
+            heading: position.coords.heading,
+            timestamp: position.timestamp
           };
-          
-          console.log('✅ High accuracy location found:', location);
+
+          console.log('✅ GPS Location acquired!');
+          console.log(`📍 Accuracy: ${location.accuracy}m`);
+          console.log(`📍 Coordinates: ${location.lat}, ${location.lng}`);
+
           setUserLocation(location);
           setAccuracy(location.accuracy);
           setIsUsingFallback(false);
           setLoading(false);
+          setRetryCount(0);
           resolve(location);
         },
-        (err) => {
-          console.warn('⚠️ High accuracy failed:', err.message);
+        // ── Error Handler ──
+        (error) => {
+          console.error('❌ GPS Error:', error.message);
+          console.error('Error code:', error.code);
           
-          // Second attempt: Lower accuracy but faster
-          console.log('🔄 Trying lower accuracy...');
-          navigator.geolocation.getCurrentPosition(
-            (position) => {
-              const location = {
-                lat: position.coords.latitude,
-                lng: position.coords.longitude,
-                accuracy: position.coords.accuracy,
-              };
-              
-              console.log('✅ Location found (lower accuracy):', location);
-              setUserLocation(location);
-              setAccuracy(location.accuracy);
-              setIsUsingFallback(true);
-              setLoading(false);
-              resolve(location);
-            },
-            (fallbackErr) => {
-              console.warn('⚠️ All location attempts failed:', fallbackErr.message);
-              // Use fallback
-              setError('Unable to get your location. Using approximate position.');
-              setIsUsingFallback(true);
-              setLoading(false);
-              resolve(DEFAULT_CENTER);
-            },
-            {
-              enableHighAccuracy: false,
-              timeout: 8000,
-              maximumAge: 60000
-            }
-          );
+          // Try again with lower accuracy if GPS fails
+          if (retryCount < maxRetries) {
+            setRetryCount(prev => prev + 1);
+            console.log(`🔄 Retry ${retryCount + 1}/${maxRetries} with lower accuracy...`);
+            
+            setTimeout(() => {
+              navigator.geolocation.getCurrentPosition(
+                (position) => {
+                  const location = {
+                    lat: position.coords.latitude,
+                    lng: position.coords.longitude,
+                    accuracy: position.coords.accuracy,
+                    timestamp: position.timestamp
+                  };
+                  
+                  console.log('✅ Location found (lower accuracy):', location);
+                  setUserLocation(location);
+                  setAccuracy(location.accuracy);
+                  setIsUsingFallback(location.accuracy > 100);
+                  setLoading(false);
+                  setRetryCount(0);
+                  resolve(location);
+                },
+                (fallbackError) => {
+                  console.error('❌ Fallback also failed:', fallbackError.message);
+                  setError(getErrorMessage(fallbackError));
+                  setIsUsingFallback(true);
+                  setLoading(false);
+                  resolve(DEFAULT_CENTER);
+                },
+                {
+                  enableHighAccuracy: false,
+                  timeout: 10000,
+                  maximumAge: 60000
+                }
+              );
+            }, 2000);
+          } else {
+            // All retries exhausted, use fallback
+            setError('Unable to get GPS signal. Using approximate location.');
+            setIsUsingFallback(true);
+            setLoading(false);
+            resolve(DEFAULT_CENTER);
+          }
         },
-        {
-          enableHighAccuracy: true,
-          timeout: 15000,
-          maximumAge: 0
-        }
+        options
       );
     });
   };
 
-  // Start continuous watching
-  const startWatching = (onLocationUpdate) => {
-    if (!navigator.geolocation) return;
+  // ── Get Error Message ──
+  const getErrorMessage = (error) => {
+    switch(error.code) {
+      case error.PERMISSION_DENIED:
+        return '📍 Location access denied. Please enable GPS in your browser settings.';
+      case error.POSITION_UNAVAILABLE:
+        return '📍 GPS signal unavailable. Try going outside.';
+      case error.TIMEOUT:
+        return '📍 GPS timeout. Try moving to an open area.';
+      default:
+        return `📍 GPS error: ${error.message}`;
+    }
+  };
 
-    // Clear existing watch
-    if (watchIdRef.current !== null) {
-      navigator.geolocation.clearWatch(watchIdRef.current);
+  // ── Watch Location Continuously ──
+  const startWatching = (onLocationUpdate) => {
+    if (!navigator.geolocation) {
+      setError('Geolocation is not supported');
+      return null;
     }
 
-    console.log('📍 Starting location watch...');
+    // Clear existing watch
+    if (watchId) {
+      navigator.geolocation.clearWatch(watchId);
+    }
 
-    watchIdRef.current = navigator.geolocation.watchPosition(
+    console.log('📍 Starting continuous GPS watch...');
+
+    const id = navigator.geolocation.watchPosition(
       (position) => {
         const location = {
           lat: position.coords.latitude,
           lng: position.coords.longitude,
           accuracy: position.coords.accuracy,
+          timestamp: position.timestamp
         };
+
+        console.log(`📍 GPS Update: ${location.accuracy}m`);
         
-        console.log('📍 Watch update:', location);
         setUserLocation(location);
         setAccuracy(location.accuracy);
-        setIsUsingFallback(false);
+        setIsUsingFallback(location.accuracy > 100);
+        setError(null);
         
-        if (onLocationUpdate) {
+        if (onLocationUpdate && typeof onLocationUpdate === 'function') {
           onLocationUpdate(location);
         }
       },
-      (err) => {
-        console.warn('⚠️ Watch error:', err.message);
-        setError('Lost location signal.');
+      (error) => {
+        console.warn('⚠️ Watch error:', error.message);
+        setError('Lost GPS signal. Attempting to reconnect...');
       },
       {
         enableHighAccuracy: true,
-        timeout: 15000,
-        maximumAge: 0,
+        timeout: 30000,
+        maximumAge: 0
       }
     );
+
+    setWatchId(id);
+    return id;
   };
 
+  // ── Stop Watching ──
   const stopWatching = () => {
-    if (watchIdRef.current !== null) {
-      navigator.geolocation.clearWatch(watchIdRef.current);
-      watchIdRef.current = null;
-      console.log('📍 Watch stopped');
+    if (watchId && navigator.geolocation) {
+      navigator.geolocation.clearWatch(watchId);
+      setWatchId(null);
+      console.log('📍 GPS watch stopped');
     }
   };
 
-  // Clean up
+  // ── Force GPS Refresh ──
+  const refreshGPS = async () => {
+    setRetryCount(0);
+    return await getUserLocation();
+  };
+
+  // ── Get Accuracy Status ──
+  const getAccuracyStatus = (accuracy) => {
+    if (!accuracy) return { label: 'Unknown', color: '#999', icon: '📡' };
+    if (accuracy < 20) return { label: 'Excellent', color: '#2e7d32', icon: '📍' };
+    if (accuracy < 50) return { label: 'Good', color: '#4caf50', icon: '📍' };
+    if (accuracy < 100) return { label: 'Fair', color: '#ff9800', icon: '📍' };
+    if (accuracy < 500) return { label: 'Poor', color: '#f44336', icon: '⚠️' };
+    if (accuracy < 1000) return { label: 'Very Poor', color: '#d32f2f', icon: '⚠️' };
+    return { label: 'No GPS', color: '#999', icon: '❌' };
+  };
+
+  // ── Cleanup on unmount ──
   useEffect(() => {
-    return () => stopWatching();
+    return () => {
+      if (watchId && navigator.geolocation) {
+        navigator.geolocation.clearWatch(watchId);
+      }
+    };
+  }, [watchId]);
+
+  // ── Auto-get location on mount ──
+  useEffect(() => {
+    getUserLocation();
   }, []);
 
   return {
     userLocation,
     loading,
     error,
-    isUsingFallback,
     accuracy,
+    isUsingFallback,
     getUserLocation,
+    refreshGPS,
     startWatching,
     stopWatching,
-    DEFAULT_CENTER,
+    getAccuracyStatus,
+    DEFAULT_CENTER
   };
 }

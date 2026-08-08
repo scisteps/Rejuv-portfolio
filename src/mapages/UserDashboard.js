@@ -11,6 +11,7 @@ import LocationDetails from '../components/user/LocationDetails';
 import PathTracker from '../components/user/PathTracker';
 import LocationForm from '../components/user/LocationForm';
 import './UserDashboard.css';
+
 const DEFAULT_CENTER = { lat: 0.3476, lng: 32.5825 };
 const DEFAULT_ZOOM = 16;
 
@@ -35,7 +36,6 @@ function UserLocationMarker({ position, isUsingFallback, onClick }) {
         strokeColor: '#FFFFFF',
         scale: 1.2,
         anchor: new window.google.maps.Point(0, 0)
-
       }}
       label={{
         text: '📍',
@@ -65,7 +65,6 @@ function LocationMarker({ location, onClick }) {
         strokeColor: '#FFFFFF',
         scale: 1.2,
         anchor: new window.google.maps.Point(0, 0)
-
       }}
       label={{
         text: CATEGORY_ICONS[location.category] || '📍',
@@ -85,6 +84,7 @@ export default function UserDashboard() {
   const [showLocationForm, setShowLocationForm] = useState(false);
   const [actionLocation, setActionLocation] = useState(null);
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const [gpsStatus, setGpsStatus] = useState('idle'); // idle, searching, found, failed
 
   const { 
     userLocation, 
@@ -92,7 +92,9 @@ export default function UserDashboard() {
     error: locationError,
     isUsingFallback, 
     accuracy, 
-    getUserLocation 
+    getUserLocation,
+    refreshGPS,
+    getAccuracyStatus
   } = useUserLocation();
 
   const { locations, roads, paths, selectedCategories, toggleCategory, getFilteredLocations } = useGeoData();
@@ -109,6 +111,47 @@ export default function UserDashboard() {
   }, []);
 
   // ── Handlers ──
+
+  // Force accurate GPS
+  const handleFindAccurateGPS = async () => {
+    setIsRefreshing(true);
+    setGpsStatus('searching');
+    
+    try {
+      const position = await refreshGPS();
+      
+      if (position && position.accuracy) {
+        console.log('📍 GPS Accuracy:', position.accuracy + 'm');
+        
+        if (position.accuracy < 50) {
+          setGpsStatus('found');
+          setMapCenter({ lat: position.lat, lng: position.lng });
+          setMapZoom(18);
+          setTimeout(() => setGpsStatus('idle'), 3000);
+        } else if (position.accuracy < 200) {
+          setGpsStatus('found');
+          setMapCenter({ lat: position.lat, lng: position.lng });
+          setMapZoom(17);
+          setTimeout(() => setGpsStatus('idle'), 3000);
+        } else {
+          setGpsStatus('failed');
+          setTimeout(() => {
+            setGpsStatus('idle');
+          }, 3000);
+        }
+      } else {
+        setGpsStatus('failed');
+        setTimeout(() => setGpsStatus('idle'), 3000);
+      }
+    } catch (error) {
+      console.error('GPS Error:', error);
+      setGpsStatus('failed');
+      setTimeout(() => setGpsStatus('idle'), 3000);
+    } finally {
+      setIsRefreshing(false);
+    }
+  };
+
   const handleMoveToLocation = async () => {
     setIsRefreshing(true);
     try {
@@ -146,13 +189,51 @@ export default function UserDashboard() {
   };
 
   const filteredLocations = getFilteredLocations();
+  const accuracyStatus = getAccuracyStatus ? getAccuracyStatus(accuracy) : { label: 'Unknown', color: '#999', icon: '📍' };
 
   return (
     <div className="user-dashboard">
+      {/* ── INLINE STYLES ── */}
+      <style>{`
+        @keyframes spin {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
+        }
+        @keyframes gpsPulse {
+          0% { transform: scale(1); opacity: 1; }
+          100% { transform: scale(1.8); opacity: 0; }
+        }
+        @keyframes slideDown {
+          from { opacity: 0; transform: translateY(-10px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+      `}</style>
+
       {/* Header */}
       <header className="user-header">
         <h1>📍 Geo WAY</h1>
         <div className="user-controls">
+          {/* ── FIND ACCURATE GPS BUTTON ── */}
+          <button
+            className={`btn-gps ${gpsStatus === 'searching' ? 'searching' : ''}`}
+            onClick={handleFindAccurateGPS}
+            disabled={isRefreshing || gpsStatus === 'searching'}
+            title="Find accurate GPS location"
+          >
+            {gpsStatus === 'searching' ? (
+              <>
+                <span className="gps-spinner"></span>
+                Finding GPS...
+              </>
+            ) : gpsStatus === 'found' ? (
+              '✅ GPS Found!'
+            ) : gpsStatus === 'failed' ? (
+              '⚠️ Try Again'
+            ) : (
+              '📡 Find GPS'
+            )}
+          </button>
+
           <button 
             className="btn-location" 
             onClick={handleMoveToLocation}
@@ -160,6 +241,7 @@ export default function UserDashboard() {
           >
             {isRefreshing ? '⏳' : '📍 My Location'}
           </button>
+
           <button 
             className="btn-track" 
             onClick={() => setShowTracker(!showTracker)}
@@ -169,7 +251,7 @@ export default function UserDashboard() {
         </div>
       </header>
 
-      {/* Status Banner */}
+      {/* ── GPS STATUS BANNER ── */}
       {locationError && (
         <div className="location-banner error">
           ⚠️ {locationError}
@@ -179,8 +261,53 @@ export default function UserDashboard() {
       
       {!locationError && userLocation && (
         <div className={`location-banner ${isUsingFallback ? 'warning' : 'success'}`}>
-          {isUsingFallback ? '📍 Approximate location' : '✅ GPS Active'}
-          {accuracy && <span className="accuracy-badge">±{Math.round(accuracy)}m</span>}
+          {isUsingFallback ? (
+            <>
+              <span className="status-dot" style={{ background: '#ff9800' }}></span>
+              📍 Approximate location — {accuracyStatus.label}
+              <span className="accuracy-badge">±{Math.round(accuracy || 0)}m</span>
+              <button
+                className="btn-gps-small"
+                onClick={handleFindAccurateGPS}
+                disabled={isRefreshing}
+              >
+                {isRefreshing ? '⏳' : '📡 Get GPS'}
+              </button>
+            </>
+          ) : (
+            <>
+              <span className="status-dot" style={{ background: accuracyStatus.color }}></span>
+              ✅ GPS Active · {accuracyStatus.label}
+              <span className="accuracy-badge">
+                {accuracyStatus.icon} ±{Math.round(accuracy || 0)}m
+              </span>
+              {accuracy > 100 && (
+                <button
+                  className="btn-gps-small"
+                  onClick={handleFindAccurateGPS}
+                  disabled={isRefreshing}
+                >
+                  {isRefreshing ? '⏳' : '🔄 Improve'}
+                </button>
+              )}
+            </>
+          )}
+        </div>
+      )}
+
+      {locationLoading && !userLocation && (
+        <div className="location-banner info">
+          <span className="loading-dot"></span>
+          Finding your location...
+        </div>
+      )}
+
+      {/* GPS Searching Indicator */}
+      {gpsStatus === 'searching' && (
+        <div className="gps-searching-banner">
+          <span className="gps-pulse-dot"></span>
+          Searching for accurate GPS signal...
+          <span className="gps-tip">💡 Go outside for better signal</span>
         </div>
       )}
 

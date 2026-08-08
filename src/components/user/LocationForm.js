@@ -1,20 +1,10 @@
+// src/components/User/LocationForm.jsx
 import React, { useState } from 'react';
 import { db, auth } from '../../Firebase';
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { CATEGORY_TYPES, CATEGORY_ICONS, CATEGORY_COLORS } from '../../utils/geoData';
 import './LocationForm.css';
-
-// ── Placeholder category/subcategory map ──────────────────────────────────
-// Replace with your real CATEGORY_TYPES from utils/geoData.js if it already
-// defines categories — this is just a working default.
-const CATEGORY_OPTIONS = {
-  academic:   { label: '🎓 Academic',   subcategories: ['Lecture Hall', 'Library', 'Laboratory', 'Department Office'] },
-  dining:     { label: '🍽️ Dining',     subcategories: ['Cafeteria', 'Restaurant', 'Café', 'Food Stall'] },
-  residence:  { label: '🏠 Residence',  subcategories: ['Hall of Residence', 'Hostel'] },
-  recreation: { label: '⚽ Recreation', subcategories: ['Sports Field', 'Gym', 'Park'] },
-  services:   { label: '🛠️ Services',   subcategories: ['Bank', 'Health Center', 'ICT Center', 'Bookshop'] },
-  other:      { label: '📍 Other',      subcategories: [] },
-};
 
 const LocationForm = ({
   lat,
@@ -23,39 +13,61 @@ const LocationForm = ({
   onSuccess,
 }) => {
   const [formData, setFormData] = useState({
-    name: '',
     category: '',
     subcategory: '',
     description: '',
     image: null,
     imagePreview: null,
-    contactInfo: '',
-    website: '',
-    hours: '',
-    rating: 0,
   });
-
+  
+  const [newCategory, setNewCategory] = useState('');
+  const [showNewCategory, setShowNewCategory] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+
+  // Get list of categories from CATEGORY_TYPES
+  const categoryOptions = Object.values(CATEGORY_TYPES);
+
+  // Subcategories based on selected category
+  const getSubcategories = () => {
+    const subcategories = {
+      restaurant: ['Fast Food', 'Fine Dining', 'Cafe', 'Takeaway', 'Food Court'],
+      park: ['Playground', 'Picnic Area', 'Walking Trail', 'Garden', 'Sports Field'],
+      shopping: ['Mall', 'Boutique', 'Supermarket', 'Market', 'Convenience Store'],
+      school: ['University', 'College', 'High School', 'Primary School', 'Library'],
+      hospital: ['Clinic', 'Pharmacy', 'Health Center', 'Dental', 'Laboratory'],
+      gym: ['Fitness Center', 'Yoga Studio', 'CrossFit', 'Swimming Pool', 'Dance Studio'],
+      library: ['Public Library', 'Study Area', 'Archive', 'Reading Room'],
+      community: ['Community Center', 'Town Hall', 'Meeting Space', 'Event Venue'],
+      entertainment: ['Cinema', 'Theater', 'Concert Hall', 'Arcade', 'Amusement Park'],
+      transport: ['Bus Stop', 'Train Station', 'Taxi Stand', 'Parking', 'Bike Station'],
+      religious: ['Church', 'Mosque', 'Temple', 'Synagogue', 'Prayer Room'],
+      other: ['Workspace', 'Co-working', 'Studio', 'Gallery', 'Workshop']
+    };
+    return subcategories[formData.category] || [];
+  };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({
       ...prev,
       [name]: value,
-      // reset subcategory whenever category changes
-      ...(name === 'category' ? { subcategory: '' } : {}),
+      ...(name === 'category' ? { subcategory: '' } : {})
     }));
+    // Reset new category when selecting existing
+    if (name === 'category') {
+      setShowNewCategory(false);
+      setNewCategory('');
+    }
   };
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
       if (file.size > 5 * 1024 * 1024) {
-        setError('Image size must be less than 5MB');
+        setError('Image must be less than 5MB');
         return;
       }
-
       const reader = new FileReader();
       reader.onloadend = () => {
         setFormData(prev => ({
@@ -69,19 +81,28 @@ const LocationForm = ({
     }
   };
 
+  const handleAddNewCategory = () => {
+    if (newCategory.trim()) {
+      setFormData(prev => ({
+        ...prev,
+        category: newCategory.trim().toLowerCase().replace(/\s+/g, '_')
+      }));
+      setShowNewCategory(false);
+      setNewCategory('');
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Everything is optional — no validation gate. We just make sure
-    // the user didn't submit a completely empty form by accident.
-    const hasAnyContent =
-      formData.name.trim() ||
+    // Check if at least one field is filled
+    const hasContent = 
       formData.category ||
       formData.description.trim() ||
       formData.image;
 
-    if (!hasAnyContent) {
-      setError('Add at least one detail (name, category, description, or image) before saving.');
+    if (!hasContent) {
+      setError('Add at least one detail (category, description, or image)');
       return;
     }
 
@@ -115,17 +136,9 @@ const LocationForm = ({
         createdByEmail: user.email,
         createdAt: serverTimestamp(),
         updatedAt: serverTimestamp(),
-        status: 'pending',
-        views: 0,
-        likes: 0,
-        name: formData.name.trim() || null,
         category: formData.category || null,
         subcategory: formData.subcategory || null,
         description: formData.description.trim() || null,
-        contactInfo: formData.contactInfo.trim() || null,
-        website: formData.website.trim() || null,
-        hours: formData.hours.trim() || null,
-        rating: formData.rating ? parseFloat(formData.rating) : null,
         ...(imageUrl ? { imageUrl, imageName } : {}),
       };
 
@@ -134,17 +147,14 @@ const LocationForm = ({
       onSuccess({ id: docRef.id, ...locationData });
 
       setFormData({
-        name: '',
         category: '',
         subcategory: '',
         description: '',
         image: null,
         imagePreview: null,
-        contactInfo: '',
-        website: '',
-        hours: '',
-        rating: 0,
       });
+      setNewCategory('');
+      setShowNewCategory(false);
 
     } catch (err) {
       console.error('Error adding location:', err);
@@ -154,139 +164,129 @@ const LocationForm = ({
     }
   };
 
-  const subcategoryOptions = formData.category
-    ? CATEGORY_OPTIONS[formData.category]?.subcategories || []
-    : [];
+  const removeImage = () => {
+    setFormData(prev => ({
+      ...prev,
+      image: null,
+      imagePreview: null
+    }));
+  };
+
+  const subcategoryOptions = getSubcategories();
 
   return (
     <div className="location-form-overlay" onClick={onClose}>
       <div className="location-form-modal" onClick={(e) => e.stopPropagation()}>
         <div className="location-form-header">
-          <h2>📍 Add Location Details</h2>
+          <h2>📍 Add Location</h2>
           <button className="close-btn" onClick={onClose}>✕</button>
         </div>
 
         <form onSubmit={handleSubmit} className="location-form">
           {error && <div className="form-error">{error}</div>}
 
+          {/* Coordinates */}
           <div className="form-section">
-            <h3>📍 Location</h3>
             <div className="coord-display">
-              <span>Lat: {lat.toFixed(6)}</span>
-              <span>Lng: {lng.toFixed(6)}</span>
+              <span>📍 {lat.toFixed(6)}, {lng.toFixed(6)}</span>
             </div>
           </div>
 
+          {/* Category with Add New Option */}
           <div className="form-group">
-            <label htmlFor="name">Location Name <span className="optional-tag">(optional)</span></label>
-            <input
-              type="text"
-              id="name"
-              name="name"
-              value={formData.name}
-              onChange={handleInputChange}
-              placeholder="e.g., Main Library, Student Center"
-            />
-          </div>
-
-          <div className="form-row">
-            <div className="form-group">
-              <label htmlFor="category">Category <span className="optional-tag">(optional)</span></label>
+            <label>Category <span className="optional-tag">(optional)</span></label>
+            <div className="category-input-group">
               <select
-                id="category"
                 name="category"
                 value={formData.category}
                 onChange={handleInputChange}
+                className="field-select"
+                style={{
+                  borderColor: formData.category ? CATEGORY_COLORS[formData.category] || '#ddd' : '#ddd'
+                }}
               >
-                <option value="">Select category…</option>
-                {Object.entries(CATEGORY_OPTIONS).map(([key, val]) => (
-                  <option key={key} value={key}>{val.label}</option>
+                <option value="">Select or add category…</option>
+                {categoryOptions.map((cat) => (
+                  <option key={cat} value={cat}>
+                    {CATEGORY_ICONS[cat] || '📍'} {cat.charAt(0).toUpperCase() + cat.slice(1)}
+                  </option>
                 ))}
+                <option value="__add_new__">➕ Add new category</option>
               </select>
             </div>
 
-            <div className="form-group">
-              <label htmlFor="subcategory">Subcategory <span className="optional-tag">(optional)</span></label>
-              <select
-                id="subcategory"
-                name="subcategory"
-                value={formData.subcategory}
-                onChange={handleInputChange}
-                disabled={!formData.category || subcategoryOptions.length === 0}
-              >
-                <option value="">
-                  {formData.category ? 'Select subcategory…' : 'Pick a category first'}
-                </option>
-                {subcategoryOptions.map((sub) => (
-                  <option key={sub} value={sub}>{sub}</option>
-                ))}
-              </select>
-            </div>
+            {/* Add New Category Input */}
+            {showNewCategory && (
+              <div className="new-category-input">
+                <input
+                  type="text"
+                  value={newCategory}
+                  onChange={(e) => setNewCategory(e.target.value)}
+                  placeholder="Enter new category name"
+                  className="field-input"
+                  autoFocus
+                />
+                <button 
+                  type="button" 
+                  onClick={handleAddNewCategory}
+                  className="btn-add-category"
+                >
+                  Add
+                </button>
+                <button 
+                  type="button" 
+                  onClick={() => {
+                    setShowNewCategory(false);
+                    setNewCategory('');
+                  }}
+                  className="btn-cancel-category"
+                >
+                  ✕
+                </button>
+              </div>
+            )}
+
+            {/* Hint to add new category */}
+            {!showNewCategory && (
+              <small className="field-hint">
+                Select "Add new category" to create your own
+              </small>
+            )}
           </div>
 
+          {/* Subcategory */}
           <div className="form-group">
-            <label htmlFor="description">Description <span className="optional-tag">(optional)</span></label>
+            <label>Subcategory <span className="optional-tag">(optional)</span></label>
+            <select
+              name="subcategory"
+              value={formData.subcategory}
+              onChange={handleInputChange}
+              className="field-select"
+              disabled={!formData.category}
+            >
+              <option value="">
+                {formData.category ? 'Select subcategory…' : 'Select a category first'}
+              </option>
+              {subcategoryOptions.map((sub) => (
+                <option key={sub} value={sub}>{sub}</option>
+              ))}
+            </select>
+          </div>
+
+          {/* Description */}
+          <div className="form-group">
+            <label>Description <span className="optional-tag">(optional)</span></label>
             <textarea
-              id="description"
               name="description"
               value={formData.description}
               onChange={handleInputChange}
               placeholder="Describe this location..."
+              className="field-textarea"
               rows="3"
             />
           </div>
 
-          <div className="form-group">
-            <label htmlFor="contactInfo">Contact Information <span className="optional-tag">(optional)</span></label>
-            <input
-              type="text"
-              id="contactInfo"
-              name="contactInfo"
-              value={formData.contactInfo}
-              onChange={handleInputChange}
-              placeholder="Phone number or email"
-            />
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="website">Website <span className="optional-tag">(optional)</span></label>
-            <input
-              type="url"
-              id="website"
-              name="website"
-              value={formData.website}
-              onChange={handleInputChange}
-              placeholder="https://example.com"
-            />
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="hours">Operating Hours <span className="optional-tag">(optional)</span></label>
-            <input
-              type="text"
-              id="hours"
-              name="hours"
-              value={formData.hours}
-              onChange={handleInputChange}
-              placeholder="e.g., Mon-Fri 8am-6pm"
-            />
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="rating">Rating (0-5) <span className="optional-tag">(optional)</span></label>
-            <input
-              type="number"
-              id="rating"
-              name="rating"
-              value={formData.rating}
-              onChange={handleInputChange}
-              min="0"
-              max="5"
-              step="0.5"
-              placeholder="0-5"
-            />
-          </div>
-
+          {/* Image Upload */}
           <div className="form-group">
             <label>Image <span className="optional-tag">(optional)</span></label>
             <div className="image-upload-area">
@@ -296,7 +296,7 @@ const LocationForm = ({
                   <button
                     type="button"
                     className="remove-image"
-                    onClick={() => setFormData(prev => ({ ...prev, image: null, imagePreview: null }))}
+                    onClick={removeImage}
                   >
                     ✕
                   </button>
@@ -304,8 +304,8 @@ const LocationForm = ({
               ) : (
                 <div className="upload-placeholder" onClick={() => document.getElementById('imageInput').click()}>
                   <span>📸</span>
-                  <p>Click to upload image</p>
-                  <small>JPEG, PNG, or WebP (max 5MB)</small>
+                  <p>Click to add image</p>
+                  <small>JPEG, PNG, WebP (max 5MB)</small>
                 </div>
               )}
               <input
@@ -318,12 +318,13 @@ const LocationForm = ({
             </div>
           </div>
 
+          {/* Actions */}
           <div className="form-actions">
             <button type="button" className="btn-cancel" onClick={onClose}>
               Cancel
             </button>
             <button type="submit" className="btn-submit" disabled={loading}>
-              {loading ? 'Saving...' : 'Save Location'}
+              {loading ? 'Saving...' : '💾 Save'}
             </button>
           </div>
         </form>
