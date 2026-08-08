@@ -10,14 +10,15 @@ import CategoryFilter from '../components/user/CategoryFilter';
 import LocationDetails from '../components/user/LocationDetails';
 import PathTracker from '../components/user/PathTracker';
 import LocationForm from '../components/user/LocationForm';
+import AuthPopup from '../components/Auth/AuthPopup';
+import { auth } from '../Firebase';
+import { onAuthStateChanged, signOut } from 'firebase/auth';
 import './UserDashboard.css';
 
 const DEFAULT_CENTER = { lat: 0.3476, lng: 32.5825 };
 const DEFAULT_ZOOM = 16;
 
-// ── Custom Components using useMap ──
-
-// User Location Marker Component
+// ── Custom Components (keep same) ──
 function UserLocationMarker({ position, isUsingFallback, onClick }) {
   const map = useMap();
   const color = isUsingFallback ? '#FF9800' : '#4285F4';
@@ -47,7 +48,6 @@ function UserLocationMarker({ position, isUsingFallback, onClick }) {
   );
 }
 
-// Location Marker Component
 function LocationMarker({ location, onClick }) {
   const map = useMap();
   
@@ -84,7 +84,11 @@ export default function UserDashboard() {
   const [showLocationForm, setShowLocationForm] = useState(false);
   const [actionLocation, setActionLocation] = useState(null);
   const [isRefreshing, setIsRefreshing] = useState(false);
-  const [gpsStatus, setGpsStatus] = useState('idle'); // idle, searching, found, failed
+  const [gpsStatus, setGpsStatus] = useState('idle');
+
+  // ── Auth State ──
+  const [user, setUser] = useState(null);
+  const [showAuth, setShowAuth] = useState(false);
 
   const { 
     userLocation, 
@@ -100,7 +104,15 @@ export default function UserDashboard() {
   const { locations, roads, paths, selectedCategories, toggleCategory, getFilteredLocations } = useGeoData();
   const { isTracking, path, pathStats, startTracking, stopTracking, clearPath } = usePathTracking();
 
-  // Get location on mount
+  // ── Auth Listener ──
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      setUser(user);
+    });
+    return () => unsubscribe();
+  }, []);
+
+  // ── Get location on mount ──
   useEffect(() => {
     getUserLocation().then((pos) => {
       if (pos) {
@@ -111,8 +123,14 @@ export default function UserDashboard() {
   }, []);
 
   // ── Handlers ──
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);
+    } catch (error) {
+      console.error('Logout error:', error);
+    }
+  };
 
-  // Force accurate GPS
   const handleFindAccurateGPS = async () => {
     setIsRefreshing(true);
     setGpsStatus('searching');
@@ -135,9 +153,7 @@ export default function UserDashboard() {
           setTimeout(() => setGpsStatus('idle'), 3000);
         } else {
           setGpsStatus('failed');
-          setTimeout(() => {
-            setGpsStatus('idle');
-          }, 3000);
+          setTimeout(() => setGpsStatus('idle'), 3000);
         }
       } else {
         setGpsStatus('failed');
@@ -168,6 +184,10 @@ export default function UserDashboard() {
   };
 
   const handleOpenLocationForm = () => {
+    if (!user) {
+      setShowAuth(true);
+      return;
+    }
     if (userLocation) {
       setActionLocation({ lat: userLocation.lat, lng: userLocation.lng });
       setShowLocationForm(true);
@@ -213,6 +233,25 @@ export default function UserDashboard() {
       <header className="user-header">
         <h1>📍 Geo WAY</h1>
         <div className="user-controls">
+          {/* ── AUTH BUTTONS ── */}
+          {user ? (
+            <>
+              <span className="user-email">{user.email}</span>
+              <button className="btn-logout" onClick={handleLogout}>
+                Logout
+              </button>
+            </>
+          ) : (
+            <>
+              <button className="btn-login" onClick={() => setShowAuth(true)}>
+                Login
+              </button>
+              <button className="btn-signup" onClick={() => setShowAuth(true)}>
+                Sign Up
+              </button>
+            </>
+          )}
+
           {/* ── FIND ACCURATE GPS BUTTON ── */}
           <button
             className={`btn-gps ${gpsStatus === 'searching' ? 'searching' : ''}`}
@@ -419,7 +458,7 @@ export default function UserDashboard() {
         )}
       </div>
 
-      {/* Location Form Modal */}
+      {/* ── LOCATION FORM ── */}
       {showLocationForm && actionLocation && (
         <LocationForm
           lat={actionLocation.lat}
@@ -431,6 +470,15 @@ export default function UserDashboard() {
           onSuccess={handleLocationSuccess}
         />
       )}
+
+      {/* ── AUTH POPUP ── */}
+      <AuthPopup
+        isOpen={showAuth}
+        onClose={() => setShowAuth(false)}
+        onSuccess={() => {
+          console.log('✅ Auth successful!');
+        }}
+      />
     </div>
   );
 }
