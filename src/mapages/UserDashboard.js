@@ -6,7 +6,6 @@ import {
   Marker,
   InfoWindow,
   Polyline,
-  AdvancedMarker,
 } from '@vis.gl/react-google-maps';
 import { useGeoData } from '../hooks/useGeoData';
 import { usePathTracking } from '../hooks/usePathTracking';
@@ -18,6 +17,7 @@ import LocationDetails from '../components/user/LocationDetails';
 import PathTracker from '../components/user/PathTracker';
 import ImageUploadPanel from '../components/user/ImageUploadPanel';
 import ImageViewer from '../components/user/ImageViewer';
+import LocationForm from '../components/user/LocationForm';
 import './UserDashboard.css';
 
 // ── Constants ────────────────────────────────────────────────────────────────
@@ -26,75 +26,6 @@ const MAKERERE_BOUNDS = {
   north: 0.3515, south: 0.3440,
   east: 32.5880, west: 32.5780,
 };
-
-// ── User location pin — pure CSS, no google global ───────────────────────────
-function UserPin({ isUsingFallback, accuracy }) {
-  const color = isUsingFallback ? '#FF9800' : '#4285F4';
-  // Accuracy ring: ~10px per 10m at zoom 18 — clamp between 28 and 80px
-  const ringSize = Math.min(80, Math.max(28, (accuracy || 20) * 0.8));
-
-  return (
-    <div style={{ position: 'relative', width: 24, height: 24, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-      {/* Accuracy radius */}
-      <div style={{
-        position: 'absolute',
-        width: ringSize, height: ringSize,
-        borderRadius: '50%',
-        background: color + '18',
-        border: `1px solid ${color}44`,
-        pointerEvents: 'none',
-      }} />
-      {/* Pulse ring */}
-      <div style={{
-        position: 'absolute',
-        width: 44, height: 44,
-        borderRadius: '50%',
-        background: color + '20',
-        border: `1.5px solid ${color}60`,
-        animation: 'locationPulse 2s ease-out infinite',
-        pointerEvents: 'none',
-      }} />
-      {/* White halo */}
-      <div style={{
-        position: 'absolute', width: 22, height: 22,
-        borderRadius: '50%', background: '#fff',
-        boxShadow: '0 2px 8px rgba(0,0,0,0.3)',
-      }} />
-      {/* Colored center */}
-      <div style={{
-        position: 'absolute', width: 14, height: 14,
-        borderRadius: '50%', background: color,
-      }} />
-    </div>
-  );
-}
-
-// ── Camera pin for saved photos ──────────────────────────────────────────────
-function CameraPin({ count }) {
-  return (
-    <div style={{
-      position: 'relative',
-      background: '#1a1a2e', border: '2.5px solid #fff',
-      borderRadius: '50%', width: 36, height: 36,
-      display: 'flex', alignItems: 'center', justifyContent: 'center',
-      fontSize: 17, boxShadow: '0 3px 10px rgba(0,0,0,0.45)', cursor: 'pointer',
-    }}>
-      📸
-      {count > 1 && (
-        <div style={{
-          position: 'absolute', top: -6, right: -6,
-          background: '#E53935', color: '#fff',
-          borderRadius: '50%', width: 18, height: 18,
-          fontSize: 10, fontWeight: 700,
-          display: 'flex', alignItems: 'center', justifyContent: 'center',
-          border: '1.5px solid #fff',
-        }}>
-          {count}
-        </div>
-      )}
-    </div>
-  );
-}
 
 // ── Storage meter ────────────────────────────────────────────────────────────
 function StorageMeter({ locationImages, userId }) {
@@ -116,20 +47,27 @@ function StorageMeter({ locationImages, userId }) {
 
 // ── Main component ───────────────────────────────────────────────────────────
 export default function UserDashboard() {
-  // Map never waits for GPS — starts at Makerere immediately
+  // Map state
   const [mapCenter, setMapCenter] = useState(MAKERERE_CENTER);
   const [mapZoom, setMapZoom] = useState(16);
-  const [followUser, setFollowUser] = useState(true); // pan map as location updates
+  const [followUser, setFollowUser] = useState(true);
 
+  // UI states
   const [selectedLocation, setSelectedLocation] = useState(null);
   const [showTracker, setShowTracker] = useState(false);
-  const [showUploadPanel, setShowUploadPanel] = useState(false);
   const [viewingImages, setViewingImages] = useState(null);
+  
+  // Location form states
+  const [showActionModal, setShowActionModal] = useState(false);
+  const [showLocationForm, setShowLocationForm] = useState(false);
+  const [showImageUpload, setShowImageUpload] = useState(false);
+  const [actionLocation, setActionLocation] = useState(null);
+  const [actionMode, setActionMode] = useState(null);
 
+  // Custom hooks
   const {
     userLocation, loading: locationLoading, error: locationError,
     isUsingFallback, accuracy, getUserLocation, startWatching, stopWatching,
-    MAKERERE_CENTER: MC,
   } = useUserLocation();
 
   const { locations, roads, paths, selectedCategories, toggleCategory, getFilteredLocations } = useGeoData();
@@ -137,8 +75,6 @@ export default function UserDashboard() {
   const { locationImages, uploading, uploadProgress, error: uploadError, userId, uploadImageAtLocation } = useLocationImages();
 
   // ── Get location immediately on mount ─────────────────────────────────────
-  // Map is already visible at Makerere center. getUserLocation resolves fast
-  // (phase 1: coarse, <1s) then silently upgrades to GPS in background.
   useEffect(() => {
     getUserLocation().then((pos) => {
       if (pos && followUser) {
@@ -146,19 +82,18 @@ export default function UserDashboard() {
         setMapZoom(18);
       }
     });
-    // Start continuous watch so pin updates as user walks
     startWatching();
     return () => stopWatching();
   }, []);
 
-  // Pan map to follow user only if followUser is on and not manually panned
+  // Pan map to follow user
   useEffect(() => {
     if (userLocation && followUser) {
       setMapCenter({ lat: userLocation.lat, lng: userLocation.lng });
     }
   }, [userLocation, followUser]);
 
-  // Stop following when user manually pans the map
+  // Stop following when user manually pans
   const handleMapDrag = useCallback(() => setFollowUser(false), []);
 
   const handleCenterOnUser = () => {
@@ -173,7 +108,56 @@ export default function UserDashboard() {
     }
   };
 
-  // Group camera pins by rounded lat/lng
+  // ── Location action handlers ──────────────────────────────────────────────
+  const handleUserLocationClick = () => {
+    if (!userLocation) {
+      alert('Getting your location... Please wait a moment.');
+      return;
+    }
+    setActionLocation({ lat: userLocation.lat, lng: userLocation.lng });
+    setShowActionModal(true);
+  };
+
+  const handleAddInfo = () => {
+    setShowActionModal(false);
+    setActionMode('info');
+    setShowLocationForm(true);
+  };
+
+  const handleAddImage = () => {
+    setShowActionModal(false);
+    setActionMode('image');
+    setShowImageUpload(true);
+  };
+
+  const handleAddBoth = () => {
+    setShowActionModal(false);
+    setActionMode('both');
+    setShowLocationForm(true);
+  };
+
+  const handleLocationSuccess = async (newLocation) => {
+    setShowLocationForm(false);
+    console.log('Location added:', newLocation);
+    
+    if (actionMode === 'both') {
+      setActionMode('image');
+      setShowImageUpload(true);
+    } else {
+      setActionMode(null);
+      setActionLocation(null);
+      alert('✅ Location added successfully!');
+    }
+  };
+
+  const handleImageUploadSuccess = () => {
+    setShowImageUpload(false);
+    setActionMode(null);
+    setActionLocation(null);
+    alert('✅ Image uploaded successfully!');
+  };
+
+  // Group camera pins by location
   const imagePinGroups = locationImages.reduce((acc, img) => {
     const key = `${img.lat.toFixed(4)}_${img.lng.toFixed(4)}`;
     if (!acc[key]) acc[key] = { lat: img.lat, lng: img.lng, images: [] };
@@ -182,7 +166,6 @@ export default function UserDashboard() {
   }, {});
 
   const filteredLocations = getFilteredLocations();
-
   const accuracyLabel = accuracy
     ? accuracy < 20 ? `±${Math.round(accuracy)}m · GPS` : `±${Math.round(accuracy)}m · Network`
     : '';
@@ -192,22 +175,20 @@ export default function UserDashboard() {
       <style>{`
         @keyframes locationPulse {
           0%   { transform: scale(1);   opacity: 1; }
-          100% { transform: scale(2.6); opacity: 0; }
+          100% { transform: scale(2.4); opacity: 0; }
+        }
+        @keyframes fadeIn {
+          from { opacity: 0; transform: translateY(10px); }
+          to { opacity: 1; transform: translateY(0); }
         }
       `}</style>
 
       {/* Header */}
       <div className="user-header">
-        <h1> Geo WAY</h1>
+        <h1>📍 Geo WAY</h1>
         <div className="user-controls">
           <button className="btn-location" onClick={handleCenterOnUser} disabled={locationLoading}>
             {locationLoading ? '⏳ Locating...' : '📍 My Location'}
-          </button>
-          <button className="btn-camera" onClick={() => {
-            if (!userLocation) { alert('Waiting for GPS — try again in a moment.'); return; }
-            setShowUploadPanel(true);
-          }}>
-            📸 Add Photo
           </button>
           <button className="btn-track" onClick={() => setShowTracker(!showTracker)}>
             {showTracker ? '📊 Hide Tracker' : '📊 Track Path'}
@@ -243,7 +224,7 @@ export default function UserDashboard() {
           <StorageMeter locationImages={locationImages} userId={userId} />
         </div>
 
-        {/* Map — renders immediately, no waiting */}
+        {/* Map */}
         <div className="map-container">
           <APIProvider apiKey={process.env.REACT_APP_GOOGLE_MAPS_API_KEY}>
             <Map
@@ -290,46 +271,48 @@ export default function UserDashboard() {
                 />
               ))}
 
-              {/* Camera pins — one per unique location */}
-            {Object.values(imagePinGroups).map(group => (
-  <Marker
-    key={`img_${group.lat}_${group.lng}`}
-    position={{ lat: group.lat, lng: group.lng }}
-    zIndex={500}
-    onClick={() => setViewingImages(group.images)}
-    icon={{
-      path: 'M0,-20 C-15,-20 -20,-5 0,15 C20,-5 15,-20 0,-20',
-      fillColor: '#4285F4',
-      fillOpacity: 1,
-      strokeWeight: 2,
-      strokeColor: '#FFFFFF',
-      scale: 0.8
-    }}
-    label={{
-      text: '📸',
-      fontSize: '14px',
-      fontWeight: 'bold'
-    }}
-  />
-))}
+              {/* Camera pins */}
+              {Object.values(imagePinGroups).map(group => (
+                <Marker
+                  key={`img_${group.lat}_${group.lng}`}
+                  position={{ lat: group.lat, lng: group.lng }}
+                  zIndex={500}
+                  onClick={() => setViewingImages(group.images)}
+                  icon={{
+                    path: 'M0,-20 C-15,-20 -20,-5 0,15 C20,-5 15,-20 0,-20',
+                    fillColor: '#4285F4',
+                    fillOpacity: 1,
+                    strokeWeight: 2,
+                    strokeColor: '#FFFFFF',
+                    scale: 0.8
+                  }}
+                  label={{ text: '📸', fontSize: '14px', fontWeight: 'bold' }}
+                />
+              ))}
 
-              {/* Live user pin — tap to add photo */}
-          {userLocation && (
-  <Marker
-    position={{ lat: userLocation.lat, lng: userLocation.lng }}
-    zIndex={1000}
-    title="You are here — tap to add a photo"
-    onClick={() => setShowUploadPanel(true)}
-    icon={{
-      path: 'M0,-15 C-10,-15 -10,0 0,15 C10,0 10,-15 0,-15',
-      fillColor: isUsingFallback ? '#FF9800' : '#4285F4',
-      fillOpacity: 1,
-      strokeWeight: 3,
-      strokeColor: '#FFFFFF',
-      scale: 0.8
-    }}
-  />
-)}
+              {/* ── USER LOCATION PIN (using standard Marker) ── */}
+              {userLocation && (
+                <Marker
+                  position={{ lat: userLocation.lat, lng: userLocation.lng }}
+                  zIndex={1000}
+                  onClick={handleUserLocationClick}
+                  icon={{
+                    path: 'M 0,-24 C -10,-24 -14,-10 -8,-2 L 0,12 L 8,-2 C 14,-10 10,-24 0,-24 Z',
+                    fillColor: isUsingFallback ? '#FF9800' : '#4285F4',
+                    fillOpacity: 1,
+                    strokeWeight: 2.5,
+                    strokeColor: '#FFFFFF',
+                    scale: 1.2,
+                    anchor: { x: 0, y: 0 }
+                  }}
+                  label={{
+                    text: '📍',
+                    fontSize: '18px',
+                    fontWeight: 'bold',
+                    className: 'user-location-label'
+                  }}
+                />
+              )}
 
               {/* Building info window */}
               {selectedLocation && (
@@ -343,7 +326,7 @@ export default function UserDashboard() {
             </Map>
           </APIProvider>
 
-          {/* Re-center button — visible when user has panned away */}
+          {/* Re-center button */}
           {!followUser && userLocation && (
             <button className="recenter-btn" onClick={handleCenterOnUser}>
               📍 Re-center
@@ -362,17 +345,90 @@ export default function UserDashboard() {
         )}
       </div>
 
-      {/* Upload panel */}
-      {showUploadPanel && userLocation && (
-        <ImageUploadPanel
-          lat={userLocation.lat} lng={userLocation.lng}
-          onUpload={uploadImageAtLocation}
-          onClose={() => setShowUploadPanel(false)}
-          uploading={uploading} uploadProgress={uploadProgress} error={uploadError}
+      {/* ── ACTION MODAL ── */}
+      {showActionModal && actionLocation && (
+        <div className="location-action-overlay" onClick={() => setShowActionModal(false)}>
+          <div className="location-action-modal" onClick={(e) => e.stopPropagation()}>
+            <button className="action-close-btn" onClick={() => setShowActionModal(false)}>✕</button>
+            
+            <div className="action-header">
+              <div className="action-location-pin">📍</div>
+              <h3>Add Location Details</h3>
+              <p className="action-coords">
+                {actionLocation.lat.toFixed(6)}, {actionLocation.lng.toFixed(6)}
+              </p>
+            </div>
+
+            <div className="action-options">
+              <div className="action-option" onClick={handleAddInfo}>
+                <div className="option-icon">📝</div>
+                <div className="option-content">
+                  <h4>Add Info Only</h4>
+                  <p>Name, category, description & details</p>
+                </div>
+                <div className="option-arrow">→</div>
+              </div>
+
+              <div className="action-option" onClick={handleAddImage}>
+                <div className="option-icon">📸</div>
+                <div className="option-content">
+                  <h4>Add Image Only</h4>
+                  <p>Upload photos without additional info</p>
+                </div>
+                <div className="option-arrow">→</div>
+              </div>
+
+              <div className="action-option" onClick={handleAddBoth}>
+                <div className="option-icon">✨</div>
+                <div className="option-content">
+                  <h4>Add Both</h4>
+                  <p>Complete location info with images</p>
+                </div>
+                <div className="option-arrow">→</div>
+              </div>
+            </div>
+
+            <div className="action-footer">
+              <button className="action-cancel" onClick={() => setShowActionModal(false)}>Cancel</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ── LOCATION FORM ── */}
+      {showLocationForm && actionLocation && (
+        <LocationForm
+          lat={actionLocation.lat}
+          lng={actionLocation.lng}
+          mode={actionMode}
+          onClose={() => {
+            setShowLocationForm(false);
+            setActionLocation(null);
+            setActionMode(null);
+          }}
+          onSuccess={handleLocationSuccess}
         />
       )}
 
-      {/* Image viewer */}
+      {/* ── IMAGE UPLOAD ── */}
+      {showImageUpload && actionLocation && (
+        <ImageUploadPanel
+          lat={actionLocation.lat}
+          lng={actionLocation.lng}
+          onUpload={uploadImageAtLocation}
+          onClose={() => {
+            setShowImageUpload(false);
+            setActionLocation(null);
+            setActionMode(null);
+          }}
+          uploading={uploading}
+          uploadProgress={uploadProgress}
+          error={uploadError}
+          onSuccess={handleImageUploadSuccess}
+        />
+      )}
+
+      {/* ── IMAGE VIEWER ── */}
       {viewingImages && (
         <ImageViewer images={viewingImages} onClose={() => setViewingImages(null)} />
       )}
