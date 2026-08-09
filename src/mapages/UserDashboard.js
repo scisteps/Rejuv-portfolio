@@ -10,14 +10,16 @@ import CategoryFilter from '../components/user/CategoryFilter';
 import LocationDetails from '../components/user/LocationDetails';
 import PathTracker from '../components/user/PathTracker';
 import LocationForm from '../components/user/LocationForm';
+import ImageUploadModal from '../components/user/ImageUploadModal';
 import AuthPopup from '../components/Auth/AuthPopup';
-import LottieOverlay from '../components/map/LottieOverlay'; // ← ADD THIS
+import LottieOverlay from '../components/map/LottieOverlay';
 import { auth } from '../Firebase';
 import { onAuthStateChanged, signOut } from 'firebase/auth';
+import { getCategories, getLocations, deleteLocation } from '../services/Firestoreservice';
 import './UserDashboard.css';
 
 // ── IMPORT LOTTIE ANIMATION ──
-import partyAnimation from '../jsons/party.json'; // ← Your Lottie animation file
+import partyAnimation from '../jsons/party.json';
 
 const DEFAULT_CENTER = { lat: 0.3476, lng: 32.5825 };
 const DEFAULT_ZOOM = 16;
@@ -86,11 +88,16 @@ export default function UserDashboard() {
   const [selectedLocation, setSelectedLocation] = useState(null);
   const [showTracker, setShowTracker] = useState(false);
   const [showLocationForm, setShowLocationForm] = useState(false);
+  const [showImageUpload, setShowImageUpload] = useState(false);
   const [actionLocation, setActionLocation] = useState(null);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [gpsStatus, setGpsStatus] = useState('idle');
   const [user, setUser] = useState(null);
   const [showAuth, setShowAuth] = useState(false);
+  const [locations, setLocations] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [selectedCategories, setSelectedCategories] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const { 
     userLocation, 
@@ -103,16 +110,43 @@ export default function UserDashboard() {
     getAccuracyStatus
   } = useUserLocation();
 
-  const { locations, roads, paths, selectedCategories, toggleCategory, getFilteredLocations } = useGeoData();
-  const { isTracking, path, pathStats, startTracking, stopTracking, clearPath } = usePathTracking();
+  // ── Fix: Provide default values for roads and paths ──
+  const { 
+    roads = [],  // Default to empty array
+    paths = [],  // Default to empty array
+    pathStats = null,
+    startTracking, 
+    stopTracking, 
+    clearPath 
+  } = usePathTracking();
+
+  const isTracking = paths.length > 0;
+
+  // ── Load Data ──
+  const loadData = useCallback(async () => {
+    try {
+      setLoading(true);
+      const [locationsData, categoriesData] = await Promise.all([
+        getLocations(),
+        getCategories()
+      ]);
+      setLocations(locationsData || []);
+      setCategories(categoriesData || []);
+    } catch (err) {
+      console.error('Error loading data:', err);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
 
   // ── Auth Listener ──
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       setUser(user);
+      loadData();
     });
     return () => unsubscribe();
-  }, []);
+  }, [loadData]);
 
   // ── Get location on mount ──
   useEffect(() => {
@@ -122,7 +156,7 @@ export default function UserDashboard() {
         setMapZoom(17);
       }
     });
-  }, []);
+  }, [getUserLocation]);
 
   // ── Handlers ──
   const handleLogout = async () => {
@@ -208,10 +242,49 @@ export default function UserDashboard() {
   const handleLocationSuccess = () => {
     setShowLocationForm(false);
     setActionLocation(null);
+    loadData(); // Refresh locations
+  };
+
+  const handleToggleCategory = (categoryId) => {
+    setSelectedCategories(prev => {
+      if (prev.includes(categoryId)) {
+        return prev.filter(id => id !== categoryId);
+      } else {
+        return [...prev, categoryId];
+      }
+    });
+  };
+
+  const getFilteredLocations = () => {
+    if (selectedCategories.length === 0) return locations || [];
+    return (locations || []).filter(loc => selectedCategories.includes(loc.category));
+  };
+
+  const handleDeleteLocation = async (locationId) => {
+    if (!window.confirm('Are you sure you want to delete this location?')) return;
+    
+    try {
+      await deleteLocation(locationId);
+      loadData();
+      setSelectedLocation(null);
+    } catch (err) {
+      console.error('Error deleting location:', err);
+      alert('Failed to delete location');
+    }
   };
 
   const filteredLocations = getFilteredLocations();
   const accuracyStatus = getAccuracyStatus ? getAccuracyStatus(accuracy) : { label: 'Unknown', color: '#999', icon: '📍' };
+
+  // ── Loading State ──
+  if (loading) {
+    return (
+      <div className="loading-screen">
+        <div className="loading-spinner"></div>
+        <p>Loading map data...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="user-dashboard">
@@ -233,13 +306,26 @@ export default function UserDashboard() {
           0%, 100% { opacity: 0.5; transform: translate(-50%, -50%) scale(0.8); }
           50% { opacity: 1; transform: translate(-50%, -50%) scale(1.2); }
         }
-        @keyframes lottie-pulse {
-          0% { transform: translate(-50%, -50%) scale(0.8); opacity: 0.8; }
-          100% { transform: translate(-50%, -50%) scale(1.8); opacity: 0; }
+        .loading-screen {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          height: 100vh;
+          background: #f7fafc;
         }
-        @keyframes lottie-float {
-          0%, 100% { transform: translate(-50%, -100%) translateY(0px); }
-          50% { transform: translate(-50%, -100%) translateY(-8px); }
+        .loading-spinner {
+          width: 48px;
+          height: 48px;
+          border: 4px solid #e2e8f0;
+          border-top-color: #667eea;
+          border-radius: 50%;
+          animation: spin 1s linear infinite;
+          margin-bottom: 20px;
+        }
+        .loading-screen p {
+          color: #4a5568;
+          font-size: 16px;
         }
       `}</style>
 
@@ -249,7 +335,7 @@ export default function UserDashboard() {
         <div className="user-controls">
           {user ? (
             <>
-              <span className="user-email">{user.email}</span>
+              <span className="user-email">{user.email || user.phoneNumber}</span>
               <button className="btn-logout" onClick={handleLogout}>Logout</button>
             </>
           ) : (
@@ -360,9 +446,17 @@ export default function UserDashboard() {
         <aside className="filter-sidebar">
           <CategoryFilter
             selectedCategories={selectedCategories}
-            onToggleCategory={toggleCategory}
-            categories={Object.values(CATEGORY_TYPES)}
+            onToggleCategory={handleToggleCategory}
+            categories={categories}
           />
+          
+          {user && (
+            <div className="user-stats">
+              <h4>My Stats</h4>
+              <p>📍 Locations: {(locations || []).filter(l => l.createdBy === user.uid).length}</p>
+              <p>📸 My Images: 0</p>
+            </div>
+          )}
         </aside>
 
         {/* Map */}
@@ -374,8 +468,8 @@ export default function UserDashboard() {
             onBoundsChanged={() => {}}
             onZoomChanged={(zoom) => setMapZoom(zoom)}
           >
-            {/* Roads */}
-            {roads.map(road => (
+            {/* Roads - with safety check */}
+            {roads && roads.length > 0 && roads.map(road => (
               <Polyline
                 key={road.id}
                 path={road.coordinates}
@@ -385,25 +479,23 @@ export default function UserDashboard() {
               />
             ))}
 
-            {/* Paths */}
-            {path.length > 1 && (
+            {/* Paths - with safety check */}
+            {paths && paths.length > 1 && (
               <Polyline
-                path={path}
+                path={paths}
                 strokeColor="#4285F4"
                 strokeWeight={4}
                 strokeOpacity={0.85}
               />
             )}
 
-            {/* ── LOCATION MARKERS WITH LOTTIE ON TOP ── */}
+            {/* ── LOCATION MARKERS WITH LOTTIE ── */}
             {filteredLocations.map(location => (
               <React.Fragment key={location.id}>
-                {/* Pin Marker */}
                 <LocationMarker 
                   location={location}
                   onClick={() => setSelectedLocation(location)}
                 />
-                {/* Lottie Animation on top of pin */}
                 <LottieOverlay
                   position={{ lat: location.lat, lng: location.lng }}
                   animationData={partyAnimation}
@@ -415,16 +507,14 @@ export default function UserDashboard() {
               </React.Fragment>
             ))}
 
-            {/* ── USER LOCATION WITH LOTTIE ON TOP ── */}
+            {/* ── USER LOCATION WITH LOTTIE ── */}
             {userLocation && (
               <React.Fragment>
-                {/* User Pin Marker */}
                 <UserLocationMarker 
                   position={{ lat: userLocation.lat, lng: userLocation.lng }}
                   isUsingFallback={isUsingFallback}
                   onClick={handleOpenLocationForm}
                 />
-                {/* Lottie Animation on top of user pin */}
                 <LottieOverlay
                   position={{ lat: userLocation.lat, lng: userLocation.lng }}
                   animationData={partyAnimation}
@@ -447,7 +537,30 @@ export default function UserDashboard() {
                   >
                     ✕
                   </button>
-                  <LocationDetails location={selectedLocation} />
+                  <LocationDetails 
+                    location={selectedLocation} 
+                    onUpdate={loadData}
+                  />
+                  {user && selectedLocation.createdBy === user.uid && (
+                    <div className="location-owner-actions">
+                      <button 
+                        className="edit-btn"
+                        onClick={() => {
+                          setActionLocation(selectedLocation);
+                          setShowLocationForm(true);
+                          setSelectedLocation(null);
+                        }}
+                      >
+                        ✏️ Edit
+                      </button>
+                      <button 
+                        className="delete-btn"
+                        onClick={() => handleDeleteLocation(selectedLocation.id)}
+                      >
+                        🗑️ Delete
+                      </button>
+                    </div>
+                  )}
                 </div>
               </Overlay>
             )}
@@ -457,8 +570,77 @@ export default function UserDashboard() {
           <button 
             className="floating-add-btn"
             onClick={handleOpenLocationForm}
+            style={{
+              position: 'fixed',
+              bottom: '160px',
+              right: '20px',
+              zIndex: 1000,
+              background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+              color: 'white',
+              border: 'none',
+              borderRadius: '50%',
+              width: '56px',
+              height: '56px',
+              fontSize: '24px',
+              cursor: 'pointer',
+              boxShadow: '0 4px 15px rgba(102, 126, 234, 0.4)',
+              transition: 'all 0.3s',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center'
+            }}
+            onMouseOver={(e) => {
+              e.target.style.transform = 'scale(1.1)';
+              e.target.style.boxShadow = '0 6px 25px rgba(102, 126, 234, 0.6)';
+            }}
+            onMouseOut={(e) => {
+              e.target.style.transform = 'scale(1)';
+              e.target.style.boxShadow = '0 4px 15px rgba(102, 126, 234, 0.4)';
+            }}
+            title="Add Location"
           >
-            📍 Add Location
+            📍
+          </button>
+
+          <button 
+            className="floating-image-btn"
+            onClick={() => {
+              if (!user) {
+                setShowAuth(true);
+                return;
+              }
+              setShowImageUpload(true);
+            }}
+            style={{
+              position: 'fixed',
+              bottom: '90px',
+              right: '20px',
+              zIndex: 1000,
+              background: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
+              color: 'white',
+              border: 'none',
+              borderRadius: '50%',
+              width: '56px',
+              height: '56px',
+              fontSize: '24px',
+              cursor: 'pointer',
+              boxShadow: '0 4px 15px rgba(245, 87, 108, 0.4)',
+              transition: 'all 0.3s',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center'
+            }}
+            onMouseOver={(e) => {
+              e.target.style.transform = 'scale(1.1)';
+              e.target.style.boxShadow = '0 6px 25px rgba(245, 87, 108, 0.6)';
+            }}
+            onMouseOut={(e) => {
+              e.target.style.transform = 'scale(1)';
+              e.target.style.boxShadow = '0 4px 15px rgba(245, 87, 108, 0.4)';
+            }}
+            title="Upload Images"
+          >
+            📸
           </button>
 
           {!userLocation && (
@@ -476,7 +658,7 @@ export default function UserDashboard() {
           <div className="tracker-panel">
             <PathTracker
               isTracking={isTracking}
-              path={path}
+              path={paths || []}
               pathStats={pathStats}
               onStartTracking={startTracking}
               onStopTracking={stopTracking}
@@ -491,11 +673,25 @@ export default function UserDashboard() {
         <LocationForm
           lat={actionLocation.lat}
           lng={actionLocation.lng}
+          location={actionLocation.id ? actionLocation : null}
           onClose={() => {
             setShowLocationForm(false);
             setActionLocation(null);
           }}
           onSuccess={handleLocationSuccess}
+        />
+      )}
+
+      {/* ── IMAGE UPLOAD MODAL ── */}
+      {showImageUpload && (
+        <ImageUploadModal
+          isOpen={showImageUpload}
+          onClose={() => setShowImageUpload(false)}
+          userId={user?.uid}
+          onUploadComplete={() => {
+            console.log('Images uploaded successfully');
+            loadData();
+          }}
         />
       )}
 
@@ -505,6 +701,7 @@ export default function UserDashboard() {
         onClose={() => setShowAuth(false)}
         onSuccess={() => {
           console.log('✅ Auth successful!');
+          loadData();
         }}
       />
     </div>

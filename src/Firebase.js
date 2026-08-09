@@ -1,83 +1,102 @@
 // src/Firebase.js
 import { initializeApp } from 'firebase/app';
-import { 
-  getFirestore, 
-  doc, 
-  getDoc, 
-  setDoc, 
-  collection, 
-  getDocs, 
-  updateDoc, 
-  arrayUnion, 
-  arrayRemove,
-  onSnapshot, 
+import { getAnalytics } from 'firebase/analytics';
+import {
+  getAuth,
+  RecaptchaVerifier,
+  signInWithPhoneNumber,
+  GoogleAuthProvider,
+  signInWithPopup,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  sendPasswordResetEmail,
+  updatePassword,
+  onAuthStateChanged,
+  signOut
+} from 'firebase/auth';
+import {
+  getFirestore,
+  doc,
+  getDoc,
+  setDoc,
+  updateDoc,
+  deleteDoc,
+  collection,
   addDoc,
+  getDocs,
+  onSnapshot,
   query,
+  where,
   orderBy,
   serverTimestamp,
-  where,
   increment,
-  deleteDoc
+  arrayUnion,
+  arrayRemove
 } from 'firebase/firestore';
-import { 
-  getAuth, 
-  signInWithEmailAndPassword, 
-  createUserWithEmailAndPassword, 
-  sendPasswordResetEmail,
-  signOut,
-  GoogleAuthProvider,
-  signInWithPopup
-} from 'firebase/auth';
-import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage';
+import {
+  getStorage,
+  ref,
+  uploadBytes,
+  getDownloadURL,
+  deleteObject
+} from 'firebase/storage';
 
 const firebaseConfig = {
-  apiKey: "AIzaSyAuUZ0mJvFy177CFvTsmutS2bO0FsTJ_9M",
-  authDomain: "rejuv-1d74f.firebaseapp.com",
-  projectId: "rejuv-1d74f",
-  storageBucket: "rejuv-1d74f.firebasestorage.app",
-  messagingSenderId: "963584606168",
-  appId: "1:963584606168:web:58ae46f67fb0294219fcad",
-  measurementId: "G-EBNXBFTFYG",
+  apiKey: "AIzaSyDnuxhbcc7XL3o5yWfXqe4ihvoolcm5deA",
+  authDomain: "math-swipe.firebaseapp.com",
+  projectId: "math-swipe",
+  storageBucket: "math-swipe.firebasestorage.app",
+  messagingSenderId: "856595090752",
+  appId: "1:856595090752:web:335303d30dc62945c6bea5",
+  measurementId: "G-PQ7P2DVEJ8"
 };
 
+
+// Initialize Firebase
 const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
+const analytics = getAnalytics(app);
 const auth = getAuth(app);
+const db = getFirestore(app);
 const storage = getStorage(app);
 
 // Export everything
-export { 
-  app, 
-  db, 
-  auth, 
+export {
+  app,
+  analytics,
+  auth,
+  db,
   storage,
+  // Auth functions
+  RecaptchaVerifier,
+  signInWithPhoneNumber,
+  GoogleAuthProvider,
+  signInWithPopup,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  sendPasswordResetEmail,
+  updatePassword,
+  onAuthStateChanged,
+  signOut,
   // Firestore functions
-  doc, 
-  getDoc, 
-  setDoc, 
-  collection, 
-  getDocs, 
-  updateDoc, 
-  arrayUnion, 
-  arrayRemove,
-  onSnapshot, 
+  doc,
+  getDoc,
+  setDoc,
+  updateDoc,
+  deleteDoc,
+  collection,
   addDoc,
+  getDocs,
+  onSnapshot,
   query,
+  where,
   orderBy,
   serverTimestamp,
-  where,
   increment,
-  deleteDoc,
+  arrayUnion,
+  arrayRemove,
   // Storage functions
   ref,
   uploadBytes,
   getDownloadURL,
-  deleteObject,
-  // Auth functions
-  signInWithEmailAndPassword,
-  createUserWithEmailAndPassword,
-  sendPasswordResetEmail,
-  signOut,
-  GoogleAuthProvider,
-  signInWithPopup
+  deleteObject
 };

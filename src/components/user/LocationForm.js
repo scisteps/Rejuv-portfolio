@@ -1,334 +1,305 @@
-// src/components/User/LocationForm.jsx
-import React, { useState } from 'react';
-import { db, auth } from '../../Firebase';
-import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
-import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
-import { CATEGORY_TYPES, CATEGORY_ICONS, CATEGORY_COLORS } from '../../utils/geoData';
+// src/components/user/LocationForm.jsx
+import React, { useState, useEffect, useRef } from 'react';
+import { addLocation, updateLocation, getCategories } from '../../services/Firestoreservice';
+import { auth } from '../../Firebase';
+import ImageUploadModal from './ImageUploadModal';
 import './LocationForm.css';
 
-const LocationForm = ({
-  lat,
-  lng,
-  onClose,
-  onSuccess,
+const LocationForm = ({ 
+  lat, 
+  lng, 
+  location = null, 
+  onClose, 
+  onSuccess 
 }) => {
+  const [categories, setCategories] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+  const [showImageUpload, setShowImageUpload] = useState(false);
+  const [uploadedImages, setUploadedImages] = useState([]);
   const [formData, setFormData] = useState({
+    name: '',
+    description: '',
     category: '',
     subcategory: '',
-    description: '',
-    image: null,
-    imagePreview: null,
   });
-  
-  const [newCategory, setNewCategory] = useState('');
-  const [showNewCategory, setShowNewCategory] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [currentUser, setCurrentUser] = useState(null);
+  const formRef = useRef(null);
 
-  // Get list of categories from CATEGORY_TYPES
-  const categoryOptions = Object.values(CATEGORY_TYPES);
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged(user => {
+      setCurrentUser(user);
+    });
+    return () => unsubscribe();
+  }, []);
 
-  // Subcategories based on selected category
-  const getSubcategories = () => {
-    const subcategories = {
-      restaurant: ['Fast Food', 'Fine Dining', 'Cafe', 'Takeaway', 'Food Court'],
-      park: ['Playground', 'Picnic Area', 'Walking Trail', 'Garden', 'Sports Field'],
-      shopping: ['Mall', 'Boutique', 'Supermarket', 'Market', 'Convenience Store'],
-      school: ['University', 'College', 'High School', 'Primary School', 'Library'],
-      hospital: ['Clinic', 'Pharmacy', 'Health Center', 'Dental', 'Laboratory'],
-      gym: ['Fitness Center', 'Yoga Studio', 'CrossFit', 'Swimming Pool', 'Dance Studio'],
-      library: ['Public Library', 'Study Area', 'Archive', 'Reading Room'],
-      community: ['Community Center', 'Town Hall', 'Meeting Space', 'Event Venue'],
-      entertainment: ['Cinema', 'Theater', 'Concert Hall', 'Arcade', 'Amusement Park'],
-      transport: ['Bus Stop', 'Train Station', 'Taxi Stand', 'Parking', 'Bike Station'],
-      religious: ['Church', 'Mosque', 'Temple', 'Synagogue', 'Prayer Room'],
-      other: ['Workspace', 'Co-working', 'Studio', 'Gallery', 'Workshop']
-    };
-    return subcategories[formData.category] || [];
+  useEffect(() => {
+    loadCategories();
+    if (location) {
+      setFormData({
+        name: location.name || '',
+        description: location.description || '',
+        category: location.category || '',
+        subcategory: location.subcategory || '',
+      });
+      // Load existing images if any
+      if (location.images) {
+        setUploadedImages(location.images);
+      }
+    }
+  }, [location]);
+
+  const loadCategories = async () => {
+    try {
+      const cats = await getCategories();
+      setCategories(cats);
+    } catch (err) {
+      console.error('Error loading categories:', err);
+    }
   };
 
-  const handleInputChange = (e) => {
+  const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({
       ...prev,
-      [name]: value,
-      ...(name === 'category' ? { subcategory: '' } : {})
+      [name]: value
     }));
-    // Reset new category when selecting existing
-    if (name === 'category') {
-      setShowNewCategory(false);
-      setNewCategory('');
-    }
   };
 
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      if (file.size > 5 * 1024 * 1024) {
-        setError('Image must be less than 5MB');
-        return;
-      }
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setFormData(prev => ({
-          ...prev,
-          image: file,
-          imagePreview: reader.result
-        }));
-        setError(null);
-      };
-      reader.readAsDataURL(file);
-    }
+  const handleImageUploadComplete = (images) => {
+    setUploadedImages(prev => [...prev, ...images]);
+    setShowImageUpload(false);
   };
 
-  const handleAddNewCategory = () => {
-    if (newCategory.trim()) {
-      setFormData(prev => ({
-        ...prev,
-        category: newCategory.trim().toLowerCase().replace(/\s+/g, '_')
-      }));
-      setShowNewCategory(false);
-      setNewCategory('');
-    }
+  const handleRemoveImage = (imageId) => {
+    setUploadedImages(prev => prev.filter(img => img.id !== imageId));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    if (!currentUser) {
+      setError('You must be logged in to add a location');
+      return;
+    }
 
-    // Check if at least one field is filled
-    const hasContent = 
-      formData.category ||
-      formData.description.trim() ||
-      formData.image;
+    if (!formData.name.trim()) {
+      setError('Location name is required');
+      return;
+    }
 
-    if (!hasContent) {
-      setError('Add at least one detail (category, description, or image)');
+    if (!formData.category) {
+      setError('Please select a category');
       return;
     }
 
     setLoading(true);
-    setError(null);
+    setError('');
 
     try {
-      const user = auth.currentUser;
-      if (!user) {
-        throw new Error('You must be logged in to add a location.');
-      }
-
-      let imageUrl = null;
-      let imageName = null;
-
-      if (formData.image) {
-        const storage = getStorage();
-        const timestamp = Date.now();
-        const fileName = `locations/${user.uid}/${timestamp}_${formData.image.name}`;
-        const storageRef = ref(storage, fileName);
-
-        const uploadResult = await uploadBytes(storageRef, formData.image);
-        imageUrl = await getDownloadURL(uploadResult.ref);
-        imageName = formData.image.name;
-      }
-
       const locationData = {
-        lat,
-        lng,
-        createdBy: user.uid,
-        createdByEmail: user.email,
-        createdAt: serverTimestamp(),
-        updatedAt: serverTimestamp(),
-        category: formData.category || null,
-        subcategory: formData.subcategory || null,
-        description: formData.description.trim() || null,
-        ...(imageUrl ? { imageUrl, imageName } : {}),
+        name: formData.name.trim(),
+        description: formData.description.trim(),
+        category: formData.category,
+        subcategory: formData.subcategory.trim(),
+        lat: lat || location?.lat,
+        lng: lng || location?.lng,
+        createdBy: currentUser.uid,
+        images: uploadedImages.map(img => ({
+          id: img.id,
+          url: img.url,
+          fileName: img.fileName
+        }))
       };
 
-      const docRef = await addDoc(collection(db, 'locations'), locationData);
+      if (location) {
+        // Update existing location
+        await updateLocation(location.id, locationData);
+      } else {
+        // Add new location
+        await addLocation(locationData);
+      }
 
-      onSuccess({ id: docRef.id, ...locationData });
-
-      setFormData({
-        category: '',
-        subcategory: '',
-        description: '',
-        image: null,
-        imagePreview: null,
-      });
-      setNewCategory('');
-      setShowNewCategory(false);
-
+      if (onSuccess) onSuccess();
+      onClose();
     } catch (err) {
-      console.error('Error adding location:', err);
-      setError(err.message || 'Failed to add location. Please try again.');
+      console.error('Error saving location:', err);
+      setError(err.message || 'Failed to save location');
     } finally {
       setLoading(false);
     }
   };
 
-  const removeImage = () => {
-    setFormData(prev => ({
-      ...prev,
-      image: null,
-      imagePreview: null
-    }));
-  };
-
-  const subcategoryOptions = getSubcategories();
+  // Get subcategories for selected category
+  const selectedCategory = categories.find(c => c.id === formData.category);
+  const subcategories = selectedCategory?.subcategories || [];
 
   return (
     <div className="location-form-overlay" onClick={onClose}>
       <div className="location-form-modal" onClick={(e) => e.stopPropagation()}>
-        <div className="location-form-header">
-          <h2>📍 Add Location</h2>
+        <div className="form-header">
+          <h2>{location ? 'Edit Location' : 'Add New Location'}</h2>
           <button className="close-btn" onClick={onClose}>✕</button>
         </div>
 
-        <form onSubmit={handleSubmit} className="location-form">
-          {error && <div className="form-error">{error}</div>}
+        {error && <div className="form-error">{error}</div>}
 
-          {/* Coordinates */}
-          <div className="form-section">
-            <div className="coord-display">
-              <span>📍 {lat.toFixed(6)}, {lng.toFixed(6)}</span>
-            </div>
-          </div>
-
-          {/* Category with Add New Option */}
-          <div className="form-group">
-            <label>Category <span className="optional-tag">(optional)</span></label>
-            <div className="category-input-group">
-              <select
-                name="category"
-                value={formData.category}
-                onChange={handleInputChange}
-                className="field-select"
-                style={{
-                  borderColor: formData.category ? CATEGORY_COLORS[formData.category] || '#ddd' : '#ddd'
-                }}
-              >
-                <option value="">Select or add category…</option>
-                {categoryOptions.map((cat) => (
-                  <option key={cat} value={cat}>
-                    {CATEGORY_ICONS[cat] || '📍'} {cat.charAt(0).toUpperCase() + cat.slice(1)}
-                  </option>
-                ))}
-                <option value="__add_new__">➕ Add new category</option>
-              </select>
-            </div>
-
-            {/* Add New Category Input */}
-            {showNewCategory && (
-              <div className="new-category-input">
-                <input
-                  type="text"
-                  value={newCategory}
-                  onChange={(e) => setNewCategory(e.target.value)}
-                  placeholder="Enter new category name"
-                  className="field-input"
-                  autoFocus
-                />
-                <button 
-                  type="button" 
-                  onClick={handleAddNewCategory}
-                  className="btn-add-category"
-                >
-                  Add
-                </button>
-                <button 
-                  type="button" 
-                  onClick={() => {
-                    setShowNewCategory(false);
-                    setNewCategory('');
-                  }}
-                  className="btn-cancel-category"
-                >
-                  ✕
-                </button>
-              </div>
-            )}
-
-            {/* Hint to add new category */}
-            {!showNewCategory && (
-              <small className="field-hint">
-                Select "Add new category" to create your own
-              </small>
-            )}
-          </div>
-
-          {/* Subcategory */}
-          <div className="form-group">
-            <label>Subcategory <span className="optional-tag">(optional)</span></label>
-            <select
-              name="subcategory"
-              value={formData.subcategory}
-              onChange={handleInputChange}
-              className="field-select"
-              disabled={!formData.category}
-            >
-              <option value="">
-                {formData.category ? 'Select subcategory…' : 'Select a category first'}
-              </option>
-              {subcategoryOptions.map((sub) => (
-                <option key={sub} value={sub}>{sub}</option>
-              ))}
-            </select>
-          </div>
-
-          {/* Description */}
-          <div className="form-group">
-            <label>Description <span className="optional-tag">(optional)</span></label>
-            <textarea
-              name="description"
-              value={formData.description}
-              onChange={handleInputChange}
-              placeholder="Describe this location..."
-              className="field-textarea"
-              rows="3"
-            />
-          </div>
-
-          {/* Image Upload */}
-          <div className="form-group">
-            <label>Image <span className="optional-tag">(optional)</span></label>
-            <div className="image-upload-area">
-              {formData.imagePreview ? (
-                <div className="image-preview">
-                  <img src={formData.imagePreview} alt="Preview" />
-                  <button
-                    type="button"
-                    className="remove-image"
-                    onClick={removeImage}
-                  >
-                    ✕
-                  </button>
-                </div>
-              ) : (
-                <div className="upload-placeholder" onClick={() => document.getElementById('imageInput').click()}>
-                  <span>📸</span>
-                  <p>Click to add image</p>
-                  <small>JPEG, PNG, WebP (max 5MB)</small>
-                </div>
-              )}
+        <form ref={formRef} onSubmit={handleSubmit}>
+          {/* Location Name */}
+          <div className="form-row">
+            <div className="form-group full-width">
+              <label>Location Name *</label>
               <input
-                type="file"
-                id="imageInput"
-                accept="image/*"
-                onChange={handleImageChange}
-                style={{ display: 'none' }}
+                type="text"
+                name="name"
+                value={formData.name}
+                onChange={handleChange}
+                placeholder="e.g., Central Park"
+                required
+                disabled={loading}
               />
             </div>
           </div>
 
+          {/* Category & Subcategory */}
+          <div className="form-row">
+            <div className="form-group">
+              <label>Category *</label>
+              <select
+                name="category"
+                value={formData.category}
+                onChange={handleChange}
+                required
+                disabled={loading}
+              >
+                <option value="">Select Category</option>
+                {categories.map(cat => (
+                  <option key={cat.id} value={cat.id}>
+                    {cat.icon} {cat.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div className="form-group">
+              <label>Subcategory</label>
+              <select
+                name="subcategory"
+                value={formData.subcategory}
+                onChange={handleChange}
+                disabled={loading || !subcategories.length}
+              >
+                <option value="">Select Subcategory</option>
+                {subcategories.map((sub, index) => (
+                  <option key={index} value={sub}>
+                    {sub}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
+
+          {/* Description / Details */}
+          <div className="form-row">
+            <div className="form-group full-width">
+              <label>Details / Description</label>
+              <textarea
+                name="description"
+                value={formData.description}
+                onChange={handleChange}
+                placeholder="Describe this location..."
+                rows="4"
+                disabled={loading}
+              />
+            </div>
+          </div>
+
+          {/* Location Preview */}
+          <div className="form-location-preview">
+            <span>📍 Position: {lat?.toFixed(6) || location?.lat?.toFixed(6)}, {lng?.toFixed(6) || location?.lng?.toFixed(6)}</span>
+          </div>
+
+          {/* Image Upload Section */}
+          <div className="form-image-section">
+            <div className="image-section-header">
+              <label>Images</label>
+              <button
+                type="button"
+                className="add-image-btn"
+                onClick={() => setShowImageUpload(true)}
+                disabled={loading}
+              >
+                + Add Images
+              </button>
+            </div>
+
+            {/* Image Preview */}
+            {uploadedImages.length > 0 && (
+              <div className="image-preview-grid">
+                {uploadedImages.map((img, index) => (
+                  <div key={img.id || index} className="image-preview-item">
+                    <img src={img.url} alt={img.fileName || 'Uploaded image'} />
+                    <button
+                      type="button"
+                      className="remove-image-btn"
+                      onClick={() => handleRemoveImage(img.id)}
+                      disabled={loading}
+                    >
+                      ✕
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {uploadedImages.length === 0 && (
+              <div className="image-placeholder">
+                <span className="placeholder-icon">🖼️</span>
+                <p>No images uploaded yet</p>
+                <small>Click "Add Images" to upload</small>
+              </div>
+            )}
+          </div>
+
           {/* Actions */}
           <div className="form-actions">
-            <button type="button" className="btn-cancel" onClick={onClose}>
+            <button 
+              type="button" 
+              className="cancel-btn" 
+              onClick={onClose}
+              disabled={loading}
+            >
               Cancel
             </button>
-            <button type="submit" className="btn-submit" disabled={loading}>
-              {loading ? 'Saving...' : '💾 Save'}
+            <button 
+              type="submit" 
+              className="submit-btn" 
+              disabled={loading}
+            >
+              {loading ? (
+                <>
+                  <span className="spinner"></span>
+                  Saving...
+                </>
+              ) : (
+                location ? 'Update Location' : 'Add Location'
+              )}
             </button>
           </div>
         </form>
       </div>
+
+      {/* Image Upload Modal */}
+      {showImageUpload && (
+        <ImageUploadModal
+          isOpen={showImageUpload}
+          onClose={() => setShowImageUpload(false)}
+          userId={currentUser?.uid}
+          locationId={location?.id}
+          categoryId={formData.category}
+          onUploadComplete={handleImageUploadComplete}
+        />
+      )}
     </div>
   );
 };
