@@ -17,13 +17,21 @@ const LocationForm = ({
   const [error, setError] = useState('');
   const [showImageUpload, setShowImageUpload] = useState(false);
   const [uploadedImages, setUploadedImages] = useState([]);
+  const [currentUser, setCurrentUser] = useState(null);
+  const [showNewCategoryInput, setShowNewCategoryInput] = useState(false);
+  const [newCategory, setNewCategory] = useState('');
+  const [showNewSubcategoryInput, setShowNewSubcategoryInput] = useState(false);
+  const [newSubcategory, setNewSubcategory] = useState('');
+  
   const [formData, setFormData] = useState({
     name: '',
     description: '',
     category: '',
+    categoryText: '', // For custom category text
     subcategory: '',
+    subcategoryText: '', // For custom subcategory text
   });
-  const [currentUser, setCurrentUser] = useState(null);
+  
   const formRef = useRef(null);
 
   useEffect(() => {
@@ -40,9 +48,10 @@ const LocationForm = ({
         name: location.name || '',
         description: location.description || '',
         category: location.category || '',
+        categoryText: location.category || '',
         subcategory: location.subcategory || '',
+        subcategoryText: location.subcategory || '',
       });
-      // Load existing images if any
       if (location.images) {
         setUploadedImages(location.images);
       }
@@ -63,6 +72,41 @@ const LocationForm = ({
     setFormData(prev => ({
       ...prev,
       [name]: value
+    }));
+    
+    // If selecting from dropdown, clear text input
+    if (name === 'category') {
+      setFormData(prev => ({
+        ...prev,
+        category: value,
+        categoryText: value === 'custom' ? prev.categoryText : value
+      }));
+    }
+    
+    if (name === 'subcategory') {
+      setFormData(prev => ({
+        ...prev,
+        subcategory: value,
+        subcategoryText: value === 'custom' ? prev.subcategoryText : value
+      }));
+    }
+  };
+
+  const handleCategoryTextChange = (e) => {
+    const value = e.target.value;
+    setFormData(prev => ({
+      ...prev,
+      categoryText: value,
+      category: value // Sync with category field
+    }));
+  };
+
+  const handleSubcategoryTextChange = (e) => {
+    const value = e.target.value;
+    setFormData(prev => ({
+      ...prev,
+      subcategoryText: value,
+      subcategory: value // Sync with subcategory field
     }));
   };
 
@@ -88,8 +132,12 @@ const LocationForm = ({
       return;
     }
 
-    if (!formData.category) {
-      setError('Please select a category');
+    // Get final category value (from dropdown or text input)
+    const finalCategory = formData.category || formData.categoryText || '';
+    const finalSubcategory = formData.subcategory || formData.subcategoryText || '';
+
+    if (!finalCategory) {
+      setError('Please select or enter a category');
       return;
     }
 
@@ -100,8 +148,8 @@ const LocationForm = ({
       const locationData = {
         name: formData.name.trim(),
         description: formData.description.trim(),
-        category: formData.category,
-        subcategory: formData.subcategory.trim(),
+        category: finalCategory,
+        subcategory: finalSubcategory,
         lat: lat || location?.lat,
         lng: lng || location?.lng,
         createdBy: currentUser.uid,
@@ -112,11 +160,23 @@ const LocationForm = ({
         }))
       };
 
+      // If this is a new category, save it to the categories collection
+      if (!categories.find(c => c.id === finalCategory || c.name === finalCategory)) {
+        // Save new category
+        const newCategoryData = {
+          name: finalCategory,
+          subcategories: finalSubcategory ? [finalSubcategory] : [],
+          icon: '📍',
+          createdBy: currentUser.uid,
+          createdAt: new Date()
+        };
+        // You can save this to a 'categories' collection
+        // await addCategory(newCategoryData);
+      }
+
       if (location) {
-        // Update existing location
         await updateLocation(location.id, locationData);
       } else {
-        // Add new location
         await addLocation(locationData);
       }
 
@@ -131,7 +191,7 @@ const LocationForm = ({
   };
 
   // Get subcategories for selected category
-  const selectedCategory = categories.find(c => c.id === formData.category);
+  const selectedCategory = categories.find(c => c.id === formData.category || c.name === formData.category);
   const subcategories = selectedCategory?.subcategories || [];
 
   return (
@@ -161,41 +221,106 @@ const LocationForm = ({
             </div>
           </div>
 
-          {/* Category & Subcategory */}
+          {/* Category - Dropdown + Text Input */}
           <div className="form-row">
-            <div className="form-group">
+            <div className="form-group full-width">
               <label>Category *</label>
-              <select
-                name="category"
-                value={formData.category}
-                onChange={handleChange}
-                required
-                disabled={loading}
-              >
-                <option value="">Select Category</option>
-                {categories.map(cat => (
-                  <option key={cat.id} value={cat.id}>
-                    {cat.icon} {cat.name}
-                  </option>
-                ))}
-              </select>
+              <div className="category-input-group">
+                <select
+                  name="category"
+                  value={formData.category}
+                  onChange={handleChange}
+                  className="category-select"
+                  disabled={loading}
+                >
+                  <option value="">Select from saved categories</option>
+                  {categories.map(cat => (
+                    <option key={cat.id} value={cat.id}>
+                      {cat.icon || '📍'} {cat.name}
+                    </option>
+                  ))}
+                  <option value="custom">✏️ Enter custom category</option>
+                </select>
+                
+                {formData.category === 'custom' && (
+                  <div className="custom-input-wrapper">
+                    <input
+                      type="text"
+                      value={formData.categoryText}
+                      onChange={handleCategoryTextChange}
+                      placeholder="Enter custom category name"
+                      className="custom-input"
+                      autoFocus
+                      disabled={loading}
+                    />
+                  </div>
+                )}
+                
+                {/* Or always show text input as alternative */}
+                <div className="or-divider">
+                  <span>OR</span>
+                </div>
+                <input
+                  type="text"
+                  value={formData.categoryText}
+                  onChange={handleCategoryTextChange}
+                  placeholder="Or type new category name"
+                  className="text-input-alt"
+                  disabled={loading}
+                />
+              </div>
+              <small className="field-hint">Select from dropdown or type your own</small>
             </div>
+          </div>
 
-            <div className="form-group">
+          {/* Subcategory - Dropdown + Text Input */}
+          <div className="form-row">
+            <div className="form-group full-width">
               <label>Subcategory</label>
-              <select
-                name="subcategory"
-                value={formData.subcategory}
-                onChange={handleChange}
-                disabled={loading || !subcategories.length}
-              >
-                <option value="">Select Subcategory</option>
-                {subcategories.map((sub, index) => (
-                  <option key={index} value={sub}>
-                    {sub}
-                  </option>
-                ))}
-              </select>
+              <div className="subcategory-input-group">
+                <select
+                  name="subcategory"
+                  value={formData.subcategory}
+                  onChange={handleChange}
+                  className="subcategory-select"
+                  disabled={loading || !categories.length}
+                >
+                  <option value="">Select from saved subcategories</option>
+                  {subcategories.map((sub, index) => (
+                    <option key={index} value={sub}>
+                      {sub}
+                    </option>
+                  ))}
+                  <option value="custom">✏️ Enter custom subcategory</option>
+                </select>
+                
+                {formData.subcategory === 'custom' && (
+                  <div className="custom-input-wrapper">
+                    <input
+                      type="text"
+                      value={formData.subcategoryText}
+                      onChange={handleSubcategoryTextChange}
+                      placeholder="Enter custom subcategory"
+                      className="custom-input"
+                      autoFocus
+                      disabled={loading}
+                    />
+                  </div>
+                )}
+                
+                <div className="or-divider">
+                  <span>OR</span>
+                </div>
+                <input
+                  type="text"
+                  value={formData.subcategoryText}
+                  onChange={handleSubcategoryTextChange}
+                  placeholder="Or type new subcategory name"
+                  className="text-input-alt"
+                  disabled={loading}
+                />
+              </div>
+              <small className="field-hint">Select from dropdown or type your own</small>
             </div>
           </div>
 

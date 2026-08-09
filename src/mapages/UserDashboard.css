@@ -420,4 +420,60 @@
 
 .lottie-overlay-wrapper:hover {
   z-index: 1001;
+}/* Add to UserDashboard.css */
+
+@keyframes lottie-glow {
+  0%, 100% { 
+    opacity: 0.5; 
+    transform: translate(-50%, -50%) scale(0.8); 
+  }
+  50% { 
+    opacity: 1; 
+    transform: translate(-50%, -50%) scale(1.2); 
+  }
+}
+
+@keyframes lottie-pulse {
+  0% { 
+    transform: translate(-50%, -50%) scale(0.8); 
+    opacity: 0.8; 
+  }
+  100% { 
+    transform: translate(-50%, -50%) scale(1.8); 
+    opacity: 0; 
+  }
+}
+
+.lottie-overlay-wrapper {
+  animation: lottie-float 3s ease-in-out infinite;
+}
+
+@keyframes lottie-float {
+  0%, 100% { 
+    transform: translateY(0px); 
+  }
+  50% { 
+    transform: translateY(-8px); 
+  }
+}
+
+.lottie-overlay-wrapper:hover {
+  animation-play-state: paused;
+}
+
+.user-location-marker {
+  animation: user-float 2.5s ease-in-out infinite;
+}
+
+@keyframes user-float {
+  0%, 100% { 
+    transform: translateY(0px) scale(1); 
+  }
+  50% { 
+    transform: translateY(-10px) scale(1.05); 
+  }
+}
+
+.lottie-overlay-wrapper {
+  pointer-events: auto;
 }

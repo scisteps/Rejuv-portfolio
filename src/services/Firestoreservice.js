@@ -1,234 +1,40 @@
-// src/services/firestoreService.js
-import {
-  db,
-  storage,
-  doc,
+// src/services/Firestoreservice.js
+import { db, auth } from '../Firebase';
+import { 
+  collection, 
+  addDoc, 
+  getDocs, 
+  updateDoc, 
   getDoc,
-  setDoc,
-  updateDoc,
-  deleteDoc,
-  collection,
-  addDoc,
-  getDocs,
-  onSnapshot,
-  query,
-  where,
-  orderBy,
-  serverTimestamp,
-  ref,
-  uploadBytes,
-  getDownloadURL,
-  deleteObject,
   increment,
+  arrayRemove,
   arrayUnion,
-  arrayRemove
-} from '../Firebase';
+  deleteDoc, 
+  doc, 
+  serverTimestamp,
+  query,
+  orderBy,
+  where
+} from 'firebase/firestore';
 
-/* ──────────────────────────────────────────────────────────
-   USERS
-   ────────────────────────────────────────────────────────── */
-export async function upsertUserProfile(uid, { email, displayName = '', photoURL = '' } = {}) {
-  if (!uid) throw new Error('upsertUserProfile: uid is required');
-  const ref = doc(db, 'users', uid);
-  const existing = await getDoc(ref);
+// ──────────────────────────────────────────────
+// LOCATION FUNCTIONS
+// ──────────────────────────────────────────────
 
-  const payload = {
-    uid,
-    email: email ?? null,
-    displayName,
-    photoURL,
-    updatedAt: serverTimestamp(),
-  };
-
-  if (!existing.exists()) {
-    payload.createdAt = serverTimestamp();
+// Add location
+export const addLocation = async (locationData) => {
+  try {
+    const docRef = await addDoc(collection(db, 'locations'), {
+      ...locationData,
+      createdAt: serverTimestamp(),
+      updatedAt: serverTimestamp()
+    });
+    return { id: docRef.id, ...locationData };
+  } catch (error) {
+    console.error('Error adding location:', error);
+    throw error;
   }
-
-  await setDoc(ref, payload, { merge: true });
-  return payload;
-}
-
-export async function getUserProfile(uid) {
-  const snap = await getDoc(doc(db, 'users', uid));
-  return snap.exists() ? { id: snap.id, ...snap.data() } : null;
-}
-
-export async function updateUserProfile(uid, data) {
-  await updateDoc(doc(db, 'users', uid), { ...data, updatedAt: serverTimestamp() });
-}
-
-/* ──────────────────────────────────────────────────────────
-   CATEGORIES
-   ────────────────────────────────────────────────────────── */
-const categoriesCol = collection(db, 'categories');
-
-export async function addCategory({ name, color = '#636E72', icon = '📍', createdBy, subcategories = [] }) {
-  if (!name || !createdBy) throw new Error('addCategory: name and createdBy are required');
-  const docRef = await addDoc(categoriesCol, {
-    name: name.trim(),
-    color,
-    icon,
-    createdBy,
-    subcategories: subcategories || [],
-    createdAt: serverTimestamp(),
-  });
-  return docRef.id;
-}
-
-export async function getCategories() {
-  const q = query(categoriesCol, orderBy('name'));
-  const snap = await getDocs(q);
-  return snap.docs.map((d) => ({ id: d.id, ...d.data() }));
-}
-
-export function subscribeToCategories(callback) {
-  const q = query(categoriesCol, orderBy('name'));
-  return onSnapshot(q, (snap) => {
-    callback(snap.docs.map((d) => ({ id: d.id, ...d.data() })));
-  });
-}
-
-export async function updateCategory(categoryId, data) {
-  await updateDoc(doc(db, 'categories', categoryId), data);
-}
-
-export async function deleteCategory(categoryId) {
-  await deleteDoc(doc(db, 'categories', categoryId));
-}
-
-/* ──────────────────────────────────────────────────────────
-   LOCATIONS
-   ────────────────────────────────────────────────────────── */
-const locationsCol = collection(db, 'locations');
-
-export async function addLocation(locationData) {
-  const { 
-    name, 
-    description = '', 
-    category, 
-    subcategory = '', 
-    lat, 
-    lng, 
-    createdBy,
-    address = '',
-    phone = '',
-    website = '',
-    hours = '',
-    tags = [],
-    isPublic = true
-  } = locationData;
-
-  if (!name || !category || !createdBy) {
-    throw new Error('addLocation: name, category, and createdBy are required');
-  }
-
-  const docRef = await addDoc(locationsCol, {
-    name: name.trim(),
-    description: description.trim(),
-    category,
-    subcategory: subcategory.trim(),
-    location: {
-      lat: typeof lat === 'number' ? lat : parseFloat(lat),
-      lng: typeof lng === 'number' ? lng : parseFloat(lng)
-    },
-    address: address.trim(),
-    phone: phone.trim(),
-    website: website.trim(),
-    hours: hours.trim(),
-    tags: tags || [],
-    isPublic: isPublic,
-    createdBy,
-    createdAt: serverTimestamp(),
-    updatedAt: serverTimestamp(),
-    rating: 0,
-    ratingCount: 0,
-    views: 0,
-    likes: 0
-  });
-
-  return docRef.id;
-}
-
-export async function getLocations(filters = {}) {
-  const { category, subcategory, createdBy, searchTerm } = filters;
-  const conditions = [];
-
-  if (category) conditions.push(where('category', '==', category));
-  if (subcategory) conditions.push(where('subcategory', '==', subcategory));
-  if (createdBy) conditions.push(where('createdBy', '==', createdBy));
-  
-  // Always get public locations and user's own private ones
-  const q = query(locationsCol, ...conditions, orderBy('createdAt', 'desc'));
-  const snap = await getDocs(q);
-  
-  let locations = snap.docs.map((d) => ({ id: d.id, ...d.data() }));
-  
-  // Filter by search term client-side
-  if (searchTerm) {
-    const term = searchTerm.toLowerCase();
-    locations = locations.filter(loc => 
-      loc.name.toLowerCase().includes(term) ||
-      loc.description.toLowerCase().includes(term) ||
-      loc.tags.some(tag => tag.toLowerCase().includes(term))
-    );
-  }
-  
-  return locations;
-}
-
-export function subscribeToLocations(callback, filters = {}) {
-  const { category, subcategory, createdBy } = filters;
-  const conditions = [];
-
-  if (category) conditions.push(where('category', '==', category));
-  if (subcategory) conditions.push(where('subcategory', '==', subcategory));
-  if (createdBy) conditions.push(where('createdBy', '==', createdBy));
-
-  const q = query(locationsCol, ...conditions, orderBy('createdAt', 'desc'));
-  
-  return onSnapshot(q, (snap) => {
-    callback(snap.docs.map((d) => ({ id: d.id, ...d.data() })));
-  });
-}
-
-export async function getLocationById(locationId) {
-  const snap = await getDoc(doc(db, 'locations', locationId));
-  return snap.exists() ? { id: snap.id, ...snap.data() } : null;
-}
-
-export async function updateLocation(locationId, data) {
-  await updateDoc(doc(db, 'locations', locationId), {
-    ...data,
-    updatedAt: serverTimestamp()
-  });
-}
-
-export async function deleteLocation(locationId) {
-  await deleteDoc(doc(db, 'locations', locationId));
-}
-
-export async function incrementLocationViews(locationId) {
-  await updateDoc(doc(db, 'locations', locationId), {
-    views: increment(1)
-  });
-}
-
-export async function rateLocation(locationId, rating) {
-  const locRef = doc(db, 'locations', locationId);
-  const snap = await getDoc(locRef);
-  if (!snap.exists()) throw new Error('Location not found');
-  
-  const data = snap.data();
-  const newRatingCount = (data.ratingCount || 0) + 1;
-  const newRating = ((data.rating || 0) * (data.ratingCount || 0) + rating) / newRatingCount;
-  
-  await updateDoc(locRef, {
-    rating: newRating,
-    ratingCount: newRatingCount
-  });
-  
-  return { rating: newRating, ratingCount: newRatingCount };
-}
+};
 
 export async function toggleLikeLocation(locationId, userId) {
   const locRef = doc(db, 'locations', locationId);
@@ -246,114 +52,193 @@ export async function toggleLikeLocation(locationId, userId) {
   
   return !isLiked;
 }
-
-/* ──────────────────────────────────────────────────────────
-   IMAGES (Updated for Locations)
-   ────────────────────────────────────────────────────────── */
-const imagesCol = collection(db, 'images');
-
-export async function uploadImage(file, { 
-  uploadedBy, 
-  locationId = null, 
-  categoryId = null,
-  description = '',
-  tags = [],
-  isPublic = true,
-  isMain = false
-} = {}) {
-  if (!file || !uploadedBy) throw new Error('uploadImage: file and uploadedBy are required');
-
-  const timestamp = Date.now();
-  const sanitizedFileName = file.name.replace(/[^a-zA-Z0-9.]/g, '_');
-  const storagePath = `images/${uploadedBy}/${timestamp}_${sanitizedFileName}`;
-  const storageRef = ref(storage, storagePath);
-
-  await uploadBytes(storageRef, file);
-  const url = await getDownloadURL(storageRef);
-
-  const imageData = {
-    url,
-    storagePath,
-    fileName: file.name,
-    size: file.size,
-    fileType: file.type,
-    uploadedBy,
-    locationId,
-    categoryId,
-    description: description.trim(),
-    tags: tags || [],
-    isPublic,
-    isMain,
-    downloadCount: 0,
-    createdAt: serverTimestamp(),
-  };
-
-  const docRef = await addDoc(imagesCol, imageData);
-
-  // If this is the main image, update the location
-  if (isMain && locationId) {
-    await updateDoc(doc(db, 'locations', locationId), {
-      mainImage: url,
-      mainImageId: docRef.id
+// Update location
+export const updateLocation = async (locationId, locationData) => {
+  try {
+    const docRef = doc(db, 'locations', locationId);
+    await updateDoc(docRef, {
+      ...locationData,
+      updatedAt: serverTimestamp()
     });
+    return { id: locationId, ...locationData };
+  } catch (error) {
+    console.error('Error updating location:', error);
+    throw error;
   }
-
-  return { id: docRef.id, url, storagePath, ...imageData };
-}
-
-export async function uploadMultipleImages(files, metadata = {}) {
-  const { uploadedBy, locationId, categoryId } = metadata;
-  if (!uploadedBy) throw new Error('uploadMultipleImages: uploadedBy is required');
+};
+export async function rateLocation(locationId, rating) {
+  const locRef = doc(db, 'locations', locationId);
+  const snap = await getDoc(locRef);
+  if (!snap.exists()) throw new Error('Location not found');
   
-  const uploadPromises = files.map((file, index) => 
-    uploadImage(file, {
-      ...metadata,
-      isMain: index === 0 // First image becomes main
-    })
-  );
+  const data = snap.data();
+  const newRatingCount = (data.ratingCount || 0) + 1;
+  const newRating = ((data.rating || 0) * (data.ratingCount || 0) + rating) / newRatingCount;
   
-  return await Promise.all(uploadPromises);
-}
-
-export async function getImages(filters = {}) {
-  const { locationId, uploadedBy, categoryId, publicOnly = false } = filters;
-  const conditions = [];
-
-  if (locationId) conditions.push(where('locationId', '==', locationId));
-  if (uploadedBy) conditions.push(where('uploadedBy', '==', uploadedBy));
-  if (categoryId) conditions.push(where('categoryId', '==', categoryId));
-  if (publicOnly) conditions.push(where('isPublic', '==', true));
-
-  conditions.push(orderBy('createdAt', 'desc'));
-
-  const q = query(imagesCol, ...conditions);
-  const snap = await getDocs(q);
-  return snap.docs.map((d) => ({ id: d.id, ...d.data() }));
-}
-
-export async function deleteImage(imageId, storagePath) {
-  await deleteDoc(doc(db, 'images', imageId));
-  if (storagePath) {
-    await deleteObject(ref(storage, storagePath));
-  }
-}
-
-export async function setMainImage(locationId, imageId) {
-  // Remove main flag from all images for this location
-  const images = await getImages({ locationId });
-  const updates = images.map(img => 
-    updateDoc(doc(db, 'images', img.id), { isMain: false })
-  );
-  await Promise.all(updates);
+  await updateDoc(locRef, {
+    rating: newRating,
+    ratingCount: newRatingCount
+  });
   
-  // Set the new main image
-  const imgRef = doc(db, 'images', imageId);
-  const imgSnap = await getDoc(imgRef);
-  if (imgSnap.exists()) {
-    await updateDoc(imgRef, { isMain: true });
-    await updateDoc(doc(db, 'locations', locationId), {
-      mainImage: imgSnap.data().url,
-      mainImageId: imageId
+  return { rating: newRating, ratingCount: newRatingCount };
+}
+
+// Get all locations
+export const getLocations = async () => {
+  try {
+    const q = query(collection(db, 'locations'), orderBy('createdAt', 'desc'));
+    const querySnapshot = await getDocs(q);
+    const locations = [];
+    querySnapshot.forEach((doc) => {
+      locations.push({ id: doc.id, ...doc.data() });
     });
+    return locations;
+  } catch (error) {
+    console.error('Error getting locations:', error);
+    throw error;
   }
-}
+};
+
+// Get location by ID
+export const getLocationById = async (locationId) => {
+  try {
+    const docRef = doc(db, 'locations', locationId);
+    const docSnap = await getDoc(docRef);
+    if (docSnap.exists()) {
+      return { id: docSnap.id, ...docSnap.data() };
+    }
+    return null;
+  } catch (error) {
+    console.error('Error getting location:', error);
+    throw error;
+  }
+};
+
+// Delete location
+export const deleteLocation = async (locationId) => {
+  try {
+    const docRef = doc(db, 'locations', locationId);
+    await deleteDoc(docRef);
+    return true;
+  } catch (error) {
+    console.error('Error deleting location:', error);
+    throw error;
+  }
+};
+
+// ──────────────────────────────────────────────
+// CATEGORY FUNCTIONS
+// ──────────────────────────────────────────────
+
+// Add new category
+export const addCategory = async (categoryData) => {
+  try {
+    const docRef = await addDoc(collection(db, 'categories'), {
+      ...categoryData,
+      createdAt: serverTimestamp(),
+      updatedAt: serverTimestamp()
+    });
+    return { id: docRef.id, ...categoryData };
+  } catch (error) {
+    console.error('Error adding category:', error);
+    throw error;
+  }
+};
+
+// Get all categories
+export const getCategories = async () => {
+  try {
+    const q = query(collection(db, 'categories'), orderBy('name', 'asc'));
+    const querySnapshot = await getDocs(q);
+    const categories = [];
+    querySnapshot.forEach((doc) => {
+      categories.push({ id: doc.id, ...doc.data() });
+    });
+    return categories;
+  } catch (error) {
+    console.error('Error getting categories:', error);
+    throw error;
+  }
+};
+
+// Get category by ID
+export const getCategoryById = async (categoryId) => {
+  try {
+    const docRef = doc(db, 'categories', categoryId);
+    const docSnap = await getDoc(docRef);
+    if (docSnap.exists()) {
+      return { id: docSnap.id, ...docSnap.data() };
+    }
+    return null;
+  } catch (error) {
+    console.error('Error getting category:', error);
+    throw error;
+  }
+};
+
+// Update category
+export const updateCategory = async (categoryId, categoryData) => {
+  try {
+    const docRef = doc(db, 'categories', categoryId);
+    await updateDoc(docRef, {
+      ...categoryData,
+      updatedAt: serverTimestamp()
+    });
+    return { id: categoryId, ...categoryData };
+  } catch (error) {
+    console.error('Error updating category:', error);
+    throw error;
+  }
+};
+
+// Delete category
+export const deleteCategory = async (categoryId) => {
+  try {
+    const docRef = doc(db, 'categories', categoryId);
+    await deleteDoc(docRef);
+    return true;
+  } catch (error) {
+    console.error('Error deleting category:', error);
+    throw error;
+  }
+};
+
+// ──────────────────────────────────────────────
+// IMAGE FUNCTIONS (optional)
+// ──────────────────────────────────────────────
+
+// Add image reference to location
+export const addImageToLocation = async (locationId, imageData) => {
+  try {
+    const locationRef = doc(db, 'locations', locationId);
+    await updateDoc(locationRef, {
+      images: arrayUnion(imageData),
+      updatedAt: serverTimestamp()
+    });
+    return true;
+  } catch (error) {
+    console.error('Error adding image to location:', error);
+    throw error;
+  }
+};
+
+// Remove image from location
+export const removeImageFromLocation = async (locationId, imageId) => {
+  try {
+    const locationRef = doc(db, 'locations', locationId);
+    // You'll need to get the current images and filter
+    const docSnap = await getDoc(locationRef);
+    if (docSnap.exists()) {
+      const currentImages = docSnap.data().images || [];
+      const updatedImages = currentImages.filter(img => img.id !== imageId);
+      await updateDoc(locationRef, {
+        images: updatedImages,
+        updatedAt: serverTimestamp()
+      });
+    }
+    return true;
+  } catch (error) {
+    console.error('Error removing image from location:', error);
+    throw error;
+  }
+};
