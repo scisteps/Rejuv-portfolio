@@ -19,7 +19,7 @@ import { getCategories, getLocations, deleteLocation } from '../services/Firesto
 import './UserDashboard.css';
 
 // ── IMPORT LOTTIE ANIMATION ──
-import partyAnimation from '../jsons/party.json';
+import skateAnimation from '../jsons/skate.json'; // ← CHANGE THIS TO skate.json
 
 const DEFAULT_CENTER = { lat: 0.3476, lng: 32.5825 };
 const DEFAULT_ZOOM = 16;
@@ -496,13 +496,16 @@ export default function UserDashboard() {
                   location={location}
                   onClick={() => setSelectedLocation(location)}
                 />
+                {/* Lottie Animation on top of each location marker */}
                 <LottieOverlay
                   position={{ lat: location.lat, lng: location.lng }}
-                  animationData={partyAnimation}
+                  animationData={skateAnimation}  // ← USING skate.json
                   onClick={() => setSelectedLocation(location)}
-                  size={50}
+                  size={60}  // You can adjust this size
                   title={location.name}
-                  offsetY={-20}
+                  offsetY={-30}  // Offset above the marker
+                  loop={true}
+                  autoplay={true}
                 />
               </React.Fragment>
             ))}
@@ -515,14 +518,17 @@ export default function UserDashboard() {
                   isUsingFallback={isUsingFallback}
                   onClick={handleOpenLocationForm}
                 />
+                {/* Lottie Animation on top of user pin */}
                 <LottieOverlay
                   position={{ lat: userLocation.lat, lng: userLocation.lng }}
-                  animationData={partyAnimation}
+                  animationData={skateAnimation}  // ← USING skate.json
                   onClick={handleOpenLocationForm}
-                  size={60}
+                  size={70}  // Slightly larger for user location
                   title="You are here — tap to add details"
                   className="user-location-marker"
-                  offsetY={-25}
+                  offsetY={-35}
+                  loop={true}
+                  autoplay={true}
                 />
               </React.Fragment>
             )}
