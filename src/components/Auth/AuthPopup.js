@@ -1,13 +1,13 @@
 // src/components/Auth/AuthPopup.jsx
 import React, { useState } from 'react';
-import { auth } from '../../Firebase';
-import {
+import { 
+  auth,
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
   sendPasswordResetEmail,
-  GoogleAuthProvider,
-  signInWithPopup,
-} from 'firebase/auth';
+  signOut
+} from '../../Firebase';
+import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import './AuthPopup.css';
 
 const AuthPopup = ({ isOpen, onClose, onSuccess }) => {
@@ -71,23 +71,28 @@ const AuthPopup = ({ isOpen, onClose, onSuccess }) => {
     }
 
     try {
-      await createUserWithEmailAndPassword(auth, email, password);
+      console.log('Creating user with email:', email);
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      console.log('User created:', userCredential.user);
       onSuccess();
       onClose();
     } catch (error) {
       console.error('Signup error:', error);
       switch (error.code) {
         case 'auth/email-already-in-use':
-          setError('Email already in use');
+          setError('Email already in use. Please login instead.');
           break;
         case 'auth/invalid-email':
           setError('Invalid email address');
           break;
         case 'auth/weak-password':
-          setError('Password is too weak');
+          setError('Password is too weak. Use at least 6 characters.');
+          break;
+        case 'auth/operation-not-allowed':
+          setError('Email/password accounts are not enabled. Please contact support.');
           break;
         default:
-          setError('Failed to create account. Please try again.');
+          setError('Failed to create account: ' + error.message);
       }
     } finally {
       setLoading(false);
@@ -102,12 +107,15 @@ const AuthPopup = ({ isOpen, onClose, onSuccess }) => {
 
     try {
       await sendPasswordResetEmail(auth, email);
-      setError('');
       alert('Password reset email sent! Check your inbox.');
       setResetMode(false);
     } catch (error) {
       console.error('Reset error:', error);
-      setError('Failed to send reset email. Please try again.');
+      if (error.code === 'auth/user-not-found') {
+        setError('No account found with this email');
+      } else {
+        setError('Failed to send reset email. Please try again.');
+      }
     } finally {
       setLoading(false);
     }
@@ -125,7 +133,11 @@ const AuthPopup = ({ isOpen, onClose, onSuccess }) => {
       onClose();
     } catch (error) {
       console.error('Google login error:', error);
-      setError('Failed to login with Google');
+      if (error.code === 'auth/popup-closed-by-user') {
+        setError('Sign in cancelled');
+      } else {
+        setError('Failed to login with Google');
+      }
     } finally {
       setLoading(false);
     }

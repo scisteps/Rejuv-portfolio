@@ -11,14 +11,18 @@ import LocationDetails from '../components/user/LocationDetails';
 import PathTracker from '../components/user/PathTracker';
 import LocationForm from '../components/user/LocationForm';
 import AuthPopup from '../components/Auth/AuthPopup';
+import LottieOverlay from '../components/map/LottieOverlay'; // ← ADD THIS
 import { auth } from '../Firebase';
 import { onAuthStateChanged, signOut } from 'firebase/auth';
 import './UserDashboard.css';
 
+// ── IMPORT LOTTIE ANIMATION ──
+import partyAnimation from '../jsons/party.json'; // ← Your Lottie animation file
+
 const DEFAULT_CENTER = { lat: 0.3476, lng: 32.5825 };
 const DEFAULT_ZOOM = 16;
 
-// ── Custom Components (keep same) ──
+// ── Custom Components ──
 function UserLocationMarker({ position, isUsingFallback, onClick }) {
   const map = useMap();
   const color = isUsingFallback ? '#FF9800' : '#4285F4';
@@ -85,8 +89,6 @@ export default function UserDashboard() {
   const [actionLocation, setActionLocation] = useState(null);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [gpsStatus, setGpsStatus] = useState('idle');
-
-  // ── Auth State ──
   const [user, setUser] = useState(null);
   const [showAuth, setShowAuth] = useState(false);
 
@@ -227,37 +229,40 @@ export default function UserDashboard() {
           from { opacity: 0; transform: translateY(-10px); }
           to { opacity: 1; transform: translateY(0); }
         }
+        @keyframes lottie-glow {
+          0%, 100% { opacity: 0.5; transform: translate(-50%, -50%) scale(0.8); }
+          50% { opacity: 1; transform: translate(-50%, -50%) scale(1.2); }
+        }
+        @keyframes lottie-pulse {
+          0% { transform: translate(-50%, -50%) scale(0.8); opacity: 0.8; }
+          100% { transform: translate(-50%, -50%) scale(1.8); opacity: 0; }
+        }
+        @keyframes lottie-float {
+          0%, 100% { transform: translate(-50%, -100%) translateY(0px); }
+          50% { transform: translate(-50%, -100%) translateY(-8px); }
+        }
       `}</style>
 
       {/* Header */}
       <header className="user-header">
         <h1>📍 Geo WAY</h1>
         <div className="user-controls">
-          {/* ── AUTH BUTTONS ── */}
           {user ? (
             <>
               <span className="user-email">{user.email}</span>
-              <button className="btn-logout" onClick={handleLogout}>
-                Logout
-              </button>
+              <button className="btn-logout" onClick={handleLogout}>Logout</button>
             </>
           ) : (
             <>
-              <button className="btn-login" onClick={() => setShowAuth(true)}>
-                Login
-              </button>
-              <button className="btn-signup" onClick={() => setShowAuth(true)}>
-                Sign Up
-              </button>
+              <button className="btn-login" onClick={() => setShowAuth(true)}>Login</button>
+              <button className="btn-signup" onClick={() => setShowAuth(true)}>Sign Up</button>
             </>
           )}
 
-          {/* ── FIND ACCURATE GPS BUTTON ── */}
           <button
             className={`btn-gps ${gpsStatus === 'searching' ? 'searching' : ''}`}
             onClick={handleFindAccurateGPS}
             disabled={isRefreshing || gpsStatus === 'searching'}
-            title="Find accurate GPS location"
           >
             {gpsStatus === 'searching' ? (
               <>
@@ -352,7 +357,6 @@ export default function UserDashboard() {
 
       {/* Main Layout */}
       <div className="user-layout">
-        {/* Sidebar */}
         <aside className="filter-sidebar">
           <CategoryFilter
             selectedCategories={selectedCategories}
@@ -391,22 +395,46 @@ export default function UserDashboard() {
               />
             )}
 
-            {/* Location Markers */}
+            {/* ── LOCATION MARKERS WITH LOTTIE ON TOP ── */}
             {filteredLocations.map(location => (
-              <LocationMarker 
-                key={location.id} 
-                location={location}
-                onClick={() => setSelectedLocation(location)}
-              />
+              <React.Fragment key={location.id}>
+                {/* Pin Marker */}
+                <LocationMarker 
+                  location={location}
+                  onClick={() => setSelectedLocation(location)}
+                />
+                {/* Lottie Animation on top of pin */}
+                <LottieOverlay
+                  position={{ lat: location.lat, lng: location.lng }}
+                  animationData={partyAnimation}
+                  onClick={() => setSelectedLocation(location)}
+                  size={50}
+                  title={location.name}
+                  offsetY={-20}
+                />
+              </React.Fragment>
             ))}
 
-            {/* User Location */}
+            {/* ── USER LOCATION WITH LOTTIE ON TOP ── */}
             {userLocation && (
-              <UserLocationMarker 
-                position={{ lat: userLocation.lat, lng: userLocation.lng }}
-                isUsingFallback={isUsingFallback}
-                onClick={handleOpenLocationForm}
-              />
+              <React.Fragment>
+                {/* User Pin Marker */}
+                <UserLocationMarker 
+                  position={{ lat: userLocation.lat, lng: userLocation.lng }}
+                  isUsingFallback={isUsingFallback}
+                  onClick={handleOpenLocationForm}
+                />
+                {/* Lottie Animation on top of user pin */}
+                <LottieOverlay
+                  position={{ lat: userLocation.lat, lng: userLocation.lng }}
+                  animationData={partyAnimation}
+                  onClick={handleOpenLocationForm}
+                  size={60}
+                  title="You are here — tap to add details"
+                  className="user-location-marker"
+                  offsetY={-25}
+                />
+              </React.Fragment>
             )}
 
             {/* Info Window Overlay */}

@@ -1,3 +1,4 @@
+// src/Firebase.js
 import { initializeApp } from 'firebase/app';
 import { 
   getFirestore, 
@@ -8,6 +9,7 @@ import {
   getDocs, 
   updateDoc, 
   arrayUnion, 
+  arrayRemove,
   onSnapshot, 
   addDoc,
   query,
@@ -17,8 +19,16 @@ import {
   increment,
   deleteDoc
 } from 'firebase/firestore';
-import { getAuth } from 'firebase/auth';
-import { getStorage } from 'firebase/storage';
+import { 
+  getAuth, 
+  signInWithEmailAndPassword, 
+  createUserWithEmailAndPassword, 
+  sendPasswordResetEmail,
+  signOut,
+  GoogleAuthProvider,
+  signInWithPopup
+} from 'firebase/auth';
+import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage';
 
 const firebaseConfig = {
   apiKey: "AIzaSyAuUZ0mJvFy177CFvTsmutS2bO0FsTJ_9M",
@@ -33,25 +43,41 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const auth = getAuth(app);
-export const storage = getStorage(app);
+const storage = getStorage(app);
 
+// Export everything
 export { 
   app, 
   db, 
   auth, 
+  storage,
+  // Firestore functions
   doc, 
   getDoc, 
+  setDoc, 
+  collection, 
+  getDocs, 
   updateDoc, 
   arrayUnion, 
+  arrayRemove,
   onSnapshot, 
-  setDoc, 
-  getDocs, 
-  collection, 
   addDoc,
   query,
   orderBy,
   serverTimestamp,
   where,
   increment,
-  deleteDoc
+  deleteDoc,
+  // Storage functions
+  ref,
+  uploadBytes,
+  getDownloadURL,
+  deleteObject,
+  // Auth functions
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+  sendPasswordResetEmail,
+  signOut,
+  GoogleAuthProvider,
+  signInWithPopup
 };
