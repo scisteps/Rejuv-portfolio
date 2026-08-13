@@ -53,7 +53,7 @@ import spaceatarahvid from'../anims/Spaceatarahvidsmall.mp4';
 //banners
 import guardiansbanner from '../banners/guard.jpg';
 import migubanner from '../banners/migu.jpg';
-import guardbanner from '../banners/guard.jpg';
+import atarahbanner from '../banners/Space Atarah.jpg';
 
 //for lottie carousel
 import strikecrown from '../jsons/crown.json';
@@ -65,7 +65,7 @@ import { gsap } from "gsap";
 const First2 = () => {
   const [motivationalBackground, setMotivationalBackground] = useState("#440006");
   const [showPersonalProjects, setShowPersonalProjects] = useState(false);
-  const [activeShow, setActiveShow] = useState('migu');
+  const [activeShow, setActiveShow] = useState('atarah'); // Changed default to atarah
 
   const images = [headshot2,rejuveblack,me3,rejuveprofile];
   const images2 = [migudp, miguim2];
@@ -116,24 +116,15 @@ const First2 = () => {
     { id: 3, animation: face, name: "Character" }
   ];
 
-  // Show data for the fixed bar
+  // Show data for the fixed bar with actual banner images - REORDERED: Space Atarah first, then Guardians, then Migu
   const shows = [
-    { id: 'migu', name: 'Migu and Feathers', banner: '/path/to/migu-banner.jpg' },
-    { id: 'atarah', name: 'Space Atarah', banner: '/path/to/atarah-banner.jpg' },
-    { id: 'guardians', name: 'Guardians of Nature', banner: '/path/to/guardians-banner.jpg' }
+    { id: 'atarah', name: 'Space Atarah', banner: atarahbanner },
+    { id: 'guardians', name: 'Guardians of Nature', banner: guardiansbanner },
+    { id: 'migu', name: 'Migu and Feathers', banner: migubanner }
   ];
 
   // Content for each show
   const showContent = {
-    migu: {
-      title: "Migu and Feathers",
-      description: "A short animated series set in prehistoric times, exploring the rivalry between a boy and a Crane.",
-      episodes: [
-        { title: "Episode 1: Pilot Episode", description: "Introduces the characters of the show and the birth of their rivalry.", video: migu1 },
-        { title: "Episode 2: Fruit Fight", description: "Migu looks for revenge against feathers following the events of episode 1.", video: migu2 },
-        { title: "Episode 3: Honey Hunt", description: "Migu & Feathers fight over honey and face the consequences.", video: migu3 }
-      ]
-    },
     atarah: {
       title: "Space Atarah",
       description: "The adventures of Atarah in space with her companions.",
@@ -146,6 +137,15 @@ const First2 = () => {
       description: "Follow the adventures of Blaze and the guardians of nature. based on comics by Cathy Nsibirwa",
       episodes: [
         { title: "Trailer:", description: "A Sneakpeak of guardians of nature shortfilm still in development.", video: guardiansvid }
+      ]
+    },
+    migu: {
+      title: "Migu and Feathers",
+      description: "A short animated series set in prehistoric times, exploring the rivalry between a boy and a Crane.",
+      episodes: [
+        { title: "Episode 1: Pilot Episode", description: "Introduces the characters of the show and the birth of their rivalry.", video: migu1 },
+        { title: "Episode 2: Fruit Fight", description: "Migu looks for revenge against feathers following the events of episode 1.", video: migu2 },
+        { title: "Episode 3: Honey Hunt", description: "Migu & Feathers fight over honey and face the consequences.", video: migu3 }
       ]
     }
   };
@@ -538,24 +538,53 @@ const First2 = () => {
           animation: rejuv-episode-in 0.55s ease both;
         }
 
-        /* Responsive tweaks for the new elements */
+        /* Responsive tweaks for the new elements - FIXED for mobile */
         @media (max-width: 768px) {
           .rejuv-stories-header {
-            padding: 10px 14px;
-            flex-direction: column;
-            align-items: stretch;
-            gap: 8px;
+            padding: 8px 10px;
+            flex-direction: row;
+            align-items: center;
+            gap: 6px;
+            flex-wrap: nowrap;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
           }
           .rejuv-stories-header__brand {
-            justify-content: center;
-            font-size: 14px;
+            font-size: 12px;
+            white-space: nowrap;
+            flex-shrink: 0;
+          }
+          .rejuv-stories-header__brand-dot {
+            width: 8px;
+            height: 8px;
           }
           .rejuv-stories-header__nav {
-            justify-content: center;
+            display: flex;
+            gap: 4px;
+            flex-wrap: nowrap;
+            justify-content: flex-start;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            flex: 1;
           }
           .rejuv-stories-header__nav-item {
-            padding: 6px 12px;
-            font-size: 12px;
+            padding: 4px 10px;
+            font-size: 10px;
+            white-space: nowrap;
+            flex-shrink: 0;
+          }
+        }
+
+        @media (max-width: 480px) {
+          .rejuv-stories-header {
+            padding: 6px 8px;
+          }
+          .rejuv-stories-header__brand {
+            font-size: 10px;
+          }
+          .rejuv-stories-header__nav-item {
+            padding: 3px 8px;
+            font-size: 9px;
           }
         }
 
@@ -700,7 +729,7 @@ const First2 = () => {
 
                 {/* Cards instead of buttons */}
                 <div style={{display:'flex', flexDirection: isMobile ? 'column' : 'row', gap: '20px', padding: '20px', justifyContent: 'center'}}>
-                  {/* Rejuv Projects Card */}
+                  {/* Rejuv Projects Card - FIXED LOTTIE CAROUSEL FOR 1:1 VISIBILITY */}
                   <div 
                     className="project-card"
                     style={{
@@ -725,8 +754,16 @@ const First2 = () => {
                     }}
                   >
                     <div style={{display:'flex', flexDirection:'column', alignItems:'center'}}>
-                      {/* Lottie Carousel */}
-                      <div style={{width:'100%', height:'120px', marginBottom:'10px', overflow:'hidden'}}>
+                      {/* Lottie Carousel - FIXED for 1:1 visibility */}
+                      <div style={{
+                        width: '100%', 
+                        maxWidth: '200px',
+                        aspectRatio: '1/1', // This forces 1:1 aspect ratio
+                        margin: '0 auto 10px auto',
+                        overflow: 'hidden',
+                        borderRadius: '10px',
+                        backgroundColor: 'rgba(0,0,0,0.2)'
+                      }}>
                         <Swiper
                           modules={[Autoplay]}
                           spaceBetween={0}
@@ -737,15 +774,19 @@ const First2 = () => {
                             pauseOnMouseEnter: true,
                           }}
                           loop={true}
-                          style={{height:'100%'}}
+                          style={{height: '100%', width: '100%'}}
                         >
                           {lottieAnimations.map((item) => (
-                            <SwiperSlide key={item.id}>
+                            <SwiperSlide key={item.id} style={{height: '100%', width: '100%'}}>
                               <Player
                                 autoplay
                                 loop
                                 src={item.animation}
-                                style={{height:'100%', width:'100%'}}
+                                style={{
+                                  height: '100%', 
+                                  width: '100%',
+                                  objectFit: 'contain'
+                                }}
                               />
                             </SwiperSlide>
                           ))}
@@ -1168,7 +1209,7 @@ const First2 = () => {
                     {/* Show content: keyed by activeShow so it replays a fade/slide-in
                         animation every time the person switches shows. */}
                     <div key={activeShow} className="rejuv-show-content">
-                      {/* Show Banner */}
+                      {/* Show Banner - Now with proper image display */}
                       <div className="rejuv-show-banner" style={{
                         width: '100%',
                         maxWidth: '1200px',
@@ -1177,7 +1218,8 @@ const First2 = () => {
                         overflow: 'hidden',
                         boxShadow: '0 4px 20px rgba(0,0,0,0.3)',
                         aspectRatio: '16/9',
-                        backgroundColor: '#2a2a2a'
+                        backgroundColor: '#2a2a2a',
+                        position: 'relative'
                       }}>
                         <img 
                           src={shows.find(s => s.id === activeShow)?.banner} 
@@ -1185,14 +1227,23 @@ const First2 = () => {
                           style={{
                             width: '100%',
                             height: '100%',
-                            objectFit: 'cover'
+                            objectFit: 'cover',
+                            display: 'block'
                           }}
                           onError={(e) => {
+                            // If image fails to load, show a fallback
                             e.target.style.display = 'none';
-                            e.target.parentElement.style.backgroundColor = '#3a3a3a';
-                            e.target.parentElement.innerHTML = `
-                              <div style="display:flex;align-items:center;justify-content:center;height:100%;color:white;font-size:24px;background:linear-gradient(135deg,#1a1a2e,#16213e);">
-                                ${showContent[activeShow]?.title || 'No Banner'}
+                            const parent = e.target.parentElement;
+                            parent.style.backgroundColor = '#1a1a2e';
+                            parent.style.display = 'flex';
+                            parent.style.alignItems = 'center';
+                            parent.style.justifyContent = 'center';
+                            parent.innerHTML = `
+                              <div style="display:flex;align-items:center;justify-content:center;height:100%;width:100%;color:#FFBC00;font-size:24px;background:linear-gradient(135deg,#1a1a2e,#16213e);padding:20px;text-align:center;">
+                                <div>
+                                  <div style="font-size:48px;margin-bottom:10px;">🎬</div>
+                                  ${showContent[activeShow]?.title || 'No Banner Available'}
+                                </div>
                               </div>
                             `;
                           }}
