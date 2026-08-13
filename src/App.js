@@ -15,6 +15,7 @@ import Tsam from './Tsam/Tsam';
 import Profile from './pages/Profile';
 import PopCulture from './pages/PopCulture';
 import CampusMap from './pages/CampusMap';
+import First2 from './pages/First2';
 
 function App() {
   return (
@@ -23,7 +24,7 @@ function App() {
       <Analytics />
 
       <Routes>
-      <Route path="/" element={<First  />} />
+      <Route path="/" element={<First2  />} />
       <Route path="/addvideo" element={<AddVideo  />} />
       <Route path="/team" element={<Theteam  />} />
       <Route path="/addcontributor" element={<AddContributor  />} />

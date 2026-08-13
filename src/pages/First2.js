@@ -1,8 +1,10 @@
-
 import React, { useState, useEffect, useRef } from "react";
 import "./First.css";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/swiper-bundle.css";
+// NOTE: Autoplay module must be imported and passed to <Swiper modules={[Autoplay]} />
+// or Swiper's autoplay silently does nothing (this was the bug in the Lottie carousel).
+import { Autoplay } from "swiper/modules";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css"; 
 import "slick-carousel/slick/slick-theme.css"
@@ -44,6 +46,14 @@ import keepmovingforward from'../anims/keep.mp4';
 import headshot2 from '../images/headshot2.jpg';
 import babs from'../anims/babsworld.mp4';
 import blackpanther from'../anims/bpth4.mp4';
+//trailers
+import guardiansvid from'../anims/Guardiansmall.mp4';
+import spaceatarahvid from'../anims/Spaceatarahvidsmall.mp4';
+
+//banners
+import guardiansbanner from '../banners/guard.jpg';
+import migubanner from '../banners/migu.jpg';
+import guardbanner from '../banners/guard.jpg';
 
 //for lottie carousel
 import strikecrown from '../jsons/crown.json';
@@ -52,11 +62,11 @@ import face from '../jsons/talker2.json';
 
 import { gsap } from "gsap";
 
-const First = () => {
+const First2 = () => {
   const [motivationalBackground, setMotivationalBackground] = useState("#440006");
   const [showPersonalProjects, setShowPersonalProjects] = useState(false);
   const [activeShow, setActiveShow] = useState('migu');
-  
+
   const images = [headshot2,rejuveblack,me3,rejuveprofile];
   const images2 = [migudp, miguim2];
   const imagesb = [shanetemp, shanetemp,shanetemp];
@@ -95,6 +105,10 @@ const First = () => {
   const [loadingPercentage, setLoadingPercentage] = useState(0);
   const navigate = useNavigate();
 
+  // --- Dynamic Stories header: shows + fixes itself once the Stories section is reached ---
+  const storiesHeaderSentinelRef = useRef(null);
+  const [showStoriesHeader, setShowStoriesHeader] = useState(false);
+
   // Lottie animations array for carousel
   const lottieAnimations = [
     { id: 1, animation: strikecrown, name: "Rejuv Crown" },
@@ -122,16 +136,16 @@ const First = () => {
     },
     atarah: {
       title: "Space Atarah",
-      description: "An epic space adventure following the journey of Atarah through the cosmos.",
+      description: "The adventures of Atarah in space with her companions.",
       episodes: [
-        { title: "Episode 1: The Beginning", description: "Atarah discovers her destiny among the stars.", video: redascension }
+        { title: "Trailer", description: "A preview of the short film in the making.", video: spaceatarahvid }
       ]
     },
     guardians: {
       title: "Guardians of Nature",
-      description: "A tale of protecting the natural world and its magical creatures.",
+      description: "Follow the adventures of Blaze and the guardians of nature. based on comics by Cathy Nsibirwa",
       episodes: [
-        { title: "Episode 1: The Awakening", description: "The guardians rise to protect their home.", video: supernormal }
+        { title: "Trailer:", description: "A Sneakpeak of guardians of nature shortfilm still in development.", video: guardiansvid }
       ]
     }
   };
@@ -270,6 +284,31 @@ const First = () => {
     return () => clearTimeout(timer);
   }, []);
 
+  // Dynamic Stories header visibility: fades/slides in once the sentinel (placed right
+  // above the Stories section) scrolls above the viewport, and stays fixed for the rest
+  // of the Stories section and everything below it. Scrolling back up above that point
+  // hides it again.
+  useEffect(() => {
+    if (!showPersonalProjects) return;
+
+    const sentinel = storiesHeaderSentinelRef.current;
+    if (!sentinel) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting && entry.boundingClientRect.top < 0) {
+          setShowStoriesHeader(true);
+        } else if (entry.isIntersecting) {
+          setShowStoriesHeader(false);
+        }
+      },
+      { threshold: 0 }
+    );
+
+    observer.observe(sentinel);
+    return () => observer.disconnect();
+  }, [showPersonalProjects]);
+
   const videoRefs = {
     1: useRef(null),
     2: useRef(null),
@@ -379,6 +418,153 @@ const First = () => {
 
   return (
     <>
+      {/* Styles for: fixed Lottie fix (no CSS needed), Professional Work glow card,
+          the new dynamic Stories header, and its animations + a few responsive tweaks.
+          Kept scoped to new class names only, so nothing existing in First.css is touched. */}
+      <style>{`
+        @keyframes rejuv-glow-pulse {
+          0%, 100% { box-shadow: 0 0 14px rgba(255,188,0,0.35), 0 4px 20px rgba(0,0,0,0.5); }
+          50% { box-shadow: 0 0 26px rgba(255,188,0,0.65), 0 4px 24px rgba(0,0,0,0.55); }
+        }
+        .rejuv-professional-card {
+          animation: rejuv-glow-pulse 3s ease-in-out infinite;
+        }
+
+        @keyframes rejuv-header-slide-down {
+          from { opacity: 0; transform: translateY(-100%); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes rejuv-nav-item-in {
+          from { opacity: 0; transform: translateY(-14px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+
+        .rejuv-stories-header {
+          position: fixed;
+          top: 0;
+          left: 0;
+          right: 0;
+          z-index: 200;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 16px;
+          padding: 14px 28px;
+          background: linear-gradient(180deg, rgba(10,10,10,0.96) 0%, rgba(10,10,10,0.9) 100%);
+          border-bottom: 2px solid #FFBC00;
+          box-shadow: 0 4px 24px rgba(0,0,0,0.5);
+          backdrop-filter: blur(6px);
+          opacity: 0;
+          transform: translateY(-100%);
+          pointer-events: none;
+          transition: opacity 0.45s ease, transform 0.45s ease;
+        }
+        .rejuv-stories-header.visible {
+          opacity: 1;
+          transform: translateY(0);
+          pointer-events: auto;
+          animation: rejuv-header-slide-down 0.5s ease;
+        }
+        .rejuv-stories-header__brand {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          color: #FFBC00;
+          font-weight: bold;
+          letter-spacing: 0.5px;
+          white-space: nowrap;
+        }
+        .rejuv-stories-header__brand-dot {
+          width: 10px;
+          height: 10px;
+          border-radius: 50%;
+          background: #FFBC00;
+          box-shadow: 0 0 10px rgba(255,188,0,0.9);
+        }
+        .rejuv-stories-header__nav {
+          display: flex;
+          gap: 10px;
+          flex-wrap: wrap;
+          justify-content: flex-end;
+        }
+        .rejuv-stories-header__nav-item {
+          padding: 8px 16px;
+          border-radius: 8px;
+          cursor: pointer;
+          color: white;
+          border: 2px solid transparent;
+          font-size: 14px;
+          font-weight: 500;
+          background: rgba(255,255,255,0.05);
+          transition: all 0.25s ease;
+          opacity: 0;
+          transform: translateY(-14px);
+        }
+        .rejuv-stories-header.visible .rejuv-stories-header__nav-item {
+          animation: rejuv-nav-item-in 0.45s ease forwards;
+        }
+        .rejuv-stories-header.visible .rejuv-stories-header__nav-item:nth-child(1) { animation-delay: 0.05s; }
+        .rejuv-stories-header.visible .rejuv-stories-header__nav-item:nth-child(2) { animation-delay: 0.15s; }
+        .rejuv-stories-header.visible .rejuv-stories-header__nav-item:nth-child(3) { animation-delay: 0.25s; }
+        .rejuv-stories-header__nav-item:hover {
+          background: rgba(255,188,0,0.15);
+        }
+        .rejuv-stories-header__nav-item.active {
+          background: #FFBC00;
+          color: black;
+          border-color: #FFBC00;
+          font-weight: bold;
+        }
+
+        @keyframes rejuv-show-content-in {
+          from { opacity: 0; transform: translateY(24px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        .rejuv-show-content {
+          animation: rejuv-show-content-in 0.6s ease both;
+        }
+        @keyframes rejuv-banner-in {
+          from { opacity: 0; transform: scale(0.97); }
+          to { opacity: 1; transform: scale(1); }
+        }
+        .rejuv-show-banner {
+          animation: rejuv-banner-in 0.7s ease both;
+        }
+        @keyframes rejuv-episode-in {
+          from { opacity: 0; transform: translateX(-20px); }
+          to { opacity: 1; transform: translateX(0); }
+        }
+        .rejuv-episode-card {
+          animation: rejuv-episode-in 0.55s ease both;
+        }
+
+        /* Responsive tweaks for the new elements */
+        @media (max-width: 768px) {
+          .rejuv-stories-header {
+            padding: 10px 14px;
+            flex-direction: column;
+            align-items: stretch;
+            gap: 8px;
+          }
+          .rejuv-stories-header__brand {
+            justify-content: center;
+            font-size: 14px;
+          }
+          .rejuv-stories-header__nav {
+            justify-content: center;
+          }
+          .rejuv-stories-header__nav-item {
+            padding: 6px 12px;
+            font-size: 12px;
+          }
+        }
+
+        /* General responsive safety net for cards/section without touching First.css */
+        @media (max-width: 480px) {
+          .project-card { width: 100% !important; }
+        }
+      `}</style>
+
       {isLoading ? (
         <Mainloading/>
       ) : (
@@ -399,6 +585,28 @@ const First = () => {
                 <FaTimes className="close-btn" onClick={handleClosePopup} />
                 <span className="close-text" onClick={handleClosePopup}>Close it</span>
                 <Theteam alias={aliass} imagesa={imagesf}/>
+              </div>
+            </div>
+          )}
+
+          {/* Dynamic Stories header: hidden until the Stories section is reached,
+              then fades/slides in and stays fixed for the rest of the page. */}
+          {showPersonalProjects && (
+            <div className={`rejuv-stories-header ${showStoriesHeader ? 'visible' : ''}`}>
+              <div className="rejuv-stories-header__brand">
+                <span className="rejuv-stories-header__brand-dot" />
+                Rejuv Stories
+              </div>
+              <div className="rejuv-stories-header__nav">
+                {shows.map((show) => (
+                  <div
+                    key={show.id}
+                    className={`rejuv-stories-header__nav-item ${activeShow === show.id ? 'active' : ''}`}
+                    onClick={() => handleShowChange(show.id)}
+                  >
+                    {show.name}
+                  </div>
+                ))}
               </div>
             </div>
           )}
@@ -520,11 +728,13 @@ const First = () => {
                       {/* Lottie Carousel */}
                       <div style={{width:'100%', height:'120px', marginBottom:'10px', overflow:'hidden'}}>
                         <Swiper
+                          modules={[Autoplay]}
                           spaceBetween={0}
                           slidesPerView={1}
                           autoplay={{
-                            delay: 3000,
+                            delay: 4000,
                             disableOnInteraction: false,
+                            pauseOnMouseEnter: true,
                           }}
                           loop={true}
                           style={{height:'100%'}}
@@ -548,37 +758,37 @@ const First = () => {
 
                   {/* Professional Work Card */}
                   <div 
-                    className="project-card"
+                    className="project-card rejuv-professional-card"
                     style={{
-                      backgroundColor: colorPalette.secondary,
-                      color: 'black',
+                      backgroundColor: '#0a0a0a',
+                      color: '#FFBC00',
                       borderRadius: '15px',
                       padding: '20px',
                       width: isMobile ? '100%' : '250px',
                       cursor: 'pointer',
-                      boxShadow: '0 4px 20px rgba(0,0,0,0.3)',
+                      boxShadow: '0 0 14px rgba(255,188,0,0.35), 0 4px 20px rgba(0,0,0,0.5)',
                       transition: 'transform 0.3s ease, box-shadow 0.3s ease',
-                      border: '2px solid black'
+                      border: '2px solid #FFBC00'
                     }}
                     onClick={handleClientWorkClick}
                     onMouseEnter={(e) => {
                       e.currentTarget.style.transform = 'scale(1.05)';
-                      e.currentTarget.style.boxShadow = '0 6px 30px rgba(255,188,0,0.4)';
+                      e.currentTarget.style.boxShadow = '0 0 32px rgba(255,188,0,0.75), 0 6px 30px rgba(0,0,0,0.6)';
                     }}
                     onMouseLeave={(e) => {
                       e.currentTarget.style.transform = 'scale(1)';
-                      e.currentTarget.style.boxShadow = '0 4px 20px rgba(0,0,0,0.3)';
+                      e.currentTarget.style.boxShadow = '0 0 14px rgba(255,188,0,0.35), 0 4px 20px rgba(0,0,0,0.5)';
                     }}
                   >
                     <div style={{display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', height:'100%', minHeight:'180px'}}>
                       <div style={{fontSize:'80px', marginBottom:'10px'}}>
-                        <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="black" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="#FFBC00" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{filter:'drop-shadow(0 0 6px rgba(255,188,0,0.8))'}}>
                           <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
                           <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
                         </svg>
                       </div>
-                      <h3 style={{margin:'0', textAlign:'center', fontWeight:'bold'}}>Professional Work</h3>
-                      <p style={{margin:'5px 0 0 0', fontSize:'14px', opacity:'0.8', textAlign:'center'}}>View client projects</p>
+                      <h3 style={{margin:'0', textAlign:'center', fontWeight:'bold', textShadow:'0 0 10px rgba(255,188,0,0.6)'}}>Professional Work</h3>
+                      <p style={{margin:'5px 0 0 0', fontSize:'14px', opacity:'0.85', textAlign:'center'}}>View client projects</p>
                     </div>
                   </div>
                 </div>
@@ -891,6 +1101,10 @@ const First = () => {
                   </div>
                 </div>
 
+                {/* Sentinel: marks the point where the dynamic Stories header should
+                    take over as a fixed header (fires just before #stories-section). */}
+                <div ref={storiesHeaderSentinelRef} style={{ height: '1px' }} />
+
                 {/* Animated Stories Section with Fixed Bar */}
                 <div id="stories-section" style={{ position: 'relative' }}>
                   {/* Fixed Navigation Bar - Starts from content and fixes to bottom */}
@@ -950,64 +1164,72 @@ const First = () => {
                     <br/><br/>
 
                     <h2 style={{color:'yellow'}}>Animated Stories</h2>
-                    
-                    {/* Show Banner */}
-                    <div style={{
-                      width: '100%',
-                      maxWidth: '1200px',
-                      margin: '20px auto',
-                      borderRadius: '15px',
-                      overflow: 'hidden',
-                      boxShadow: '0 4px 20px rgba(0,0,0,0.3)',
-                      aspectRatio: '16/9',
-                      backgroundColor: '#2a2a2a'
-                    }}>
-                      <img 
-                        src={shows.find(s => s.id === activeShow)?.banner} 
-                        alt={showContent[activeShow]?.title}
-                        style={{
-                          width: '100%',
-                          height: '100%',
-                          objectFit: 'cover'
-                        }}
-                        onError={(e) => {
-                          e.target.style.display = 'none';
-                          e.target.parentElement.style.backgroundColor = '#3a3a3a';
-                          e.target.parentElement.innerHTML = `
-                            <div style="display:flex;align-items:center;justify-content:center;height:100%;color:white;font-size:24px;background:linear-gradient(135deg,#1a1a2e,#16213e);">
-                              ${showContent[activeShow]?.title || 'No Banner'}
-                            </div>
-                          `;
-                        }}
-                      />
-                    </div>
 
-                    <h3 style={{color:'white', marginTop: '20px'}}>{showContent[activeShow]?.title}</h3>
-                    <p style={{color:'#ccc', maxWidth: '800px', margin: '10px auto'}}>
-                      {showContent[activeShow]?.description}
-                    </p>
-
-                    {/* Episodes */}
-                    {showContent[activeShow]?.episodes.map((episode, index) => (
-                      <div key={index} className="video-container bordered" style={{ marginTop: '30px' }}>
-                        <p className="story-description">
-                          <span className="highlight">{episode.title}</span> - {episode.description}
-                        </p>
-                        <video 
-                          ref={videoRefs[9 + index]}
-                          preload="auto"  
-                          controlsList="nodownload"
-                          controls 
-                          width="100%" 
-                          className="migu-video"
-                          onPlay={() => handleVideoClick(9 + index)}
-                        >
-                          <source src={episode.video} type="video/mp4" />
-                          Your browser does not support the video tag.
-                        </video>
-                        <EmojiPanel backgroundColor={'black'} strokecolor={emojistroke} textcolor={'white'} vidid={9 + index} />
+                    {/* Show content: keyed by activeShow so it replays a fade/slide-in
+                        animation every time the person switches shows. */}
+                    <div key={activeShow} className="rejuv-show-content">
+                      {/* Show Banner */}
+                      <div className="rejuv-show-banner" style={{
+                        width: '100%',
+                        maxWidth: '1200px',
+                        margin: '20px auto',
+                        borderRadius: '15px',
+                        overflow: 'hidden',
+                        boxShadow: '0 4px 20px rgba(0,0,0,0.3)',
+                        aspectRatio: '16/9',
+                        backgroundColor: '#2a2a2a'
+                      }}>
+                        <img 
+                          src={shows.find(s => s.id === activeShow)?.banner} 
+                          alt={showContent[activeShow]?.title}
+                          style={{
+                            width: '100%',
+                            height: '100%',
+                            objectFit: 'cover'
+                          }}
+                          onError={(e) => {
+                            e.target.style.display = 'none';
+                            e.target.parentElement.style.backgroundColor = '#3a3a3a';
+                            e.target.parentElement.innerHTML = `
+                              <div style="display:flex;align-items:center;justify-content:center;height:100%;color:white;font-size:24px;background:linear-gradient(135deg,#1a1a2e,#16213e);">
+                                ${showContent[activeShow]?.title || 'No Banner'}
+                              </div>
+                            `;
+                          }}
+                        />
                       </div>
-                    ))}
+
+                      <h3 style={{color:'white', marginTop: '20px'}}>{showContent[activeShow]?.title}</h3>
+                      <p style={{color:'#ccc', maxWidth: '800px', margin: '10px auto'}}>
+                        {showContent[activeShow]?.description}
+                      </p>
+
+                      {/* Episodes */}
+                      {showContent[activeShow]?.episodes.map((episode, index) => (
+                        <div
+                          key={index}
+                          className="video-container bordered rejuv-episode-card"
+                          style={{ marginTop: '30px', animationDelay: `${0.1 + index * 0.12}s` }}
+                        >
+                          <p className="story-description">
+                            <span className="highlight">{episode.title}</span> - {episode.description}
+                          </p>
+                          <video 
+                            ref={videoRefs[9 + index]}
+                            preload="auto"  
+                            controlsList="nodownload"
+                            controls 
+                            width="100%" 
+                            className="migu-video"
+                            onPlay={() => handleVideoClick(9 + index)}
+                          >
+                            <source src={episode.video} type="video/mp4" />
+                            Your browser does not support the video tag.
+                          </video>
+                          <EmojiPanel backgroundColor={'black'} strokecolor={emojistroke} textcolor={'white'} vidid={9 + index} />
+                        </div>
+                      ))}
+                    </div>
 
                     {/* Footer */}
                     <div style={{
@@ -1035,4 +1257,4 @@ const First = () => {
   );
 };
 
-export default First;
+export default First2;
