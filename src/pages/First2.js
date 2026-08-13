@@ -65,7 +65,7 @@ import { gsap } from "gsap";
 const First2 = () => {
   const [motivationalBackground, setMotivationalBackground] = useState("#440006");
   const [showPersonalProjects, setShowPersonalProjects] = useState(false);
-  const [activeShow, setActiveShow] = useState('atarah'); // Changed default to atarah
+  const [activeShow, setActiveShow] = useState('atarah');
 
   const images = [headshot2,rejuveblack,me3,rejuveprofile];
   const images2 = [migudp, miguim2];
@@ -284,29 +284,29 @@ const First2 = () => {
     return () => clearTimeout(timer);
   }, []);
 
-  // Dynamic Stories header visibility: fades/slides in once the sentinel (placed right
-  // above the Stories section) scrolls above the viewport, and stays fixed for the rest
-  // of the Stories section and everything below it. Scrolling back up above that point
-  // hides it again.
+  // FIXED: Dynamic Stories header visibility using scroll listener instead of IntersectionObserver
   useEffect(() => {
     if (!showPersonalProjects) return;
 
-    const sentinel = storiesHeaderSentinelRef.current;
-    if (!sentinel) return;
+    const handleScroll = () => {
+      const storiesSection = document.getElementById('stories-section');
+      if (!storiesSection) return;
+      
+      const rect = storiesSection.getBoundingClientRect();
+      // Show header when the top of stories section reaches the top of viewport
+      if (rect.top <= 0) {
+        setShowStoriesHeader(true);
+      } else {
+        setShowStoriesHeader(false);
+      }
+    };
 
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (!entry.isIntersecting && entry.boundingClientRect.top < 0) {
-          setShowStoriesHeader(true);
-        } else if (entry.isIntersecting) {
-          setShowStoriesHeader(false);
-        }
-      },
-      { threshold: 0 }
-    );
-
-    observer.observe(sentinel);
-    return () => observer.disconnect();
+    // Check on mount
+    handleScroll();
+    
+    // Add scroll listener
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
   }, [showPersonalProjects]);
 
   const videoRefs = {
@@ -758,7 +758,7 @@ const First2 = () => {
                       <div style={{
                         width: '100%', 
                         maxWidth: '200px',
-                        aspectRatio: '1/1', // This forces 1:1 aspect ratio
+                        aspectRatio: '1/1',
                         margin: '0 auto 10px auto',
                         overflow: 'hidden',
                         borderRadius: '10px',
@@ -1141,10 +1141,6 @@ const First2 = () => {
                     </h5>
                   </div>
                 </div>
-
-                {/* Sentinel: marks the point where the dynamic Stories header should
-                    take over as a fixed header (fires just before #stories-section). */}
-                <div ref={storiesHeaderSentinelRef} style={{ height: '1px' }} />
 
                 {/* Animated Stories Section with Fixed Bar */}
                 <div id="stories-section" style={{ position: 'relative' }}>
