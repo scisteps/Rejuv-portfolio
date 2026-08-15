@@ -44,8 +44,8 @@ import chill from '../images/avunie.jpg';
 import caroline from'../videos/Carolle.mp4';
 import keepmovingforward from'../anims/keep.mp4';
 import headshot2 from '../images/sun.jpg';
-import syd2 from '../images/syd2.jpg';
 import avuni from '../images/avuni.jpg';
+import cathy from '../images/cathy.jpg';
 
 import babs from'../anims/babsworld.mp4';
 import blackpanther from'../anims/bpth4.mp4';
@@ -70,7 +70,7 @@ const First2 = () => {
   const [showPersonalProjects, setShowPersonalProjects] = useState(false);
   const [activeShow, setActiveShow] = useState('atarah');
 
-  const images = [headshot2,rejuveblack,me3,rejuveprofile,syd2,avuni];
+  const images = [headshot2,rejuveblack,me3,rejuveprofile,syd3,avuni,cathy];
   const images2 = [migudp, miguim2];
   const imagesb = [shanetemp, shanetemp,shanetemp];
   const xmasref = useRef(null);
