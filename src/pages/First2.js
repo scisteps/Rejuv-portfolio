@@ -43,7 +43,10 @@ import timejourney from '../anims/timejourney3.webm';
 import chill from '../images/avunie.jpg';
 import caroline from'../videos/Carolle.mp4';
 import keepmovingforward from'../anims/keep.mp4';
-import headshot2 from '../images/headshot2.jpg';
+import headshot2 from '../images/sun.jpg';
+import syd2 from '../images/syd2.jpg';
+import avuni from '../images/avuni.jpg';
+
 import babs from'../anims/babsworld.mp4';
 import blackpanther from'../anims/bpth4.mp4';
 //trailers
@@ -67,7 +70,7 @@ const First2 = () => {
   const [showPersonalProjects, setShowPersonalProjects] = useState(false);
   const [activeShow, setActiveShow] = useState('atarah');
 
-  const images = [headshot2,rejuveblack,me3,rejuveprofile];
+  const images = [headshot2,rejuveblack,me3,rejuveprofile,syd2,avuni];
   const images2 = [migudp, miguim2];
   const imagesb = [shanetemp, shanetemp,shanetemp];
   const xmasref = useRef(null);
@@ -106,7 +109,6 @@ const First2 = () => {
   const navigate = useNavigate();
 
   // --- Dynamic Stories header: shows + fixes itself once the Stories section is reached ---
-  const storiesHeaderSentinelRef = useRef(null);
   const [showStoriesHeader, setShowStoriesHeader] = useState(false);
 
   // Lottie animations array for carousel
@@ -123,29 +125,29 @@ const First2 = () => {
     { id: 'migu', name: 'Migu and Feathers', banner: migubanner }
   ];
 
-  // Content for each show
+  // Content for each show with unique video IDs for each episode
   const showContent = {
     atarah: {
       title: "Space Atarah",
       description: "The adventures of Atarah in space with her companions.",
       episodes: [
-        { title: "Trailer", description: "A preview of the short film in the making.", video: spaceatarahvid }
+        { title: "Trailer", description: "A preview of the short film in the making.", video: spaceatarahvid, videoId: 15 }
       ]
     },
     guardians: {
       title: "Guardians of Nature",
       description: "Follow the adventures of Blaze and the guardians of nature. based on comics by Cathy Nsibirwa",
       episodes: [
-        { title: "Trailer:", description: "A Sneakpeak of guardians of nature shortfilm still in development.", video: guardiansvid }
+        { title: "Trailer:", description: "A Sneakpeak of guardians of nature shortfilm still in development.", video: guardiansvid, videoId: 16 }
       ]
     },
     migu: {
       title: "Migu and Feathers",
       description: "A short animated series set in prehistoric times, exploring the rivalry between a boy and a Crane.",
       episodes: [
-        { title: "Episode 1: Pilot Episode", description: "Introduces the characters of the show and the birth of their rivalry.", video: migu1 },
-        { title: "Episode 2: Fruit Fight", description: "Migu looks for revenge against feathers following the events of episode 1.", video: migu2 },
-        { title: "Episode 3: Honey Hunt", description: "Migu & Feathers fight over honey and face the consequences.", video: migu3 }
+        { title: "Episode 1: Pilot Episode", description: "Introduces the characters of the show and the birth of their rivalry.", video: migu1, videoId: 9 },
+        { title: "Episode 2: Fruit Fight", description: "Migu looks for revenge against feathers following the events of episode 1.", video: migu2, videoId: 10 },
+        { title: "Episode 3: Honey Hunt", description: "Migu & Feathers fight over honey and face the consequences.", video: migu3, videoId: 11 }
       ]
     }
   };
@@ -217,10 +219,6 @@ const First2 = () => {
 
   const handleShowChange = (showId) => {
     setActiveShow(showId);
-    const storiesSection = document.getElementById('stories-section');
-    if (storiesSection) {
-      storiesSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
   };
 
   useEffect(() => {
@@ -284,29 +282,41 @@ const First2 = () => {
     return () => clearTimeout(timer);
   }, []);
 
-  // FIXED: Dynamic Stories header visibility using scroll listener instead of IntersectionObserver
+  // FIXED: Dynamic Stories header visibility - using scroll listener with throttling
   useEffect(() => {
     if (!showPersonalProjects) return;
 
+    let ticking = false;
+    
     const handleScroll = () => {
-      const storiesSection = document.getElementById('stories-section');
-      if (!storiesSection) return;
-      
-      const rect = storiesSection.getBoundingClientRect();
-      // Show header when the top of stories section reaches the top of viewport
-      if (rect.top <= 0) {
-        setShowStoriesHeader(true);
-      } else {
-        setShowStoriesHeader(false);
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          const storiesSection = document.getElementById('stories-section');
+          if (storiesSection) {
+            const rect = storiesSection.getBoundingClientRect();
+            // Show header when the top of stories section reaches or passes the top of viewport
+            if (rect.top <= 0) {
+              setShowStoriesHeader(true);
+            } else {
+              setShowStoriesHeader(false);
+            }
+          }
+          ticking = false;
+        });
+        ticking = true;
       }
     };
 
-    // Check on mount
-    handleScroll();
+    // Initial check
+    setTimeout(handleScroll, 100);
     
-    // Add scroll listener
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('resize', handleScroll, { passive: true });
+    
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('resize', handleScroll);
+    };
   }, [showPersonalProjects]);
 
   const videoRefs = {
@@ -323,7 +333,9 @@ const First2 = () => {
     11: useRef(null),
     12: useRef(null),
     13: useRef(null),
-    14: useRef(null)
+    14: useRef(null),
+    15: useRef(null), // Space Atarah Trailer
+    16: useRef(null)  // Guardians Trailer
   };
 
   const handleVideoClick = (video) => {
@@ -413,14 +425,27 @@ const First2 = () => {
       setemojistroke('black');
       setemojitxt('white');
       setlogoh(blackcrown);
+    } else if (video === 15){
+      // Space Atarah video - custom colors
+      setMotivationalBackground("#0a0a2e");
+      setFontColor("#FF6B6B");
+      setHighlightColor("#4ECDC4");
+      setemojibg('#0a0a2e');
+      setemojistroke('#4ECDC4');
+      setemojitxt('#FF6B6B');
+    } else if (video === 16){
+      // Guardians video - custom colors
+      setMotivationalBackground("#1a3a1a");
+      setFontColor("#7CFC00");
+      setHighlightColor("#FFD700");
+      setemojibg('#1a3a1a');
+      setemojistroke('#FFD700');
+      setemojitxt('#7CFC00');
     }
   };
 
   return (
     <>
-      {/* Styles for: fixed Lottie fix (no CSS needed), Professional Work glow card,
-          the new dynamic Stories header, and its animations + a few responsive tweaks.
-          Kept scoped to new class names only, so nothing existing in First.css is touched. */}
       <style>{`
         @keyframes rejuv-glow-pulse {
           0%, 100% { box-shadow: 0 0 14px rgba(255,188,0,0.35), 0 4px 20px rgba(0,0,0,0.5); }
@@ -444,7 +469,7 @@ const First2 = () => {
           top: 0;
           left: 0;
           right: 0;
-          z-index: 200;
+          z-index: 999;
           display: flex;
           align-items: center;
           justify-content: space-between;
@@ -460,9 +485,9 @@ const First2 = () => {
           transition: opacity 0.45s ease, transform 0.45s ease;
         }
         .rejuv-stories-header.visible {
-          opacity: 1;
-          transform: translateY(0);
-          pointer-events: auto;
+          opacity: 1 !important;
+          transform: translateY(0) !important;
+          pointer-events: auto !important;
           animation: rejuv-header-slide-down 0.5s ease;
         }
         .rejuv-stories-header__brand {
@@ -538,7 +563,6 @@ const First2 = () => {
           animation: rejuv-episode-in 0.55s ease both;
         }
 
-        /* Responsive tweaks for the new elements - FIXED for mobile */
         @media (max-width: 768px) {
           .rejuv-stories-header {
             padding: 8px 10px;
@@ -588,7 +612,6 @@ const First2 = () => {
           }
         }
 
-        /* General responsive safety net for cards/section without touching First.css */
         @media (max-width: 480px) {
           .project-card { width: 100% !important; }
         }
@@ -618,8 +641,7 @@ const First2 = () => {
             </div>
           )}
 
-          {/* Dynamic Stories header: hidden until the Stories section is reached,
-              then fades/slides in and stays fixed for the rest of the page. */}
+          {/* Dynamic Stories header - MOVED OUTSIDE the conditional rendering so it can be fixed */}
           {showPersonalProjects && (
             <div className={`rejuv-stories-header ${showStoriesHeader ? 'visible' : ''}`}>
               <div className="rejuv-stories-header__brand">
@@ -631,7 +653,14 @@ const First2 = () => {
                   <div
                     key={show.id}
                     className={`rejuv-stories-header__nav-item ${activeShow === show.id ? 'active' : ''}`}
-                    onClick={() => handleShowChange(show.id)}
+                    onClick={() => {
+                      setActiveShow(show.id);
+                      // Scroll to stories section when clicking
+                      const storiesSection = document.getElementById('stories-section');
+                      if (storiesSection) {
+                        storiesSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                      }
+                    }}
                   >
                     {show.name}
                   </div>
@@ -729,7 +758,7 @@ const First2 = () => {
 
                 {/* Cards instead of buttons */}
                 <div style={{display:'flex', flexDirection: isMobile ? 'column' : 'row', gap: '20px', padding: '20px', justifyContent: 'center'}}>
-                  {/* Rejuv Projects Card - FIXED LOTTIE CAROUSEL FOR 1:1 VISIBILITY */}
+                  {/* Rejuv Projects Card */}
                   <div 
                     className="project-card"
                     style={{
@@ -754,7 +783,6 @@ const First2 = () => {
                     }}
                   >
                     <div style={{display:'flex', flexDirection:'column', alignItems:'center'}}>
-                      {/* Lottie Carousel - FIXED for 1:1 visibility */}
                       <div style={{
                         width: '100%', 
                         maxWidth: '200px',
@@ -1143,8 +1171,8 @@ const First2 = () => {
                 </div>
 
                 {/* Animated Stories Section with Fixed Bar */}
-                <div id="stories-section" style={{ position: 'relative' }}>
-                  {/* Fixed Navigation Bar - Starts from content and fixes to bottom */}
+                <div id="stories-section" style={{ position: 'relative', minHeight: '100vh' }}>
+                  {/* Fixed Navigation Bar - Sticky to bottom of stories section */}
                   <div style={{
                     position: 'sticky',
                     bottom: 0,
@@ -1251,7 +1279,7 @@ const First2 = () => {
                         {showContent[activeShow]?.description}
                       </p>
 
-                      {/* Episodes */}
+                      {/* Episodes - Using unique video IDs for each episode */}
                       {showContent[activeShow]?.episodes.map((episode, index) => (
                         <div
                           key={index}
@@ -1262,18 +1290,18 @@ const First2 = () => {
                             <span className="highlight">{episode.title}</span> - {episode.description}
                           </p>
                           <video 
-                            ref={videoRefs[9 + index]}
+                            ref={videoRefs[episode.videoId]}
                             preload="auto"  
                             controlsList="nodownload"
                             controls 
                             width="100%" 
                             className="migu-video"
-                            onPlay={() => handleVideoClick(9 + index)}
+                            onPlay={() => handleVideoClick(episode.videoId)}
                           >
                             <source src={episode.video} type="video/mp4" />
                             Your browser does not support the video tag.
                           </video>
-                          <EmojiPanel backgroundColor={'black'} strokecolor={emojistroke} textcolor={'white'} vidid={9 + index} />
+                          <EmojiPanel backgroundColor={'black'} strokecolor={emojistroke} textcolor={'white'} vidid={episode.videoId} />
                         </div>
                       ))}
                     </div>
