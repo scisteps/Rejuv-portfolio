@@ -477,3 +477,39 @@
 .lottie-overlay-wrapper {
   pointer-events: auto;
 }
+.map-controls {
+  position: absolute;
+  bottom: 30px;
+  right: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  z-index: 10;
+}
+
+.map-controls button {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: white;
+  border: 1px solid #ddd;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+  cursor: pointer;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.map-controls button:hover {
+  background: #f5f5f5;
+  transform: scale(1.05);
+}
+
+/* Remove the old individual button styles if they conflict */
+.floating-add-btn,
+.floating-image-btn,
+.recenter-btn {
+  position: static !important;
+}

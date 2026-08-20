@@ -37,6 +37,14 @@ const MapWrapper = ({
         onBoundsChanged={onBoundsChanged}
         onZoomChanged={onZoomChanged}
         onClick={onClick}
+        options={{
+          gestureHandling: 'greedy',       // one-finger pan + pinch-zoom, no scroll restriction
+          restriction: null,               // no panning bounds
+          minZoom: null,
+          maxZoom: null,
+          isFractionalZoomEnabled: true,   // smooth sub-integer zoom on scroll/pinch
+          scrollwheel: true,
+        }}
         {...props}
       >
         {children}

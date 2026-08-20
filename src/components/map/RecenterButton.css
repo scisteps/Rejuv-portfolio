@@ -1,0 +1,74 @@
+/* src/components/map/RecenterButton.css */
+
+.recenter-btn-gmaps {
+  position: absolute;
+  right: 10px;
+  bottom: 90px; /* sits above the zoom +/- control like in Google Maps */
+  z-index: 900;
+
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: none;
+  background: #fff;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+
+  transition: box-shadow 0.15s ease, transform 0.1s ease;
+}
+
+.recenter-btn-gmaps:hover {
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
+}
+
+.recenter-btn-gmaps:active {
+  transform: scale(0.94);
+}
+
+.recenter-btn-gmaps:disabled {
+  cursor: default;
+}
+
+.recenter-dot {
+  fill: #666;
+  transition: fill 0.15s ease;
+}
+
+.recenter-ticks {
+  stroke: #666;
+  transition: stroke 0.15s ease;
+}
+
+.recenter-btn-gmaps.is-active .recenter-dot {
+  fill: #1a73e8;
+}
+
+.recenter-btn-gmaps.is-active .recenter-ticks {
+  stroke: #1a73e8;
+}
+
+.recenter-spinner {
+  width: 18px;
+  height: 18px;
+  border: 2.5px solid #dadce0;
+  border-top-color: #1a73e8;
+  border-radius: 50%;
+  animation: recenter-spin 0.7s linear infinite;
+}
+
+@keyframes recenter-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Push the button up a bit on narrow/mobile screens if you stack other
+   floating buttons (add / upload) along the same edge. */
+@media (max-width: 600px) {
+  .recenter-btn-gmaps {
+    bottom: 170px;
+  }
+}
