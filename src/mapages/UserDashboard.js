@@ -24,6 +24,7 @@ import './UserDashboard.css';
 const DEFAULT_CENTER = { lat: 0.3476, lng: 32.5825 };
 const DEFAULT_ZOOM = 16;
 
+// ─── User Location Marker ──────────────────────────────────────────────
 function UserLocationMarker({ position, isUsingFallback, onClick }) {
   const map = useMap();
   if (!map) return null;
@@ -49,6 +50,7 @@ function UserLocationMarker({ position, isUsingFallback, onClick }) {
   );
 }
 
+// ─── Category Location Marker ──────────────────────────────────────────
 function LocationMarker({ location, onClick }) {
   const map = useMap();
   if (!map) return null;
@@ -75,9 +77,34 @@ function LocationMarker({ location, onClick }) {
   );
 }
 
+// ─── User Pan Listener ────────────────────────────────────────────────
+function UserPanListener({ onUserPan }) {
+  const map = useMap();
+
+  useEffect(() => {
+    if (!map) return;
+    const listener = map.addListener('dragstart', onUserPan);
+    return () => listener.remove();
+  }, [map, onUserPan]);
+
+  return null;
+}
+
+// ─── Main Dashboard ────────────────────────────────────────────────────
 export default function UserDashboard() {
-  const [mapCenter, setMapCenter] = useState(DEFAULT_CENTER);
-  const [mapZoom, setMapZoom] = useState(DEFAULT_ZOOM);
+  // ── Map state ──
+  const [initialCenter] = useState(DEFAULT_CENTER);
+  const [initialZoom] = useState(DEFAULT_ZOOM);
+  const currentZoomRef = useRef(DEFAULT_ZOOM);
+  const [isCenteredOnUser, setIsCenteredOnUser] = useState(false);
+
+  // ── Fly-to target for MapPanController ──
+  const [flyTarget, setFlyTarget] = useState(null);
+  const flyTo = useCallback((lat, lng, zoom) => {
+    setFlyTarget({ lat, lng, zoom, requestId: Date.now() });
+  }, []);
+
+  // ── UI state ──
   const [selectedLocation, setSelectedLocation] = useState(null);
   const [showTracker, setShowTracker] = useState(false);
   const [showLocationForm, setShowLocationForm] = useState(false);
@@ -91,17 +118,10 @@ export default function UserDashboard() {
   const [categories, setCategories] = useState([]);
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [loading, setLoading] = useState(true);
-
   const [lightboxImage, setLightboxImage] = useState(null);
+  const [mapReady, setMapReady] = useState(false);
 
-  // Used only by the new "recenter to my location" button below —
-  // triggers MapPanController to smoothly animate the map, instead of
-  // the map jumping the way changing mapCenter/mapZoom directly would.
-  const [flyTarget, setFlyTarget] = useState(null);
-  const flyTo = useCallback((lat, lng, zoom) => {
-    setFlyTarget({ lat, lng, zoom, requestId: Date.now() });
-  }, []);
-
+  // ── Hooks ──
   const {
     userLocation,
     loading: locationLoading,
@@ -124,6 +144,7 @@ export default function UserDashboard() {
 
   const isTracking = paths.length > 0;
 
+  // ── Data loading ──
   const loadData = useCallback(async () => {
     try {
       setLoading(true);
@@ -140,6 +161,7 @@ export default function UserDashboard() {
     }
   }, []);
 
+  // ── Auth state ──
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
@@ -148,15 +170,19 @@ export default function UserDashboard() {
     return () => unsubscribe();
   }, [loadData]);
 
+  // ── Initial location fly-to ──
   useEffect(() => {
-    getUserLocation().then((position) => {
-      if (position) {
-        setMapCenter({ lat: position.lat, lng: position.lng });
-        setMapZoom(17);
-      }
-    });
-  }, [getUserLocation]);
+    if (mapReady) {
+      getUserLocation().then((position) => {
+        if (position) {
+          flyTo(position.lat, position.lng, 17);
+          setIsCenteredOnUser(true);
+        }
+      });
+    }
+  }, [mapReady, getUserLocation, flyTo]);
 
+  // ── Handlers ──
   const handleLogout = async () => {
     try {
       await signOut(auth);
@@ -175,12 +201,12 @@ export default function UserDashboard() {
       if (position?.accuracy) {
         if (position.accuracy < 50) {
           setGpsStatus('found');
-          setMapCenter({ lat: position.lat, lng: position.lng });
-          setMapZoom(18);
+          flyTo(position.lat, position.lng, 18);
+          setIsCenteredOnUser(true);
         } else if (position.accuracy < 200) {
           setGpsStatus('found');
-          setMapCenter({ lat: position.lat, lng: position.lng });
-          setMapZoom(17);
+          flyTo(position.lat, position.lng, 17);
+          setIsCenteredOnUser(true);
         } else {
           setGpsStatus('failed');
         }
@@ -198,29 +224,13 @@ export default function UserDashboard() {
     }
   };
 
-  const handleMoveToLocation = async () => {
-    setIsRefreshing(true);
-    try {
-      const position = await getUserLocation();
-      if (position) {
-        setMapCenter({ lat: position.lat, lng: position.lng });
-        setMapZoom(18);
-      }
-    } catch (error) {
-      console.error('Error getting location:', error);
-    } finally {
-      setIsRefreshing(false);
-    }
-  };
-
-  // New: Google-Maps-style "locate me" button handler. Uses panTo via
-  // MapPanController for a smooth animated recenter instead of a jump.
   const handleRecenter = async () => {
     setIsRefreshing(true);
     try {
       const position = userLocation || (await getUserLocation());
       if (position) {
-        flyTo(position.lat, position.lng, Math.max(mapZoom, 17));
+        flyTo(position.lat, position.lng, Math.max(currentZoomRef.current, 17));
+        setIsCenteredOnUser(true);
       }
     } catch (error) {
       console.error('Error getting location:', error);
@@ -290,6 +300,7 @@ export default function UserDashboard() {
     ? getAccuracyStatus(accuracy)
     : { label: 'Unknown', color: '#999', icon: '📍' };
 
+  // ── Loading screen ──
   if (loading) {
     return (
       <div className="loading-screen">
@@ -299,8 +310,10 @@ export default function UserDashboard() {
     );
   }
 
+  // ── Render ──
   return (
     <div className="user-dashboard">
+      {/* ─── Header ─── */}
       <header className="user-header">
         <h1>📍 Geo WAY</h1>
 
@@ -310,7 +323,6 @@ export default function UserDashboard() {
               <span className="user-email">
                 {user.email || user.phoneNumber}
               </span>
-
               <button className="btn-logout" onClick={handleLogout}>
                 Logout
               </button>
@@ -320,7 +332,6 @@ export default function UserDashboard() {
               <button className="btn-login" onClick={() => setShowAuth(true)}>
                 Login
               </button>
-
               <button className="btn-signup" onClick={() => setShowAuth(true)}>
                 Sign Up
               </button>
@@ -328,9 +339,7 @@ export default function UserDashboard() {
           )}
 
           <button
-            className={`btn-gps ${
-              gpsStatus === 'searching' ? 'searching' : ''
-            }`}
+            className={`btn-gps ${gpsStatus === 'searching' ? 'searching' : ''}`}
             onClick={handleFindAccurateGPS}
             disabled={isRefreshing || gpsStatus === 'searching'}
           >
@@ -344,14 +353,6 @@ export default function UserDashboard() {
           </button>
 
           <button
-            className="btn-location"
-            onClick={handleMoveToLocation}
-            disabled={locationLoading || isRefreshing}
-          >
-            {isRefreshing ? '⏳' : '📍 My Location'}
-          </button>
-
-          <button
             className="btn-track"
             onClick={() => setShowTracker(!showTracker)}
           >
@@ -360,10 +361,11 @@ export default function UserDashboard() {
         </div>
       </header>
 
+      {/* ─── Location Status Banner ─── */}
       {locationError && (
         <div className="location-banner error">
           ⚠️ {locationError}
-          <button onClick={handleMoveToLocation}>Retry</button>
+          <button onClick={handleRecenter}>Retry</button>
         </div>
       )}
 
@@ -376,9 +378,7 @@ export default function UserDashboard() {
           <span
             className="status-dot"
             style={{
-              background: isUsingFallback
-                ? '#ff9800'
-                : accuracyStatus.color,
+              background: isUsingFallback ? '#ff9800' : accuracyStatus.color,
             }}
           />
 
@@ -415,7 +415,9 @@ export default function UserDashboard() {
         </div>
       )}
 
+      {/* ─── Main Layout ─── */}
       <div className="user-layout">
+        {/* ─── Sidebar ─── */}
         <aside className="filter-sidebar">
           <CategoryFilter
             selectedCategories={selectedCategories}
@@ -426,31 +428,36 @@ export default function UserDashboard() {
           {user && (
             <div className="user-stats">
               <h4>My Stats</h4>
-
               <p>
                 📍 Locations:{' '}
                 {(locations || []).filter(
                   (location) => location.createdBy === user.uid
                 ).length}
               </p>
-
               <p>📸 My Images: 0</p>
             </div>
           )}
         </aside>
 
+        {/* ─── Map Container ─── */}
         <div className="map-container">
           <MapWrapper
-            center={mapCenter}
-            zoom={mapZoom}
+            center={initialCenter}
+            zoom={initialZoom}
             onClick={() => {}}
             onBoundsChanged={() => {}}
-            onZoomChanged={(zoom) => setMapZoom(zoom)}
+            onZoomChanged={(zoom) => {
+              currentZoomRef.current = zoom;
+            }}
+            onMapReady={() => setMapReady(true)}
           >
-            {/* Smoothly animates the camera when the new recenter
-                button (below) is clicked, instead of the map jumping. */}
+            {/* ─── Pan Controller ─── */}
             <MapPanController target={flyTarget} />
 
+            {/* ─── User Pan Listener ─── */}
+            <UserPanListener onUserPan={() => setIsCenteredOnUser(false)} />
+
+            {/* ─── Roads ─── */}
             {roads?.length > 0 &&
               roads.map((road) => (
                 <Polyline
@@ -462,6 +469,7 @@ export default function UserDashboard() {
                 />
               ))}
 
+            {/* ─── Paths ─── */}
             {paths?.length > 1 && (
               <Polyline
                 path={paths}
@@ -471,13 +479,13 @@ export default function UserDashboard() {
               />
             )}
 
+            {/* ─── Location Markers ─── */}
             {filteredLocations.map((location) => (
               <React.Fragment key={location.id}>
                 <LocationMarker
                   location={location}
                   onClick={() => setSelectedLocation(location)}
                 />
-
                 <LocationImageMarker
                   location={location}
                   onClick={() => setSelectedLocation(location)}
@@ -488,6 +496,7 @@ export default function UserDashboard() {
               </React.Fragment>
             ))}
 
+            {/* ─── User Location Marker ─── */}
             {userLocation && (
               <UserLocationMarker
                 position={{
@@ -499,6 +508,7 @@ export default function UserDashboard() {
               />
             )}
 
+            {/* ─── Selected Location Info Window ─── */}
             {selectedLocation && (
               <Overlay
                 position={{
@@ -519,73 +529,66 @@ export default function UserDashboard() {
                     onUpdate={loadData}
                   />
 
-                  {user &&
-                    selectedLocation.createdBy === user.uid && (
-                      <div className="location-owner-actions">
-                        <button
-                          className="edit-btn"
-                          onClick={() => {
-                            setActionLocation(selectedLocation);
-                            setShowLocationForm(true);
-                            setSelectedLocation(null);
-                          }}
-                        >
-                          ✏️ Edit
-                        </button>
-
-                        <button
-                          className="delete-btn"
-                          onClick={() =>
-                            handleDeleteLocation(selectedLocation.id)
-                          }
-                        >
-                          🗑️ Delete
-                        </button>
-                      </div>
-                    )}
+                  {user && selectedLocation.createdBy === user.uid && (
+                    <div className="location-owner-actions">
+                      <button
+                        className="edit-btn"
+                        onClick={() => {
+                          setActionLocation(selectedLocation);
+                          setShowLocationForm(true);
+                          setSelectedLocation(null);
+                        }}
+                      >
+                        ✏️ Edit
+                      </button>
+                      <button
+                        className="delete-btn"
+                        onClick={() =>
+                          handleDeleteLocation(selectedLocation.id)
+                        }
+                      >
+                        🗑️ Delete
+                      </button>
+                    </div>
+                  )}
                 </div>
               </Overlay>
             )}
           </MapWrapper>
 
-          {/* NEW: Google-Maps-style recenter button, always visible. */}
-          <RecenterButton
-            onClick={handleRecenter}
-            isLocating={isRefreshing}
-          />
+          {/* ─── Map Controls ─── */}
+          <div className="map-controls">
+            <RecenterButton
+              onClick={handleRecenter}
+              isLocating={isRefreshing || (locationLoading && !userLocation)}
+              isActive={isCenteredOnUser}
+            />
 
-          <button
-            className="floating-add-btn"
-            onClick={handleOpenLocationForm}
-            title="Add Location"
-          >
-            📍
-          </button>
-
-          <button
-            className="floating-image-btn"
-            onClick={() => {
-              if (!user) {
-                setShowAuth(true);
-                return;
-              }
-              setShowImageUpload(true);
-            }}
-            title="Upload Images"
-          >
-            📸
-          </button>
-
-          {!userLocation && (
             <button
-              className="recenter-btn"
-              onClick={handleMoveToLocation}
+              className="floating-add-btn"
+              onClick={handleOpenLocationForm}
+              title="Add Location"
             >
               📍
             </button>
-          )}
+
+            <button
+              className="floating-image-btn"
+              onClick={() => {
+                if (!user) {
+                  setShowAuth(true);
+                  return;
+                }
+                setShowImageUpload(true);
+              }}
+              title="Upload Images"
+            >
+              📸
+            </button>
+          </div>
         </div>
 
+        {/* ─── Tracker Panel ─── */}
         {showTracker && (
           <div className="tracker-panel">
             <PathTracker
@@ -600,6 +603,7 @@ export default function UserDashboard() {
         )}
       </div>
 
+      {/* ─── Modals ─── */}
       {showLocationForm && actionLocation && (
         <LocationForm
           lat={actionLocation.lat}

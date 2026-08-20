@@ -1,56 +1,55 @@
 // src/components/map/MapWrapper.jsx
-import React from 'react';
-import { Wrapper, Status } from '@googlemaps/react-wrapper';
+import React, { useEffect, useRef } from 'react';
 import { GoogleMap } from 'googlemaps-react-primitives';
 
-const MapWrapper = ({ 
+const GOOGLE_MAPS_API_KEY = process.env.REACT_APP_GOOGLE_MAPS_API_KEY;
+
+export default function MapWrapper({ 
   children, 
   center, 
   zoom, 
-  style, 
-  onBoundsChanged,
-  onZoomChanged,
-  onClick,
+  onMapReady,
   ...props 
-}) => {
-  const renderLoadingStatus = (status) => {
-    switch (status) {
-      case Status.LOADING:
-        return <div className="map-loading">Loading map...</div>;
-      case Status.FAILURE:
-        return <div className="map-error">Failed to load map</div>;
-      case Status.SUCCESS:
-        return null;
+}) {
+  const mapRef = useRef(null);
+
+  useEffect(() => {
+    if (!window.google && GOOGLE_MAPS_API_KEY) {
+      const script = document.createElement('script');
+      script.src = `https://maps.googleapis.com/maps/api/js?key=${GOOGLE_MAPS_API_KEY}&libraries=places,geometry&v=weekly`;
+      script.async = true;
+      script.defer = true;
+      document.head.appendChild(script);
     }
-  };
+  }, []);
+
+  if (!window.google) {
+    return (
+      <div style={{ 
+        display: 'flex', 
+        alignItems: 'center', 
+        justifyContent: 'center',
+        height: '100%',
+        background: '#f0f0f0'
+      }}>
+        <p>Loading Google Maps...</p>
+      </div>
+    );
+  }
 
   return (
-    <Wrapper 
-      apiKey={process.env.REACT_APP_GOOGLE_MAPS_API_KEY}
-      render={renderLoadingStatus}
-      libraries={["geometry", "places"]}
+    <GoogleMap
+      ref={(map) => {
+        if (map) {
+          mapRef.current = map;
+          if (onMapReady) onMapReady(map);
+        }
+      }}
+      center={center || { lat: 0, lng: 0 }}
+      zoom={zoom || 14}
+      {...props}
     >
-      <GoogleMap
-        center={center}
-        zoom={zoom}
-        style={style || { width: '100%', height: '100%' }}
-        onBoundsChanged={onBoundsChanged}
-        onZoomChanged={onZoomChanged}
-        onClick={onClick}
-        options={{
-          gestureHandling: 'greedy',       // one-finger pan + pinch-zoom, no scroll restriction
-          restriction: null,               // no panning bounds
-          minZoom: null,
-          maxZoom: null,
-          isFractionalZoomEnabled: true,   // smooth sub-integer zoom on scroll/pinch
-          scrollwheel: true,
-        }}
-        {...props}
-      >
-        {children}
-      </GoogleMap>
-    </Wrapper>
+      {children}
+    </GoogleMap>
   );
-};
-
-export default MapWrapper;
+}
