@@ -54,7 +54,7 @@ import guardiansvid from'../anims/Guardiansmall.mp4';
 import spaceatarahvid from'../anims/Spaceatarahvidsmall.mp4';
 
 //banners
-import guardiansbanner from '../banners/guard.jpg';
+import guardiansbanner from '../banners/guardians.jpg';
 import migubanner from '../banners/migu.jpg';
 import atarahbanner from '../banners/Space Atarah.jpg';
 
@@ -911,7 +911,7 @@ const First2 = () => {
                     <EmojiPanel backgroundColor={emojibg} strokecolor={emojistroke} textcolor={emojitxt} vidid={12} />
                     <h5 onClick={() => { handleShowPopup('Rejuv',imagess); handleVideoClick(1); }}
                       style={{ cursor:'cell', color: 'blue' }}>
-                      <span style={{ color: highlightColor }}>Created by Nungi Sam,</span>
+                      {/* <span style={{ color: highlightColor }}>Created by Nungi Sam,</span> */}
                       <span style={{color:fontColor}}> August 7 2025</span>
                     </h5>
                   </div>
@@ -936,7 +936,7 @@ const First2 = () => {
                     <EmojiPanel backgroundColor={emojibg} strokecolor={emojistroke} textcolor={emojitxt} vidid={14} />
                     <h5 onClick={() => { handleShowPopup('Rejuv',imagess); handleVideoClick(14); }}
                       style={{ cursor:'cell', color: 'blue' }}>
-                      <span style={{ color: highlightColor }}>Created by Nungi Sam,</span>
+                      {/* <span style={{ color: highlightColor }}>Created by Nungi Sam,</span> */}
                       <span style={{color:fontColor}}> December 14 2025</span>
                     </h5>
                   </div>
@@ -962,7 +962,7 @@ const First2 = () => {
                     <EmojiPanel backgroundColor={emojibg} strokecolor={emojistroke} textcolor={emojitxt} vidid={1} />
                     <h5 onClick={() => { handleShowPopup('Rejuv',imagess); handleVideoClick(1); }}
                       style={{ cursor:'cell', color: 'blue' }}>
-                      <span style={{ color: highlightColor }}>Created by Nungi Sam</span>
+                      {/* <span style={{ color: highlightColor }}>Created by Nungi Sam</span> */}
                       <span style={{color:fontColor}}> May 11 2022</span>
                     </h5>
                   </div>
@@ -990,10 +990,10 @@ const First2 = () => {
                     </div>
                     <EmojiPanel backgroundColor={emojibg} strokecolor={emojistroke} textcolor={emojitxt} vidid={5} />
                     <span style={{ color: highlightColor, cursor: 'cell' }}>
-                      <h5 onClick={() => { handleShowPopup('Rejuv',imagess); handleVideoClick(4); }} 
+                      {/* <h5 onClick={() => { handleShowPopup('Rejuv',imagess); handleVideoClick(4); }} 
                         style={{ display: 'inline-block', margin: '0', paddingRight: '5px' }}>
                         Created by Nungi Sam,
-                      </h5>
+                      </h5> */}
                       <h5 onClick={() => { handleShowPopup('Wisey',imagesb); handleVideoClick(4); }} 
                         style={{ display: 'inline-block', margin: '0', paddingRight: '5px' }}>
                         Shanewise Rukundo &
@@ -1007,7 +1007,7 @@ const First2 = () => {
                   <div ref={carolref} onClick={() => handleVideoClick(8)} className="video-container bordered || current-animation">
                     <h2 style={{ color: fontColor }}>5. Carolle Skater</h2>
                     <p style={{ color: fontColor }}>
-                      This animation is inspired by the talented & professional skater from Nairobi <span style={{ color: highlightColor }}>Caroline Njeri </span>
+                      This animation is inspired by skaters from <span style={{ color: highlightColor }}>Nairobi</span>
                     </p>
                     <div>
                       <video
@@ -1024,14 +1024,14 @@ const First2 = () => {
                       </video>
                     </div>
                     <EmojiPanel backgroundColor={emojibg} strokecolor={emojistroke} textcolor={emojitxt} vidid={13} />
-                    <h5 onClick={() => { handleShowPopup('Rejuv',imagess); handleVideoClick(8); }} 
+                    {/* <h5 onClick={() => { handleShowPopup('Rejuv',imagess); handleVideoClick(8); }} 
                       style={{ display: 'inline-block', margin: '0', paddingRight: '5px', color:highlightColor }}>
                       Created by Nungi Sam,
-                    </h5>
-                    <h5 onClick={() => { handleShowPopup('Rejuv',imagess); handleVideoClick(8); }} 
+                    </h5> */}
+                    {/* <h5 onClick={() => { handleShowPopup('Rejuv',imagess); handleVideoClick(8); }} 
                       style={{ display: 'inline-block', margin: '0', paddingRight: '5px', color:highlightColor }}>
                       & Njeri Caroline
-                    </h5>
+                    </h5> */}
                     <span style={{color:fontColor}}> Feb 23 2024</span>
                   </div>
                   <br/><br/>
@@ -1055,7 +1055,7 @@ const First2 = () => {
                     </video>
                     <EmojiPanel backgroundColor={emojibg} strokecolor={emojistroke} textcolor={emojitxt} vidid={6} />
                     <h5 onClick={() => { handleShowPopup('rejuv',imagess); handleVideoClick(2); }}>
-                      <span style={{ color: highlightColor }}> Created by Nungi Sam </span>
+                      {/* <span style={{ color: highlightColor }}> Created by Nungi Sam </span> */}
                       <span style={{color:fontColor}}> August 9 2023</span>
                     </h5>
                   </div>
@@ -1081,7 +1081,7 @@ const First2 = () => {
                     </video>
                     <EmojiPanel backgroundColor={emojibg} strokecolor={emojistroke} textcolor={emojitxt} vidid={7} />
                     <h5 onClick={() => { handleShowPopup('Rejuv',imagess); handleVideoClick(3); }}>
-                      <span style={{ color: highlightColor }}> Created by Nungi Sam</span>
+                      {/* <span style={{ color: highlightColor }}> Created by Nungi Sam</span> */}
                       <span style={{color:fontColor}}> 1 Jan 2023 </span>
                     </h5>
                   </div>
@@ -1107,10 +1107,10 @@ const First2 = () => {
                     <EmojiPanel backgroundColor={emojibg} strokecolor={emojistroke} textcolor={emojitxt} vidid={12} />
                     <h5>
                       <span className="highlight" style={{display:'flex',justifyContent:'center',alignContent:'center',alignItems:'center'}}>
-                        <p onClick={() => { handleShowPopup('Rejuv',imagess); handleVideoClick(7); }} 
+                        {/* <p onClick={() => { handleShowPopup('Rejuv',imagess); handleVideoClick(7); }} 
                           style={{fontSize:'15px', color: highlightColor,marginRight:'10px' }}>
                           Created by Nungi Sam  
-                        </p>
+                        </p> */}
                         <br/><br/>
                         <p onClick={() => { handleShowPopup('Elvis',imageschill); handleVideoClick(7); }} 
                           style={{fontSize:'15px', color: highlightColor }}>
@@ -1121,53 +1121,7 @@ const First2 = () => {
                     <span style={{color:fontColor}}>Nov 30 2023</span>
                   </div>
 
-                  {/* Merry Christmas */}
-                  <div ref={xmasref} onClick={() => handleVideoClick(6)} className="video-container bordered">
-                    <h2 style={{ color: fontColor }} className="video-caption">9. Merry Christmas</h2>
-                    <p style={{ color: fontColor }}>
-                      This animation is Intended to <span style={{ color: highlightColor }}> Tell the story of a new year </span> And give hope to the world.
-                    </p>
-                    <video
-                      ref={videoRefs[6]}
-                      preload="metadata"
-                      controls
-                      width="100%"
-                      className="motivational-video"
-                      onPlay={() => handleVideoClick(6)}
-                    >
-                      <source src={xmas} type="video/mp4" />
-                      Your browser does not support the video tag.
-                    </video>
-                    <EmojiPanel backgroundColor={emojibg} strokecolor={emojistroke} textcolor={emojitxt} vidid={9} />
-                    <h5 onClick={() => { handleShowPopup('Rejuv',imagess); handleVideoClick(3); }}>
-                      <span style={{ color: highlightColor }}> Created by Nungi Sam </span>
-                      <span style={{color:fontColor}}> Dec 25 2022</span>
-                    </h5>
-                  </div>
-
-                  {/* Lip sync test */}
-                  <div ref={silentref} onClick={() => handleVideoClick(5)} className="video-container bordered">
-                    <h2 style={{ color: fontColor }}>10. Lip sync test</h2>
-                    <p style={{ color: fontColor }}>
-                      This <span style={{ color: highlightColor }}> Testing </span> Lip sync
-                    </p>
-                    <video
-                      ref={videoRefs[5]}
-                      preload="metadata"
-                      controlsList="nodownload"
-                      controls
-                      width="100%"
-                      className="motivational-video"
-                      onPlay={() => handleVideoClick(5)}
-                    >
-                      <source src={silent} type="video/webm" />
-                      Your browser does not support the video tag.
-                    </video>
-                    <EmojiPanel backgroundColor={emojibg} strokecolor={emojistroke} textcolor={emojitxt} vidid={8} />
-                    <h5 onClick={() => { handleShowPopup('Rejuv',imagess); handleVideoClick(7); }}>
-                      <span style={{ color: highlightColor }}> Created by Nungi Sam </span>
-                    </h5>
-                  </div>
+            
                 </div>
 
                 {/* Animated Stories Section with Fixed Bar */}

@@ -13,7 +13,6 @@ import face from '../jsons/talker2.json';
 import eaze from '../jsons/eaze2.json';
 import dex from '../jsons/dex9.json';
 import bp from '../jsons/black panther.json';
-
 import ro from '../jsons/ro2.json';
 import ro2 from '../jsons/ro3.json';
 // import soeasy from '../jsons/sounds/soeasy3.mp3';
