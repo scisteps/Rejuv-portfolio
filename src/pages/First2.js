@@ -35,17 +35,17 @@ import Mainloading from "../Loaders/Mainloading";
 import Theteam from "./Theteam";
 import { FaTimes } from 'react-icons/fa';
 import xmas from '../videos/xmas2.webm';
-import syd1 from '../images/syd1.jpg';
+import syd1 from '../images/syd2.jpg';
 import syd2 from '../images/syd2.jpg';
-import syd3 from '../images/syd3.jpg';
+import syd3 from '../images/syd2.jpg';
 import shanetemp from '../images/shane.jpg';
 import timejourney from '../anims/timejourney3.webm';
-import chill from '../images/avunie.jpg';
+import chill from '../images/avuni2.jpg';
 import caroline from'../videos/Carolle.mp4';
 import keepmovingforward from'../anims/keep.mp4';
 import headshot2 from '../images/sun.jpg';
-import avuni from '../images/avuni.jpg';
-import cathy from '../images/cathy.jpg';
+import avuni from '../images/avuni2.jpg';
+import cathy from '../images/cathy2.jpg';
 
 import babs from'../anims/babsworld.mp4';
 import blackpanther from'../anims/bpth4.mp4';
@@ -131,19 +131,19 @@ const First2 = () => {
       title: "Space Atarah",
       description: "The adventures of Atarah in space with her companions.",
       episodes: [
-        { title: "Trailer", description: "A preview of the short film in the making.", video: spaceatarahvid, videoId: 15 }
+        { title: "Trailer", description: "A trailer of the short animated series in the making.", video: spaceatarahvid, videoId: 15 }
       ]
     },
     guardians: {
       title: "Guardians of Nature",
       description: "Follow the adventures of Blaze and the guardians of nature. based on comics by Cathy Nsibirwa",
       episodes: [
-        { title: "Trailer:", description: "A Sneakpeak of guardians of nature shortfilm still in development.", video: guardiansvid, videoId: 16 }
+        { title: "Trailer:", description: " Sneakpeak of guardians of nature shortfilm still in development.", video: guardiansvid, videoId: 16 }
       ]
     },
     migu: {
       title: "Migu and Feathers",
-      description: "A short animated series set in prehistoric times, exploring the rivalry between a boy and a Crane.",
+      description: "A short animated series set in prehistoric times, exploring the rivalry between a boy and a Crane. created by Waki Sydney & Sam Nungi",
       episodes: [
         { title: "Episode 1: Pilot Episode", description: "Introduces the characters of the show and the birth of their rivalry.", video: migu1, videoId: 9 },
         { title: "Episode 2: Fruit Fight", description: "Migu looks for revenge against feathers following the events of episode 1.", video: migu2, videoId: 10 },
@@ -736,7 +736,7 @@ const First2 = () => {
               {/* Right Text with Cards */}
               <div ref={wordref} className="text-container"> 
                 <p className="left-aligned">
-                  Step into a world of animation with <span className="highlight">Rejuv </span> — We create 2d animated shows and shorts. Led by <span className="highlight">Sam Nungi</span>, we create 2d animations & motion graphics in adobe aftereffects and blender greasepencil. We also create a variety of <span className="highlight">Lottie animations. </span> <p>Here is some of our work, enjoy !! </p> 
+                  Step into a world of animation with <span className="highlight">Rejuv </span> Led by <span className="highlight">Sam Nungi</span>, we create 2d animations & motion graphics in adobe aftereffects and blender greasepencil. We also create Lottie animations for apps <span className="highlight">Lottie animations. </span> <p>Here is some of our work, enjoy !! </p> 
                 </p>
 
                 {showMore && (

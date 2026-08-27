@@ -113,7 +113,7 @@ const First = () => {
   const showContent = {
     migu: {
       title: "Migu and Feathers",
-      description: "A short animated series set in prehistoric times, exploring the rivalry between a boy and a Crane.",
+      description: "A short animated series set in prehistoric times, exploring the rivalry between a boy and a Crane. created by Sydney Waki & Sam Nungi",
       episodes: [
         { title: "Episode 1: Pilot Episode", description: "Introduces the characters of the show and the birth of their rivalry.", video: migu1 },
         { title: "Episode 2: Fruit Fight", description: "Migu looks for revenge against feathers following the events of episode 1.", video: migu2 },
@@ -470,7 +470,7 @@ const First = () => {
               {/* Right Text with Cards */}
               <div ref={wordref} className="text-container"> 
                 <p className="left-aligned">
-                  Step into a world of animation with <span className="highlight">Rejuv </span> — We create 2d animated shows and shorts. Led by <span className="highlight">Sam Nungi</span>, we create 2d animations & motion graphics in adobe aftereffects and blender greasepencil. We also create a variety of <span className="highlight">Lottie animations. </span> <p>Here is some of our work, enjoy !! </p> 
+                  Step into a world of animation with <span className="highlight">Rejuv </span>  Led by <span className="highlight">Sam Nungi</span>, We create 2d animations & motion graphics in adobe aftereffects and blender greasepencil.  <span className="highlight">Lottie animations. </span> <p>Here is some of our work, enjoy !! </p> 
                 </p>
 
                 {showMore && (
