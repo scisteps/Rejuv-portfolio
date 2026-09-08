@@ -1,0 +1,24 @@
+/* src/components/dashboard/MapDashboard.css
+   Additive rules only — your existing UserDashboard.css still supplies
+   .user-dashboard, .user-header, .location-banner, .map-container,
+   .map-controls, .custom-info-window, etc. Import that file here too
+   (or merge these rules into it) so both are loaded. */
+
+.map-and-nav {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+}
+
+.map-and-nav .map-container {
+  flex: 1;
+  min-height: 0;
+}
+
+.elevation-badge {
+  background: rgba(0, 0, 0, 0.06);
+  border-radius: 999px;
+  padding: 2px 8px;
+  font-size: 12px;
+}

@@ -6,7 +6,25 @@ import { auth } from '../../Firebase';
 import { getCategories, rateLocation, toggleLikeLocation } from '../../services/Firestoreservice';
 import './LocationDetails.css';
 
-const LocationDetails = ({ location, onUpdate }) => {
+function formatElevation(elevationInfo) {
+  if (!elevationInfo || elevationInfo.elevation == null) return null;
+
+  const elevationText = `${Math.round(elevationInfo.elevation)}m`;
+
+  if (elevationInfo.diffFromUser == null) {
+    return elevationText;
+  }
+
+  const diff = Math.round(elevationInfo.diffFromUser);
+  if (diff === 0) {
+    return `${elevationText} · same elevation as you`;
+  }
+  const sign = diff > 0 ? '+' : '';
+  const direction = diff > 0 ? 'above you' : 'below you';
+  return `${elevationText} · ${sign}${diff}m ${direction}`;
+}
+
+const LocationDetails = ({ location, onUpdate, elevationInfo, routeInfo }) => {
   const [showImageUpload, setShowImageUpload] = useState(false);
   const [currentUser, setCurrentUser] = useState(null);
   const [categoryData, setCategoryData] = useState(null);
@@ -83,6 +101,8 @@ const LocationDetails = ({ location, onUpdate }) => {
 
   if (!location) return null;
 
+  const elevationText = formatElevation(elevationInfo);
+
   return (
     <div className="location-details">
       <div className="location-header">
@@ -137,6 +157,20 @@ const LocationDetails = ({ location, onUpdate }) => {
           <div className="meta-item">
             <span className="meta-icon">🕐</span>
             <span className="meta-text">{location.hours}</span>
+          </div>
+        )}
+        {elevationText && (
+          <div className="meta-item">
+            <span className="meta-icon">⛰️</span>
+            <span className="meta-text">{elevationText}</span>
+          </div>
+        )}
+        {routeInfo?.distanceText && (
+          <div className="meta-item">
+            <span className="meta-icon">🚶</span>
+            <span className="meta-text">
+              {routeInfo.distanceText} · {routeInfo.durationText} walk from you
+            </span>
           </div>
         )}
         <div className="meta-item">
