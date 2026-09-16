@@ -900,6 +900,8 @@ const First2 = () => {
                     <video
                       ref={videoRefs[12]}
                       preload="auto"
+                                            controlsList="nodownload"
+
                       controls
                       width="100%"
                       className="motivational-video"
@@ -925,6 +927,8 @@ const First2 = () => {
                     <video
                       ref={videoRefs[14]}
                       preload="auto"
+                                            controlsList="nodownload"
+
                       controls
                       width="100%"
                       className="motivational-video"
@@ -1013,6 +1017,8 @@ const First2 = () => {
                       <video
                         ref={videoRefs[8]}
                         preload="auto"
+                                              controlsList="nodownload"
+
                         controls
                         width="100%"
                         className="motivational-video"
@@ -1045,6 +1051,8 @@ const First2 = () => {
                     <video
                       ref={videoRefs[2]}
                       preload="metadata"
+                                            controlsList="nodownload"
+
                       controls
                       width="100%"
                       className="motivational-video"

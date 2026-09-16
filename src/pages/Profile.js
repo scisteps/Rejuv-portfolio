@@ -263,6 +263,8 @@ const Profile = () => {
     </div>
     <video
       controls
+                            controlsList="nodownload"
+
       ref={(el) => (videoRefs.current[index] = el)}
       onPlay={() => {
         // Pause all other videos when this one starts playing
