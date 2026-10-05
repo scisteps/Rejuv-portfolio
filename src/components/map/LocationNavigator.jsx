@@ -17,6 +17,8 @@ export default function LocationNavigator({
   onSelectIndex,
   onCenterUser,
   isCenteringUser,
+  routeInfo,
+  routeLoading,
 }) {
   const hasLocations = locations && locations.length > 0;
 
@@ -81,6 +83,19 @@ export default function LocationNavigator({
               ({currentIndex + 1}/{locations.length})
             </span>
           )}
+        </div>
+      )}
+
+      {/* Walking route from the user to the selected pin. The dashboard was
+          already passing this down, but the component ignored it, so the
+          computed route was invisible. */}
+      {routeLoading && <div className="nav-route-info">🚶 Working out route…</div>}
+
+      {!routeLoading && routeInfo?.distanceText && (
+        <div className="nav-route-info">
+          🚶 {routeInfo.distanceText}
+          {routeInfo.durationText ? ` · ${routeInfo.durationText} walk` : ''}
+          {' from you'}
         </div>
       )}
     </div>

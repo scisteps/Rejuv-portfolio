@@ -31,6 +31,12 @@ import AuthPopup from '../Auth/AuthPopup';
 import { auth } from '../../Firebase';
 import { onAuthStateChanged, signOut } from 'firebase/auth';
 import { getCategories, getLocations, deleteLocation } from '../../services/Firestoreservice';
+// MapDashboard.css is additive on top of the layout rules that live in
+// mapages/UserDashboard.css (.user-dashboard, .location-banner,
+// .map-container, .map-controls, .custom-info-window, ...). Without this
+// import the map container had no height and every banner/control was
+// unstyled.
+import '../../mapages/UserDashboard.css';
 import './MapDashboard.css';
 
 const DEFAULT_CENTER = { lat: 0.3476, lng: 32.5825 };
@@ -68,7 +74,21 @@ function UserLocationMarker({ position, isUsingFallback, onClick }) {
     />
   );
 }
+// Rejects if `promise` takes longer than `ms`. The timer is always cleared,
+// otherwise a resolved request left a pending timer behind on every load.
+function withTimeout(promise, ms, label) {
+  let timeoutId;
+  const timeout = new Promise((_, reject) => {
+    timeoutId = setTimeout(
+      () => reject(new Error(`${label} timed out after ${ms}ms`)),
+      ms
+    );
+  });
 
+  return Promise.race([promise, timeout]).finally(() => {
+    clearTimeout(timeoutId);
+  });
+}
 // ─── Category Location Marker ──────────────────────────────────────────
 function LocationMarker({ location, elevationDiff, onClick }) {
   const map = useMap();
@@ -129,9 +149,19 @@ export default function MapDashboard({ mode = 'user' }) {
   const [isCenteredOnUser, setIsCenteredOnUser] = useState(false);
 
   // ── Fly-to target for MapPanController ──
+  // A monotonic counter, not Date.now(): two flights within the same
+  // millisecond produced identical requestIds and MapPanController (which
+  // de-dupes on requestId) silently dropped the second one.
   const [flyTarget, setFlyTarget] = useState(null);
+  const flyRequestIdRef = useRef(0);
   const flyTo = useCallback((lat, lng, zoom) => {
-    setFlyTarget({ lat, lng, zoom, requestId: Date.now() });
+    flyRequestIdRef.current += 1;
+    setFlyTarget({
+      lat,
+      lng,
+      zoom,
+      requestId: flyRequestIdRef.current,
+    });
   }, []);
 
   // ── UI state ──
@@ -166,32 +196,41 @@ export default function MapDashboard({ mode = 'user' }) {
 
   const {
     roads = [],
-    paths = [],
+    path: trackedPath = [],
     pathStats = null,
+    currentPoint: trackingPoint = null,
+    error: trackingError = null,
+    isTracking,
     startTracking,
     stopTracking,
     clearPath,
   } = usePathTracking();
 
-  const isTracking = paths.length > 0;
+  // While the path tracker is recording, the dot on the map should follow the
+  // live fix. Directions/elevation deliberately keep using `userLocation` so
+  // a new fix every second can't re-trigger those APIs.
+  const markerLocation = trackingPoint || userLocation;
 
-  // ── Data loading ──
-  const loadData = useCallback(async () => {
-    try {
-      setLoading(true);
-      const [locationsData, categoriesData] = await Promise.all([
-        getLocations(),
-        getCategories(),
-      ]);
-      setLocations(locationsData || []);
-      setCategories(categoriesData || []);
-    } catch (error) {
-      console.error('Error loading data:', error);
-    } finally {
-      setLoading(false);
-    }
-  }, []);
-
+ const loadData = useCallback(async () => {
+  try {
+    setLoading(true);
+    const [locationsData, categoriesData] = await withTimeout(
+      Promise.all([getLocations(), getCategories()]),
+      8000,
+      'Loading locations/categories'
+    );
+    setLocations(locationsData || []);
+    setCategories(categoriesData || []);
+  } catch (error) {
+    console.error('Error loading data:', error);
+    // Don't leave the app stuck with nothing — show the map with
+    // no pins rather than no map at all.
+    setLocations([]);
+    setCategories([]);
+  } finally {
+    setLoading(false);
+  }
+}, []);
   // ── Auth state ──
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
@@ -202,15 +241,35 @@ export default function MapDashboard({ mode = 'user' }) {
   }, [loadData]);
 
   // ── Initial location fly-to ──
+  // Fires exactly once, when the map becomes ready. This used to depend on
+  // `getUserLocation`, which was re-created on every render — so every state
+  // update kicked off another GPS request, producing an endless request loop
+  // (permission churn, battery drain, constant re-renders).
+  const didInitialFlyRef = useRef(false);
   useEffect(() => {
-    if (mapReady) {
-      getUserLocation().then((position) => {
-        if (position) {
-          flyTo(position.lat, position.lng, 17);
-          setIsCenteredOnUser(true);
-        }
+    if (!mapReady || didInitialFlyRef.current) return undefined;
+    didInitialFlyRef.current = true;
+
+    let cancelled = false;
+
+    // The hook already asks for a fix on mount; getUserLocation de-duplicates,
+    // so this reuses that request instead of firing a second one.
+    getUserLocation()
+      .then((position) => {
+        if (cancelled) return;
+        // null means "no fix" (denied / unsupported / timed out). The banner
+        // explains why — never fly the map to a guessed coordinate.
+        if (!position) return;
+        flyTo(position.lat, position.lng, 17);
+        setIsCenteredOnUser(true);
+      })
+      .catch(() => {
+        /* surfaced through the hook's error state */
       });
-    }
+
+    return () => {
+      cancelled = true;
+    };
   }, [mapReady, getUserLocation, flyTo]);
 
   const handleToggleCategory = (categoryId) => {
@@ -255,44 +314,46 @@ export default function MapDashboard({ mode = 'user' }) {
     setGpsStatus('searching');
 
     try {
+      // precise: true skips the fast pass and ignores any cached fix.
       const position = await refreshGPS();
 
-      if (position?.accuracy) {
-        if (position.accuracy < 50) {
-          setGpsStatus('found');
-          flyTo(position.lat, position.lng, 18);
-          setIsCenteredOnUser(true);
-        } else if (position.accuracy < 200) {
-          setGpsStatus('found');
-          flyTo(position.lat, position.lng, 17);
-          setIsCenteredOnUser(true);
-        } else {
-          setGpsStatus('failed');
-        }
-      } else {
+      if (!position) {
         setGpsStatus('failed');
+      } else {
+        setGpsStatus('found');
+        // Zoom in further the tighter the fix is.
+        const zoom =
+          position.accuracy != null && position.accuracy < 50 ? 18 : 17;
+        flyTo(position.lat, position.lng, zoom);
+        setIsCenteredOnUser(true);
       }
-
-      setTimeout(() => setGpsStatus('idle'), 3000);
     } catch (error) {
       console.error('GPS Error:', error);
       setGpsStatus('failed');
-      setTimeout(() => setGpsStatus('idle'), 3000);
     } finally {
       setIsRefreshing(false);
+      setTimeout(() => setGpsStatus('idle'), 3000);
     }
   };
 
   const handleRecenter = async () => {
     setIsRefreshing(true);
     try {
-      const position = userLocation || (await getUserLocation());
+      // Prefer what we already have; only ask the browser if we have nothing.
+      const position = markerLocation || (await getUserLocation());
+
       if (position) {
-        flyTo(position.lat, position.lng, Math.max(currentZoomRef.current, 17));
+        flyTo(
+          position.lat,
+          position.lng,
+          Math.max(currentZoomRef.current, 17)
+        );
         setIsCenteredOnUser(true);
         setCurrentLocationIndex(-1);
         setSelectedLocation(null);
       }
+      // With no fix available the error banner already explains why — don't
+      // jump the map to a default coordinate and pretend that's the user.
     } catch (error) {
       console.error('Error getting location:', error);
     } finally {
@@ -313,25 +374,28 @@ export default function MapDashboard({ mode = 'user' }) {
     flyTo(location.lat, location.lng, Math.max(currentZoomRef.current, 17));
   };
 
+  const openLocationFormAt = (position) => {
+    if (!position) return;
+    setActionLocation({ lat: position.lat, lng: position.lng });
+    setShowLocationForm(true);
+  };
+
   const handleOpenLocationForm = () => {
     if (!user) {
       setShowAuth(true);
       return;
     }
 
-    if (userLocation) {
-      setActionLocation({ lat: userLocation.lat, lng: userLocation.lng });
-      setShowLocationForm(true);
-    } else {
-      getUserLocation().then((position) => {
-        if (position) {
-          setActionLocation({ lat: position.lat, lng: position.lng });
-          setShowLocationForm(true);
-        } else {
-          alert('Unable to get your location. Please enable GPS.');
-        }
-      });
+    if (markerLocation) {
+      openLocationFormAt(markerLocation);
+      return;
     }
+
+    // No position yet: ask for one. On failure the location banner explains
+    // why — no more blocking alert() dialog.
+    getUserLocation()
+      .then(openLocationFormAt)
+      .catch(() => {});
   };
 
   // Admin only: click anywhere on the map to drop a pin there, same
@@ -374,15 +438,8 @@ export default function MapDashboard({ mode = 'user' }) {
     ? getAccuracyStatus(accuracy)
     : { label: 'Unknown', color: '#999', icon: '📍' };
 
-  // ── Loading screen ──
-  if (loading) {
-    return (
-      <div className="loading-screen">
-        <div className="loading-spinner"></div>
-        <p>Loading map data...</p>
-      </div>
-    );
-  }
+
+ 
 
   // ── Render ──
   return (
@@ -438,12 +495,19 @@ export default function MapDashboard({ mode = 'user' }) {
       {/* ─── Location Status Banner ─── */}
       {locationError && (
         <div className="location-banner error">
-          ⚠️ {locationError}
-          <button onClick={handleRecenter}>Retry</button>
+          <span>⚠️ {locationError}</span>
+          <button
+            onClick={() => {
+              handleRecenter();
+            }}
+            disabled={locationLoading}
+          >
+            {locationLoading ? 'Locating…' : 'Retry'}
+          </button>
         </div>
       )}
 
-      {!locationError && userLocation && (
+      {!locationError && markerLocation && (
         <div
           className={`location-banner ${
             isUsingFallback ? 'warning' : 'success'
@@ -456,12 +520,16 @@ export default function MapDashboard({ mode = 'user' }) {
             }}
           />
 
-          {isUsingFallback
+          {isTracking
+            ? `🎥 Recording path · ${accuracyStatus.label}`
+            : isUsingFallback
             ? `📍 Approximate location — ${accuracyStatus.label}`
             : `✅ GPS Active · ${accuracyStatus.label}`}
 
+          {/* Don't render "±0m" while the accuracy is still unknown. */}
           <span className="accuracy-badge">
-            {accuracyStatus.icon} ±{Math.round(accuracy || 0)}m
+            {accuracyStatus.icon}{' '}
+            {accuracy != null ? `±${Math.round(accuracy)}m` : 'accuracy pending'}
           </span>
 
           {userElevation != null && (
@@ -480,7 +548,7 @@ export default function MapDashboard({ mode = 'user' }) {
         </div>
       )}
 
-      {locationLoading && !userLocation && (
+      {locationLoading && !markerLocation && (
         <div className="location-banner info">
           <span className="loading-dot"></span>
           Finding your location...
@@ -504,6 +572,18 @@ export default function MapDashboard({ mode = 'user' }) {
             onToggleCategory={handleToggleCategory}
             categories={categories}
           />
+
+          {/* Pin data is fetched separately from GPS — tell the user which
+              one they're waiting on. */}
+          {loading && locations.length === 0 && (
+            <div className="sidebar-hint">
+              <span className="loading-dot" /> Loading locations…
+            </div>
+          )}
+
+          {!loading && locations.length === 0 && (
+            <div className="sidebar-hint">No locations yet.</div>
+          )}
 
           {user && (
             <div className="user-stats">
@@ -550,10 +630,10 @@ export default function MapDashboard({ mode = 'user' }) {
                   />
                 ))}
 
-              {/* ─── Paths ─── */}
-              {paths?.length > 1 && (
+              {/* ─── Paths (recorded while tracking) ─── */}
+              {trackedPath.length > 1 && (
                 <Polyline
-                  path={paths}
+                  path={trackedPath}
                   strokeColor="#4285F4"
                   strokeWeight={4}
                   strokeOpacity={0.85}
@@ -606,11 +686,11 @@ export default function MapDashboard({ mode = 'user' }) {
               )}
 
               {/* ─── User Location Marker ─── */}
-              {userLocation && (
+              {markerLocation && (
                 <UserLocationMarker
                   position={{
-                    lat: userLocation.lat,
-                    lng: userLocation.lng,
+                    lat: markerLocation.lat,
+                    lng: markerLocation.lng,
                   }}
                   isUsingFallback={isUsingFallback}
                   onClick={
@@ -675,7 +755,7 @@ export default function MapDashboard({ mode = 'user' }) {
             <div className="map-controls">
               <RecenterButton
                 onClick={handleRecenter}
-                isLocating={isRefreshing || (locationLoading && !userLocation)}
+                isLocating={isRefreshing || (locationLoading && !markerLocation)}
                 isActive={isCenteredOnUser}
               />
 
@@ -722,8 +802,9 @@ export default function MapDashboard({ mode = 'user' }) {
           <div className="tracker-panel">
             <PathTracker
               isTracking={isTracking}
-              path={paths || []}
+              path={trackedPath}
               pathStats={pathStats}
+              error={trackingError}
               onStartTracking={startTracking}
               onStopTracking={stopTracking}
               onClearPath={clearPath}

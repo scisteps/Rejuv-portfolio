@@ -67,3 +67,10 @@
 .nav-current-count {
   color: #9aa0a6;
 }
+
+/* Walking route summary for the currently selected location */
+.nav-route-info {
+  font-size: 12px;
+  color: #0f9d58;
+  text-align: center;
+}

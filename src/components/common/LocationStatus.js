@@ -1,8 +1,14 @@
-// src/components/Common/LocationStatus.jsx
+// src/components/common/LocationStatus.jsx
 import React from 'react';
 import './LocationStatus.css';
 
-const LocationStatus = ({ location, error, isUsingFallback, loading }) => {
+const LocationStatus = ({
+  location,
+  error,
+  isUsingFallback,
+  loading,
+  onRetry,
+}) => {
   if (loading) {
     return (
       <div className="location-status loading">
@@ -17,9 +23,15 @@ const LocationStatus = ({ location, error, isUsingFallback, loading }) => {
       <div className="location-status error">
         <span className="status-icon">⚠️</span>
         <span>{error}</span>
-        <button 
+        {/* Re-request the fix instead of reloading the whole page — a full
+            reload threw away the map, filters and any half-typed form. */}
+        <button
           className="retry-btn"
-          onClick={() => window.location.reload()}
+          onClick={() => {
+            if (onRetry) onRetry();
+            else window.location.reload();
+          }}
+          disabled={loading}
         >
           Retry
         </button>
@@ -32,7 +44,9 @@ const LocationStatus = ({ location, error, isUsingFallback, loading }) => {
       <div className="location-status fallback">
         <span className="status-icon">📍</span>
         <span>Using approximate location</span>
-        <span className="accuracy-badge">~{location?.accuracy}m</span>
+        {location?.accuracy != null && (
+          <span className="accuracy-badge">~{Math.round(location.accuracy)}m</span>
+        )}
       </div>
     );
   }
@@ -42,7 +56,9 @@ const LocationStatus = ({ location, error, isUsingFallback, loading }) => {
       <div className="location-status success">
         <span className="status-icon">✅</span>
         <span>Location found</span>
-        <span className="accuracy-badge">±{Math.round(location.accuracy)}m</span>
+        <span className="accuracy-badge">
+          ±{Math.round(location.accuracy)}m
+        </span>
       </div>
     );
   }
