@@ -1,0 +1,272 @@
+﻿/* Animations.css */
+
+/* ===== Page wrapper ===== */
+.anim-container {
+  text-align: center;
+  margin: 20px auto;
+  padding: 0 10px;
+  overflow-x: hidden;
+}
+
+/* ===== Top slideshow — scoped so First.css can coexist ===== */
+.top-section {
+  margin: 0 auto 50px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 10px 0 40px;
+}
+
+.top-section h2 {
+  margin-bottom: 25px;
+  text-align: center;
+  color: #FFBC00;
+  font-size: 1.8rem;
+}
+
+/* Slick wrapper — width controlled here only */
+.slider-container {
+  max-width: 520px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+/* Slide wrapper — one class, no !important */
+.slide-wrapper {
+  display: flex !important;
+  justify-content: center;
+  align-items: center;
+  padding: 4px;
+}
+
+/* Image itself */
+.top-pic {
+  width: 100%;
+  max-width: 420px;
+  height: auto;
+  max-height: 500px;
+  object-fit: cover;
+  border-radius: 10px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+  display: block;
+  margin: 0 auto;
+  background: #111;
+}
+
+/* Scope slick overrides ONLY inside this page's slider */
+.slider-container .slick-slider {
+  width: 100%;
+}
+
+.slider-container .slick-list {
+  overflow: hidden;
+  padding: 0;
+}
+
+.slider-container .slick-track {
+  display: flex;
+  align-items: center;
+}
+
+.slider-container .slick-slide {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: auto;
+}
+
+.slider-container .slick-slide > div {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.slider-container .slick-prev,
+.slider-container .slick-next {
+  display: none;
+}
+
+.slider-container .slick-dots {
+  position: relative;
+  bottom: 0;
+  margin-top: 15px;
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  padding: 0;
+  list-style: none;
+}
+
+.slider-container .slick-dots li {
+  width: auto;
+  height: auto;
+  margin: 0;
+}
+
+.slider-container .slick-dots li button:before {
+  color: #fff;
+  font-size: 10px;
+  opacity: 0.6;
+}
+
+.slider-container .slick-dots li.slick-active button:before {
+  color: #FADDAD;
+  opacity: 1;
+}
+
+/* ===== About section ===== */
+.about-section {
+  max-width: 700px;
+  margin: 0 auto 50px;
+  padding: 0 15px;
+  text-align: left;
+}
+
+.about-section h2 {
+  margin-bottom: 15px;
+  text-align: center;
+  color: #FFBC00;
+}
+
+.about-text {
+  font-size: 1.05rem;
+  line-height: 1.7;
+  margin: 0;
+  color: #eaeaea;
+}
+
+/* ===== Character Animations section ===== */
+.motivational-shorts-section {
+  padding: 50px 20px;
+  color: #fff;
+  text-align: center;
+  transition: background-color 0.5s ease;
+  margin-bottom: 30px;
+  border-radius: 12px;
+}
+
+.motivational-shorts-section h2 {
+  font-size: 1.8rem;
+  margin-bottom: 10px;
+}
+
+.anim-list {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.section-note {
+  margin-bottom: 35px;
+  font-size: 0.95rem;
+  opacity: 0.85;
+  text-align: center;
+}
+
+/* Centered, slightly scaled-down video cards */
+.video-container {
+  max-width: 520px;
+  width: 90%;
+  margin: 0 auto 40px;
+  border: none;
+  border-radius: 12px;
+  padding: 18px;
+  box-sizing: border-box;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.video-container h2 {
+  font-size: 1.3rem;
+  margin: 0 0 8px;
+}
+
+.video-container p {
+  font-size: 0.95rem;
+  margin: 0 0 14px;
+  line-height: 1.5;
+}
+
+.motivational-video,
+.anim-video,
+.migu-video {
+  width: 100%;
+  max-width: 440px;
+  height: auto;
+  border-radius: 10px;
+  margin: 0 auto;
+  display: block;
+  background: #000;
+}
+
+/* EmojiPanel wrapper inside cards */
+.video-container > div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+/* Separator (kept from your First.css convention) */
+.bordered {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+  padding-bottom: 20px;
+}
+
+/* ===== Other projects section ===== */
+.other-section {
+  margin: 40px auto;
+  text-align: center;
+  max-width: 600px;
+  padding: 0 15px;
+}
+
+.other-section h2 {
+  margin-bottom: 12px;
+  color: #FFBC00;
+}
+
+.other-section p {
+  margin-bottom: 20px;
+  color: #bbb;
+}
+
+/* ===== Footer ===== */
+.footer-contact {
+  margin-top: 40px;
+  color: #888;
+  font-size: 0.9rem;
+  text-align: center;
+  padding-bottom: 30px;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 768px) {
+  .slider-container {
+    max-width: 340px;
+  }
+  .top-pic {
+    max-width: 320px;
+    max-height: 420px;
+  }
+  .video-container {
+    padding: 12px;
+    width: 95%;
+    max-width: 420px;
+  }
+  .motivational-video,
+  .anim-video,
+  .migu-video {
+    max-width: 100%;
+  }
+  .motivational-shorts-section h2 {
+    font-size: 1.5rem;
+  }
+}

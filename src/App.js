@@ -16,6 +16,7 @@ import Profile from './pages/Profile';
 import PopCulture from './pages/PopCulture';
 import CampusMap from './pages/CampusMap';
 import First2 from './pages/First2';
+import Animations from './pages/Animations';
 
 function App() {
   return (
@@ -36,6 +37,7 @@ function App() {
       <Route path="/profile" element={<Profile  />} />
       <Route path="/pc" element={<PopCulture  />} />
       <Route path="/map" element={<CampusMap  />} />
+      <Route path="/animations" element={<Animations  />} />
 
       </Routes>
       </div>
