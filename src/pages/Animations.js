@@ -142,7 +142,7 @@ const [motivationalBackground, setMotivationalBackground] = useState("#000000");
   };
 
   // Slideshow images: samred, samred2, me green, sun (plus two existing for variety)
-  const pictures = [rejuveblack,samred, samred2, meGreen, sun, headshot2 ];
+  const pictures = [rejuveblack,samred, samred2, meGreen, sun ];
 
   const anims = [
     {
