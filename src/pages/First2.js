@@ -736,7 +736,7 @@ const First2 = () => {
               {/* Right Text with Cards */}
               <div ref={wordref} className="text-container"> 
                 <p className="left-aligned">
-                  Step into a world of animation with <span className="highlight">Rejuv </span> Led by <span className="highlight">Sam Nungi</span>, we create 2d animations & motion graphics in adobe aftereffects and blender greasepencil. We also create Lottie animations for apps <span className="highlight">Lottie animations. </span> <p>Here is some of our work, enjoy !! </p> 
+                  Step into a world of animation with <span className="highlight">Rejuv </span> Led by <span className="highlight">Sam Nungi</span>, we create 2d animations & motion graphics in Moho, Adobe aftereffects and blender greasepencil. We also create <span className="highlight">Lottie animations. </span> for apps and websites  <p>Here is some of our work, enjoy !! </p> 
                 </p>
 
                 {showMore && (
